@@ -1,0 +1,10 @@
+export { default as TrashIcon } from "./TrashIcon";
+export { default as UserIcon } from "./UserIcon";
+export { default as BellIcon } from "./BellIcon";
+export { default as NoteIcon } from "./NoteIcon";
+export { default as InboxIcon } from "./InboxIcon";
+export { default as LocationIcon } from "./LocationIcon";
+export { default as CalendarIcon } from "./CalendarIcon";
+export { default as EyeIcon } from "./EyeIcon";
+export { default as HeartIcon } from "./HeartIcon";
+export { default as SearchIcon } from "./SearchIcon";

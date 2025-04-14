@@ -10,7 +10,7 @@ interface RegisterProps {
 
 interface RegisterFormData {
     username: string;
-    email: string;
+    username: string;
     password: string;
     firstName: string;
     lastName: string;
@@ -57,11 +57,11 @@ const Register: React.FC<RegisterProps> = ({ onLogin, onClose }) => {
                     <div>
                         <label className="block text-sm font-medium">Email</label>
                         <input
-                            {...register('email', { required: 'Email is required' })}
-                            type="email"
+                            {...register('username', { required: 'Email is required' })}
+                            type="username"
                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+                        {errors.username && <p className="text-sm text-red-500">{errors.username.message}</p>}
                     </div>
                     <div>
                         <label className="block text-sm font-medium">Password</label>

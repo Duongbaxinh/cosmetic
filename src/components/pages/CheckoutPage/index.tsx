@@ -1,15 +1,15 @@
 "use client"
 import Price from '@/components/atoms/Price';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { confirmOrder, useGetProductOrder } from '@/services';
+import { confirmOrder, useOrderCheckout } from '@/services';
 import type { TCheckoutPage } from '@/types';
 import moment from 'moment';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function CheckoutPage({ order_id }: TCheckoutPage) {
     const [showDetail, setShowDetail] = useState(false)
-    const { order, loading } = useGetProductOrder(order_id, true)
+    const { order, loading } = useOrderCheckout(order_id, true)
 
     const handleShowDetail = () => {
         setShowDetail(!showDetail)

@@ -1,3 +1,5 @@
+import { PAYMENT_METHOD } from "@/consts";
+
 export type Product = {
   product_id: string | number;
   product_name: string;
@@ -27,6 +29,7 @@ export type Product = {
 };
 
 // CHECKOUT ORDER
+
 export type OrderUser = {
   user_id: number;
   user_name: string;
@@ -52,6 +55,10 @@ export type OrderCheckout = {
   order_code_discount: string;
   order_final_price: number;
   order_shipping: number;
+  order_paid: boolean;
+  order_amount_paid: number;
+  order_amount_rest: number;
+  order_payment_method: "CASH" | "CARD";
   order_discount_shipping: number;
   order_expected_delivery_time: Date;
   order_user: OrderUser;
@@ -68,4 +75,16 @@ export type CartCheckout = {
   cart_discount_shipping: number;
   cart_user: OrderUser;
   cart_products: OrderProduct[];
+};
+export type TrackingItem = {
+  time: string;
+  status?: string;
+  detail: string;
+  image?: string;
+  type: "success" | "in_progress" | "delivering ";
+};
+
+export type OrderDetail = {
+  order: OrderCheckout;
+  order_tracking: TrackingItem[];
 };

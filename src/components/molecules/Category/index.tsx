@@ -8,7 +8,7 @@ const Category: React.FC<CategoryProps> = ({ img_url, title }) => {
             <div className="border border-gray-200 p-2 w-full h-full rounded-lg">
                 <img src={img_url} alt="#" className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm font-normal">{title}</p>
+            <p className="text-sm font-delivering ">{title}</p>
         </div>
     );
 };

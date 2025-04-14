@@ -23,7 +23,7 @@ const Login: React.FC<LoginProps> = ({ onRegister, onClose }) => {
                 password: dataLogin.password,
             });
             localStorage.setItem('Logined', 'true');
-            localStorage.setItem('userInfo', JSON.stringify(data));
+            localStorage.setItem('UserType', JSON.stringify(data));
         } catch (error) {
             console.log('Error during login', error);
         }

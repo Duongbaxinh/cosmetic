@@ -76,7 +76,7 @@ const Input = forwardRef(({
     const variantType = {
         underline: `border-b-[0.5px] focus-within:border-b-[2px]`,
         outline:
-            "border-[0.5px] focus-within:border-[2px]  rounded-sm px-2 py-1"
+            "border-[0.5px]   rounded-sm px-2 py-1"
     };
     return (
         <>
@@ -93,7 +93,7 @@ const Input = forwardRef(({
 
                 <input
                     ref={ref}
-                    className={`border-0  outline-none w-full h-full p-0 m-0 text-[13px] leading-[18px] text-text truncate !bg-transparent ${classInput} `}
+                    className={`border-0  outline-none w-full h-full p-0 m-0 text-[13px] leading-[18px] text-text truncate !bg-transparent  ${classInput} `}
                     placeholder={`${placeholder}`}
                     value={value}
                     onChange={onChange}

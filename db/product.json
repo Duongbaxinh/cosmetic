@@ -783,6 +783,10 @@
     "order_discount": 5000,
     "order_final_price": 6000000,
     "order_shipping": 15000,
+    "order_payment_method": "CASH",
+    "order_paid": false,
+    "order_amount_paid": 5000000,
+    "order_amount_rest": 1000000,
     "order_discount_shipping": 0.0,
     "order_expected_delivery_time": "2025-04-13T19:00:00Z",
     "order_user": {
@@ -812,5 +816,163 @@
         "product_discount": 0.0
       }
     ]
+  },
+  "orders": [
+    {
+      "order_id": 1000001,
+      "order_status": "draft",
+      "order_quantity": 2,
+      "order_total_price": 1030000,
+      "order_discount": 5000,
+      "order_final_price": 6000000,
+      "order_shipping": 15000,
+      "order_discount_shipping": 0.0,
+      "order_expected_delivery_time": "2025-04-13T19:00:00Z",
+      "order_user": {
+        "user_id": 101,
+        "user_name": "Alice Smith",
+        "user_address": "456 Elm St, New York, USA"
+      },
+      "order_products": [
+        {
+          "product_id": 5001,
+          "product_price": 250000,
+          "product_price_cost": 250000,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
+          "product_name": "Sữa Rửa Mặt Dạng Gel Dịu Nhẹ Dành Cho Da Nhạy Cảm Và Da Khô Laneige Water Bank Blue Ha Cleansing Gel 200ml",
+          "product_quantity": 1,
+          "product_total_price": 250000,
+          "product_discount": 0.0
+        },
+        {
+          "product_id": 5002,
+          "product_price": 249999,
+          "product_price_cost": 24.99,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
+          "product_name": "Bộ sản phẩm Kem chống nắng dưỡng da bảo vệ hoàn hảo (Anessa Gold Milk 60ml x2 + Gold Gel 90g)",
+          "product_quantity": 1,
+          "product_total_price": 240000,
+          "product_discount": 0.0
+        }
+      ]
+    },
+    {
+      "order_id": 1000001,
+      "order_status": "draft",
+      "order_quantity": 2,
+      "order_total_price": 1030000,
+      "order_discount": 5000,
+      "order_final_price": 6000000,
+      "order_shipping": 15000,
+      "order_discount_shipping": 0.0,
+      "order_expected_delivery_time": "2025-04-13T19:00:00Z",
+      "order_user": {
+        "user_id": 101,
+        "user_name": "Alice Smith",
+        "user_address": "456 Elm St, New York, USA"
+      },
+      "order_products": [
+        {
+          "product_id": 5001,
+          "product_price": 250000,
+          "product_price_cost": 250000,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
+          "product_name": "Sữa Rửa Mặt Dạng Gel Dịu Nhẹ Dành Cho Da Nhạy Cảm Và Da Khô Laneige Water Bank Blue Ha Cleansing Gel 200ml",
+          "product_quantity": 1,
+          "product_total_price": 250000,
+          "product_discount": 0.0
+        },
+        {
+          "product_id": 5002,
+          "product_price": 249999,
+          "product_price_cost": 24.99,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
+          "product_name": "Bộ sản phẩm Kem chống nắng dưỡng da bảo vệ hoàn hảo (Anessa Gold Milk 60ml x2 + Gold Gel 90g)",
+          "product_quantity": 1,
+          "product_total_price": 240000,
+          "product_discount": 0.0
+        }
+      ]
+    },
+    {
+      "order_id": 1000001,
+      "order_status": "draft",
+      "order_quantity": 2,
+      "order_total_price": 1030000,
+      "order_discount": 5000,
+      "order_final_price": 6000000,
+      "order_shipping": 15000,
+      "order_discount_shipping": 0.0,
+      "order_expected_delivery_time": "2025-04-13T19:00:00Z",
+      "order_user": {
+        "user_id": 101,
+        "user_name": "Alice Smith",
+        "user_address": "456 Elm St, New York, USA"
+      },
+      "order_products": [
+        {
+          "product_id": 5001,
+          "product_price": 250000,
+          "product_price_cost": 250000,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
+          "product_name": "Sữa Rửa Mặt Dạng Gel Dịu Nhẹ Dành Cho Da Nhạy Cảm Và Da Khô Laneige Water Bank Blue Ha Cleansing Gel 200ml",
+          "product_quantity": 1,
+          "product_total_price": 250000,
+          "product_discount": 0.0
+        },
+        {
+          "product_id": 5002,
+          "product_price": 249999,
+          "product_price_cost": 24.99,
+          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
+          "product_name": "Bộ sản phẩm Kem chống nắng dưỡng da bảo vệ hoàn hảo (Anessa Gold Milk 60ml x2 + Gold Gel 90g)",
+          "product_quantity": 1,
+          "product_total_price": 240000,
+          "product_discount": 0.0
+        }
+      ]
+    }
+  ],
+  "order_trackings": [
+    {
+      "time": "10:20 14-01-2025",
+      "status": "Đã giao",
+      "detail": "Giao hàng thành công",
+      "image": "Xem hình ảnh giao hàng",
+      "type": "success"
+    },
+    {
+      "time": "09:14 14-01-2025",
+      "status": "Đang vận chuyển",
+      "detail": "Đơn hàng sẽ sớm được giao, vui lòng chú ý điện thoại",
+      "type": "in_progress"
+    },
+    {
+      "time": "07:17 14-01-2025",
+      "detail": "Đơn hàng đã đến trạm giao hàng tại khu vực của bạn Phường Hòa Khánh Bắc...",
+      "type": "delivering "
+    },
+    {
+      "time": "05:45 14-01-2025",
+      "detail": "Đơn hàng đang được trung chuyển đến địa điểm kế tiếp",
+      "type": "delivering "
+    },
+    {
+      "time": "01:18 14-01-2025",
+      "detail": "Đơn hàng đã đến kho phân loại Phường Hòa Khánh Bắc...",
+      "type": "delivering "
+    },
+    {
+      "time": "01:18 14-01-2025",
+      "detail": "Đơn hàng được đặt",
+      "type": "delivering "
+    }
+  ],
+  "user": {
+    "username": "duongbaxinh",
+    "first_name": "Xinh",
+    "last_name": "Duong Ba",
+    "phone": "0378700020",
+    "address": "08 Tien Son 9, Phuong Hoa Cuong Nam, Hai Chau, Da Nang"
   }
 }

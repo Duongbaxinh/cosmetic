@@ -31,3 +31,13 @@ export type Props = {
     order_id: string;
   };
 };
+
+export type IconProps = {
+  className?: string;
+  fill?: string;
+};
+
+export type OrderTabItem = {
+  title: string;
+  status: string;
+};

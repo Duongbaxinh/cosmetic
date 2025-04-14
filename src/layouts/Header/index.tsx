@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = () => {
 
     const handleLogout = () => {
         localStorage.setItem('login', 'false');
-        localStorage.setItem('userInfo', JSON.stringify(null));
+        localStorage.setItem('UserType', JSON.stringify(null));
         window.location.reload();
     };
 

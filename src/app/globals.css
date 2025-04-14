@@ -40,6 +40,9 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
