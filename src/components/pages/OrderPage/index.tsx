@@ -4,9 +4,11 @@ import Input from '@/components/atoms/Input';
 import Price from '@/components/atoms/Price';
 import { ORDER_TABS } from '@/components/config/order.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
+import { PURCHASE_URL } from '@/routers';
 import { useGetOrder, useGetProductOrder } from '@/services';
 import { OrderTabItem } from '@/types';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 function OrderPage() {
@@ -18,11 +20,11 @@ function OrderPage() {
     if (loading) return <h1>Loading...</h1>
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
-            <div className="pt-[18px] flex flex-col gap-5 space-x-5 px-4 md:mr-[36px] ">
+            <div className="pt-[18px] flex flex-col gap-5 space-x-5 px-4  ">
                 <p className=' text-[19px] font-[300] '> Đơn hàng của tôi</p>
                 <div className=" bg-white  h-[42px] overflow-auto no-scrollbar  mr-0 flex items-center text-[14px] leading-4 text-gray-400 ">
                     {ORDER_TABS.map((tab: OrderTabItem, index) => (
-                        <div key={index} className={`relative w-[158px] px-2 h-full bg-white flex items-center justify-center whitespace-nowrap ${status === tab.status && "text-blue-600"}`}
+                        <div key={index} className={`relative w-full min-w-[138px] px-2 h-full bg-white flex items-center justify-center whitespace-nowrap ${status === tab.status && "text-blue-600"}`}
                             onClick={() => handleChangeStatus(tab.status)}>
                             {tab.title}
                             {status === tab.status && <div className="absolute bottom-0 left-0 h-[2px] w-full bg-blue-600" />}
@@ -38,6 +40,7 @@ function OrderPage() {
                 <div className="flex flex-col gap-4">
                     {orders && orders.length > 0 && orders.map((order) => (
                         <div className=" bg-white p-4 rounded-md">
+                            <Link href={`${PURCHASE_URL}/${order.order_id}`} className='flex gap-2 w-fit p-1 mb-2 items-center justify-start text-blue-400  '>Xem chi tiết</Link>
                             {order?.order_products.map((product) => (
                                 <div key={product.product_id} className="flex gap-3">
                                     <Image

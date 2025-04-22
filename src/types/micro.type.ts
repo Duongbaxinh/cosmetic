@@ -46,3 +46,5 @@ export interface RadioScrollProps {
   percentage?: number;
   label: string;
 }
+
+export type ProductSkeletonType = { length?: number; className?: string };

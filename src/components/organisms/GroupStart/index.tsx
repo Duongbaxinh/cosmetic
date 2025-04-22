@@ -4,17 +4,29 @@ import React from 'react';
 
 // Type definition for props
 interface GroupStartProps {
-    numberOfStart: number;
     w?: string;
     h?: string;
+    starCount?: number;
+    starActive?: number;
+    starDis?: number;
+    label?: string;
+    onClick?: () => void,
+    className?: string
 }
 
-const GroupStart: React.FC<GroupStartProps> = ({ numberOfStart, w = '20px', h = '20px' }) => {
+const GroupStart: React.FC<GroupStartProps> = ({ onClick, starActive = 5, starDis = 0, label, className }) => {
     return (
-        <div className="flex  items-center gap-[2px]">
-            {Array.from({ length: 5 }, (_, i) => i + 1).map((star) => (
-                <StarIcon />
+        <div onClick={onClick}
+            className={`flex items-center gap-1 cursor-pointer ${className}`}>
+            {/* Hiển thị số sao vàng */}
+            {Array.from({ length: starActive }).map((_, index) => (
+                <StarIcon key={`filled-${index}`} />
             ))}
+            {/* Hiển thị sao trống để đủ 5 */}
+            {Array.from({ length: 5 - starActive }).map((_, index) => (
+                <StarIcon key={`empty-${index}`} fill='#c6c5c1' />
+            ))}
+            {label && <p className="flex items-center gap-[2px] ml-2 text-sm font-bold text-gray-400">{label} <StarIcon /></p>}
         </div>
     );
 }

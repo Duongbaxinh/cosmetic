@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/auth.context";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
+import ReduxProvider from "@/redux/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider store={store}>
+        <ReduxProvider>
           <AuthProvider>
             {children}
           </AuthProvider>
-        </Provider>
+        </ReduxProvider>
       </body>
     </html>
   );

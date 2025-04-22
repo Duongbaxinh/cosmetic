@@ -10,7 +10,7 @@ const Container: React.FC<ContainerProps> = ({
     return (
         <div
             ref={eRef}
-            className={` rounded-md ${className} max-w-[1440px] my-0 mx-auto`}
+            className={` rounded-md max-w-[1440px] my-0 mx-auto ${className} `}
         >
             {children}
         </div>

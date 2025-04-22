@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getData } from "../api";
 import { Branch } from "../fakes/brand";
-import { Product } from "../types";
+import { ProductEnum, ProductResponse } from "../types";
+
+import { handleAxiosError } from "@/utils";
 
 interface ParamsType {
   limit?: number;
@@ -9,92 +11,85 @@ interface ParamsType {
   [key: string]: any;
 }
 
-export const useGetAllProducts = (
-  params: ParamsType = {},
-  authenticated = false
-) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
+// export const useGetAllProducts = (
+//   type?: ProductEnum | null,
+//   params: ParamsType = {},
+//   authenticated = false
+// ) => {
+//   const dispatch = useDispatch<AppDispatch>();
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         dispatch(getProductStart());
+//         const queryString = new URLSearchParams(params).toString();
+//         const url = `/products${queryString ? `?${queryString}` : ""}`;
+//         const response = await getData(url, authenticated);
+//         console.log("response product ", response);
+//         if (type === ProductEnum.PRODUCT_DISCOUNT) {
+//           dispatch(
+//             getProductSuccess({
+//               type: ProductEnum.PRODUCT_DISCOUNT,
+//               products: response as ProductResponse,
+//             })
+//           );
+//         } else if (type === ProductEnum.PRODUCT_INTERNAL) {
+//           dispatch(
+//             getProductSuccess({
+//               type: ProductEnum.PRODUCT_INTERNAL,
+//               products: response as ProductResponse,
+//             })
+//           );
+//         } else {
+//           dispatch(
+//             getProductSuccess({
+//               type: "",
+//               products: response as ProductResponse,
+//             })
+//           );
+//         }
+//       } catch (error) {
+//         const mess = handleAxiosError(error);
+//         dispatch(getFailure(mess));
+//       }
+//     };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const queryString = new URLSearchParams(params).toString();
-        const url = `/products${queryString ? `?${queryString}` : ""}`;
-        console.log("URL:", url);
+//     fetchData();
+//   }, []);
+// };
 
-        const response = await getData(url, authenticated);
-        if (params.product_international) {
-          const responseData = response as Product[];
-          const filteredResponse = responseData.filter(
-            (product: Product) =>
-              product.product_international === params.product_international
-          );
-          setProducts(filteredResponse as Product[]);
-        } else if (params.discount) {
-          const responseData = response as Product[];
-          const filteredResponse = responseData.filter(
-            (product: Product) => product.product_discount === params.discount
-          );
-          console.log("Filtered Response:", filteredResponse);
-          setProducts(filteredResponse as Product[]);
-        } else if (params.type) {
-          const responseData = response as Product[];
-          const filteredResponse = responseData.filter(
-            (product: Product) => product.product_type === params.type
-          );
-          console.log("Filtered Response:", filteredResponse);
-          setProducts(filteredResponse as Product[]);
-        } else {
-          const responseData = response as Product[];
-          setProducts(responseData.splice(0, params.limit) as Product[]);
-        }
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+// export const useGetProductDetail = (
+//   product_id: string | number,
+//   authenticated = false
+// ) => {
+//   const [product, setProduct] = useState<ProductResponse>(
+//     {} as ProductResponse
+//   );
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<any>(null);
 
-    fetchData();
-  }, [params, authenticated]);
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
+//         const url = `/products/${product_id}`;
+//         console.log("URL:", url);
+//         const response = await getData(url, authenticated);
+//         setProduct(response as ProductResponse);
+//         setLoading(false);
+//         console.log("Response Data:", response);
+//         return response as ProductResponse[];
+//       } catch (error) {
+//         setError(error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-  return { products, loading, error };
-};
+//     fetchData();
+//   }, [product_id, authenticated]);
 
-export const useGetProductDetail = (
-  product_id: string | number,
-  authenticated = false
-) => {
-  const [product, setProduct] = useState<Product>({} as Product);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const url = `/products/${product_id}`;
-        console.log("URL:", url);
-        const response = await getData(url, authenticated);
-        setProduct(response as Product);
-        setLoading(false);
-        console.log("Response Data:", response);
-        return response as Product[];
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [product_id, authenticated]);
-
-  return { product, loading, error };
-};
+//   return { product, loading, error };
+// };
 
 export const useGetBrand = (params: ParamsType = {}, authenticated = false) => {
   const [brands, setBrands] = useState<Branch[]>([]);
@@ -125,3 +120,18 @@ export const useGetBrand = (params: ParamsType = {}, authenticated = false) => {
 
   return { brands, loading, error };
 };
+
+// export const loadMore = async (
+//   params: ParamsType = {},
+//   authenticated = false
+// ) => {
+//   try {
+//     const queryString = new URLSearchParams(params).toString();
+//     const url = `/products${queryString ? `?${queryString}` : ""}`;
+//     const response = await getData(url, authenticated);
+//     return response as ProductResponse[];
+//   } catch (error) {
+//     const mess = handleAxiosError(error);
+//     return mess;
+//   }
+// };

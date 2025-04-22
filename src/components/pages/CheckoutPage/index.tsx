@@ -1,10 +1,12 @@
 "use client"
 import Price from '@/components/atoms/Price';
 import ContainerLayout from '@/layouts/ContainerLayout';
+import { ORDER_URL } from '@/routers';
 import { confirmOrder, useOrderCheckout } from '@/services';
 import type { TCheckoutPage } from '@/types';
 import moment from 'moment';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 
 function CheckoutPage({ order_id }: TCheckoutPage) {
@@ -17,11 +19,11 @@ function CheckoutPage({ order_id }: TCheckoutPage) {
 
     const handleConfirmOrder = async () => {
         if (!order || !order.order_id) return;
-        alert("confirm order")
         const payload = {
             order_id: order.order_id
         }
         const result = await confirmOrder(payload, true)
+        redirect(`${ORDER_URL}`)
     }
     if (loading) return <h1>Loading</h1>
 

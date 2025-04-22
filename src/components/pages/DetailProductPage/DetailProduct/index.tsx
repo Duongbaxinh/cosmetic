@@ -30,7 +30,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product 
                     <div className="flex justify-start items-center gap-2 pr-24">
                         <div className="flex items-center gap-2.5">
                             <p className="text-[14px] font-[500] leading-[21px]">{product.product_rate.toFixed(1)}</p>
-                            <GroupStart numberOfStart={product.product_rate} h="10px" w="10px" />
+                            <GroupStart starActive={product.product_rate} h="10px" w="10px" />
                             <p className='text-[14px] text-gray-400 font-[500]'>({product.product_rate})</p>
                         </div>
                         <p className="text-[14px] leading-[24px] text-gray-400">{`Đã bán (${product.product_sold})`}</p>
@@ -85,9 +85,10 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product 
                                 <SwiperSlide key={index}>
                                     <div className=" w-full grid grid-cols-3 space-x-2 space-y-2 grid-rows-2 ">
                                         {
-                                            similar_product.slice(index * 6, index * 6 + 6).map((product) => (
+                                            similar_product && similar_product.length > 0 && similar_product.slice(index * 6, index * 6 + 6).map((product) => (
                                                 <Link href={`/detail/${product.product_id}`} key={product.product_id}>
                                                     <CardProductFull
+                                                        product_rate={product.product_rate}
                                                         key={product.product_id}
                                                         product_id={product.product_id}
                                                         product_thumbnail={product.product_thumbnail}

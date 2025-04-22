@@ -10,6 +10,10 @@ import { GiCardPick } from 'react-icons/gi';
 import Container from '@/components/atoms/Container';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
 import Input from '@/components/atoms/Input';
+import Image from 'next/image';
+import { CATEGORY_CONFIG } from '@/components/config/categories.config';
+import { LocationIcon } from '@/assets/icons';
+import { useAuth } from '@/contexts/auth.context';
 
 // Type definition for component props
 interface HeaderProps {
@@ -27,6 +31,7 @@ const ITEM_LINKS = [
 ];
 
 const Header: React.FC<HeaderProps> = () => {
+    const auth = useAuth()
     const [isLogin, setIsLogin] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -40,37 +45,29 @@ const Header: React.FC<HeaderProps> = () => {
         localStorage.setItem('UserType', JSON.stringify(null));
         window.location.reload();
     };
-
+    const user = auth?.user
     return (
-        <Container>
-            <div className="w-full bg-white py-3 px-5">
-                <div className="flex items-center justify-between  gap-6  ">
+        <Container  >
+            <div className="w-full bg-white py-3 px-6  ">
+                <div className="flex items-start md:items-center justify-between gap-[20px]  lg:gap-[48px]  ">
                     {/* Logo */}
                     <Link href="/">
-                        <img src={"/images/tiki_logo.png"} alt="Logo" className="w-[20px] h-[20px]" />
+                        <Image src={"/LOGO.png"} alt="Logo" width={20} height={20} className="min-w-[60px] min-h-[60px] max-w-[60px] max-h-[60px]" />
                     </Link>
 
                     {/* Search Input */}
-                    <div className="flex-grow">
-                        <div className="">
-                            <div className="flex items-center space-x-2">
-                                <Input placeholder='Tìm kiếm sản phẩm...' className='p-2' tailIcon={<HiSearchCircle />} />
-                            </div>
+                    <div className="flex-grow space-x-2 space-y-2 text-gray-400 ">
+                        <div className="flex items-center space-x-2">
+                            <Input placeholder='Tìm kiếm sản phẩm...' className='p-2 text-gray-400 ' tailIcon={<HiSearchCircle />} />
                         </div>
-                        {/* <div className="flex space-x-4 mt-2">
-                        {ITEM_LINKS.map(({ path, title }, index) => (
-                            <Link key={index} href={path}>
-
-                                <p className="text-gray-400">{title}</p>
-
-                            </Link>
+                        {CATEGORY_CONFIG.map((item) => (
+                            <Link href={item.url} key={item.url} className='text-[14px] leading-[21px] text-gray-400'>{item.title}</Link>
                         ))}
-                    </div> */}
                     </div>
 
                     {/* Info Section */}
-                    <div className="">
-                        <div className="flex">
+                    <div className="max-w-[300px] hidden md:block space-y-2">
+                        <div className="flex text-gray-400 ">
                             <ItemRectangle
                                 icon={<BiHome />}
                                 title="Trang Chu"
@@ -84,8 +81,9 @@ const Header: React.FC<HeaderProps> = () => {
 
                             />
                         </div>
-                        <div className="">
-
+                        <div className="flex items-center gap-2">
+                            <LocationIcon className='w-[30px]' />
+                            <p className=' text-[14px] leading-[21px] text-gray-400 underline truncate'> {user?.address}</p>
                         </div>
                     </div>
                     {/* <div className="flex flex-col  justify-start">

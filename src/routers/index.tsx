@@ -1,0 +1,6 @@
+export const DETAIL_PRODUCT_URL = "/detailproduct"
+export const CART_URL = "/cart"
+export const ORDER_URL = "/order"
+export const PURCHASE_URL = "/purchase/order"
+export const CATEGORY_URL = "/category"
+export const CHECKOUT_URL = "/checkout"

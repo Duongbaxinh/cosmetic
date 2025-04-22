@@ -1,32 +1,82 @@
-import { PayloadAction } from "./../../../node_modules/@reduxjs/toolkit/src/createAction";
-import { Product, ProductSlice } from "@/types";
-import { createSlice } from "@reduxjs/toolkit";
-
-const initialState: ProductSlice = {
-  products: [],
-  loading: false,
-  errors: null,
-};
-
-const productSlice = createSlice({
-  name: "product",
-  initialState,
-  reducers: {
-    getProductStart: (state) => {
-      state.loading = true;
-      state.errors = null;
-    },
-    getProductSuccess: (state, action: PayloadAction<Array<Product>>) => {
-      state.loading = false;
-      state.products = action.payload;
-    },
-    getProductsFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
-      state.errors = action.payload;
-    },
-  },
+// src/services/productApi.ts
+import { ProductResponse, ResponseType } from "@/types";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+interface ParamsType {
+  limit?: number;
+  page?: number;
+  [key: string]: any;
+}
+export const productApi = createApi({
+  reducerPath: "productApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5050/api/v1" }),
+  tagTypes: ["Product"],
+  endpoints: (builder) => ({
+    getAllProducts: builder.query<ProductResponse, ParamsType>({
+      query: (params: any) => {
+        const queryString = new URLSearchParams(params).toString();
+        const url = `/product?${queryString}`;
+        console.log("url :::: ", url);
+        return {
+          url: url,
+        };
+      },
+      transformResponse: (response: ResponseType<ProductResponse>) => {
+        return response.data;
+      },
+      providesTags: ["Product"],
+    }),
+    getProductFilter: builder.query<ProductResponse, ParamsType>({
+      query: (params: any) => {
+        const queryString = new URLSearchParams(params).toString();
+        const url = `/product?${queryString}`;
+        console.log("url :::: ", url);
+        return {
+          url: url,
+        };
+      },
+      transformResponse: (response: ResponseType<ProductResponse>) => {
+        return response.data;
+      },
+      providesTags: ["Product"],
+      keepUnusedDataFor: 0,
+    }),
+    getAllProductsInternal: builder.query<ProductResponse, ParamsType>({
+      query: (params: any) => {
+        const queryString = new URLSearchParams(params).toString();
+        const url = `/product?${queryString}`;
+        return {
+          url: url,
+        };
+      },
+      transformResponse: (response: ResponseType<ProductResponse>) => {
+        return response.data;
+      },
+      providesTags: ["Product"],
+    }),
+    getAllProductsDiscount: builder.query<ProductResponse, ParamsType>({
+      query: (params: any) => {
+        const queryString = new URLSearchParams(params).toString();
+        const url = `/product?${queryString}`;
+        return {
+          url: url,
+        };
+      },
+      transformResponse: (response: ResponseType<ProductResponse>) => {
+        return response.data;
+      },
+      providesTags: ["Product"],
+    }),
+    getProductById: builder.query({
+      query: (id) => `/products`,
+      // query: (id) => `/products/${id}`,
+    }),
+  }),
 });
 
-export const { getProductStart, getProductSuccess, getProductsFailure } =
-  productSlice.actions;
-export default productSlice.reducer;
+export const {
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
+  useGetAllProductsInternalQuery,
+  useGetAllProductsDiscountQuery,
+  useGetProductFilterQuery,
+} = productApi;

@@ -23,7 +23,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
     const is_order = order_detail && order_detail.order && order_detail.order.order_products
     const discount_direct = order_detail?.order.order_discount ?? 0
     const discount_shipping = order_detail?.order.order_discount_shipping ?? 0
-    console.log("check auth :::: ", auth?.user)
+
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
             <div className="px-8 lg:px-0 pb-8 mr-8">

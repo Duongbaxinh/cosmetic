@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import GroupButton from '../GroupButton';
 import TimeCount from '../../atoms/TimeCount';
 import { ListTemplateProps } from '@/types';
+import Link from 'next/link';
 
 const ListTemplate: React.FC<ListTemplateProps> = ({ children, time, leading, trailing, listButton }) => {
     const [isSelected, setIsSelected] = useState<string>(listButton ? listButton[0] : "");
@@ -20,7 +21,7 @@ const ListTemplate: React.FC<ListTemplateProps> = ({ children, time, leading, tr
                     {leading}
                     {time && <TimeCount hour={time.hour} minus={time.minus} />}
                 </div>
-                <div className="text-sm text-blue-400 cursor-pointer">{trailing}</div>
+                {trailing && trailing}
             </div>
             {listButton && (
                 <GroupButton>

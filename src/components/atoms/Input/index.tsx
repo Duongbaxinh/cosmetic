@@ -6,7 +6,7 @@ import React, {
     ReactNode
 } from "react";
 
-enum typeInput {
+export enum typeInput {
     TEXT = "text",
     NUMBER = "number",
     FILE = "file",

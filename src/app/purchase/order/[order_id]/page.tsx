@@ -1,13 +1,14 @@
-import OrderDetailPage from '@/components/pages/OrderDetailPage';
-import { Props } from '@/types';
-import React from 'react';
+import OrderDetailPage from "@/components/pages/OrderDetailPage";
 
-function page(props: Props) {
-    console.log("check id order ", props.params.order_id)
-    const order_id = props.params.order_id
-    return (
-        <OrderDetailPage order_id={order_id} />
-    );
+
+interface Props {
+    params: {
+        order_id: string;
+    };
 }
 
-export default page;
+export default function Page({ params }: Props) {
+    const { order_id } = params;
+
+    return <OrderDetailPage order_id={order_id} />;
+}

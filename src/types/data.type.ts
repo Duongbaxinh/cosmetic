@@ -1,5 +1,10 @@
 import { PAYMENT_METHOD } from "@/consts";
 
+export enum ProductEnum {
+  "PRODUCT_INTERNAL" = "product_internationals",
+  "PRODUCT_DISCOUNT" = "product_discounts",
+}
+
 export type Product = {
   product_id: string | number;
   product_name: string;
@@ -8,8 +13,6 @@ export type Product = {
   product_international: boolean;
   product_thumbnail: string;
   product_price: number;
-  product_genuine: boolean;
-  product_best: boolean;
   product_rate: number;
   product_type: string;
   product_discount: boolean;
@@ -19,13 +22,6 @@ export type Product = {
   product_special: string[];
   product_discount_start: number;
   product_discount_end: number;
-  product_info: {
-    company: string;
-    launch: string;
-    type: string;
-    numberOfPage: string;
-    publisher: string;
-  };
 };
 
 // CHECKOUT ORDER
@@ -87,4 +83,9 @@ export type TrackingItem = {
 export type OrderDetail = {
   order: OrderCheckout;
   order_tracking: TrackingItem[];
+};
+
+export type Brand = {
+  id: string;
+  name: string;
 };

@@ -2,19 +2,21 @@
 
 import { productList } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { placeOrder, useGetAllProducts, useGetProductDetail } from '@/services';
+import { placeOrder } from '@/services';
 import { handleCheckout } from '@/services/checkout.service';
 import { useMemo, useState } from 'react';
 import DetailProduct from './DetailProduct';
 import OverviewProduct from './OverviewProduct';
 import Purchase from './Purchase';
 import { redirect } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { useGetProductByIdQuery } from '@/redux/slices/product.slice';
+import { CHECKOUT_URL } from '@/routers';
 
 function DetailProductPage({ product_id }: { product_id: string | number }) {
     const [quantity, setQuantity] = useState<number>(1)
     const params = useMemo(() => { return { type: "Kem dưỡng trắng da" } }, []);
-    const { products: similar_products } = useGetAllProducts(params, false);
-    const { product: products, loading } = useGetProductDetail(0, false);
+    const { data: products, isLoading: loading, error } = useGetProductByIdQuery(product_id);
     const product = productList[0]
     const cost_tentative = useMemo(() => quantity * product.product_price, [quantity])
     const handleIncrease = () => {
@@ -36,8 +38,7 @@ function DetailProductPage({ product_id }: { product_id: string | number }) {
         }
         console.log("check payload purchase :::: ", payload)
         const result = await placeOrder(payload, true)
-        redirect(`/checkout/${result?.order_id}`)
-        console.log("check result purchase :::: ", result)
+        redirect(`${CHECKOUT_URL}/${result?.order_id}`)
     }
 
     const handleAddToCart = () => {
@@ -45,14 +46,13 @@ function DetailProductPage({ product_id }: { product_id: string | number }) {
     }
 
     if (loading) return <div className='w-full h-full flex justify-center items-center'>Loading...</div>;
-
     return (
         <ContainerLayout isSidebar={false} >
             <div className="w-full flex flex-col lg:flex-row justify-center gap-3">
                 <OverviewProduct
                     product={product}
                 />
-                <DetailProduct product={product} similar_product={similar_products} />
+                <DetailProduct product={product} similar_product={products?.products ?? []} />
                 <Purchase
                     product_price={product.product_price}
                     product_quantity={quantity}

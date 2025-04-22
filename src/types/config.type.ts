@@ -4,6 +4,11 @@ export type MenuItem = {
   title: string;
 };
 
+export type CategoryConfig = {
+  title: string;
+  url: string;
+};
+
 export type RouteConfig = {
   path: string;
   component: React.ComponentType;

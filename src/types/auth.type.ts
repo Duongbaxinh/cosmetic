@@ -12,4 +12,8 @@ export type AuthType = {
   token: string;
 };
 
+export type AuthDataLogin = {
+  username: string;
+  password: string;
+};
 export type LoginType = Pick<UserType, "username"> & { password: string };

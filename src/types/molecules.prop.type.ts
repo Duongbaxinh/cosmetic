@@ -2,7 +2,11 @@ import { Product } from "./data.type";
 
 export type CardProductFullProps = Pick<
   Product,
-  "product_id" | "product_name" | "product_price" | "product_thumbnail"
+  | "product_id"
+  | "product_name"
+  | "product_price"
+  | "product_thumbnail"
+  | "product_rate"
 > & { className?: string };
 export interface ListTemplateProps {
   children: React.ReactNode;
@@ -11,7 +15,7 @@ export interface ListTemplateProps {
     minus: number;
   };
   leading?: string;
-  trailing?: string;
+  trailing?: React.ReactNode;
   listButton?: string[];
 }
 
