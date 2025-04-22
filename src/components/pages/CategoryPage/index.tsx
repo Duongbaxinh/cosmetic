@@ -11,6 +11,7 @@ import Filter from '@/layouts/Filter';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
+import { DETAIL_PRODUCT_URL } from '@/routers';
 import { FilterProductType } from '@/types';
 import { isArray } from 'lodash';
 import Link from 'next/link';
@@ -138,7 +139,7 @@ function CategoryPage({ category_key }: { category_key: string }) {
                                     product_rate
                                 }) => (
                                     <div key={product_id} className=" flex items-center justify-center">
-                                        <Link href={`/detail_product/${product_id}`}>
+                                        <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
                                             <CardProductFull
                                                 key={product_id}
                                                 className='min-h-[330px]'

@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { LocationIcon } from '@/assets/icons';
 import { useAuth } from '@/contexts/auth.context';
+import { CART_URL } from '@/routers';
 
 // Type definition for component props
 interface HeaderProps {
@@ -77,7 +78,7 @@ const Header: React.FC<HeaderProps> = () => {
                                 title="Trang Chu"
                             />
                             <ItemRectangle
-                                icon={<BiCartAdd />}
+                                icon={<Link href={`${CART_URL}`}><BiCartAdd /></Link>}
 
                             />
                         </div>
