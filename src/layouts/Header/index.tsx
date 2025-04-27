@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 
@@ -14,7 +14,9 @@ import Image from 'next/image';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { LocationIcon } from '@/assets/icons';
 import { useAuth } from '@/contexts/auth.context';
-import { CART_URL } from '@/routers';
+import { CART_URL, LOGIN_URL } from '@/routers';
+import { PROFILE } from '@/components/config/profile';
+import useClickOutside from '@/hooks/useClickOuside';
 
 // Type definition for component props
 interface HeaderProps {
@@ -32,21 +34,20 @@ const ITEM_LINKS = [
 ];
 
 const Header: React.FC<HeaderProps> = () => {
-    const auth = useAuth()
-    const [isLogin, setIsLogin] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    const { user, setIsLogin, isLogin } = useAuth()
 
-    useEffect(() => {
-        const login = JSON.parse(localStorage.getItem('login') || 'false');
-        setIsLogin(login);
-    }, [isLogin]);
+    const [isOpen, setIsOpen] = useState(false);
+    const profileRef = useRef<HTMLDivElement | null>(null);
+
+    useClickOutside([profileRef], () => {
+        setIsOpen(false)
+    });
 
     const handleLogout = () => {
-        localStorage.setItem('login', 'false');
-        localStorage.setItem('UserType', JSON.stringify(null));
+        setIsLogin(false);
         window.location.reload();
     };
-    const user = auth?.user
+    console.log('check user :::: ', user);
     return (
         <Container  >
             <div className="w-full bg-white py-3 px-6  ">
@@ -70,16 +71,39 @@ const Header: React.FC<HeaderProps> = () => {
                     <div className="max-w-[300px] hidden md:block space-y-2">
                         <div className="flex text-gray-400 ">
                             <ItemRectangle
+                                className='!w-fit'
                                 icon={<BiHome />}
                                 title="Trang Chu"
                             />
+                            <div className="relative">
+                                <Link href={!isLogin ? LOGIN_URL : '#'}>
+                                    <ItemRectangle
+                                        onFunction={() => setIsOpen(!isOpen)}
+                                        icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
+                                        title={isLogin ? 'Tài khoản' : 'Log-in'}
+                                    /></Link>
+                                {isOpen && isLogin && (
+                                    <div ref={profileRef} className="absolute right-0 top-12 w-64 bg-white overflow-hidden rounded-lg shadow-lg z-50"                                    >
+                                        <Container >
+                                            {PROFILE.map(({ path, title }, index) => (
+                                                <Link key={index} href={path}>
+                                                    <div className="py-2 px-4 hover:bg-gray-200" title={title}                                                    >
+                                                        <p className='text-[14px]'>{title}</p>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                            <div className="cursor-pointer hover:bg-gray-200" onClick={handleLogout}                                            >
+                                                <div className="py-2 px-4 hover:bg-gray-200">
+                                                    <p className='text-[14px]'>Đăng xuất</p>
+                                                </div>
+                                            </div>
+                                        </Container>
+                                    </div>
+                                )}
+                            </div>
                             <ItemRectangle
-                                icon={<BiSolidUserAccount />}
-                                title="Trang Chu"
-                            />
-                            <ItemRectangle
+                                className='!w-fit'
                                 icon={<Link href={`${CART_URL}`}><BiCartAdd /></Link>}
-
                             />
                         </div>
                         <div className="flex items-center gap-2">
@@ -87,70 +111,10 @@ const Header: React.FC<HeaderProps> = () => {
                             <p className=' text-[14px] leading-[21px] text-gray-400 underline truncate'> {user?.address}</p>
                         </div>
                     </div>
-                    {/* <div className="flex flex-col  justify-start">
-                        <div className="flex space-x-2">
 
-                            <ItemRectangle
-                                icon={<img src={"/icons/home.png"} alt="Home" className="w-6 h-6" />}
-                                title="Trang Chu"
-                            />
-
-
-                            <div className="relative">
-                                <ItemRectangle
-                                    onFunction={() => setIsOpen(true)}
-                                    icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
-                                    title={isLogin ? 'Tài khoản' : 'Log-in'}
-                                />
-                                {isLogin && isOpen && (
-                                    <div
-                                        className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50"
-
-                                    >
-                                        <Container >
-                                            {PROFILE.map(({ path, title }, index) => (
-                                                <Link key={index} href={path}>
-
-                                                    <div
-                                                        className="py-2 px-4 hover:bg-gray-200"
-                                                        title={title}
-                                                    >
-                                                        <p className='text-[14px]'>{title}</p>
-                                                    </div>
-
-                                                </Link>
-                                            ))}
-                                            <div
-                                                className="cursor-pointer hover:bg-gray-200"
-                                                onClick={handleLogout}
-                                            >
-                                                <p className='text-[14px]'>Đăng xuất</p>
-                                            </div>
-                                        </Container>
-                                    </div>
-                                )}
-                                {!isLogin && <Popup isOpen={isOpen} onClose={() => setIsOpen(false)} />}
-                            </div>
-
-                            <ItemRectangle
-                                onFunction={() => setIsOpen(true)}
-                                icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
-                            />
-
-                        </div>
-
-                        <div className="flex items-center space-x-2 mt-2">
-                            <img src={""} alt="Location" className="w-6 h-6" />
-                            <Link href="#">
-
-                                <p className="text-blue-400 text-[14px]">Giao đến: Your Address, Da Nang</p>
-
-                            </Link>
-                        </div>
-                    </div> */}
                 </div>
-            </div>
-        </Container>
+            </div >
+        </Container >
     );
 };
 

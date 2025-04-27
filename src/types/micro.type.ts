@@ -28,6 +28,7 @@ export interface ItemRectangleProps {
   icon?: React.ReactNode;
   title?: string;
   onFunction?: () => void;
+  onmousedown?: () => void;
   className?: string;
 }
 

@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- How to run app -->
 
-## Getting Started
-
-First, run the development server:
-
-```bash
+npm install
+json-server --watch db/product.json --port 5000
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Pages
+Auth Pages
+Login: http://localhost:3000/auth/login
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Register: http://localhost:3000/auth/register
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Cart Pages
+Cart: http://localhost:3000/cart
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Category Pages
+Category (ID: 123): http://localhost:3000/category/123/
 
-## Learn More
+Checkout Pages
+Checkout (Order ID: 123): http://localhost:3000/checkout/123/
 
-To learn more about Next.js, take a look at the following resources:
+Product Details Pages
+Detail Product (Product ID: 123): http://localhost:3000/detailproduct/123
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Order Pages
+Order: http://localhost:3000/order
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Purchase Pages
+Purchase: http://localhost:3000/purchase
 
-## Deploy on Vercel
+Flow
+Product Flow
+Click on a Product to go to the Detail Product page.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+On the Detail Product page, you can either:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add the product to the Cart
+
+Directly Purchase the product.
+
+Checkout page: Proceed to the checkout.
+
+Order page: View your order.
+
+Detail Order: Check the details of the order.
+
+Cart Flow
+Click on the Cart to go to the Cart page.
+
+From the Cart page, proceed to Checkout.
+
+Order page: View your order.
+
+Detail Order: Check the details of your order.
+
+Auth Flow
+Login or Register to access the app.

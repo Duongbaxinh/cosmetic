@@ -18,9 +18,9 @@ export const authApi = createApi({
         body: credentials,
       }),
     }),
-    singUp: builder.mutation({
+    signUp: builder.mutation({
       query: (credentials: AuthDataLogin) => ({
-        url: "auth/login",
+        url: "auth/register",
         method: "POST",
         body: credentials,
       }),
@@ -28,4 +28,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useGetUserQuery, useLoginMutation, useSingUpMutation } = authApi;
+export const { useGetUserQuery, useLoginMutation, useSignUpMutation } = authApi;

@@ -8,13 +8,13 @@ interface ParamsType {
 }
 export const productApi = createApi({
   reducerPath: "productApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5050/api/v1" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
     getAllProducts: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/product?${queryString}`;
+        const url = `/products?${queryString}`;
         console.log("url :::: ", url);
         return {
           url: url,
@@ -28,7 +28,7 @@ export const productApi = createApi({
     getProductFilter: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/product?${queryString}`;
+        const url = `/products?${queryString}`;
         console.log("url :::: ", url);
         return {
           url: url,
@@ -43,7 +43,7 @@ export const productApi = createApi({
     getAllProductsInternal: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/product?${queryString}`;
+        const url = `/products?${queryString}`;
         return {
           url: url,
         };
@@ -56,7 +56,7 @@ export const productApi = createApi({
     getAllProductsDiscount: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/product?${queryString}`;
+        const url = `/products?${queryString}`;
         return {
           url: url,
         };

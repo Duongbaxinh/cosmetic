@@ -4,3 +4,13 @@ export const ORDER_URL = "/order"
 export const PURCHASE_URL = "/purchase/order"
 export const CATEGORY_URL = "/category"
 export const CHECKOUT_URL = "/checkout"
+
+// Auth
+export const LOGIN_URL = "/auth/login"
+export const LOGOUT_URL = "/auth/logout"
+export const REGISTER_URL = "/auth/register"
+export const FORGOT_PASSWORD_URL = "/auth/forgot-password"
+export const RESET_PASSWORD_URL = "/auth/reset-password"
+export const ME_URL = "/auth/me"
+export const UPDATE_PROFILE_URL = "/auth/update-profile"
+export const UPDATE_PASSWORD_URL = "/auth/update-password"

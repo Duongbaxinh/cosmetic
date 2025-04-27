@@ -6,10 +6,12 @@ const ItemRectangle: React.FC<ItemRectangleProps> = ({
     icon,
     title,
     onFunction,
+    onmousedown,
     className
 }) => {
     return (
         <div
+            onMouseEnter={onmousedown}
             onClick={onFunction}
             className={`w-full py-[7px] px-4 flex items-center cursor-pointer transition-colors hover:bg-gray-300 rounded-sm ${className} `}
         >
