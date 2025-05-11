@@ -69,6 +69,7 @@ export const productApi = createApi({
     getProductById: builder.query({
       query: (id) => `/products`,
       // query: (id) => `/products/${id}`,
+      keepUnusedDataFor: 0,
     }),
   }),
 });

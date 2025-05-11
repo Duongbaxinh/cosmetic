@@ -1,8 +1,8 @@
-import { CART_URL, ME_URL, ORDER_URL } from "@/routers";
+import { CART_URL, PROFILE_URL, ORDER_URL } from "@/routers";
 
 export const PROFILE = [
   {
-    path: ME_URL,
+    path: PROFILE_URL,
     title: "Thông tin tài khoản",
   },
   {

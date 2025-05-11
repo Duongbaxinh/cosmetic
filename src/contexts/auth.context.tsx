@@ -24,7 +24,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         first_name: "Xinh",
         last_name: "Duong Ba",
         phone: "0378700020",
-        address: "08 Tien Son 9, Phuong Hoa Cuong Nam, Hai Chau, Da Nang"
+        address: "08 Tien Son 9, Phuong Hoa Cuong Nam, Hai Chau, Da Nang",
+        email_address: "duongbaxinh@gmail.com"
     });
     const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
     const [loginApi] = useLoginMutation();

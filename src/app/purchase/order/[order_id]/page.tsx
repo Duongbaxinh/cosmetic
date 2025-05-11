@@ -1,14 +1,8 @@
 import OrderDetailPage from "@/components/pages/OrderDetailPage";
+import { Props } from "@/types";
 
-
-interface Props {
-    params: {
-        order_id: string;
-    };
-}
-
-export default function Page({ params }: Props) {
-    const { order_id } = params;
+export default async function Page({ params }: Props) {
+    const { order_id } = await params;
 
     return <OrderDetailPage order_id={order_id} />;
 }

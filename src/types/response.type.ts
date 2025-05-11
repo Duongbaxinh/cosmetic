@@ -1,4 +1,4 @@
-import { Product } from "./data.type";
+import { OrderCheckout, Product, Review } from "./data.type";
 export type ProductResponse = {
   products: Product[];
   limit: number;
@@ -6,6 +6,15 @@ export type ProductResponse = {
   total_page: number;
   total: number;
 };
+
+export type ReviewResponse = {
+  reviews: Review;
+};
+
+export type OrderResponse = {
+  orders: OrderCheckout[];
+};
+
 export type ResponseType<T> = {
   message: string;
   data: T;

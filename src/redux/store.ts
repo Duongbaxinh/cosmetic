@@ -5,6 +5,8 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { categoryApi } from "./slices/category.slice";
 import { brandApi } from "./slices/brand.slice";
 import { authApi } from "./slices/auth.slice";
+import { reviewProductApi } from "./slices/review.slice";
+import { orderProductApi } from "./slices/order.slice";
 
 export const store = configureStore({
   reducer: {
@@ -12,13 +14,17 @@ export const store = configureStore({
     [categoryApi.reducerPath]: categoryApi.reducer,
     [brandApi.reducerPath]: brandApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [orderProductApi.reducerPath]: orderProductApi.reducer,
+    [reviewProductApi.reducerPath]: reviewProductApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       productApi.middleware,
       categoryApi.middleware,
       brandApi.middleware,
-      authApi.middleware
+      authApi.middleware,
+      orderProductApi.middleware,
+      reviewProductApi.middleware
     ),
 });
 

@@ -10,7 +10,8 @@ export enum typeInput {
     TEXT = "text",
     NUMBER = "number",
     FILE = "file",
-    DATE = "date"
+    DATE = "date",
+    PASSWORD = "password",
 }
 export enum Variant {
     UNDERLINE = "underline",
@@ -45,6 +46,7 @@ interface InputInterface {
     borderRadius?: string;
     className?: string;
     classInput?: string;
+    defaultValue?: string;
     variant?: "underline" | "outline";
 }
 
@@ -70,9 +72,12 @@ const Input = forwardRef(({
     onHandleTailIcon,
     onHandleTailIconSecond,
     onHandleFocus,
+    defaultValue,
     onBlur,
     ...rest
-}: InputInterface, ref: ForwardedRef<HTMLInputElement>) => {
+}: InputInterface,
+    ref: ForwardedRef<HTMLInputElement>) => {
+
     const variantType = {
         underline: `border-b-[0.5px] focus-within:border-b-[2px]`,
         outline:
@@ -101,6 +106,7 @@ const Input = forwardRef(({
                     onFocus={onHandleFocus}
                     onBlur={onBlur}
                     disabled={disabled}
+                    defaultValue={defaultValue}
                     {...rest}
                 />
                 {tailIcon && (

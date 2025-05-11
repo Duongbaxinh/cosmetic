@@ -49,20 +49,20 @@ function Carousel({ className, slidesPerView, breakpoints, clickable = false, sp
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
-                    className="rounded-lg shadow-lg"
+                    className="rounded-lg"
                 >
                     {children}
                 </Swiper>
 
                 <button
                     ref={prevRef}
-                    className="absolute top-1/2 left-4 z-10 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600 transition"
+                    className="absolute top-1/2 left-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition"
                 >
                     ❮
                 </button>
                 <button
                     ref={nextRef}
-                    className="absolute top-1/2 right-4 z-10 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600 transition"
+                    className="absolute top-1/2 right-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition"
                 >
                     ❯
                 </button>

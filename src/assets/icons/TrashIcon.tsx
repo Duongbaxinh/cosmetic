@@ -1,16 +1,9 @@
 import { IconProps } from "@/types";
 
-const TrashIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill={fill}
-            className={className}
-        >
-            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
-        </svg>
-    );
-};
+const TrashIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => (
+    <svg fill={fill} viewBox="0 0 24 24" className={className}>
+        <path d="M6 7h12v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7zm3 3v8h2v-8H9zm4 0v8h2v-8h-2zM15.5 4l-1-1h-5l-1 1H5v2h14V4z" />
+    </svg>
+);
 
 export default TrashIcon;

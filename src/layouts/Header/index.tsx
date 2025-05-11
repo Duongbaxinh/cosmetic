@@ -60,11 +60,13 @@ const Header: React.FC<HeaderProps> = () => {
                     {/* Search Input */}
                     <div className="flex-grow space-x-2 space-y-2 text-gray-400 ">
                         <div className="flex items-center space-x-2">
-                            <Input placeholder='Tìm kiếm sản phẩm...' className='p-2 text-gray-400 ' tailIcon={<HiSearchCircle />} />
+                            <Input placeholder='Tìm kiếm sản phẩm...' className='p-2 text-gray-400' tailIcon={<HiSearchCircle />} />
                         </div>
-                        {CATEGORY_CONFIG.map((item) => (
-                            <Link href={item.url} key={item.url} className='text-[14px] leading-[21px] text-gray-400'>{item.title}</Link>
-                        ))}
+                        <div className="hidden md:block space-x-2">
+                            {CATEGORY_CONFIG.map((item) => (
+                                <Link href={item.url} key={item.url} className='text-[14px] leading-[21px] text-gray-400'>{item.title}</Link>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Info Section */}

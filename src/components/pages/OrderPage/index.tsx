@@ -4,6 +4,7 @@ import Input from '@/components/atoms/Input';
 import Price from '@/components/atoms/Price';
 import { ORDER_TABS } from '@/components/config/order.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
+import { useGetAllOrderQuery } from '@/redux/slices/order.slice';
 import { PURCHASE_URL } from '@/routers';
 import { useGetOrder, useGetProductOrder } from '@/services';
 import { OrderTabItem } from '@/types';
@@ -13,11 +14,14 @@ import React, { useState } from 'react';
 
 function OrderPage() {
     const [status, setStatus] = useState<string>("all")
-    const { orders, loading } = useGetOrder(status, true)
+
+    const { data, isLoading: loading, error } = useGetAllOrderQuery(status)
     const handleChangeStatus = (new_status: string) => {
         setStatus(new_status)
     }
     if (loading) return <h1>Loading...</h1>
+    const orders = data?.orders || []
+    console.log("check orders : ", orders)
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
             <div className="pt-[18px] flex flex-col gap-5 space-x-5 px-4  ">

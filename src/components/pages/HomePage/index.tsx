@@ -89,7 +89,6 @@ const HomePage: React.FC = () => {
     const product_discounts_display = productsDiscount?.products ?? []
     const products_display = products?.products ?? []
 
-    console.log("check product discount", productsDiscount)
     return (
         <ContainerLayout >
             <div className="w-full flex-col gap-8 space-y-4 text-black">
@@ -110,7 +109,7 @@ const HomePage: React.FC = () => {
                 </Carousel>
 
                 {/* Giá tốt hôm nay */}
-                <div className="w-full bg-white rounded-md min-h-[330px]  ">
+                <div className="w-full bg-white rounded-md">
                     <ListTemplate
                         time={{ hour: 1, minus: 30 }}
                         leading={TITLE[0].leading}
@@ -306,8 +305,8 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {check_load && (
-                    <div className="w-full flex items-center justify-center">
-                        <button onClick={handleLoadMore} >Xem Them</button>
+                    <div className="w-full flex items-center justify-center ">
+                        <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-blue-300 rounded-md' onClick={handleLoadMore} >Xem Them</button>
                     </div>
                 )}
             </div>

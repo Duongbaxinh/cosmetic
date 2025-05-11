@@ -17,7 +17,7 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
         <div className=" hidden lg:block max-w-[280x] min-w-[280px] px-1  "
             style={{ scrollbarWidth: "none" }}>
             <div className="flex flex-col gap-4 p-2">
-                <div className='w-full text-[13px] font-light leading-[15px] text-gray-400'>
+                <div className='w-full text-[13px] font-light leading-[15px] text-gray-400 space-y-3'>
                     <div className="flex gap-3 items-center">
                         <Image src={""} alt="avatar" className='w-[50px] h-[50px] bg-gray-300 rounded-full' width={50} height={50} />
                         <div className="">

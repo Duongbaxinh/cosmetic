@@ -15,7 +15,7 @@ const BrandCard: React.FC<BrandCardProps> = ({
     discount,
 }) => {
     return (
-        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
             {/* Hình ảnh sản phẩm */}
             <div className="flex justify-center p-4">
                 <img

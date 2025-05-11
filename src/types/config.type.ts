@@ -30,11 +30,18 @@ export type LayoutContainerProps = {
   padding?: string;
 };
 
+export type TypeEdit = {
+  phone: React.ReactNode;
+  password: React.ReactNode;
+};
+
 export type Props = {
-  params: {
+  params: Promise<{
     product_id: string;
     order_id: string;
-  };
+    category_key: string;
+    type_edit: keyof TypeEdit;
+  }>;
 };
 
 export type IconProps = {

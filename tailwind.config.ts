@@ -25,6 +25,10 @@ const config: Config = {
         xl: "1200px",
         "2xl": "1550px",
       },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(to bottom, transparent 0%, transparent 60%, white 100%)",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

@@ -66,11 +66,6 @@ const RegisterPage = () => {
                                     />
                                     {errors.password && <p className="absolute max-w-[384px] truncate -bottom-6 text-red-500 text-sm mt-1">{errors.password.message}</p>}
                                 </div>
-                                <div className="flex justify-end mb-6">
-                                    <a href="#" className="text-sm text-purple-600 hover:underline">
-                                        Forgot password?
-                                    </a>
-                                </div>
                                 <button
                                     type="submit"
                                     disabled={isLoading}
@@ -80,7 +75,7 @@ const RegisterPage = () => {
                                 </button>
                             </form>
                             <p className="text-center text-sm text-gray-600 mt-4">
-                                Need to create an account?{' '}
+                                Has an account?{' '}
                                 <Link href={LOGIN_URL} className="text-purple-600 hover:underline">
                                     Log-in
                                 </Link>

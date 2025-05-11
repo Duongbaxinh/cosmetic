@@ -1,6 +1,6 @@
 'use client'
-import ListSpecial from '@/components/molecules/ListSpecial';
 import { Product } from '@/types';
+import Image from 'next/image';
 import React from 'react';
 
 interface OverviewProductProps {
@@ -21,7 +21,7 @@ const OverviewProduct: React.FC<OverviewProductProps> = ({ product }) => {
             <div className="p-[16px]">
                 <div className="flex flex-col gap-[5px]">
                     <div className="p-[5px] border-[0.5px] border-solid border-gray-200 aspect-w-368 aspect-h-368">
-                        <img src={showBackground ? showBackground : prevImage ?? ""} alt="" className="w-[368px] h-[368px]" />
+                        <Image src={showBackground ? showBackground : prevImage ?? ""} alt="" height={368} width={368} className="w-[368px] h-[368px] object-cover" />
 
                     </div>
                     <div className="flex justify-start gap-[5px]">

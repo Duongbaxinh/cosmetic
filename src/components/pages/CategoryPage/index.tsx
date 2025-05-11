@@ -68,8 +68,10 @@ function CategoryPage({ category_key }: { category_key: string }) {
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [products])
 
+    const isPrevious = currentPage > 1
+    const isNext = currentPage < totalPage
+    const disableStyle = "pointer-events-none opacity-40"
     return (
-
         <ContainerLayout isSidebar={false}>
             <div className="w-full h-full py-5">
                 <Carousel slidesPerView={1} clickable className='pb-[30px]'>
@@ -122,8 +124,8 @@ function CategoryPage({ category_key }: { category_key: string }) {
                             </div>
                             <div className="flex items-center gap-1">
                                 <span>{currentPage}/{totalPage}</span>
-                                <IconButton onClick={() => handlePagination("prev")} className='bg-white shadow-md' icon={<ChevronLeftIcon />} />
-                                <IconButton onClick={() => handlePagination("next")} className='bg-white shadow-md' icon={<ChevronRightIcon />} />
+                                <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
+                                <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
                             </div>
                         </div>
 
@@ -160,7 +162,7 @@ function CategoryPage({ category_key }: { category_key: string }) {
                                 breakLabel="..."
                                 nextLabel={<ChevronRightIcon />}
                                 activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
-                                pageRangeDisplayed={5}
+                                pageRangeDisplayed={4}
                                 initialPage={currentPage - 1}
                                 onPageChange={(selectedItem) => {
                                     handleFilter("page", selectedItem.selected + 1);

@@ -9,6 +9,7 @@ export type Product = {
   product_id: string | number;
   product_name: string;
   product_description: string;
+  product_ingredient: string;
   product_sold?: number;
   product_international: boolean;
   product_thumbnail: string;
@@ -20,6 +21,7 @@ export type Product = {
   product_brand: string;
   product_images: string[];
   product_special: string[];
+  product_exp: string;
   product_discount_start: number;
   product_discount_end: number;
 };
@@ -88,4 +90,25 @@ export type OrderDetail = {
 export type Brand = {
   id: string;
   name: string;
+};
+
+// REVIEW PRODUCT
+export interface ReviewItem {
+  user_name: string;
+  rating: number;
+  rating_text: string;
+  comment: string;
+  time_ago: string;
+  images: string[];
+}
+
+export type JoyBoyCareResponse = {
+  message: string;
+  time_ago: string;
+};
+export type Review = {
+  overall_rating: number;
+  total_reviews: number;
+  reviews: ReviewItem[];
+  joyBoy_care_response: JoyBoyCareResponse;
 };

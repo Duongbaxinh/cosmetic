@@ -1,5 +1,5 @@
-import { AuthDataLogin, AuthType } from "./../../types/auth.type";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { AuthDataLogin, UserProfileType } from "./../../types/auth.type";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -25,7 +25,19 @@ export const authApi = createApi({
         body: credentials,
       }),
     }),
+    changeProfile: builder.mutation({
+      query: (credentials: UserProfileType) => ({
+        url: "auth/profile/update",
+        method: "PUT",
+        body: credentials,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery, useLoginMutation, useSignUpMutation } = authApi;
+export const {
+  useGetUserQuery,
+  useLoginMutation,
+  useSignUpMutation,
+  useChangeProfileMutation,
+} = authApi;

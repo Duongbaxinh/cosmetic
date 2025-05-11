@@ -3,9 +3,7 @@
 import DetailProductPage from "@/components/pages/DetailProductPage";
 import { Props } from "@/types";
 
-
-export default function ProductDetail(props: Props) {
-    console.log("check param ", props.params.product_id);
-
-    return <DetailProductPage product_id={1} />;
+export default async function Page({ params }: Props) {
+    const { product_id } = await params;
+    return <DetailProductPage product_id={product_id} />;
 }

@@ -14,8 +14,7 @@ export const productList: Product[] = [
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539107/f7b0c3e04b05c54a50685b0efcb94e92.jpg_j3gpay.webp",
     product_price: 35000,
-    product_genuine: true,
-    product_best: true,
+    product_exp: "2025-12-31",
     product_rate: 5,
     product_type: "Kem dưỡng trắng da",
     product_discount: false,
@@ -32,13 +31,8 @@ export const productList: Product[] = [
       "Chỉ số chống nắng SPF50+ và PA++++, bảo vệ da toàn diện.",
       "Công nghệ Aqua Booster giúp lớp màng chống UV hoạt động mạnh mẽ.",
     ],
-    product_info: {
-      company: "",
-      launch: "",
-      type: "",
-      numberOfPage: "",
-      publisher: "",
-    },
+    product_ingredient:
+      "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide",
   },
 ];
 

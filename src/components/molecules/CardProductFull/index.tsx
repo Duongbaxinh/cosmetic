@@ -1,9 +1,8 @@
 'use client'
+import GroupStart from '@/components/organisms/GroupStart';
 import { CardProductFullProps } from '@/types';
 import React from 'react';
 import Price from '../../atoms/Price';
-import StarIcon from '@/assets/icons/Star';
-import GroupStart from '@/components/organisms/GroupStart';
 
 const CardProductFull: React.FC<CardProductFullProps> = ({ product_name, product_price, product_thumbnail, className, product_rate }) => {
     return (

@@ -49,3 +49,18 @@ export const authValid = yup
       .transform(sanitizeInput),
   })
   .required();
+
+export const changePasswordSchema = yup.object({
+  currentPassword: yup.string().required("Vui lòng nhập mật khẩu hiện tại"),
+  newPassword: yup
+    .string()
+    .required("Vui lòng nhập mật khẩu mới")
+    .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+    .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+    .matches(/[A-Za-z]/, "Mật khẩu phải chứa chữ")
+    .matches(/\d/, "Mật khẩu phải chứa số"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "Mật khẩu nhập lại không khớp")
+    .required("Vui lòng xác nhận mật khẩu mới"),
+});

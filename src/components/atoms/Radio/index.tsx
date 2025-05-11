@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import { useState } from 'react';
 
 function Radio() {
@@ -16,7 +17,7 @@ function Radio() {
                         className="mr-2"
                     />
                     <div className="flex items-center gap-2">
-                        <img src="" alt="Receipt Payment" className="h-6" />
+                        <Image src="" alt="Receipt Payment" width={20} height={20} className="h-6" />
                         <p>Thanh toán khi nhận hàng</p>
                     </div>
                 </label>
@@ -30,8 +31,8 @@ function Radio() {
                         className="mr-2"
                     />
                     <div className="flex items-center gap-2">
-                        <img src="" alt="PayPal Payment" className="h-6" />
-                        <p>Thanh toán bằng PAYPAL                    </p>
+                        <Image src="" alt="PayPal Payment" className="h-6" width={20} height={20} />
+                        <p>Thanh toán bằng MoMo                  </p>
                     </div>
                 </label>
             </div>

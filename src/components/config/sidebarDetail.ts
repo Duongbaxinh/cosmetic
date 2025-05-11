@@ -6,6 +6,7 @@ import {
   NoteIcon,
   UserIcon,
 } from "@/assets/icons";
+import { PROFILE_URL } from "@/routers";
 import { JSX } from "react";
 
 export interface SidebarDetailType {
@@ -16,7 +17,7 @@ export interface SidebarDetailType {
 
 export const SIDEBAR_DETAIL: SidebarDetailType[] = [
   {
-    path: "customer/account/edit",
+    path: PROFILE_URL,
     icon: UserIcon,
     title: "Thông tin tài khoản",
   },

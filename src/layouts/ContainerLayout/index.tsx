@@ -19,10 +19,10 @@ const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = 
     return (
         <div className="container-layout">
             {isHeader && <Header />}
-            <div className="flex mt-3 w-full px-5 py-5">
+            <div className="flex w-full px-3 py-3">
                 {isSidebar && <div className="sidebar"><SideBar /></div>}
                 {isSidebarDetail && <div><SideBarDetail /></div>}
-                <div className={`${isSidebar ? 'content' : 'w-full'} min-h-[100vh] pl-5`}>
+                <div className={`${isSidebar ? 'content' : 'w-full'} min-h-[100vh] pl-0 lg:pl-5`}>
                     {children}
                 </div>
             </div>
