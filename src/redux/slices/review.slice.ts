@@ -5,9 +5,9 @@ export const reviewProductApi = createApi({
   reducerPath: "reviewProductApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   endpoints: (builder) => ({
-    getReviewProductById: builder.query<Review, string>({
-      //   query: (product_id: string) => `/review/${product_id}`,
-      query: (product_id: string) => `/reviews`,
+    getReviewProductById: builder.query<Review, string | number>({
+      //   query: (id: string) => `/review/${id}`,
+      query: (id: string) => `/reviews`,
       transformResponse: (response: ResponseType<Review>) => {
         return response.data;
       },

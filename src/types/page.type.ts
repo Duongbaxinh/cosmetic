@@ -3,13 +3,14 @@ export type TCheckoutPage = {
 };
 
 export type FilterProductType = {
-  limit: number;
+  limitnumber: number;
   page: number;
-  category: string;
-  brand: string[];
-  rate: number;
-  price: number[];
-  sortBy: "" | "asc" | "desc";
-  sortPrice: "" | "asc" | "desc";
-  order: "asc" | "desc";
+  category?: string;
+  brand?: string[];
+  rate?: number;
+  price?: number[];
+  sortBy?: string;
+  sortPrice?: "" | "asc" | "desc";
+  order?: "asc" | "desc";
+  textSearch?: string;
 };

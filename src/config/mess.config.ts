@@ -4,7 +4,8 @@ export enum MESS_CART {
   ERROR_EMPTY_DELETE = "Chọn sản phẩm bạn muốn xóa",
 }
 
-export enum MESS_LOGIN {
+export enum MESS_AUTH {
+  // Username
   USERNAME_REQUIRED = "Username không được để trống",
   USERNAME_NO_SPACES = "Username không được chứa khoảng trắng",
   USERNAME_INVALID_CHARACTERS = "Username không được chứa ký tự đặc biệt",
@@ -12,18 +13,35 @@ export enum MESS_LOGIN {
   USERNAME_MIN = "Username phải có ít nhất 4 ký tự",
   USERNAME_MAX = "Username không được vượt quá 20 ký tự",
 
+  // Email & Phone
+  INVALID_EMAIL = "Email không đúng định dạng",
+  INVALID_PHONE = "Số điện thoại không đúng định dạng",
+
+  // Password
   PASSWORD_REQUIRED = "Password không được để trống",
   PASSWORD_NO_SPACES = "Password không được chứa khoảng trắng",
   PASSWORD_MIN = "Password ít nhất 8 ký tự",
   PASSWORD_MAX = "Password tối đa 14 ký tự",
   PASSWORD_INVALID_CHARACTERS = "Password không được chứa ký tự lạ hoặc mã HTML",
-  PASSWORD_WEEK = "Password phải có ít nhất 1 ký tự Hoa, 1 ký tự thường và 1 ký tự đặc biệt",
+  PASSWORD_WEAK = "Password phải có ít nhất 1 ký tự Hoa, 1 ký tự thường và 1 ký tự đặc biệt",
+  PASSWORD_NOT_MATCH = "Mật khẩu xác nhận không khớp",
+  PASSWORD_SAME_OLD = "Mật khẩu mới không được trùng với mật khẩu hiện tại",
 
+  // Confirm Password
+  CONFIRM_PASSWORD_REQUIRED = "Vui lòng xác nhận lại mật khẩu",
+
+  // Auth logic
   LOGIN_FAILED = "Sai username hoặc mật khẩu",
   ACCOUNT_NOT_FOUND = "Tài khoản không tồn tại",
   ACCOUNT_LOCKED = "Tài khoản của bạn đã bị khóa",
   FORM_EMPTY = "Vui lòng nhập đầy đủ thông tin để đăng nhập",
+  UNAUTHORIZED = "Bạn chưa đăng nhập hoặc phiên đăng nhập đã hết hạn",
+  FORBIDDEN = "Bạn không có quyền truy cập tính năng này",
 
-  INVALID_EMAIL = "Email không đúng định dạng",
-  INVALID_PHONE = "Số điện thoại không đúng định dạng",
+  // Common
+  UNKNOWN_ERROR = "Đã xảy ra lỗi, vui lòng thử lại sau",
+}
+
+export enum MESS_DELIVERY {
+  ADDRESS_MESS = "Bạn muốn giao hàng đến địa điểm nào ??",
 }

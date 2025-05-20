@@ -19,7 +19,6 @@ export const postData = async (
       payload,
       authenticated
     );
-    console.log("Response Data:", response);
     return response.data;
   } catch (error) {
     return error;
@@ -37,7 +36,6 @@ export const putData = async (
       payload,
       authenticated
     );
-    console.log("Response Data:", response);
     return response.data;
   } catch (error) {
     return error;
@@ -47,7 +45,6 @@ export const putData = async (
 export const deleteData = async (url: string, authenticated: any) => {
   try {
     const response = await instance(authenticated).delete(url, authenticated);
-    console.log("Response Data:", response);
     return response.data;
   } catch (error) {
     return error;
@@ -65,7 +62,6 @@ export const deleteMany = async (
       payload,
       authenticated
     );
-    console.log("Response Data:", response);
     return response.data;
   } catch (error) {
     return error;
@@ -75,7 +71,6 @@ export const deleteMany = async (
 export const deleteAll = async (url: string, authenticated: any) => {
   try {
     const response = await instance(authenticated).delete(url, authenticated);
-    console.log("Response Data delete all :", response);
     return response.data;
   } catch (error) {
     return error;

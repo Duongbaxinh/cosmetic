@@ -1,24 +1,34 @@
 'use client'
 import Carousel from '@/components/atoms/Carousel';
-import Chip from '@/components/atoms/Chip';
 import Price from '@/components/atoms/Price';
+import { ProductSkeleton, Skeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductSimilar from '@/components/molecules/CardProductSimilar';
 import GroupStart from '@/components/organisms/GroupStart';
-import { Product } from '@/types';
+import { MESS_DELIVERY } from '@/config/mess.config';
+import { useAuth } from '@/contexts/auth.context';
+import { Product, ShippingAddress } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SwiperSlide } from 'swiper/react';
 
 interface DetailProductProps {
     product: Product;
-    similar_product?: Product[];
+    similarProduct?: Product[];
+    shippingAddress?: ShippingAddress[],
+    similarProductLoading?: boolean
 }
 
-const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product }) => {
+const DetailProduct: React.FC<DetailProductProps> = ({ product, similarProduct, similarProductLoading, shippingAddress }) => {
+    const { user } = useAuth()
     const [showMore, setShowMore] = useState({
         productDescription: false,
         productInfo: false,
     });
+    console.log("chekkk11", shippingAddress)
+
+    if (shippingAddress && shippingAddress?.length > 0) {
+        console.log("chekkk", shippingAddress[0])
+    }
     return (
         <div className="flex flex-col gap-2.5 w-full max-w-full lg:max-w-[424px]  rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
@@ -41,8 +51,8 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product 
                     </div>
                     <div className="flex items-center gap-2">
                         <Price className='text-[24px] text-red-400' product_price={product.product_price} />
-                        <Chip title={'-3%'} />
-                        <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p>
+                        {/* {(product.product_discount) && (<Chip title={product.dis} />)} */}
+                        {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}
                     </div>
                 </div>
             </div>
@@ -51,8 +61,8 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product 
             <div className="p-4 space-y-2  bg-white rounded-md ">
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin vận chuyển</h2>
                 <div className="flex justify-between items-center gap-2.5 text-[14px] leading-[21px] font-light">
-                    <p>Giao đến: {"Giao đến Q. Hoàn Kiếm, P. Hàng Trống, Hà Nội"}</p>
-                    <button className="text-blue-300 cursor-pointer">Đổi</button>
+                    <p>Giao đến: {shippingAddress && shippingAddress.length > 0 ? (shippingAddress[0].address) : MESS_DELIVERY.ADDRESS_MESS}</p>
+                    {user?.address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)}
                 </div>
             </div >
             <div className="relative p-4 space-y-2  bg-white rounded-md ">
@@ -70,66 +80,72 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similar_product 
                 <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productInfo: false })}>Thu gọn </button>
             </div >
 
-            {similar_product && similar_product.length > 0 && (
-                <div className=" w-full p-4 space-y-2  bg-white rounded-md ">
-                    <h2 className="text-[16px] font-bold leading-[24px]">Sản phẩm tương tự</h2>
-                    <Carousel
-                        spaceBetween={10}
-                        breakpoints={{
-                            640: {
-                                slidesPerView: 1,
-                            },
-                            768: {
-                                slidesPerView: 1,
-                            },
-                            1024: {
-                                slidesPerView: 1,
-                            },
-                            1280: {
-                                slidesPerView: 1,
-                            },
-                        }}
-                    >
-                        {
-                            Array.from({ length: Math.ceil(similar_product.length / 6) }).map((_, index) => (
-                                <SwiperSlide key={index}>
-                                    <div className=" w-full grid grid-cols-3 space-x-2 space-y-2 grid-rows-2 ">
-                                        {
-                                            similar_product && similar_product.length > 0 && similar_product.slice(index * 6, index * 6 + 6).map((product) => (
-                                                <Link key={index} href={`/detail/${product.product_id}`} >
-                                                    <CardProductSimilar
-                                                        product_rate={product.product_rate}
-                                                        key={product.product_id}
-                                                        product_id={product.product_id}
-                                                        product_thumbnail={product.product_thumbnail}
-                                                        product_name={product.product_name}
-                                                        product_price={product.product_price}
-                                                    />
-                                                </Link>
-                                            ))
-                                        }
-                                    </div>
-                                </SwiperSlide>
-                            ))
-                        }
+            {
+                similarProduct && similarProduct.length > 0 && (
+                    <div className=" w-full p-4 space-y-2  bg-white rounded-md ">
+                        <h2 className="text-[16px] font-bold leading-[24px]">Sản phẩm tương tự</h2>
+                        <Carousel
+                            spaceBetween={10}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 1,
+                                },
+                                768: {
+                                    slidesPerView: 1,
+                                },
+                                1024: {
+                                    slidesPerView: 1,
+                                },
+                                1280: {
+                                    slidesPerView: 1,
+                                },
+                            }}
+                        >
+                            {
+                                Array.from({ length: Math.ceil(similarProduct.length / 6) }).map((_, index) => (
+                                    <SwiperSlide key={index}>
+                                        <div className=" w-full grid grid-cols-3 space-x-2 space-y-2 grid-rows-2 ">
+                                            {
+                                                similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product) => (
+                                                    <Link key={index} href={`/detail/${product.id}`} >
+                                                        <CardProductSimilar
+                                                            product_rate={product.product_rate}
+                                                            key={product.id}
+                                                            id={product.id}
+                                                            product_thumbnail={product.product_thumbnail}
+                                                            product_name={product.product_name}
+                                                            product_price={product.product_price}
+                                                        />
+                                                    </Link>
+                                                ))
+                                            }
+                                        </div>
+                                    </SwiperSlide>
+                                ))
+                            }
 
-                    </Carousel>
+                        </Carousel>
 
-                </div >
-            )}
+                    </div >
+                )
+            }
 
             {/* Product Description */}
-            <div className="relative p-4 space-y-2 bg-white  ">
-                <div className={` ${showMore.productDescription && 'hidden'} absolute rounded-md pb-6 top-0 left-0 w-full h-full flex items-end justify-center bg-gradient-to-b from-transparent from-30% via-white via-80% to-white to-100% `}>
-                    <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productDescription: true })}> Xem thêm </button>
-                </div>
-                <h2 className="text-[16px] font-bold leading-[24px]">Mô tả chi tiết</h2>
-                <div
-                    className={`text-[14px] leading-[21px] ${showMore.productDescription ? "" : "line-clamp-[15]"}`}
-                    dangerouslySetInnerHTML={{ __html: product.product_description }}
-                />
-                <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productDescription: false })}>Thu gọn </button>
-            </div >
+            {
+                product.product_description && (
+                    <div className="relative p-4 space-y-2 bg-white  ">
+                        <div className={` ${showMore.productDescription && 'hidden'} absolute rounded-md pb-6 top-0 left-0 w-full h-full flex items-end justify-center bg-gradient-to-b from-transparent from-30% via-white via-80% to-white to-100% `}>
+                            <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productDescription: true })}> Xem thêm </button>
+                        </div>
+                        <h2 className="text-[16px] font-bold leading-[24px]">Mô tả chi tiết</h2>
+                        <div
+                            className={`text-[14px] leading-[21px] ${showMore.productDescription ? "" : "line-clamp-[15]"}`}
+                            dangerouslySetInnerHTML={{ __html: product.product_description }}
+                        />
+                        <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productDescription: false })}>Thu gọn </button>
+                    </div >
+                )
+            }
 
         </div >
     );

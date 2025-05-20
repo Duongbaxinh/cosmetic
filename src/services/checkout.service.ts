@@ -1,4 +1,4 @@
-import { handleAxiosError } from "@/utils";
+import { handleError } from "@/utils";
 import { postData } from "../api";
 import { CartCheckout } from "../types";
 
@@ -14,6 +14,6 @@ export const handleCheckout = async (payload: any, authenticated = false) => {
     const response = await postData(url, payload, authenticated);
     return response as CartCheckout;
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };

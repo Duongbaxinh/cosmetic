@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 
 type PurchaseProps = {
+    numberReview: number;
     product_price: number;
     product_quantity: number;
     cost_tentative: number;
@@ -17,6 +18,7 @@ type PurchaseProps = {
 
 function Purchase({
     product_price,
+    numberReview,
     product_quantity,
     cost_tentative,
     onIncrease,
@@ -40,7 +42,7 @@ function Purchase({
                         <h2 className="font-semibold">JoyBoyCosmetics</h2>
                         <div className="flex items-center text-sm text-gray-600">
                             <span className="text-yellow-500 mr-1">★ 4.8</span>
-                            <span>(139 đánh giá)</span>
+                            <span>(numberReview)</span>
                         </div>
                     </div>
                 </div>

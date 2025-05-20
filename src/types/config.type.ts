@@ -40,7 +40,9 @@ export type Props = {
     product_id: string;
     order_id: string;
     category_key: string;
+    text_search: string;
     type_edit: keyof TypeEdit;
+    token: string;
   }>;
 };
 

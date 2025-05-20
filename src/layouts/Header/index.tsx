@@ -3,51 +3,56 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 
-import { HiSearchCircle } from 'react-icons/hi';
-import { RiHomeOfficeFill } from 'react-icons/ri';
-import { BiCar, BiCard, BiCartAdd, BiHome, BiSolidUserAccount } from 'react-icons/bi';
-import { GiCardPick } from 'react-icons/gi';
+import { LocationIcon } from '@/assets/icons';
 import Container from '@/components/atoms/Container';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
-import Input from '@/components/atoms/Input';
-import Image from 'next/image';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
-import { LocationIcon } from '@/assets/icons';
-import { useAuth } from '@/contexts/auth.context';
-import { CART_URL, LOGIN_URL } from '@/routers';
 import { PROFILE } from '@/components/config/profile';
+import BoxSearch from '@/components/molecules/BoxSearch';
+import { MESS_DELIVERY } from '@/config/mess.config';
+import { useAuth } from '@/contexts/auth.context';
 import useClickOutside from '@/hooks/useClickOuside';
+import { CART_URL, LOGIN_URL } from '@/routers';
+import Image from 'next/image';
+import { BiCartAdd, BiHome } from 'react-icons/bi';
+import { useRouter } from 'next/navigation';
+import { setUser } from '@/redux/slices/auth.slice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 
 // Type definition for component props
 interface HeaderProps {
     // You can add any specific props here if needed
 }
 
-const TEXT = {
-    TIM_KIEM: 'Tìm kiếm',
-    PLACEHODER: 'Nhập sản phẩm tìm kiếm'
-};
-
-const ITEM_LINKS = [
-    { path: '/link1', title: 'Link 1' },
-    { path: '/link2', title: 'Link 2' }
-];
 
 const Header: React.FC<HeaderProps> = () => {
-    const { user, setIsLogin, isLogin } = useAuth()
+    const { user, isLogin, logout } = useAuth()
 
+    const router = useRouter()
     const [isOpen, setIsOpen] = useState(false);
     const profileRef = useRef<HTMLDivElement | null>(null);
+    const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
 
+    const dispatch = useDispatch()
     useClickOutside([profileRef], () => {
         setIsOpen(false)
     });
 
     const handleLogout = () => {
-        setIsLogin(false);
-        window.location.reload();
+        logout()
+        router.replace("/")
     };
-    console.log('check user :::: ', user);
+
+    useEffect(() => {
+        const shippingData = localStorage.getItem("shippingAddress");
+        if (shippingData) {
+            dispatch(setShippingAddress(JSON.parse(shippingData)));
+        }
+    }, []);
+    const isAddress = user?.address !== '' && user?.address !== null
     return (
         <Container  >
             <div className="w-full bg-white py-3 px-6  ">
@@ -60,7 +65,7 @@ const Header: React.FC<HeaderProps> = () => {
                     {/* Search Input */}
                     <div className="flex-grow space-x-2 space-y-2 text-gray-400 ">
                         <div className="flex items-center space-x-2">
-                            <Input placeholder='Tìm kiếm sản phẩm...' className='p-2 text-gray-400' tailIcon={<HiSearchCircle />} />
+                            <BoxSearch />
                         </div>
                         <div className="hidden md:block space-x-2">
                             {CATEGORY_CONFIG.map((item) => (
@@ -108,10 +113,12 @@ const Header: React.FC<HeaderProps> = () => {
                                 icon={<Link href={`${CART_URL}`}><BiCartAdd /></Link>}
                             />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <LocationIcon className='w-[30px]' />
-                            <p className=' text-[14px] leading-[21px] text-gray-400 underline truncate'> {user?.address}</p>
-                        </div>
+                        {isAddress && (
+                            <div className="flex items-center gap-2">
+                                <LocationIcon className='w-[20px]' />
+                                <p className=' text-[14px] leading-[21px] text-gray-400 underline truncate'> {shippingAddress[0]?.address ?? MESS_DELIVERY.ADDRESS_MESS}</p>
+                            </div>
+                        )}
                     </div>
 
                 </div>

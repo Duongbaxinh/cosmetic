@@ -1,3 +1,5 @@
+import { FieldValues } from "react-hook-form";
+
 export type UserType = {
   id: string;
   first_name?: string;
@@ -23,8 +25,68 @@ export type AuthDataLogin = {
   username: string;
   password: string;
 };
+
+export type AuthDataRegister = {
+  username: string;
+  password: string;
+  email: string;
+  phone: string;
+  confirmPassword: string;
+};
+
+export interface Role {
+  id: string;
+  name: string;
+  scope: string;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+}
+
 export type LoginType = Pick<UserType, "username"> & { password: string };
-export type UserProfileType = Pick<
-  UserType,
-  "fullname" | "nickname" | "birthday" | "gender" | "nationality"
->;
+export type UserProfileType = {
+  id: string;
+  username: string;
+  email: string;
+  phone: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export interface ProfileFormData extends FieldValues {
+  fullName: string;
+  nickname: string;
+}
+
+export type ShippingAddress = {
+  id: string;
+  user: UserProfileType;
+  address: string;
+  city: string;
+  zip: string;
+  country: string;
+  phone: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ChangePasswordPayload = {
+  email: string;
+  current_password: string;
+  new_password: string;
+};
+
+export type ForgotPasswordPayload = {
+  email: string;
+};
+export type ResetPasswordPayload = {
+  token: string;
+  new_password: string;
+};
+
+export type AddressInfo = {
+  address: string;
+  city: string;
+  zip: string;
+  country: string;
+  phone: string;
+};

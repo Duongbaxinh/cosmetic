@@ -1,6 +1,6 @@
 import { postData } from "@/api";
 import { AuthType, LoginType, UserType } from "@/types";
-import { handleAxiosError } from "@/utils";
+import { handleError } from "@/utils";
 import { useState } from "react";
 
 export const Login = async (payload: LoginType): Promise<UserType | null> => {
@@ -12,7 +12,7 @@ export const Login = async (payload: LoginType): Promise<UserType | null> => {
     const auth = response as AuthType;
     return auth.user;
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
   return null;
 };

@@ -7,7 +7,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import { deleteCartManyProduct, deleteCartProduct, useGetProductCart } from '@/services/cart.service';
 import { handleCheckout } from '@/services/checkout.service';
 import { CartCheckout } from '@/types';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { MESS_CART } from '@/config/mess.config';
 import { placeOrder } from '@/services';
@@ -16,19 +16,39 @@ import { redirect } from 'next/navigation';
 function CartPage() {
 
     const { cart, loading, setCart } = useGetProductCart(true)
+    const [localQuantities, setLocalQuantities] = useState<Record<string, number>>({});
     const [itemSelected, setItemSelected] = useState<string[]>([])
+
     const debounceChangeQuantity = useCallback(
-        debounce(async (payload: any) => {
-            const result = await handleCheckout(payload, true)
-            const cart_checkout = result as CartCheckout;
-            console.log("check data :::: ", cart_checkout)
-            setCart(cart_checkout as CartCheckout)
+        debounce(async (cart_id: string, id: string, quantity: number, selected: boolean) => {
+            try {
+                const payload = {
+                    cart_id,
+                    id,
+                    product_quantity: quantity,
+                    product_selected: selected,
+                };
+                const result = await handleCheckout(payload, true);
+                setCart(result as CartCheckout);
+            } catch (err) {
+                console.error("Update quantity failed", err);
+                // Optional: rollback localQuantities or notify user
+            }
         }, 500),
         []
-    )
+    );
+    const updateQuantity = (id: string, newQuantity: number) => {
+        if (!cart || !cart.cart_id || newQuantity < 1) return;
+        setLocalQuantities(prev => ({
+            ...prev,
+            [id]: newQuantity
+        }));
+        // debounceChangeQuantity(cart.cart_id, id, newQuantity, itemSelected.includes(id));
+    };
 
     const handlePlaceOrder = async () => {
         if (cart && !cart.cart_id) return
+        if (cart?.cart_products && cart?.cart_products.length <= 0 || itemSelected.length === 0) return alert("vui long chon san pham")
         alert(`place order checkout ${cart?.cart_id}`)
         const payload = { cart_id: cart?.cart_id }
         const result = await placeOrder(payload, true)
@@ -38,25 +58,25 @@ function CartPage() {
     const handleSelectAll = (checked: boolean) => {
         if (!cart || cart.cart_products.length < 0) return
         if (checked) {
-            const product_ids = cart.cart_products.map(product => product.product_id)
+            const product_ids = cart.cart_products.map(product => product.id)
             setItemSelected([...product_ids])
         } else {
             setItemSelected([])
         }
     }
 
-    const handleSelectItem = (checked: boolean, product_id: string) => {
-        if (checked && !itemSelected.includes(product_id)) {
-            setItemSelected(prev => ([...prev, product_id]))
+    const handleSelectItem = (checked: boolean, id: string) => {
+        if (checked && !itemSelected.includes(id)) {
+            setItemSelected(prev => ([...prev, id]))
         } else {
-            setItemSelected(prev => prev.filter(item => item !== product_id))
+            setItemSelected(prev => prev.filter(item => item !== id))
         }
     }
 
-    const handleDeleteOne = async (product_id: string) => {
+    const handleDeleteOne = async (id: string) => {
         const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_ONE)
         if (confirm_delete && cart && cart.cart_id) {
-            const result = await deleteCartProduct(cart.cart_id, product_id, true)
+            const result = await deleteCartProduct(cart.cart_id, id, true)
             setCart(result as CartCheckout)
         }
     }
@@ -70,50 +90,48 @@ function CartPage() {
         }
     }
 
-    const handleIncrease = async (product_id: string) => {
-        const product = cart?.cart_products.find((product) => product.product_id === product_id)
-        if (!product) return;
-        const payload = {
-            cart_id: cart?.cart_id,
-            product_id: product_id,
-            product_selected: itemSelected.includes(product_id),
-            product_quantity: 1,
-        }
-        console.log("check payload increase", payload)
-        debounceChangeQuantity(payload)
-    }
+    const handleIncrease = (id: string) => {
+        const current = localQuantities[id] ?? cart?.cart_products.find(p => p.id === id)?.quantity ?? 1;
+        updateQuantity(id, current + 1);
+    };
 
-    const handleDecrease = async (product_id: string) => {
-        const product = cart?.cart_products.find((product) => product.product_id === product_id)
-        if (!product) return;
-        if (product && product_quantity === 1) {
-            const confirm = window.confirm("Do you want remove product")
-            if (confirm) {
-                alert("remove product out cart")
+    const handleDecrease = (id: string) => {
+        const current = localQuantities[id] ?? cart?.cart_products.find(p => p.id === id)?.quantity ?? 1;
+        if (current === 1) {
+            if (confirm("Bạn có muốn xoá sản phẩm khỏi giỏ hàng không?")) {
+                handleDeleteOne(id);
             }
+            return;
         }
-        if (product && product_quantity > 1) {
-            product.product_quantity = (product?.product_quantity - 1)
-        }
-        const payload = {
-            cart_id: cart?.cart_id,
-            product_id: product_id,
-            product_selected: itemSelected.includes(product_id),
-            product_quantity: - 1,
-        }
-        debounceChangeQuantity(payload)
-    }
+        updateQuantity(id, current - 1);
+    };
 
-    const handleChangeQuantity = async (product_id: string, value: number) => {
-        const product = cart?.cart_products.find((product) => product.product_id === product_id)
-        if (!product) return;
-        const payload = {
-            cart_id: cart?.cart_id,
-            product_id: product_id,
-            product_quantity: value
-        }
-        debounceChangeQuantity(payload)
-    }
+    const handleChangeQuantity = (id: string, value: number) => {
+        const newValue = Math.max(1, value);
+        updateQuantity(id, newValue);
+    };
+
+    const totalPrice = useMemo(() => {
+        if (!cart || !cart.cart_products) return 0;
+
+        return cart.cart_products.reduce((sum, product) => {
+            if (!itemSelected.includes(product.id)) return sum;
+            const qty = localQuantities[product.id] ?? product.quantity;
+            return sum + product.product_price * qty;
+        }, 0);
+    }, [cart, localQuantities, itemSelected]);
+
+
+    useEffect(() => {
+        if (!cart || !cart.cart_products) return;
+
+        const initialQuantities: Record<string, number> = {};
+        cart.cart_products.forEach((product) => {
+            initialQuantities[product.id] = product.quantity;
+        });
+
+        setLocalQuantities(initialQuantities);
+    }, [cart]);
 
 
     if (loading) return <h1>Loading</h1>
@@ -141,23 +159,23 @@ function CartPage() {
                             {cart?.cart_products.map((product) => (
                                 <>
                                     <div className="col-span-5 py-3 pr-[20px] text-[14px] leading-[20px] font-light flex items-center gap-3 bg-white rounded-tl-sm rounded-bl-sm pl-2 ">
-                                        <input type='checkbox' checked={itemSelected.includes(product.product_id)} onChange={(e) => handleSelectItem(e.target.checked, product.product_id)} />
-                                        <img className='w-[80px] h-[80px]' src={product.product_thumbnail} alt='product image' />
+                                        <input type='checkbox' checked={itemSelected.includes(product.id)} onChange={(e) => handleSelectItem(e.target.checked, product.id)} />
+                                        <img className='w-[80px] h-[80px]' src={product.product_thumbnail ?? null} alt='product image' />
                                         <span className='break-words line-clamp-3 text-[14px] leading-[20px]'>{product.product_name}</span>
                                     </div>
                                     <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light bg-white'>
                                         <Price product_price={product.product_price} />
                                     </div>
                                     <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light  bg-white'>
-                                        <IconButton icon={<BiMinus />} onClick={() => handleDecrease(product.product_id)} className='w-[30px] h-[30px] shadow-sm' />
-                                        <input value={product.product_quantity} type='number' onChange={(e) => { handleChangeQuantity(product.product_id, Number(e.target.value)) }} className=" bg-white w-[30px] h-[30px] shadow-sm rounded-sm text-black text-center " />
-                                        <IconButton icon={<BiPlus />} onClick={() => handleIncrease(product.product_id)} className='w-[30px] h-[30px] shadow-sm' />
+                                        <IconButton icon={<BiMinus />} onClick={() => handleDecrease(product.id)} className='w-[30px] h-[30px] shadow-sm' />
+                                        <input value={localQuantities[product.id] ? localQuantities[product.id] : product.quantity} type='number' onChange={(e) => { handleChangeQuantity(product.id, Number(e.target.value)) }} className=" bg-white w-[30px] h-[30px] shadow-sm rounded-sm text-black text-center " />
+                                        <IconButton icon={<BiPlus />} onClick={() => handleIncrease(product.id)} className='w-[30px] h-[30px] shadow-sm' />
                                     </div>
                                     <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light bg-white'>
-                                        <Price product_price={product.product_total_price} />
+                                        <Price product_price={localQuantities[product.id] ? product.product_price * (localQuantities[product.id]) : product.product_price} />
                                     </div>
                                     <div className='col-span-1 bg-white rounded-tr-sm rounded-br-sm flex items-center h-full max-h-[104px] '
-                                        onClick={() => handleDeleteOne(product.product_id)}>
+                                        onClick={() => handleDeleteOne(product.id)}>
                                         <TrashIcon />
                                     </div>
                                 </>
@@ -178,15 +196,15 @@ function CartPage() {
                             <div className="space-y-2">
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Tổng tiền hàng</span>
-                                    <Price product_price={cart?.cart_total_price ?? 0} />
+                                    <Price product_price={totalPrice} />
                                 </div>
-                                <div className="flex justify-between">
+                                {/* <div className="flex justify-between">
                                     <span className="text-gray-600">Giảm giá trực tiếp</span>
                                     <Price product_price={cart?.cart_discount ?? 0} />
-                                </div>
+                                </div> */}
                                 <div className="flex justify-between bcart-t pt-2">
                                     <span className="text-gray-800 font-semibold">Tổng tiền thanh toán</span>
-                                    <Price product_price={cart?.cart_final_price ?? 0} />
+                                    <Price product_price={totalPrice ?? 0} />
                                 </div>
                             </div>
                             <button className="mt-4 w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"

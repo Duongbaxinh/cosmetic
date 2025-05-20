@@ -21,6 +21,7 @@ interface InputInterface {
     type?: typeInput;
     disabled?: boolean;
     placeholder?: string;
+    name?: string;
     error?: boolean,
     message?: string,
     value?: string | number;
@@ -125,7 +126,7 @@ const Input = forwardRef(({
                         {tailIconSecond}
                     </div>
                 )}
-                <p className={` absolute ${!error ? "hidden " : ""} text-red-500 top-[24px] left-0  text-[12px] italic`}>
+                <p className={` absolute ${!error ? "hidden " : ""} text-red-500 top-[34px] left-0  text-[12px] italic`}>
                     {message}
                 </p>
             </div>

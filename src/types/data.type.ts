@@ -1,4 +1,4 @@
-import { PAYMENT_METHOD } from "@/consts";
+import { ShippingAddress, UserProfileType } from "./auth.type";
 
 export enum ProductEnum {
   "PRODUCT_INTERNAL" = "product_internationals",
@@ -6,7 +6,7 @@ export enum ProductEnum {
 }
 
 export type Product = {
-  product_id: string | number;
+  id: string | number;
   product_name: string;
   product_description: string;
   product_ingredient: string;
@@ -34,15 +34,48 @@ export type OrderUser = {
   user_address: string;
 };
 
+export type OrderStorage = {
+  order_quantity: number;
+  order_total_price: number;
+  order_discount: number;
+  order_final_price: number;
+  order_shipping: number;
+  order_expected_delivery_time: string; // ISO format datetime string
+  order_user: {
+    user_id: number;
+    user_name: string;
+    user_address: string;
+  };
+  order_products: {
+    id: number | undefined; // nếu có thể là undefined, nếu không thì chỉ để number
+    product_price: number | undefined;
+    product_thumbnail: string | undefined;
+    product_name: string | undefined;
+    product_quantity: number;
+    product_total_price: number | undefined;
+    product_discount: number;
+  }[];
+};
+
+// export type OrderProduct = {
+//   id: string;
+//   product_price: number;
+//   product_price_cost: number;
+//   product_thumbnail: string;
+//   product_name: string;
+//   product_quantity: number;
+//   product_total_price: number;
+//   product_discount: number;
+// };
+
 export type OrderProduct = {
-  product_id: string;
-  product_price: number;
-  product_price_cost: number;
-  product_thumbnail: string;
+  id: string;
   product_name: string;
-  product_quantity: number;
-  product_total_price: number;
-  product_discount: number;
+  product_price: number;
+  product_thumbnail: string;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export type OrderCheckout = {
@@ -53,6 +86,7 @@ export type OrderCheckout = {
   order_code_discount: string;
   order_final_price: number;
   order_shipping: number;
+  order_shippingAddress: ShippingAddress;
   order_paid: boolean;
   order_amount_paid: number;
   order_amount_rest: number;
@@ -61,6 +95,50 @@ export type OrderCheckout = {
   order_expected_delivery_time: Date;
   order_user: OrderUser;
   order_products: OrderProduct[];
+};
+
+export type OrderType = {
+  id: string;
+  user: UserProfileType;
+  status:
+    | "pending"
+    | "confirmed"
+    | "shipped"
+    | "delivered"
+    | "cancelled"
+    | "confirmed";
+  total_price: number;
+  shipping_address: ShippingAddress;
+  order_details: OrderProduct[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type OrderDetailType = {
+  product_id: string;
+  order_id: string;
+  quantity: number;
+};
+export type OrderItemDisplayType = {
+  id: string;
+  product_name: string;
+  product_price: number;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MomoPaymentResponse = {
+  partnerCode: string;
+  orderId: string;
+  requestId: string;
+  amount: number;
+  responseTime: number;
+  message: string;
+  resultCode: number;
+  payUrl: string;
+  deeplink: string;
+  qrCodeUrl: string;
 };
 
 export type CartCheckout = {

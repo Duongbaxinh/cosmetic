@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import Input, { typeInput } from "@/components/atoms/Input";
 import EyeIcon from "@/assets/icons/EyeIcon"; // nếu có
-import { changePasswordSchema } from "@/validate";
 import { BsEyeSlash } from "react-icons/bs";
+import { changePasswordSchema } from "@/validate";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setUser, useChangePasswordMutation, useChangeProfileMutation } from "@/redux/slices/auth.slice";
+import { redirect } from "next/navigation";
+import { LOGIN_URL } from "@/routers";
 
 type FormData = {
     currentPassword: string;
@@ -28,11 +34,33 @@ function ChangePassword() {
     const [showNew, setShowNew] = React.useState(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
 
-    const onSubmit = (data: FormData) => {
-        console.log("Dữ liệu gửi:", data);
-        // TODO: Gọi API đổi mật khẩu
-    };
+    const [changePassword, { isLoading }] = useChangePasswordMutation()
+    const dispatch = useDispatch()
+    const userInfo = useSelector((state: RootState) => state.user.user)
 
+
+    const onSubmit = async (data: FormData) => {
+        if (!userInfo || !userInfo.email) return alert("use must login")
+        const payload = {
+            "email": userInfo?.email,
+            "current_password": data.currentPassword,
+            "new_password": data.newPassword
+        }
+        const dataChangePassword = await changePassword(payload)
+        console.log("ssss", dataChangePassword)
+        if (dataChangePassword.data) {
+            console.log(dataChangePassword)
+            alert(dataChangePassword.data)
+            redirect(LOGIN_URL)
+        }
+    };
+    useEffect(() => {
+        const accessToken = localStorage.getItem("accessToken");
+        const userData = localStorage.getItem("userInfo");
+        if (accessToken && userData) {
+            dispatch(setUser(JSON.parse(userData)));
+        }
+    }, [])
     return (
         <>
             <h1 className='mb-4'>Thay đổi mật khẩu</h1>
@@ -101,7 +129,7 @@ function ChangePassword() {
                             : "bg-blue-500 hover:bg-blue-600"
                             }`}
                     >
-                        Lưu thay đổi
+                        {isLoading ? "Changing..." : "Lưu thay đổi"}
                     </button>
                 </div>
             </form></>

@@ -358,22 +358,22 @@
     },
     "cart_products": [
       {
-        "product_id": 5001,
+        "id": 5001,
         "product_price": 250000,
         "product_price_cost": 250000,
         "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
         "product_name": "Sữa Rửa Mặt Dạng Gel Dịu Nhẹ Dành Cho Da Nhạy Cảm Và Da Khô Laneige Water Bank Blue Ha Cleansing Gel 200ml",
-        "product_quantity": 1,
+        "quantity": 1,
         "product_total_price": 250000,
         "product_discount": 0.0
       },
       {
-        "product_id": 5002,
+        "id": 5002,
         "product_price": 249999,
         "product_price_cost": 24.99,
         "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
         "product_name": "Bộ sản phẩm Kem chống nắng dưỡng da bảo vệ hoàn hảo (Anessa Gold Milk 60ml x2 + Gold Gel 90g)",
-        "product_quantity": 1,
+        "quantity": 1,
         "product_total_price": 240000,
         "product_discount": 0.0
       }
@@ -400,7 +400,7 @@
     },
     "order_products": [
       {
-        "product_id": 5001,
+        "id": 5001,
         "product_price": 250000,
         "product_price_cost": 250000,
         "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
@@ -410,7 +410,7 @@
         "product_discount": 0.0
       },
       {
-        "product_id": 5002,
+        "id": 5002,
         "product_price": 249999,
         "product_price_cost": 24.99,
         "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
@@ -441,7 +441,7 @@
           },
           "order_products": [
             {
-              "product_id": 5001,
+              "id": 5001,
               "product_price": 250000,
               "product_price_cost": 250000,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
@@ -451,7 +451,7 @@
               "product_discount": 0.0
             },
             {
-              "product_id": 5002,
+              "id": 5002,
               "product_price": 249999,
               "product_price_cost": 24.99,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
@@ -479,7 +479,7 @@
           },
           "order_products": [
             {
-              "product_id": 5001,
+              "id": 5001,
               "product_price": 250000,
               "product_price_cost": 250000,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
@@ -489,7 +489,7 @@
               "product_discount": 0.0
             },
             {
-              "product_id": 5002,
+              "id": 5002,
               "product_price": 249999,
               "product_price_cost": 24.99,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
@@ -517,7 +517,7 @@
           },
           "order_products": [
             {
-              "product_id": 5001,
+              "id": 5001,
               "product_price": 250000,
               "product_price_cost": 250000,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
@@ -527,7 +527,7 @@
               "product_discount": 0.0
             },
             {
-              "product_id": 5002,
+              "id": 5002,
               "product_price": 249999,
               "product_price_cost": 24.99,
               "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",

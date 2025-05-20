@@ -1,41 +1,47 @@
 import * as yup from "yup";
 import DOMPurify from "dompurify";
-import { MESS_LOGIN } from "@/config/mess.config";
+import { MESS_AUTH } from "@/config/mess.config";
 
 const sanitizeInput = (value: any) => DOMPurify.sanitize(value || "").trim();
 
-export const authValid = yup
+export const authRegisterValid = yup
   .object({
     username: yup
       .string()
       .transform(sanitizeInput)
-      .required(MESS_LOGIN.USERNAME_REQUIRED)
+      .required(MESS_AUTH.USERNAME_REQUIRED)
       .test(
         "no-spaces-in-middle",
-        MESS_LOGIN.USERNAME_NO_SPACES,
+        MESS_AUTH.USERNAME_NO_SPACES,
         (value) => !/\s/.test(value || "")
       )
-      .matches(/^[a-zA-Z0-9@.+-_]+$/, MESS_LOGIN.USERNAME_INVALID_CHARACTERS)
-      .test("is-email-or-phone", MESS_LOGIN.USERNAME_NOT_VALID, (value) => {
-        if (!value) return false;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^(0|\+84)[0-9]{9}$/;
-        return emailRegex.test(value) || phoneRegex.test(value);
-      }),
+      .matches(/^[a-zA-Z0-9@.+-_]+$/, MESS_AUTH.USERNAME_INVALID_CHARACTERS),
+
+    phone: yup
+      .string()
+      .transform(sanitizeInput)
+      .required("Vui lòng nhập số điện thoại")
+      .matches(/^(0|\+84)(\d{9})$/, "Số điện thoại không hợp lệ"),
+
+    email: yup
+      .string()
+      .transform(sanitizeInput)
+      .required("Vui lòng nhập email")
+      .email("Email không đúng định dạng"),
 
     password: yup
       .string()
-      .required(MESS_LOGIN.PASSWORD_REQUIRED)
+      .required(MESS_AUTH.PASSWORD_REQUIRED)
       .test(
         "no-spaces-in-middle",
-        MESS_LOGIN.PASSWORD_NO_SPACES,
+        MESS_AUTH.PASSWORD_NO_SPACES,
         (value) => !/\s/.test(value || "")
       )
-      .min(8, MESS_LOGIN.PASSWORD_MIN)
-      .max(20, MESS_LOGIN.PASSWORD_MAX)
+      .min(8, MESS_AUTH.PASSWORD_MIN)
+      .max(20, MESS_AUTH.PASSWORD_MAX)
       .test(
         "no-strange-symbols",
-        MESS_LOGIN.PASSWORD_INVALID_CHARACTERS,
+        MESS_AUTH.PASSWORD_INVALID_CHARACTERS,
         (value) => {
           if (!value) return false;
           const allowedRegex = /^[a-zA-Z0-9!@#$%^&*()_+=\-]*$/;
@@ -44,23 +50,84 @@ export const authValid = yup
       )
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).+$/,
-        MESS_LOGIN.PASSWORD_WEEK
+        MESS_AUTH.PASSWORD_WEAK
+      )
+      .transform(sanitizeInput),
+
+    confirmPassword: yup
+      .string()
+      .required(MESS_AUTH.CONFIRM_PASSWORD_REQUIRED)
+      .oneOf([yup.ref("password")], MESS_AUTH.PASSWORD_NOT_MATCH),
+  })
+  .required();
+
+export const authLoginValid = yup
+  .object({
+    username: yup
+      .string()
+      .transform(sanitizeInput)
+      .required("Vui lòng nhập email")
+      .email("Email không đúng định dạng"),
+
+    password: yup
+      .string()
+      .required(MESS_AUTH.PASSWORD_REQUIRED)
+      .test(
+        "no-spaces-in-middle",
+        MESS_AUTH.PASSWORD_NO_SPACES,
+        (value) => !/\s/.test(value || "")
+      )
+      .min(8, MESS_AUTH.PASSWORD_MIN)
+      .max(20, MESS_AUTH.PASSWORD_MAX)
+      .test(
+        "no-strange-symbols",
+        MESS_AUTH.PASSWORD_INVALID_CHARACTERS,
+        (value) => {
+          if (!value) return false;
+          const allowedRegex = /^[a-zA-Z0-9!@#$%^&*()_+=\-]*$/;
+          return allowedRegex.test(value);
+        }
+      )
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).+$/,
+        MESS_AUTH.PASSWORD_WEAK
       )
       .transform(sanitizeInput),
   })
   .required();
 
-export const changePasswordSchema = yup.object({
-  currentPassword: yup.string().required("Vui lòng nhập mật khẩu hiện tại"),
+export const changePasswordSchema = yup.object().shape({
+  currentPassword: yup.string().required(MESS_AUTH.PASSWORD_REQUIRED),
   newPassword: yup
     .string()
-    .required("Vui lòng nhập mật khẩu mới")
-    .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-    .max(32, "Mật khẩu không được vượt quá 32 ký tự")
-    .matches(/[A-Za-z]/, "Mật khẩu phải chứa chữ")
-    .matches(/\d/, "Mật khẩu phải chứa số"),
+    .required(MESS_AUTH.PASSWORD_REQUIRED)
+    .min(8, MESS_AUTH.PASSWORD_MIN)
+    .max(32, MESS_AUTH.PASSWORD_MAX)
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/,
+      MESS_AUTH.PASSWORD_WEAK
+    ),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("newPassword")], "Mật khẩu nhập lại không khớp")
-    .required("Vui lòng xác nhận mật khẩu mới"),
+    .required(MESS_AUTH.CONFIRM_PASSWORD_REQUIRED)
+    .oneOf([yup.ref("newPassword")], MESS_AUTH.PASSWORD_NOT_MATCH),
+});
+export const forgotPasswordSchema = yup.object({
+  email: yup
+    .string()
+    .transform(sanitizeInput)
+    .required("Vui lòng nhập email")
+    .email("Email không đúng định dạng"),
+});
+
+export const resetPasswordSchema = yup.object({
+  new_password: yup
+    .string()
+    .required(MESS_AUTH.PASSWORD_REQUIRED)
+    .min(8, MESS_AUTH.PASSWORD_MIN)
+    .max(32, MESS_AUTH.PASSWORD_MAX)
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/,
+      MESS_AUTH.PASSWORD_WEAK
+    ),
 });

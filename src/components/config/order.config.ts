@@ -3,11 +3,11 @@ import { OrderTabItem } from "@/types";
 export const ORDER_TABS: OrderTabItem[] = [
   {
     title: "Tất cả đơn",
-    status: "all",
+    status: "",
   },
   {
     title: "Chờ thanh toán",
-    status: "pending_payment",
+    status: "pending",
   },
   {
     title: "Đang xử lý",

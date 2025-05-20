@@ -5,13 +5,20 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { categoryApi } from "./slices/category.slice";
 import { brandApi } from "./slices/brand.slice";
 import { authApi } from "./slices/auth.slice";
+import userReducer from "./slices/auth.slice";
+import shippingAddressReducer, {
+  shippingAddressApi,
+} from "./slices/shippingAddress.slice";
 import { reviewProductApi } from "./slices/review.slice";
 import { orderProductApi } from "./slices/order.slice";
 
 export const store = configureStore({
   reducer: {
-    [productApi.reducerPath]: productApi.reducer,
+    user: userReducer,
+    address: shippingAddressReducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
+    [productApi.reducerPath]: productApi.reducer,
+    [shippingAddressApi.reducerPath]: shippingAddressApi.reducer,
     [brandApi.reducerPath]: brandApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [orderProductApi.reducerPath]: orderProductApi.reducer,
@@ -20,6 +27,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       productApi.middleware,
+      shippingAddressApi.middleware,
       categoryApi.middleware,
       brandApi.middleware,
       authApi.middleware,

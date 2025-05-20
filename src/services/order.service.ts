@@ -1,6 +1,6 @@
 import { getData, postData, putData } from "@/api";
 import { OrderCheckout, OrderDetail, TrackingItem } from "@/types";
-import { handleAxiosError } from "@/utils";
+import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 
 export const placeOrder = async (payload: any, authenticated: boolean) => {
@@ -9,7 +9,7 @@ export const placeOrder = async (payload: any, authenticated: boolean) => {
     const response = await postData(url, payload, authenticated);
     return response as { order_id: string };
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };
 
@@ -19,7 +19,7 @@ export const confirmOrder = async (payload: any, authenticated: boolean) => {
     const response = await putData(url, payload, authenticated);
     return response as { order_id: string };
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };
 
@@ -29,7 +29,7 @@ export const applyDiscount = async (payload: any, authenticated: boolean) => {
     const response = await putData(url, payload, authenticated);
     return response as { order_id: string };
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };
 
@@ -106,7 +106,6 @@ export const useGetOrder = (status: string, authenticated: boolean) => {
         const response = await getData(url, authenticated);
         setOrders(response as OrderCheckout[]);
         setLoading(false);
-        console.log("Response Data Order :::", response);
         return response as OrderCheckout[];
       } catch (error) {
         setError(error);

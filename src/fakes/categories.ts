@@ -76,70 +76,70 @@ export const categoryData = [
 ];
 export const productsTemplate = [
   {
-    product_id: 1,
+    id: 1,
     product_price: 350000,
     product_purchase: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147844/7dc8361e313e028ed08f213cc8a337e2_g0vnsa.jpg",
   },
   {
-    product_id: 2,
+    id: 2,
     product_price: 450000,
     product_purcharse: 10,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147850/44ac51ca4d7095a5865f0ace3970720a_rhh3nf.jpg",
   },
   {
-    product_id: 3,
+    id: 3,
     product_price: 300000,
     product_purcharse: 7,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147872/15c1198d7c3b594e9905316384d6a239_ahzsqu.jpg",
   },
   {
-    product_id: 4,
+    id: 4,
     product_price: 370000,
     product_purcharse: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147909/444a1486c5880f01526c314c364d20d1_ozxu3f.jpg",
   },
   {
-    product_id: 5,
+    id: 5,
     product_price: 350000,
     product_purcharse: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707316360/a79f866f7ed71bcf4799085f9ffe6995.jpg_ftg0jf.webp",
   },
   {
-    product_id: 6,
+    id: 6,
     product_price: 200000,
     product_purcharse: 3,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147909/444a1486c5880f01526c314c364d20d1_ozxu3f.jpg",
   },
   {
-    product_id: 7,
+    id: 7,
     product_price: 650000,
     product_purcharse: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147899/088006f25d947347c0c3af7c72f42531_bfmcub.jpg",
   },
   {
-    product_id: 8,
+    id: 8,
     product_price: 350000,
     product_purcharse: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707144784/5924758b5c36f3b1c43b6843f52d6dd2_dalzf9.png",
   },
   {
-    product_id: 9,
+    id: 9,
     product_price: 250000,
     product_purcharse: 5,
     product_thumbnail:
       "https://res.cloudinary.com/dwu92ycra/image/upload/v1707147899/088006f25d947347c0c3af7c72f42531_bfmcub.jpg",
   },
   {
-    product_id: 10,
+    id: 10,
     product_price: 850000,
     product_purcharse: 2,
     product_thumbnail:

@@ -1,12 +1,14 @@
-export const handleAxiosError = (error: any) => {
-  if (error.response) {
-    console.error("Error Response:", error.response.data);
-    return error.response.data;
-  } else if (error.request) {
-    console.error("No Response:", error.request);
-    return error.request;
+export const handleError = (error: any) => {
+  console.log("Login error:", error);
+  if (
+    "data" in error &&
+    error.data &&
+    typeof error.data === "object" &&
+    "detail" in error.data
+  ) {
+    // @ts-ignore
+    alert(error.data.detail);
   } else {
-    console.error("Request Error:", error.msg);
-    return error.msg;
+    alert("An unknown error occurred.");
   }
 };

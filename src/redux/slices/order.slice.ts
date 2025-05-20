@@ -1,24 +1,99 @@
-import { ResponseType, OrderCheckout, OrderResponse } from "@/types";
+import {
+  BASE_API,
+  ORDER_API,
+  ORDER_DETAIL_API,
+  ORDER_PAYMENT_API,
+} from "@/config/api.config";
+import {
+  MomoPaymentResponse,
+  OrderDetailType,
+  OrderItemDisplayType,
+  OrderResponse,
+  OrderType,
+  ResponseType,
+} from "@/types";
+import { toQueryString } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const orderProductApi = createApi({
   reducerPath: "orderProductApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_API,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        headers.set("Authorization", `Bearer ${JSON.parse(token ?? "")}`);
+      }
+      return headers;
+    },
+  }),
+
   endpoints: (builder) => ({
-    getAllOrder: builder.query<OrderResponse, string>({
+    getAllOrder: builder.query<OrderResponse[], string>({
       query: (params: any) => {
-        const queryString = new URLSearchParams(params).toString();
+        const queryString = toQueryString(params);
         const url = `/orders?${queryString}`;
         return {
           url: url,
         };
       },
-      transformResponse: (response: ResponseType<OrderResponse>) => {
-        return response.data;
+      transformResponse: (response: OrderResponse[]) => {
+        return response;
       },
       keepUnusedDataFor: 0,
+    }),
+    getOrderDetail: builder.query<OrderResponse, string>({
+      query: (order_id: string) => {
+        const url = `${ORDER_API}/${order_id}`;
+        return {
+          url: url,
+        };
+      },
+      transformResponse: (response: OrderResponse) => {
+        return response;
+      },
+      keepUnusedDataFor: 0,
+    }),
+    createOrder: builder.mutation<OrderType, string>({
+      query: (shippingAddressId) => ({
+        url: ORDER_API,
+        method: "POST",
+        body: { shipping_id: shippingAddressId },
+      }),
+      transformResponse: (response: OrderType) => {
+        console.log("check response order", response);
+        return response;
+      },
+    }),
+    createOrderDetail: builder.mutation<OrderItemDisplayType, OrderDetailType>({
+      query: (orderDetail: OrderDetailType) => ({
+        url: ORDER_DETAIL_API,
+        method: "POST",
+        body: orderDetail,
+      }),
+      transformResponse: (response: OrderItemDisplayType) => {
+        console.log("check response order", response);
+        return response;
+      },
+    }),
+    paymentOrder: builder.mutation<MomoPaymentResponse, string>({
+      query: (order_id: string) => ({
+        url: ORDER_PAYMENT_API,
+        method: "POST",
+        body: { order_id: order_id },
+      }),
+      transformResponse: (response: MomoPaymentResponse) => {
+        console.log("check response order payment", response);
+        return response;
+      },
     }),
   }),
 });
 
-export const { useGetAllOrderQuery } = orderProductApi;
+export const {
+  useGetAllOrderQuery,
+  useGetOrderDetailQuery,
+  useCreateOrderMutation,
+  useCreateOrderDetailMutation,
+  usePaymentOrderMutation,
+} = orderProductApi;

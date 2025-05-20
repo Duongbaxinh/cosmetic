@@ -21,7 +21,7 @@ import { SwiperSlide } from 'swiper/react';
 
 function CategoryPage({ category_key }: { category_key: string }) {
     const [filters, setFilter] = useState<FilterProductType>({
-        limit: 30,
+        limitnumber: 30,
         page: 1,
         brand: [],
         category: '',
@@ -29,7 +29,7 @@ function CategoryPage({ category_key }: { category_key: string }) {
         rate: 5,
         sortPrice: "",
         order: 'asc',
-        sortBy: ''
+        sortBy: 'product_price'
     })
     const [showMobileFilter, setShowMobileFilter] = useState(false);
     const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery(filters)
@@ -37,12 +37,16 @@ function CategoryPage({ category_key }: { category_key: string }) {
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
 
-    const totalPage = products ? Math.ceil(products.total / products.limit) : 1
-    const currentPage = Math.min(filters.page, Math.max(1, products?.total_page ?? 1))
-    const productsDisplay = products?.products ?? []
+    const totalPage = products ? Math.ceil(products.count / products.limitnumber) : 1
+    const currentPage = Math.min(filters.page, Math.max(1, products?.number_page ?? 1))
+    const productsDisplay = products?.results ?? []
 
-    const isFiltered = ["category".concat(filters.category), filters.rate, filters.sortBy, ...filters.brand]
-
+    const isFiltered = [
+        filters.category ? `category${filters.category}` : null,
+        filters.rate || null,
+        filters.sortBy || null,
+        ...(filters.brand || [])
+    ].filter(Boolean);
     const handlePagination = (type: "next" | "prev") => {
         if (type === 'next' && currentPage < totalPage) {
             setFilter(prev => ({ ...prev, page: (prev.page + 1) }))
@@ -122,11 +126,13 @@ function CategoryPage({ category_key }: { category_key: string }) {
                                     <option value={"desc"}>Giá cao đến thấp</option>
                                 </select>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <span>{currentPage}/{totalPage}</span>
-                                <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
-                                <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
-                            </div>
+                            {totalPage >= 2 && (
+                                <div className="flex items-center gap-1">
+                                    <span>{currentPage}/{totalPage}</span>
+                                    <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
+                                    <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
+                                </div>
+                            )}
                         </div>
 
                         {loadingProduct ? (
@@ -134,18 +140,18 @@ function CategoryPage({ category_key }: { category_key: string }) {
                         ) :
                             (<div className="grid grid-cols-2 grid-rows-6 md:grid-cols-4 lg:grid-cols-5 gap-2 px-2">
                                 {productsDisplay.map(({
-                                    product_id,
+                                    id,
                                     product_name,
                                     product_thumbnail,
                                     product_price,
                                     product_rate
                                 }) => (
-                                    <div key={product_id} className=" flex items-center justify-center">
-                                        <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
+                                    <div key={id} className=" flex items-center justify-center">
+                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
                                             <CardProductFull
-                                                key={product_id}
+                                                key={id}
                                                 className='min-h-[330px]'
-                                                product_id={product_id}
+                                                id={id}
                                                 product_thumbnail={product_thumbnail}
                                                 product_name={product_name}
                                                 product_price={product_price}

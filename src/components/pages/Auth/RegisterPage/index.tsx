@@ -1,88 +1,130 @@
 'use client';
 import Breadcrumb from '@/components/atoms/Breadcrumb';
+import Input, { typeInput } from '@/components/atoms/Input';
 import { useSignUpMutation } from '@/redux/slices/auth.slice';
 import { LOGIN_URL } from '@/routers';
-import { AuthDataLogin } from '@/types';
-import { authValid } from '@/validate';
+import { AuthDataRegister } from '@/types';
+import { authRegisterValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BsEye } from 'react-icons/bs';
+import { HiEyeOff } from 'react-icons/hi';
 
 const RegisterPage = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<AuthDataLogin>({
-        resolver: yupResolver(authValid),
+    } = useForm<AuthDataRegister>({
+        resolver: yupResolver(authRegisterValid),
     });
-    const [singUp, { isLoading }] = useSignUpMutation();
 
-    const handleRegister = async (dataLogin: AuthDataLogin) => {
-        console.log('check data singUp :::: ', dataLogin);
-        singUp(dataLogin);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [signUp, { isLoading }] = useSignUpMutation();
+    const router = useRouter();
+
+    const handleRegister = async (dataRegister: AuthDataRegister) => {
+        const res = await signUp(dataRegister);
+        router.push(LOGIN_URL);
     };
 
-    const onSubmit: SubmitHandler<AuthDataLogin> = (data) => {
+    const onSubmit: SubmitHandler<AuthDataRegister> = (data) => {
         handleRegister(data);
     };
 
     return (
-        <div className='w-full h-full bg-white'>
+        <div className="w-full h-full bg-white">
             <Head>
                 <title>Access Beauty Account</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="min-h-screen  py-8">
-                {/* Breadcrumb nằm ở trên cùng, chính xác ở đây */}
+            <div className="min-h-screen py-8">
                 <div className="max-w-6xl mx-auto px-4">
                     <Breadcrumb items={[{ label: "Home", href: '/' }, { label: "Sign Up" }]} />
                 </div>
 
-                {/* Nội dung login */}
                 <div className="flex justify-center mt-8">
                     <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
-                        {/* Left Side - Form */}
+                        {/* Form Side */}
                         <div className="w-1/2 bg-white p-8 flex flex-col justify-center">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Access Beauty Account</h1>
-                            <p className="text-gray-600 mb-6">Your beauty journey starts here</p>
+                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Create Beauty Account</h1>
+                            <p className="text-gray-600 mb-6">Join us and enjoy exclusive benefits!</p>
                             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                                <div className="mb-4 relative">
-                                    <input
+                                <div className="mb-4">
+                                    <Input
                                         placeholder="Enter your username"
                                         {...register('username')}
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        error={!!errors.username}
+                                        message={errors.username?.message}
                                     />
-                                    {errors.username && <p className="absolute -bottom-6 text-red-500 text-sm mt-1">{errors.username.message}</p>}
                                 </div>
-                                <div className="mb-4 relative">
-                                    <input
-                                        type="password"
+
+                                <div className="mb-4">
+                                    <Input
+                                        placeholder="Enter your email"
+                                        {...register('email')}
+                                        error={!!errors.email}
+                                        message={errors.email?.message}
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <Input
+                                        placeholder="Enter your phone"
+                                        {...register('phone')}
+                                        error={!!errors.phone}
+                                        message={errors.phone?.message}
+                                    />
+                                </div>
+
+                                <div className="mb-4">
+                                    <Input
                                         placeholder="Enter your password"
+                                        type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
                                         {...register('password')}
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        tailIcon={showPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
+                                        onHandleTailIcon={() => setShowPassword(!showPassword)}
+                                        error={!!errors.password}
+                                        message={errors.password?.message}
                                     />
-                                    {errors.password && <p className="absolute max-w-[384px] truncate -bottom-6 text-red-500 text-sm mt-1">{errors.password.message}</p>}
                                 </div>
+
+                                <div className="mb-4">
+                                    <Input
+                                        placeholder="Confirm your password"
+                                        type={showConfirmPassword ? typeInput.TEXT : typeInput.PASSWORD}
+                                        {...register('confirmPassword')}
+                                        tailIcon={showConfirmPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
+                                        onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        error={!!errors.confirmPassword}
+                                        message={errors.confirmPassword?.message}
+                                    />
+                                </div>
+
                                 <button
                                     type="submit"
                                     disabled={isLoading}
                                     className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition disabled:bg-purple-400"
                                 >
-                                    {isLoading ? 'Sign Up...' : 'Sign Up'}
+                                    {isLoading ? 'Signing up...' : 'Sign Up'}
                                 </button>
                             </form>
+
                             <p className="text-center text-sm text-gray-600 mt-4">
-                                Has an account?{' '}
+                                Already have an account?{' '}
                                 <Link href={LOGIN_URL} className="text-purple-600 hover:underline">
-                                    Log-in
+                                    Log In
                                 </Link>
                             </p>
                         </div>
 
-                        {/* Right Side - Image */}
+                        {/* Image Side */}
                         <div
                             className="w-1/2 bg-cover bg-center"
                             style={{

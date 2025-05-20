@@ -1,5 +1,7 @@
 // src/services/productApi.ts
-import { ProductResponse, ResponseType } from "@/types";
+import { BASE_API } from "@/config/api.config";
+import { Product, ProductResponse } from "@/types";
+import { toQueryString } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface ParamsType {
   limit?: number;
@@ -8,34 +10,52 @@ interface ParamsType {
 }
 export const productApi = createApi({
   reducerPath: "productApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_API,
+  }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<ProductResponse, ParamsType>({
+    searchProducts: builder.query<Product[], ParamsType>({
       query: (params: any) => {
-        const queryString = new URLSearchParams(params).toString();
+        const queryString = toQueryString(params);
         const url = `/products?${queryString}`;
-        console.log("url :::: ", url);
         return {
           url: url,
+          timeout: 10000,
         };
       },
-      transformResponse: (response: ResponseType<ProductResponse>) => {
-        return response.data;
+      transformResponse: (response: Product[]) => {
+        return response;
+      },
+      keepUnusedDataFor: 0,
+    }),
+    getAllProducts: builder.query<ProductResponse, ParamsType>({
+      query: (params: any) => {
+        const queryString = toQueryString(params);
+        const url = `/products?${queryString}`;
+        console.log("check url search :::: ", params, url);
+        return {
+          url: url,
+          timeout: 10000,
+        };
+      },
+      transformResponse: (response: ProductResponse) => {
+        console.log("check product query :::: ", response);
+        return response;
       },
       providesTags: ["Product"],
     }),
     getProductFilter: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
-        const queryString = new URLSearchParams(params).toString();
+        const queryString = toQueryString(params);
         const url = `/products?${queryString}`;
-        console.log("url :::: ", url);
         return {
           url: url,
+          timeout: 10000,
         };
       },
-      transformResponse: (response: ResponseType<ProductResponse>) => {
-        return response.data;
+      transformResponse: (response: ProductResponse) => {
+        return response;
       },
       providesTags: ["Product"],
       keepUnusedDataFor: 0,
@@ -43,32 +63,37 @@ export const productApi = createApi({
     getAllProductsInternal: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/products?${queryString}`;
+        const url = `/products?limitnumber=4&page=1`;
         return {
           url: url,
+          timeout: 10000,
         };
       },
-      transformResponse: (response: ResponseType<ProductResponse>) => {
-        return response.data;
+      transformResponse: (response: ProductResponse) => {
+        return response;
       },
       providesTags: ["Product"],
     }),
     getAllProductsDiscount: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = new URLSearchParams(params).toString();
-        const url = `/products?${queryString}`;
+        const url = `/products?limitnumber=4&page=1`;
         return {
           url: url,
+          timeout: 10000,
         };
       },
-      transformResponse: (response: ResponseType<ProductResponse>) => {
-        return response.data;
+      transformResponse: (response: ProductResponse) => {
+        return response;
       },
       providesTags: ["Product"],
     }),
     getProductById: builder.query({
-      query: (id) => `/products`,
-      // query: (id) => `/products/${id}`,
+      query: (id) => `/products/${id}`,
+      transformResponse: (response: Product) => {
+        console.log("product detail ::: ", response);
+        return response;
+      },
       keepUnusedDataFor: 0,
     }),
   }),
@@ -80,4 +105,5 @@ export const {
   useGetAllProductsInternalQuery,
   useGetAllProductsDiscountQuery,
   useGetProductFilterQuery,
+  useSearchProductsQuery,
 } = productApi;

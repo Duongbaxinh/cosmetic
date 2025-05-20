@@ -2,7 +2,7 @@ import { Product } from "../types";
 
 export const productList: Product[] = [
   {
-    product_id: 1,
+    id: 1,
     product_discount_start: 1680692122000,
     product_description:
       "<h1>Mô tả sản phẩm</h1><ul><li>Cung cấp bổ sung lại lượng Collagen đã bị mất đi, làm giảm sự xuất hiện các nếp nhăn và phục hồi độ đàn hồi cho da</li><li>Cung cấp độ ẩm cho da, giúp cho da khỏe mạnh, mềm mại, mịn màng và trẻ trung, tăng cường độ đàn hồi, săn chắc và hiệu quả xóa nếp nhăn tối ưu, cho bạn làn da mịn màng, tươi trẻ. Ngăn ngừa sự hình thành nếp nhăn.</li></ul><p>Bộ Dưỡng Da Ohui Tím Ohui Age Recovery Special Set gồm có:</p><ul><li>Nước hoa hồng 20ml</li><li>Sữa dưỡng chống nhăn 20ml</li><li>Kem chống nhăn hũ 7ml</li></ul><p>Giá sản phẩm trên Tiki đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....</p>",
@@ -39,7 +39,7 @@ export const productList: Product[] = [
 export const carts = [
   {
     id: 1,
-    product_id: {
+    id: {
       product_name: "Bàn Gỗ Cao Cấp",
       product_price: 2500000,
       product_thumbnail: "/images/table.jpg",
@@ -49,7 +49,7 @@ export const carts = [
   },
   {
     id: 2,
-    product_id: {
+    id: {
       product_name: "Ghế Sofa Đệm Mềm",
       product_price: 4500000,
       product_thumbnail: "/images/sofa.jpg",
@@ -59,7 +59,7 @@ export const carts = [
   },
   {
     id: 3,
-    product_id: {
+    id: {
       product_name: "Tủ Quần Áo Gỗ Sồi",
       product_price: 5500000,
       product_thumbnail: "/images/wardrobe.jpg",

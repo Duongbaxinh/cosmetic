@@ -10,8 +10,8 @@ type PriceFilterType = {
     max_price: number
 }
 export type FilterType = {
-    categories: CategoryFilter[]
-    brands: Brand[],
+    categories?: CategoryFilter[]
+    brands?: Brand[],
     isFiltered: any[],
     onFilter: (filed: keyof FilterProductType, value: any) => void,
     className?: string
@@ -40,28 +40,32 @@ function Filter({ categories, brands, isFiltered, onFilter, className }: FilterT
     }
     return (
         <div className={`w-[240px] min-[240px] px-3 rounded-md hidden md:block ${className}`}>
-            <div className="">
-                <FilterOption title='Khám phá theo danh mục' customTextSelected=' pb-2 text-gray-500 !text-[14px] !leading-[21px] !font-[600]' customIcon='px-2' >
-                    <div
-                        onClick={() => onFilter("category", "")}
-                        className={`py-3 text-[12px] font-[500] leading-[18px]  ${isFiltered.includes("category") && "bg-gray-300"} hover:bg-gray-300 rounded-sm`}>
-                        <p className='px-5'>Tất cả danh mục</p>
-                    </div>
-                    {categories.map((category) => (
-                        <div
-                            key={category.key}
-                            onClick={() => onFilter("category", category.key)}
-                            className={`cursor-pointer py-3 text-[12px] font-[500] leading-[18px] ${isFiltered.includes(category.key) && "bg-gray-300"} hover:bg-gray-300 rounded-sm `}>
-                            <p className='px-5'>{category.title}</p>
-                        </div>
-                    ))
-                    }
-                </FilterOption >
-            </div >
-            <hr />
+            {categories && (
+                <>
+                    <div className="">
+                        <FilterOption title='Khám phá theo danh mục' customTextSelected=' pb-2 text-gray-500 !text-[14px] !leading-[21px] !font-[600]' customIcon='px-2' >
+                            <div
+                                onClick={() => onFilter("category", "")}
+                                className={`py-3 text-[12px] font-[500] leading-[18px]  ${isFiltered.includes("category") && "bg-gray-300"} hover:bg-gray-300 rounded-sm`}>
+                                <p className='px-5'>Tất cả danh mục</p>
+                            </div>
+                            {categories && categories.map((category) => (
+                                <div
+                                    key={category.key}
+                                    onClick={() => onFilter("category", category.key)}
+                                    className={`cursor-pointer py-3 text-[12px] font-[500] leading-[18px] ${isFiltered.includes(category.key) && "bg-gray-300"} hover:bg-gray-300 rounded-sm `}>
+                                    <p className='px-5'>{category.title}</p>
+                                </div>
+                            ))
+                            }
+                        </FilterOption >
+                    </div >
+                    <hr /></>
+            )}
+
             <div className="py-3">
                 <div className="pb-2 text-[14px] text-gray-500 leading-[21px] font-[600] ">Thương hiệu</div>
-                {brands.map((brand) => (
+                {brands && brands.map((brand) => (
                     <div key={brand.id} className={`w-full flex gap-2 items-center`}>
                         <input id={brand.id} checked={isFiltered.includes(brand.id)} type='checkbox' onChange={() => onFilter("brand", brand.id)} />
                         <label htmlFor={brand.id} className=" py-2 text-[12px] font-[500] leading-[18px] cursor-pointer ">{brand.name}</label>

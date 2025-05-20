@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteAll, deleteData, deleteMany, getData, postData } from "../api";
 import { CartCheckout } from "../types";
-import { handleAxiosError } from "@/utils";
+import { handleError } from "@/utils";
 
 export const useGetProductCart = (authenticated = false) => {
   const [cart, setCart] = useState<CartCheckout | null>(null);
@@ -16,7 +16,6 @@ export const useGetProductCart = (authenticated = false) => {
         const response = await getData(url, authenticated);
         setCart(response as CartCheckout);
         setLoading(false);
-        console.log("Response Data:", response);
         return response as CartCheckout;
       } catch (error) {
         setError(error);
@@ -32,15 +31,15 @@ export const useGetProductCart = (authenticated = false) => {
 
 export const deleteCartProduct = async (
   cart_id: string,
-  product_id: string,
+  id: string,
   authenticated = true
 ) => {
   try {
-    const url = `/cart/${cart_id}/delete/${product_id}`;
+    const url = `/cart/${cart_id}/delete/${id}`;
     const response = await deleteData(url, authenticated);
     return response as CartCheckout;
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };
 
@@ -54,7 +53,7 @@ export const deleteCartManyProduct = async (
     const response = await deleteMany(url, payload, authenticated);
     return response as CartCheckout;
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };
 
@@ -67,6 +66,6 @@ export const deleteCartProductAll = async (
     const response = await deleteAll(url, authenticated);
     return response as CartCheckout;
   } catch (error) {
-    handleAxiosError(error);
+    handleError(error);
   }
 };

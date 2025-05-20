@@ -2,10 +2,13 @@
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import { categories } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { createParams, handleAxiosError } from '@/utils';
+import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
+import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
+import { useGetBrand } from '@/services';
+import { ProductResponse } from '@/types';
+import { createParams, handleError } from '@/utils';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -16,11 +19,9 @@ import Carousel from '../../atoms/Carousel';
 import CardProduct from '../../molecules/CardProduct';
 import CardProductFull from '../../molecules/CardProductFull';
 import ListTemplate from '../../molecules/ListTemplate';
-import { Product, ProductEnum, ProductResponse } from '@/types';
+import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
 import { useDispatch } from 'react-redux';
-import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
-import { useGetBrand } from '@/services';
-import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
+import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
 
 const TITLE = [
@@ -48,47 +49,70 @@ const breakpoints = {
         slidesPerView: 5,
     },
     1280: {
-        slidesPerView: 6,
+        slidesPerView: 5,
     },
 }
 const HomePage: React.FC = () => {
-    const [filter, setFilter] = useState<Record<string, number>>({ page: 1, limit: 10, });
+    const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+
+    const { data: userProfile, error: errorProfile, isLoading } = useGetUserQuery(undefined, {
+        skip: !accessToken,
+    });
+
+    const { data: shippingAddress, error: errorShippingAddress, isLoading: loadingShippingAddress } = useGetAddressQuery(undefined, {
+        skip: !accessToken,
+    });
+
+    const [filter, setFilter] = useState<Record<string, number>>({ page: 1, limitnumber: 10, });
     const filterParams = useMemo(() => createParams(filter), [filter]);
     const [products, setProducts] = useState<ProductResponse | null>(null)
     const internationalParams = useMemo(() => createParams({ product_international: true }), []);
-    const discountParams = useMemo(() => createParams({ discount: true }), []);
+    const discountParams = useMemo(() => createParams({ product_discount: true }), []);
     const { data, error, isLoading: loading } = useGetAllProductsQuery(filter)
-    const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(filter)
-    const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(filter)
+    const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
+    const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
     const { brands: brands, loading: loading_brand } = useGetBrand(filterParams, true);
-    // if (!products) return
-    const check_load = products ? (products.total - products.products.length) > 0 : false
+
+    const dispatch = useDispatch()
+    const check_load = products ? (products.count - products.results.length) > 0 : false
+
     const handleLoadMore = async () => {
         try {
             if (!check_load) return
-            const newLimit = products ? (products.total - products.products.length) : 0
-            const newFilter = { ...filter, page: filter.page + 1, limit: Math.min(filter.limit, newLimit) };
+            const newLimit = products ? (products.count - products.results.length) : 0
+            const newFilter = { ...filter, page: filter.page + 1, limitnumber: Math.min(filter.limitnumber, newLimit) };
             setFilter(newFilter)
         } catch (error) {
-            const mess = handleAxiosError(error)
+            handleError(error)
         }
     }
+
+    useEffect(() => {
+        if (userProfile) {
+            dispatch(setUser(userProfile));
+        }
+        if (shippingAddress) {
+            dispatch(setShippingAddress(shippingAddress))
+        }
+    }, [userProfile]);
+
     useEffect(() => {
         if (data) {
             setProducts(prev => {
-                const prevProducts = prev?.products ?? [];
+                const prevProducts = prev?.results ?? [];
                 return {
                     ...data,
-                    products: [...prevProducts, ...data.products],
+                    products: [...prevProducts, ...data.results],
                 };
             });
         }
     }, [data]);
 
-    const product_internal_display = productsInternal?.products ?? []
-    const product_discounts_display = productsDiscount?.products ?? []
-    const products_display = products?.products ?? []
+    const product_internal_display = productsInternal?.results ?? []
+    const product_discounts_display = productsDiscount?.results ?? []
+    const products_display = products?.results ?? []
 
+    console.log("check shipping address", shippingAddress)
     return (
         <ContainerLayout >
             <div className="w-full flex-col gap-8 space-y-4 text-black">
@@ -123,15 +147,15 @@ const HomePage: React.FC = () => {
                             >
                                 {product_discounts_display.map(
                                     ({
-                                        product_id,
+                                        id,
                                         product_price,
                                         product_thumbnail,
 
                                     }) => (
-                                        <SwiperSlide key={product_id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
+                                        <SwiperSlide key={id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
                                                 <CardProduct
-                                                    key={product_id}
+                                                    key={id}
                                                     product_price={product_price}
                                                     product_purchase={product_price ?? 0}
                                                     product_thumbnail={product_thumbnail}
@@ -160,17 +184,17 @@ const HomePage: React.FC = () => {
                             >
                                 {products_display.map(
                                     ({
-                                        product_id,
+                                        id,
                                         product_name,
                                         product_thumbnail,
                                         product_price,
                                         product_rate
                                     }) => (
-                                        <SwiperSlide key={product_id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
+                                        <SwiperSlide key={id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
                                                 <CardProductFull
-                                                    key={product_id}
-                                                    product_id={product_id}
+                                                    key={id}
+                                                    id={id}
                                                     product_thumbnail={product_thumbnail}
                                                     product_name={product_name}
                                                     product_price={product_price}
@@ -238,18 +262,18 @@ const HomePage: React.FC = () => {
                             >
                                 {product_internal_display.map(
                                     ({
-                                        product_id,
+                                        id,
                                         product_name,
                                         product_thumbnail,
                                         product_rate,
                                         product_price,
                                     }) => (
-                                        <SwiperSlide key={product_id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
+                                        <SwiperSlide key={id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
                                                 <CardProductFull
-                                                    key={product_id}
+                                                    key={id}
                                                     className='min-h-[330px]'
-                                                    product_id={product_id}
+                                                    id={id}
                                                     product_thumbnail={product_thumbnail}
                                                     product_name={product_name}
                                                     product_price={product_price}
@@ -273,24 +297,24 @@ const HomePage: React.FC = () => {
                         {loading ? (
                             <ProductSkeleton length={20} />
                         ) :
-                            (<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6  space-x-3 space-y-3">
+                            (<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5  space-x-3 space-y-3">
                                 {/* Banner */}
                                 <div className=" col-span-1  md:col-span-2  flex items-center justify-center">
                                     <img src='' alt='' className='w-full h-full object-cover' />
                                 </div>
                                 {/* Products */}
                                 {products_display.map(({
-                                    product_id,
+                                    id,
                                     product_name,
                                     product_thumbnail,
                                     product_rate,
                                     product_price,
                                 }) => (
-                                    <div key={product_id} className=" flex items-center justify-center">
-                                        <Link href={`${DETAIL_PRODUCT_URL}/${product_id}`}>
+                                    <div key={id} className=" flex items-center justify-center">
+                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
                                             <CardProductFull
-                                                key={product_id}
-                                                product_id={product_id}
+                                                key={id}
+                                                id={id}
                                                 product_thumbnail={product_thumbnail}
                                                 product_name={product_name}
                                                 product_price={product_price}
