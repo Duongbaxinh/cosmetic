@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { useDispatch } from 'react-redux';
+import { ShippingAddress } from '@/types';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -72,15 +73,19 @@ function DetailProductPage({ id }: { id: string | number }) {
         setQuantity(() => Math.max(1, Math.min(number, 50)))
     }
 
-    const handlePurchase = async () => {
 
+    const handlePurchase = () => {
         if (!userInfo) {
-            return setIsOpen((prev => ({ ...prev, openLogin: true })))
+            return setIsOpen(prev => ({ ...prev, openLogin: true }))
         }
         if (shippingAddress.length <= 0) {
-            return setIsOpen((prev => ({ ...prev, openContact: true })))
+            return setIsOpen(prev => ({ ...prev, openContact: true }))
         }
+        return proceedToCheckout()
+    }
 
+    const proceedToCheckout = (shippingAddressNew?: ShippingAddress) => {
+        console.log("check prodcess shipping ;:::", shippingAddressNew)
         const totalPrice = product?.product_price ? product.product_price * quantity : 0
         const orderTemporary = {
             "order_quantity": quantity,
@@ -88,7 +93,7 @@ function DetailProductPage({ id }: { id: string | number }) {
             "order_discount": 0,
             "order_final_price": totalPrice,
             "order_shipping": 15000,
-            "order_shippingAddress": shippingAddress[0],
+            "order_shippingAddress": shippingAddressNew ? shippingAddressNew : shippingAddress[0],
             "order_expected_delivery_time": "2025-04-13T19:00:00Z",
             "order_user": {
                 "user_id": user?.id,
@@ -107,10 +112,14 @@ function DetailProductPage({ id }: { id: string | number }) {
                 },
             ]
         }
-        sessionStorage.setItem(`order`, JSON.stringify(orderTemporary))
-        // const result = await placeOrder(payload, true)
-        redirect(`${CHECKOUT_URL}`)
+        if (userInfo && shippingAddress || shippingAddressNew) {
+            console.log("order ", orderTemporary, shippingAddress)
+            sessionStorage.setItem(`order`, JSON.stringify(orderTemporary))
+            redirect(`${CHECKOUT_URL}`)
+        }
     }
+
+
 
     const handleAddToCart = () => {
         alert("add to cart")
@@ -128,7 +137,7 @@ function DetailProductPage({ id }: { id: string | number }) {
 
             {/* <Popup isOpen={true} /> */}
             {isOpen.openLogin && (<PopupPrivate isOpen={isOpen.openLogin} onClose={() => handleClosePopup('openLogin')} />)}
-            {isOpen.openContact && (<PopupInfo isOpen={isOpen.openContact} onClose={() => handleClosePopup('openContact')} />)}
+            {isOpen.openContact && (<PopupInfo isOpen={isOpen.openContact} onClose={() => handleClosePopup('openContact')} callBack={proceedToCheckout} />)}
             <div className="pb-3">
                 <Breadcrumb items={breadcrumbDetailProduct} />
             </div>

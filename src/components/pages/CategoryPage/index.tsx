@@ -5,6 +5,7 @@ import Carousel from '@/components/atoms/Carousel';
 import IconButton from '@/components/atoms/IconButton';
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
+import NotFound from '@/components/molecules/NotFound';
 import { categories as example } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
@@ -20,7 +21,7 @@ import ReactPaginate from 'react-paginate';
 import { SwiperSlide } from 'swiper/react';
 
 function CategoryPage({ category_key }: { category_key: string }) {
-    const [filters, setFilter] = useState<FilterProductType>({
+    const initFilter: FilterProductType = {
         limitnumber: 30,
         page: 1,
         brand: [],
@@ -30,7 +31,8 @@ function CategoryPage({ category_key }: { category_key: string }) {
         sortPrice: "",
         order: 'asc',
         sortBy: 'product_price'
-    })
+    }
+    const [filters, setFilter] = useState<FilterProductType>(initFilter)
     const [showMobileFilter, setShowMobileFilter] = useState(false);
     const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery(filters)
     const { data: categories, isLoading, error } = useGetAllCategoryQuery(category_key)
@@ -68,6 +70,11 @@ function CategoryPage({ category_key }: { category_key: string }) {
         const newData = isArray(filters[filed]) && (filed !== "price") ? newArr(filters[filed], value) : value
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
+
+    const handleResetFilter = () => {
+        setFilter(initFilter)
+    }
+
     useEffect(() => {
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [products])
@@ -138,46 +145,54 @@ function CategoryPage({ category_key }: { category_key: string }) {
                         {loadingProduct ? (
                             <ProductSkeleton length={20} />
                         ) :
-                            (<div className="grid grid-cols-2 grid-rows-6 md:grid-cols-4 lg:grid-cols-5 gap-2 px-2">
-                                {productsDisplay.map(({
-                                    id,
-                                    product_name,
-                                    product_thumbnail,
-                                    product_price,
-                                    product_rate
-                                }) => (
-                                    <div key={id} className=" flex items-center justify-center">
-                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
-                                            <CardProductFull
-                                                key={id}
-                                                className='min-h-[330px]'
-                                                id={id}
-                                                product_thumbnail={product_thumbnail}
-                                                product_name={product_name}
-                                                product_price={product_price}
-                                                product_rate={product_rate}
-                                            />
-                                        </Link>
-                                    </div>
-                                ))}
-                                {/* Banner */}
-                            </div>)}
-                        <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
-                            <ReactPaginate
-                                className='flex gap-4 items-center justify-center '
-                                breakLabel="..."
-                                nextLabel={<ChevronRightIcon />}
-                                activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
-                                pageRangeDisplayed={4}
-                                initialPage={currentPage - 1}
-                                onPageChange={(selectedItem) => {
-                                    handleFilter("page", selectedItem.selected + 1);
-                                }}
-                                pageCount={totalPage}
-                                previousLabel={<ChevronLeftIcon />}
-                                renderOnZeroPageCount={null}
-                            />
-                        </div>
+                            productsDisplay.length > 0 ? (
+                                <div className="grid grid-cols-2 grid-rows-auto md:grid-cols-4 lg:grid-cols-5 gap-2 px-2">
+                                    {productsDisplay.map(({
+                                        id,
+                                        product_name,
+                                        product_thumbnail,
+                                        product_price,
+                                        product_rate
+                                    }) => (
+                                        <div key={id} className=" flex items-center justify-center">
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
+                                                <CardProductFull
+                                                    key={id}
+                                                    className='min-h-[330px]'
+                                                    id={id}
+                                                    product_thumbnail={product_thumbnail}
+                                                    product_name={product_name}
+                                                    product_price={product_price}
+                                                    product_rate={product_rate}
+                                                />
+                                            </Link>
+                                        </div>
+                                    ))}
+                                    {/* Banner */}
+                                </div>
+                            ) : (
+                                <NotFound content='Không tìm thấy sản phẩm nào phù hợp'
+                                    onFc={handleResetFilter}
+                                    labelButton='Xóa lọc' />
+                            )}
+                        {totalPage > 1 && (
+                            <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
+                                <ReactPaginate
+                                    className='flex gap-4 items-center justify-center '
+                                    breakLabel="..."
+                                    nextLabel={<ChevronRightIcon />}
+                                    activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
+                                    pageRangeDisplayed={4}
+                                    initialPage={currentPage - 1}
+                                    onPageChange={(selectedItem) => {
+                                        handleFilter("page", selectedItem.selected + 1);
+                                    }}
+                                    pageCount={totalPage}
+                                    previousLabel={<ChevronLeftIcon />}
+                                    renderOnZeroPageCount={null}
+                                />
+                            </div>
+                        )}
                     </div>
 
                 </div>

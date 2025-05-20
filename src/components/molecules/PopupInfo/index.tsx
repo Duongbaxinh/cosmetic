@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { setShippingAddress, useCreateShippingAddressMutation } from "@/redux/slices/shippingAddress.slice";
-import { AddressInfo } from "@/types";
+import { AddressInfo, ShippingAddress } from "@/types";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -21,6 +21,7 @@ export type Ward = { code: number; name: string };
 export type PopupInfoType = {
     isOpen: boolean;
     onClose: () => void;
+    callBack?: (shippingAddress?: ShippingAddress) => void
 };
 
 export type FormValues = {
@@ -30,7 +31,7 @@ export type FormValues = {
     address: string;
 };
 
-function PopupInfo({ isOpen, onClose }: PopupInfoType) {
+function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
     const router = useRouter();
 
     const methods = useForm<FormValues>();
@@ -112,10 +113,9 @@ function PopupInfo({ isOpen, onClose }: PopupInfoType) {
 
         const dataCreateShippingAddress = await createShippingAddress(dataShipping);
         if (dataCreateShippingAddress.data) {
-            dispatch(setShippingAddress(dataCreateShippingAddress.data))
+            dispatch(setShippingAddress([dataCreateShippingAddress.data]))
+            if (callBack) callBack(dataCreateShippingAddress.data);
         }
-
-        console.log("check data shipping address ::: ", dataCreateShippingAddress);
     };
 
     const handlePopup = (type: "cancel" | "continue") => {

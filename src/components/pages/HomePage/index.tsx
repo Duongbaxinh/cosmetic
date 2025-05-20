@@ -112,25 +112,26 @@ const HomePage: React.FC = () => {
     const product_discounts_display = productsDiscount?.results ?? []
     const products_display = products?.results ?? []
 
-    console.log("check shipping address", shippingAddress)
     return (
         <ContainerLayout >
             <div className="w-full flex-col gap-8 space-y-4 text-black">
                 {/* CATEGORY */}
-                <Carousel slidesPerView={2} clickable>
-                    {categories.map(({ id, product_thumbnail }) => (
-                        <SwiperSlide key={id}>
-                            <Link href={`/category/${id}`}>
-                                <img
-                                    src={product_thumbnail}
-                                    alt="carousel-image"
-                                    className="h-full max-h-[250px] w-full object-cover"
-                                />
-                            </Link>
-                        </SwiperSlide>
-                    ))}
+                <div className=" w-full p-3 bg-white rounded-md">
+                    <Carousel slidesPerView={2} clickable>
+                        {categories.map(({ id, product_thumbnail }) => (
+                            <SwiperSlide key={id}>
+                                <Link href={`/category/${id}`}>
+                                    <img
+                                        src={product_thumbnail}
+                                        alt="carousel-image"
+                                        className="h-full max-h-[250px] w-full object-cover"
+                                    />
+                                </Link>
+                            </SwiperSlide>
+                        ))}
 
-                </Carousel>
+                    </Carousel>
+                </div>
 
                 {/* Giá tốt hôm nay */}
                 <div className="w-full bg-white rounded-md">

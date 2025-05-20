@@ -47,7 +47,7 @@ function ChangePassword() {
             "new_password": data.newPassword
         }
         const dataChangePassword = await changePassword(payload)
-        console.log("ssss", dataChangePassword)
+
         if (dataChangePassword.data) {
             console.log(dataChangePassword)
             alert(dataChangePassword.data)

@@ -6,7 +6,13 @@ import {
   NoteIcon,
   UserIcon,
 } from "@/assets/icons";
-import { PROFILE_URL } from "@/routers";
+import {
+  NOTICE_URL,
+  PRODUCT_OVER_URL,
+  PRODUCT_REVIEW_URL,
+  PROFILE_URL,
+  SHIPPING_ADDRESS_URL,
+} from "@/routers";
 import { JSX } from "react";
 
 export interface SidebarDetailType {
@@ -22,7 +28,7 @@ export const SIDEBAR_DETAIL: SidebarDetailType[] = [
     title: "Thông tin tài khoản",
   },
   {
-    path: "customer/notification",
+    path: NOTICE_URL,
     icon: BellIcon,
     title: "Thông báo của tôi",
   },
@@ -32,17 +38,17 @@ export const SIDEBAR_DETAIL: SidebarDetailType[] = [
     title: "Quản lý đơn hàng",
   },
   {
-    path: "customer/address",
+    path: SHIPPING_ADDRESS_URL,
     icon: LocationIcon,
     title: "Sổ địa chỉ",
   },
   {
-    path: "customer/review",
+    path: PRODUCT_REVIEW_URL,
     icon: InboxIcon,
     title: "Đánh giá sản phẩm",
   },
   {
-    path: "customer/look-over",
+    path: PRODUCT_OVER_URL,
     icon: EyeIcon,
     title: "Sản phẩm đã xem",
   },

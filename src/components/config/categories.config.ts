@@ -1,28 +1,29 @@
+import { CATEGORY_URL } from "@/routers";
 import { CategoryConfig } from "@/types";
 
 export const CATEGORY_CONFIG: CategoryConfig[] = [
   {
     title: "Chăm sóc da",
-    url: "/danh-muc/cham-soc-da",
+    url: `${CATEGORY_URL}/cham-soc-da`,
   },
   {
     title: "Trang điểm",
-    url: "/danh-muc/trang-diem",
+    url: `${CATEGORY_URL}/trang-diem`,
   },
   {
     title: "Chăm sóc tóc",
-    url: "/danh-muc/cham-soc-toc",
+    url: `${CATEGORY_URL}/cham-soc-toc`,
   },
   {
     title: "Chăm sóc cơ thể",
-    url: "/danh-muc/cham-soc-co-the",
+    url: `${CATEGORY_URL}/cham-soc-co-the`,
   },
   {
     title: "Nước hoa",
-    url: "/danh-muc/nuoc-hoa",
+    url: `${CATEGORY_URL}/nuoc-hoa`,
   },
   {
     title: "Chăm sóc môi",
-    url: "/danh-muc/cham-soc-moi",
+    url: `${CATEGORY_URL}/cham-soc-moi`,
   },
 ];

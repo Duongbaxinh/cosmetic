@@ -35,36 +35,3 @@ export const productList: Product[] = [
       "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide",
   },
 ];
-
-export const carts = [
-  {
-    id: 1,
-    id: {
-      product_name: "Bàn Gỗ Cao Cấp",
-      product_price: 2500000,
-      product_thumbnail: "/images/table.jpg",
-      product_genuine: true,
-    },
-    quantity_count: 2,
-  },
-  {
-    id: 2,
-    id: {
-      product_name: "Ghế Sofa Đệm Mềm",
-      product_price: 4500000,
-      product_thumbnail: "/images/sofa.jpg",
-      product_genuine: false,
-    },
-    quantity_count: 1,
-  },
-  {
-    id: 3,
-    id: {
-      product_name: "Tủ Quần Áo Gỗ Sồi",
-      product_price: 5500000,
-      product_thumbnail: "/images/wardrobe.jpg",
-      product_genuine: true,
-    },
-    quantity_count: 1,
-  },
-];

@@ -44,6 +44,9 @@ export type Props = {
     type_edit: keyof TypeEdit;
     token: string;
   }>;
+  searchParams: Promise<{
+    token: string;
+  }>;
 };
 
 export type IconProps = {
