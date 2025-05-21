@@ -1,4 +1,3 @@
-import { transform } from "next/dist/build/swc";
 import type { Config } from "tailwindcss";
 const plugin = require("tailwind-scrollbar");
 
@@ -28,6 +27,9 @@ const config: Config = {
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(to bottom, transparent 0%, transparent 60%, white 100%)",
+      },
+      fontFamily: {
+        sans: ["Inter", "Roboto", "sans-serif"],
       },
       colors: {
         background: "var(--background)",

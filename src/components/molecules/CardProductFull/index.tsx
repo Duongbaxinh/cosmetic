@@ -9,7 +9,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({ product_name, product
         <div className={`w-full  bg-white max-h-[380px] min-h-[330px] border border-gray-200 shadow-sm cursor-pointer rounded-lg p-2 flex flex-col gap-2 ${className}`}>
             <div className="flex flex-col justify-start gap-1 pb-6 border-b border-gray-200">
                 <img src={product_thumbnail} alt={product_name} className=" w-[150px] h-[150px] max-h-[150px] object-cover cursor-pointer" />
-                <p className="text-[13px] font-medium line-clamp-3 max-h-[60px] min-h-[60px]">{product_name}</p>
+                <p className="text-[15px] font-thin line-clamp-3 max-h-[60px] min-h-[60px]">{product_name}</p>
                 <div className="flex space-x-1">
                     <GroupStart
                         starActive={product_rate}

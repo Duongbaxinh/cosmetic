@@ -53,7 +53,13 @@ const breakpoints = {
     },
 }
 const HomePage: React.FC = () => {
-    const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+    const accessToken = typeof window !== "undefined"
+        ? (() => {
+            const token = localStorage.getItem("accessToken");
+            console.log("tioooo", token === null)
+            return token ? JSON.parse(token) : null;
+        })()
+        : null;
 
     const { data: userProfile, error: errorProfile, isLoading } = useGetUserQuery(undefined, {
         skip: !accessToken,
@@ -94,9 +100,16 @@ const HomePage: React.FC = () => {
         if (shippingAddress) {
             dispatch(setShippingAddress(shippingAddress))
         }
-    }, [userProfile]);
+    }, [userProfile, shippingAddress]);
 
     useEffect(() => {
+        const accessToken = typeof window !== "undefined"
+            ? (() => {
+                const token = localStorage.getItem("accessToken");
+                return token ? JSON.parse(token) : null;
+            })()
+            : null;
+
         if (data) {
             setProducts(prev => {
                 const prevProducts = prev?.results ?? [];
@@ -107,7 +120,6 @@ const HomePage: React.FC = () => {
             });
         }
     }, [data]);
-
     const product_internal_display = productsInternal?.results ?? []
     const product_discounts_display = productsDiscount?.results ?? []
     const products_display = products?.results ?? []
@@ -154,7 +166,7 @@ const HomePage: React.FC = () => {
 
                                     }) => (
                                         <SwiperSlide key={id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`} className='block w-full h-full'>
                                                 <CardProduct
                                                     key={id}
                                                     product_price={product_price}
@@ -312,7 +324,7 @@ const HomePage: React.FC = () => {
                                     product_price,
                                 }) => (
                                     <div key={id} className=" flex items-center justify-center">
-                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
+                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`} className='block w-full h-full'>
                                             <CardProductFull
                                                 key={id}
                                                 id={id}
