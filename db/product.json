@@ -28,205 +28,294 @@
     }
   },
   "products": {
-    "data": {
-      "products": [
-        {
-          "_id": "67ff67353f19d24dd1e85b54",
-          "product_name": "Kem Dưỡng Chống Lão Hóa",
-          "product_price": 620000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp",
-          "product_images": [],
-          "product_type": "Kem dưỡng",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Italy",
-          "product_discount": true,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 85,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67353f19d24dd1e85b55",
-          "product_name": "Tinh Chất Collagen Chống Nhăn",
-          "product_price": 450000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578546/20db49212c015aad2fced1325a8b60ca.jpg_tosrfw.webp",
-          "product_images": [],
-          "product_type": "Tinh chất",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Korea",
-          "product_discount": false,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 120,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67433f19d24dd1e85b5d",
-          "product_name": "Tẩy Trang Micellar Water",
-          "product_price": 190000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578530/71451db414c4f652532cb727db142455.jpg_hdi5mr.webp",
-          "product_images": [],
-          "product_type": "Tẩy trang",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Thailand",
-          "product_discount": false,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 70,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67353f19d24dd1e85b4f",
-          "product_name": "Serum Vitamin C Làm Sáng Da",
-          "product_price": 499000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707556372/f372f8b978ab44f821044c64fbd2a5f1.png_w5zodz.webp",
-          "product_images": [
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp"
-          ],
-          "product_type": "Serum",
-          "product_brand": "BRAND_1",
-          "product_category": "NOSE",
-          "product_made": "Korea",
-          "product_discount": true,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 80,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67353f19d24dd1e85b4d",
-          "product_name": "Sữa Rửa Mặt Trà Xanh Dưỡng Ẩm",
-          "product_price": 280000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp",
-          "product_images": [
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707556454/2507a15266157eb18029c1abbbe71bd5.jpg_r75wtj.webp"
-          ],
-          "product_type": "Sữa rửa mặt",
-          "product_brand": "BRAND_1",
-          "product_category": "FACE",
-          "product_made": "Vietnam",
-          "product_discount": true,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 30,
-          "product_international": false,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67433f19d24dd1e85b5a",
-          "product_name": "Serum Vitamin C Làm Sáng Da",
-          "product_price": 499000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707556372/f372f8b978ab44f821044c64fbd2a5f1.png_w5zodz.webp",
-          "product_images": [
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp"
-          ],
-          "product_type": "Serum",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Korea",
-          "product_discount": true,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 80,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67433f19d24dd1e85b60",
-          "product_name": "Tinh Chất Collagen Chống Nhăn",
-          "product_price": 450000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578546/20db49212c015aad2fced1325a8b60ca.jpg_tosrfw.webp",
-          "product_images": [],
-          "product_type": "Tinh chất",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Korea",
-          "product_discount": false,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 120,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67433f19d24dd1e85b5f",
-          "product_name": "Kem Dưỡng Chống Lão Hóa",
-          "product_price": 620000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp",
-          "product_images": [],
-          "product_type": "Kem dưỡng",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Italy",
-          "product_discount": true,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 85,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67433f19d24dd1e85b57",
-          "product_name": "Kem Chống Nắng Mỏng Nhẹ Neutrogena SPF 50 88ml",
-          "product_price": 416000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707556454/2507a15266157eb18029c1abbbe71bd5.jpg_r75wtj.webp",
-          "product_images": [
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578530/71451db414c4f652532cb727db142455.jpg_hdi5mr.webp",
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578535/a33e9bcd4c1c613d1b3404eb594b8b90.jpg_ssguf4.webp",
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578546/20db49212c015aad2fced1325a8b60ca.jpg_tosrfw.webp",
-            "https://res.cloudinary.com/dwu92ycra/image/upload/v1707556372/f372f8b978ab44f821044c64fbd2a5f1.png_w5zodz.webp"
-          ],
-          "product_type": "Kem chống nắng",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Japan",
-          "product_discount": false,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 100,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        },
-        {
-          "_id": "67ff67353f19d24dd1e85b52",
-          "product_name": "Tẩy Trang Micellar Water",
-          "product_price": 190000,
-          "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707578530/71451db414c4f652532cb727db142455.jpg_hdi5mr.webp",
-          "product_images": [],
-          "product_type": "Tẩy trang",
-          "product_brand": "BRAND_ID_EXAMPLE",
-          "product_category": "CATEGORY_ID_EXAMPLE",
-          "product_made": "Thailand",
-          "product_discount": false,
-          "product_discount_start": 1680692122000,
-          "product_discount_end": 1680695722000,
-          "product_sold": 70,
-          "product_international": true,
-          "product_rate": 5,
-          "product_ingredient": "Water, Butylene Glycol, Glycerin, Hydroxyethyl Urea, Pentylene Glycol, Triethylhexanoin, Squalane, PPG-10 Methyl Glucose Ether, Ammonium Acryloyldimethyltaurate/VP Copolymer, Behenyl Alcohol, Dimethicone, Triethyl Citrate, PPG-17-Buteth-17, Cyclopentasiloxane, Phenoxyethanol, Disodium Succinate, Methylparaben, Sodium Hyaluronate, Dimethicone Crosspolymer, Succinic Acid, Agar, Disodium EDTA, Sodium Acetylated Hyaluronate, Hydrolyzed Hyaluronic Acid, Hydrolyzed Collagen, Aphanothece Sacrum Exopolysaccharides, Alpha-Glucan, Ammonium Acrylates Copolymer, Hydroxypropyltrimonium Hyaluronate, Glucosyl Ceramide"
-        }
-      ],
-      "total": 100,
-      "page": 1,
-      "limit": 10,
-      "total_page": 10
-    }
+    "links": {
+      "previous": null,
+      "next": "http://joyboybe-production.up.railway.app/products?limitnumber=10&order=asc&page=2&sortBy=product_price"
+    },
+    "page": 1,
+    "page_size": 10,
+    "num_pages": 2,
+    "count": 15,
+    "results": [
+      {
+        "id": "f7a8b9c0-d1e2-4f56-9abc-987654321123",
+        "product_name": "The Ordinary Niacinamide 10% + Zinc 1%",
+        "product_price": 250000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ee5dd51c-0bc1-4158-ac25-abea088d5f91.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/ee5dd51c-0bc1-4158-ac25-abea088d5f91.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/61cb1de8-2973-4cb8-af8f-0f749bf0c746.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/160bc15e-9449-4be5-b482-f72ce192809d.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/9c1f783f-4c14-4f5c-b198-b80c98156d24.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/ac00e9ff-952c-49d0-bac2-755659cf4ad4.webp"
+        ],
+        "product_type": "Serum",
+        "product_brand": "The Ordinary",
+        "product_category": "Chăm sóc da",
+        "product_made": "Canada",
+        "product_discount": true,
+        "product_discount_start": "2025-05-20T00:00:00.000Z",
+        "product_discount_end": "2025-06-20T23:59:59.000Z",
+        "product_sold": 320,
+        "product_international": true,
+        "product_rate": 4.7,
+        "product_ingredient": "Niacinamide, Zinc PCA, Tamarindus Indica Seed Gum",
+        "product_description": "Serum giúp kiểm soát bã nhờn, thu nhỏ lỗ chân lông và cải thiện làn da không đều màu.",
+        "product_stock_quantity": 100,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "a1b2c3d4-e5f6-7890-abcd-123456789141",
+        "product_name": "The Ordinary Alpha Arbutin 2% + HA",
+        "product_price": 330000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/e7cd2392-0f50-485c-9fad-b560875d2e9f.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/e7cd2392-0f50-485c-9fad-b560875d2e9f.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/50d0c5ab-06de-4f98-b798-f4dcd45d4f6f.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/13f9fa6e-a40c-4d07-9097-af5ca8f3f1fb.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/236fc58c-8599-40f5-ae93-50bb246fa84e.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/4a643d04-3d2e-4e5a-9dd2-43a343931be9.webp"
+        ],
+        "product_type": "Serum",
+        "product_brand": "The Ordinary",
+        "product_category": "Chăm sóc da",
+        "product_made": "Canada",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 165,
+        "product_international": true,
+        "product_rate": 4.5,
+        "product_ingredient": "Alpha Arbutin, Hyaluronic Acid, Glycerin, Lactic Acid",
+        "product_description": "Serum The Ordinary Alpha Arbutin giúp làm sáng da, giảm thâm, mang lại làn da đều màu.",
+        "product_stock_quantity": 60,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "b2c3d4e5-f6a7-8901-bcde-234567890252",
+        "product_name": "Laneige Water Sleeping Mask",
+        "product_price": 650000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/558e2f39-8f2c-4ec1-8d93-f2621f6deb70.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/558e2f39-8f2c-4ec1-8d93-f2621f6deb70.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/cd1528fa-2d38-42e6-b781-1cb1ec46fa46.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/eb6a1752-bf23-4e8a-b390-d4bc6e8dbd78.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/28587edf-2e98-41fb-8da9-5f76895e544e.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/2ece105e-0def-4d76-9cc7-769d57dc2ec2.webp"
+        ],
+        "product_type": "Mặt nạ ngủ",
+        "product_brand": "Laneige",
+        "product_category": "Chăm sóc da",
+        "product_made": "Korea",
+        "product_discount": true,
+        "product_discount_start": "2025-05-15T00:00:00.000Z",
+        "product_discount_end": "2025-05-30T23:59:59.000Z",
+        "product_sold": 450,
+        "product_international": true,
+        "product_rate": 4.8,
+        "product_ingredient": "Water, Hydro Ionized Mineral Water, Glycerin, Trehalose",
+        "product_description": "Mặt nạ ngủ dưỡng ẩm sâu, giúp da căng mọng và rạng rỡ sau khi thức dậy.",
+        "product_stock_quantity": 80,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "c3d4e5f6-a7b8-9012-cdef-345678901363",
+        "product_name": "Innisfree Green Tea Seed Serum",
+        "product_price": 520000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/53dd920f-cd75-45b8-bdd5-fd311def024c.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/53dd920f-cd75-45b8-bdd5-fd311def024c.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/e643a59e-b3e1-4966-acab-a3dba2a03234.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/9969b9c9-2479-4ec1-9f0d-9090365d8da4.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/c4d00bb8-6829-4c55-90e4-339f3b1d7d99.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/c4906582-f8ae-493d-82e6-f6d73c2884b4.webp"
+        ],
+        "product_type": "Serum",
+        "product_brand": "Innisfree",
+        "product_category": "Chăm sóc da",
+        "product_made": "Korea",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 280,
+        "product_international": true,
+        "product_rate": 4.6,
+        "product_ingredient": "Green Tea Extract, Panthenol, Betaine",
+        "product_description": "Serum dưỡng ẩm với chiết xuất trà xanh, giúp nuôi dưỡng và bảo vệ da.",
+        "product_stock_quantity": 70,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "d4e5f6a7-b8c9-0123-def0-456789012474",
+        "product_name": "COSRX Low pH Good Morning Gel Cleanser",
+        "product_price": 280000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/products/17dbfae7-bbf3-419a-826a-1604761a3d93.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/products/17dbfae7-bbf3-419a-826a-1604761a3d93.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/02f5d4dc-d0e5-4e96-9fb0-ba0b5f32a8bb.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/1dacdb3b-fb1c-44d3-8990-8efcb4f4092a.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/90ca15cf-ffd3-4dc7-a5c4-17ad91e24c3e.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/03bd31a3-e4f3-43a0-b698-298f90469d4a.webp"
+        ],
+        "product_type": "Sữa rửa mặt",
+        "product_brand": "COSRX",
+        "product_category": "Chăm sóc da",
+        "product_made": "Korea",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 600,
+        "product_international": true,
+        "product_rate": 4.9,
+        "product_ingredient": "Tea Tree Oil, BHA, Cocamidopropyl Betaine",
+        "product_description": "Sữa rửa mặt dịu nhẹ với độ pH thấp, làm sạch da mà không gây khô căng.",
+        "product_stock_quantity": 120,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "e5f6a7b8-c9d0-1234-ef01-567890123585",
+        "product_name": "L'Oréal Paris Revitalift Laser X3 Cream",
+        "product_price": 750000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/4f1b14b2-39b9-47d0-b1dd-93748d938438.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/4f1b14b2-39b9-47d0-b1dd-93748d938438.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/44bbe0cc-46f6-49a1-84a8-3cd853184041.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/deebc86f-28fc-4354-ae74-c6dee44f6607.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/fcdba7ea-245a-44d5-92f7-23b0241b647c.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/954e95e0-0e47-4d62-ba04-de305f14c150.webp"
+        ],
+        "product_type": "Kem dưỡng",
+        "product_brand": "L'Oréal Paris",
+        "product_category": "Chăm sóc da",
+        "product_made": "France",
+        "product_discount": true,
+        "product_discount_start": "2025-05-10T00:00:00.000Z",
+        "product_discount_end": "2025-06-10T23:59:59.000Z",
+        "product_sold": 200,
+        "product_international": true,
+        "product_rate": 4.4,
+        "product_ingredient": "Pro-Xylane, Hyaluronic Acid, Adenosine",
+        "product_description": "Kem dưỡng chống lão hóa, giúp giảm nếp nhăn và tăng độ săn chắc cho da.",
+        "product_stock_quantity": 50,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "f6a7b8c9-d0e1-2345-f012-678901234696",
+        "product_name": "Maybelline Fit Me Matte + Poreless Foundation",
+        "product_price": 220000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ab435650-0510-471a-9b84-e13fe0d6bde5.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/ab435650-0510-471a-9b84-e13fe0d6bde5.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/2067ed21-e22f-478b-8cc5-152a92060dcc.webp",
+          "https://image.hsv-tech.io/600x600/bbx/products/a67db543-a864-4e93-907f-4a821154c2e3.webp"
+        ],
+        "product_type": "Kem nền",
+        "product_brand": "Maybelline",
+        "product_category": "Trang điểm",
+        "product_made": "USA",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 800,
+        "product_international": true,
+        "product_rate": 4.3,
+        "product_ingredient": "Dimethicone, Talc, Titanium Dioxide",
+        "product_description": "Kem nền kiềm dầu, che phủ tốt, phù hợp với da dầu và hỗn hợp.",
+        "product_stock_quantity": 150,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "a7b8c9d0-e1f2-3456-0123-789012345707",
+        "product_name": "Anastasia Beverly Hills Dipbrow Pomade",
+        "product_price": 550000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/1285b479-f5fd-4cb9-8ec9-b4f1701e874b.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/1285b479-f5fd-4cb9-8ec9-b4f1701e874b.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/b310f1d6-ce35-462b-822e-823ae82e96af.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/0c64d045-c51d-4dea-86d9-2ca72a5e4dd9.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/f51f429e-b0a2-44a1-830c-4c0ab1da3ca3.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/056c5903-c9f5-4657-a310-6d9b07295049.webp"
+        ],
+        "product_type": "Gel kẻ mày",
+        "product_brand": "Anastasia Beverly Hills",
+        "product_category": "Trang điểm",
+        "product_made": "USA",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 120,
+        "product_international": true,
+        "product_rate": 4.7,
+        "product_ingredient": "Silica, Isododecane, Polyethylene",
+        "product_description": "Gel kẻ mày lâu trôi, giúp định hình chân mày sắc nét và tự nhiên.",
+        "product_stock_quantity": 40,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "b8c9d0e1-f2a3-4567-1234-890123456818",
+        "product_name": "Dr.Jart+ Ceramidin Cream",
+        "product_price": 950000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/2cc02dec-63da-49df-aac5-4213b4dc748e.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/2cc02dec-63da-49df-aac5-4213b4dc748e.webp",
+          "https://image.hsv-tech.io/600x600/bbx/products/75927a58-07ab-42b4-9f69-1b4ef515835b.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/e8fd13fc-76bb-4836-bef0-0874a4733420.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/fa1244ed-b58e-43f2-b5d4-d3f606f550be.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/48e2b8b7-25fb-4a56-b12d-a4b2789cc0fe.webp"
+        ],
+        "product_type": "Kem dưỡng",
+        "product_brand": "Dr.Jart+",
+        "product_category": "Chăm sóc da",
+        "product_made": "Korea",
+        "product_discount": true,
+        "product_discount_start": "2025-05-01T00:00:00.000Z",
+        "product_discount_end": "2025-05-31T23:59:59.000Z",
+        "product_sold": 90,
+        "product_international": true,
+        "product_rate": 4.8,
+        "product_ingredient": "Ceramides, Panthenol, Shea Butter",
+        "product_description": "Kem dưỡng phục hồi hàng rào bảo vệ da, cấp ẩm sâu cho da khô.",
+        "product_stock_quantity": 30,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      },
+      {
+        "id": "c9d0e1f2-a3b4-5678-2345-901234567929",
+        "product_name": "Some By Mi AHA-BHA-PHA 30 Days Miracle Toner",
+        "product_price": 350000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ecadc937-824b-4f8d-88c0-4cbf5c34dcb6.webp",
+        "product_images": [
+          "https://image.hsv-tech.io/600x600/bbx/common/ecadc937-824b-4f8d-88c0-4cbf5c34dcb6.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/78cc4837-0edd-4f77-817b-e7ebd9f0918e.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/351cc65d-73ae-420b-8ce6-35acca20a752.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/6c65655f-5826-4de1-9c56-b43e4d4982ea.webp",
+          "https://image.hsv-tech.io/600x600/bbx/common/a55d4672-636e-4d72-9377-3e8ad3be5288.webp"
+        ],
+        "product_type": "Toner",
+        "product_brand": "Some By Mi",
+        "product_category": "Chăm sóc da",
+        "product_made": "Korea",
+        "product_discount": false,
+        "product_discount_start": null,
+        "product_discount_end": null,
+        "product_sold": 400,
+        "product_international": true,
+        "product_rate": 4.6,
+        "product_ingredient": "AHA, BHA, PHA, Tea Tree Extract",
+        "product_description": "Toner tẩy tế bào chết nhẹ nhàng, làm sạch lỗ chân lông và cải thiện mụn.",
+        "product_stock_quantity": 90,
+        "created_at": "2025-05-22T11:04:00.000Z",
+        "updated_at": "2025-05-22T11:04:00.000Z"
+      }
+    ]
   },
   "categories": [
     {
@@ -270,76 +359,163 @@
       "title": "Bộ chăm sóc da mặt"
     }
   ],
+
   "brands": [
     {
-      "id": 1,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844584/tiki/ed137a2be255eb14fe56fc2f7fe8c133_zgnkmt.png",
-      "logo_image": "/images/sunhouse-logo.png",
-      "title": "Triệu deal yêu thương",
-      "discount": "Giảm đến 50%"
+      "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/42e25a05-e70e-4e54-a4d7-391dd31583ad.webp",
+      "title": "L'Oréal Paris",
+      "specific": false
     },
     {
-      "id": 2,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844584/tiki/ed137a2be255eb14fe56fc2f7fe8c133_zgnkmt.png",
-      "logo_image": "/images/kangaroo-logo.png",
-      "title": "Siêu sale tháng 4",
-      "discount": "Giảm đến 40%"
+      "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/05ab3d22-0080-41d6-bfd4-43f4696d120a.webp",
+      "title": "Maybelline New York",
+      "specific": false
     },
     {
-      "id": 3,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844571/tiki/718020d7005be27f94260505ce3b4c61_hsjakx.png",
-      "logo_image": "/images/philips-logo.png",
-      "title": "Ưu đãi đặc biệt",
-      "discount": "Giảm đến 30%"
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/8192c13f-cd4e-4859-ae00-6b85640423e3.webp",
+      "title": "Estée Lauder",
+      "specific": false
     },
     {
-      "id": 4,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844571/tiki/718020d7005be27f94260505ce3b4c61_hsjakx.png",
-      "logo_image": "/images/electrolux-logo.png",
-      "title": "Khuyến mãi lớn",
-      "discount": "Giảm đến 45%"
+      "id": "3c6e0b8a-9e1c-4b3e-9c1a-1e6a4f5b2d3e",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/99e0467c-2bfa-466d-8df5-82a4ebe7f8c8.webp",
+      "title": "MAC Cosmetics",
+      "specific": false
     },
     {
-      "id": 5,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/panasonic-logo.png",
-      "title": "Mua sắm thả ga",
-      "discount": "Giảm đến 35%"
+      "id": "7d793037-a1b0-4f7c-9b4e-0c5b6d7e8f9a",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/7df65e05-451b-4198-869e-4c76d8b1b8dd.webp",
+      "title": "Clinique",
+      "specific": false
     },
     {
-      "id": 6,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/locknlock-logo.png",
-      "title": "Deal hot tuần này",
-      "discount": "Giảm đến 25%"
+      "id": "8e9f0a1b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/b33472ea-f977-4761-8d34-5436a7eb59cb.webp",
+      "title": "Lancôme",
+      "specific": false
     },
     {
-      "id": 7,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/toshiba-logo.png",
-      "title": "Siêu phẩm giảm giá",
-      "discount": "Giảm đến 20%"
+      "id": "9f0a1b2c-3d4e-5f6a-0b1c-2d3e4f5a6b7c",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/ded9b2ae-3f33-4021-9789-64fcc0db21dd.webp",
+      "title": "Chanel",
+      "specific": false
     },
     {
-      "id": 8,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/samsung-logo.png",
-      "title": "Ưu đãi cực sốc",
-      "discount": "Giảm đến 60%"
+      "id": "0a1b2c3d-4e5f-6a7b-1c2d-3e4f5a6b7c8d",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/533f13d9-9b8c-47d5-b084-87dfdc182d9b.webp",
+      "title": "Dior",
+      "specific": false
     },
     {
-      "id": 9,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/xiaomi-logo.png",
-      "title": "Sale lớn cuối năm",
-      "discount": "Giảm đến 55%"
+      "id": "1b2c3d4e-5f6a-7b8c-2d3e-4f5a6b7c8d9e",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/5129ffce-7480-4920-a2e1-372fa69cc3a8.webp",
+      "title": "NARS",
+      "specific": false
     },
     {
-      "id": 10,
-      "product_image": "https://res.cloudinary.com/dwu92ycra/image/upload/v1743844543/tiki/ae7d1e076da629fe30e902f072ed821f_af2bgz.png",
-      "logo_image": "/images/tefal-logo.png",
-      "title": "Mua 1 tặng 1",
-      "discount": "Giảm đến 15%"
+      "id": "2c3d4e5f-6a7b-8c9d-3e4f-5a6b7c8d9e0f",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/851bfd4a-d255-40e0-a92b-262d864a27ba.webp",
+      "title": "Urban Decay",
+      "specific": false
+    },
+    {
+      "id": "3d4e5f6a-7b8c-9d0e-4f5a-6b7c8d9e0f1a",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/7181a78e-a04a-461e-952b-5ef636d9a5bb.webp",
+      "title": "Revlon",
+      "specific": false
+    },
+    {
+      "id": "4e5f6a7b-8c9d-0e1f-5a6b-7c8d9e0f1a2b",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/1f122bc0-60c1-4e88-a592-e104f9e375ca.webp",
+      "title": "Yves Saint Laurent",
+      "specific": false
+    },
+    {
+      "id": "5f6a7b8c-9d0e-1f2a-6b7c-8d9e0f1a2b3c",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/124b4465-b323-4609-b36f-161385e6b9ee.webp",
+      "title": "Shiseido",
+      "specific": false
+    },
+    {
+      "id": "6a7b8c9d-0e1f-2a3b-7c8d-9e0f1a2b3c4d",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/950dcf94-9fb5-47b5-8aef-a2327922dad3.webp",
+      "title": "Bobbi Brown",
+      "specific": false
+    },
+    {
+      "id": "7b8c9d0e-1f2a-3b4c-8d9e-0f1a2b3c4d5e",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/d08cd181-f48d-4567-ba6a-708a110d1b9e.webp",
+      "title": "The Body Shop",
+      "specific": false
+    },
+    {
+      "id": "8c9d0e1f-2a3b-4c5d-9e0f-1a2b3c4d5e6f",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/93d1ebea-a392-43a4-b930-fde516b298e5.webp",
+      "title": "Laura Mercier",
+      "specific": false
+    },
+    {
+      "id": "9d0e1f2a-3b4c-5d6e-0f1a-2b3c4d5e6f7a",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/1b4629d4-6a1d-4323-946b-f2a81375ae8b.webp",
+      "title": "Smashbox",
+      "specific": false
+    },
+    {
+      "id": "0e1f2a3b-4c5d-6e7f-1a2b-3c4d5e6f7a8b",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/1f61423d-5fa8-4101-acd1-8513e05b4db2.webp",
+      "title": "Too Faced",
+      "specific": false
+    },
+    {
+      "id": "1f2a3b4c-5d6e-7f8a-2b3c-4d5e6f7a8b9c",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/f34c628d-957a-4e99-aa1d-87b75fddede4.webp",
+      "title": "Anastasia Beverly Hills",
+      "specific": false
+    },
+    {
+      "id": "2a3b4c5d-6e7f-8a9b-3c4d-5e6f7a8b9c0d",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/9d310391-1b94-4f51-b4ff-91cfd9836cb4.webp",
+      "title": "Fenty Beauty",
+      "specific": false
+    },
+    {
+      "id": "3b4c5d6e-7f8a-9b0c-4d5e-6f7a8b9c0d1e",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/2ecc2fd8-6809-4a29-b218-8bfbd536a248.webp",
+      "title": "Huda Beauty",
+      "specific": false
+    },
+    {
+      "id": "4c5d6e7f-8a9b-0c1d-5e6f-7a8b9c0d1e2f",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/cad3266c-74be-449b-9680-9749b9091559.webp",
+      "title": "Charlotte Tilbury",
+      "specific": false
+    },
+    {
+      "id": "5d6e7f8a-9b0c-1d2e-6f7a-8b9c0d1e2f3a",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/6db78932-52c7-45b4-accb-51d8aac32048.webp",
+      "title": "Tarte Cosmetics",
+      "specific": false
+    },
+    {
+      "id": "6e7f8a9b-0c1d-2e3f-7a8b-9c0d1e2f3a4b",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/4ed8e864-9412-4ee4-ace5-35337cdfe84a.webp",
+      "title": "Glossier",
+      "specific": false
+    },
+    {
+      "id": "7f8a9b0c-1d2e-3f4a-8b9c-0d1e2f3a4b5c",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/8795a53f-9fbd-4fe6-a1ea-4f3fe3458900.webp",
+      "title": "Pat McGrath Labs",
+      "specific": false
+    },
+    {
+      "id": "8a9b0c1d-2e3f-4a5b-9c0d-1e2f3a4b5c6d",
+      "image": "https://image.hsv-tech.io/900x439/bbx/common/5022bcfe-22e0-4a86-915c-d31209413ef4.webp",
+      "title": "Kiehl's",
+      "specific": false
     }
   ],
   "cart": {
@@ -358,24 +534,94 @@
     },
     "cart_products": [
       {
-        "id": 5001,
+        "id": "6b058000-bd68-4aec-8f3a-53ba66e58b9e",
+        "product_name": "The Ordinary Niacinamide 10% + Zinc 1%",
         "product_price": 250000,
-        "product_price_cost": 250000,
-        "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707539160/1758519e93449af005a02dc443a91b8d.jpg_fuhxnm.webp",
-        "product_name": "Sữa Rửa Mặt Dạng Gel Dịu Nhẹ Dành Cho Da Nhạy Cảm Và Da Khô Laneige Water Bank Blue Ha Cleansing Gel 200ml",
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ee5dd51c-0bc1-4158-ac25-abea088d5f91.webp",
         "quantity": 1,
-        "product_total_price": 250000,
-        "product_discount": 0.0
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.029766Z"
       },
       {
-        "id": 5002,
-        "product_price": 249999,
-        "product_price_cost": 24.99,
-        "product_thumbnail": "https://res.cloudinary.com/dwu92ycra/image/upload/v1707549401/b8a8f9156a46e6fa5e9191577a5a041f.png_psazkh.webp",
-        "product_name": "Bộ sản phẩm Kem chống nắng dưỡng da bảo vệ hoàn hảo (Anessa Gold Milk 60ml x2 + Gold Gel 90g)",
+        "id": "fe3854b6-af03-41b4-a47d-0a0676951f61",
+        "product_name": "The Ordinary Alpha Arbutin 2% + HA",
+        "product_price": 330000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/e7cd2392-0f50-485c-9fad-b560875d2e9f.webp",
         "quantity": 1,
-        "product_total_price": 240000,
-        "product_discount": 0.0
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.035778Z"
+      },
+      {
+        "id": "8085c4eb-86d0-4afc-8c8e-93c181848b7a",
+        "product_name": "Laneige Water Sleeping Mask",
+        "product_price": 650000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/558e2f39-8f2c-4ec1-8d93-f2621f6deb70.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.042393Z"
+      },
+      {
+        "id": "4eb6dd17-3da8-4759-b4c1-be2d9a747291",
+        "product_name": "Innisfree Green Tea Seed Serum",
+        "product_price": 520000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/53dd920f-cd75-45b8-bdd5-fd311def024c.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.047761Z"
+      },
+      {
+        "id": "178654f6-0e6e-4cc1-8819-d7b29684fbb3",
+        "product_name": "COSRX Low pH Good Morning Gel Cleanser",
+        "product_price": 280000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/products/17dbfae7-bbf3-419a-826a-1604761a3d93.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.053228Z"
+      },
+      {
+        "id": "b9daf5fe-306f-4712-a85c-6fff9d2e9a9e",
+        "product_name": "L'Oréal Paris Revitalift Laser X3 Cream",
+        "product_price": 750000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/4f1b14b2-39b9-47d0-b1dd-93748d938438.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.059059Z"
+      },
+      {
+        "id": "04640338-60af-46be-82a3-c83c95c78ba5",
+        "product_name": "Maybelline Fit Me Matte + Poreless Foundation",
+        "product_price": 220000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ab435650-0510-471a-9b84-e13fe0d6bde5.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.064280Z"
+      },
+      {
+        "id": "c02669ec-4f7c-4c05-b47e-a113e9a8e330",
+        "product_name": "Anastasia Beverly Hills Dipbrow Pomade",
+        "product_price": 550000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/1285b479-f5fd-4cb9-8ec9-b4f1701e874b.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.069756Z"
+      },
+      {
+        "id": "f909d253-a2bb-4162-8a8a-6a46cb18e7e8",
+        "product_name": "Dr.Jart+ Ceramidin Cream",
+        "product_price": 950000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/2cc02dec-63da-49df-aac5-4213b4dc748e.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.078508Z"
+      },
+      {
+        "id": "f645d999-b21f-4312-9275-a4d2c5159a1d",
+        "product_name": "Some By Mi AHA-BHA-PHA 30 Days Miracle Toner",
+        "product_price": 350000,
+        "product_thumbnail": "https://image.hsv-tech.io/600x600/bbx/common/ecadc937-824b-4f8d-88c0-4cbf5c34dcb6.webp",
+        "quantity": 1,
+        "created_at": "2025-05-22T11:04:00Z",
+        "updated_at": "2025-05-23T13:20:43.084370Z"
       }
     ]
   },
@@ -585,11 +831,11 @@
   },
   "brand": [
     {
-      "id": "BRAND_1",
+      "id": "BRAND-1",
       "name": "The Cocoon Original Vietnam"
     },
-    { "id": "BRAND_2", "name": "La Roche-Posay" },
-    { "id": "BRAND_3", "name": "dermalogica" },
+    { "id": "BRAND-2", "name": "La Roche-Posay" },
+    { "id": "BRAND-3", "name": "dermalogica" },
     { "id": "dabo", "name": "Dabo" },
     { "id": "smas", "name": "SMAS" }
   ]

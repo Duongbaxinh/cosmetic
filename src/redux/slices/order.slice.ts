@@ -1,3 +1,4 @@
+import { OrderDetailType } from "./../../types/data.type";
 import {
   BASE_API,
   ORDER_API,
@@ -6,7 +7,6 @@ import {
 } from "@/config/api.config";
 import {
   MomoPaymentResponse,
-  OrderDetailType,
   OrderItemDisplayType,
   OrderResponse,
   OrderType,
@@ -65,8 +65,11 @@ export const orderProductApi = createApi({
         return response;
       },
     }),
-    createOrderDetail: builder.mutation<OrderItemDisplayType, OrderDetailType>({
-      query: (orderDetail: OrderDetailType) => ({
+    createOrderDetail: builder.mutation<
+      OrderItemDisplayType,
+      OrderDetailType | OrderDetailType[]
+    >({
+      query: (orderDetail: OrderDetailType | OrderDetailType[]) => ({
         url: ORDER_DETAIL_API,
         method: "POST",
         body: orderDetail,

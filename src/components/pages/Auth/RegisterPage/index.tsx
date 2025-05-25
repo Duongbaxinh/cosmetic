@@ -40,25 +40,25 @@ const RegisterPage = () => {
     return (
         <div className="w-full h-full bg-white">
             <Head>
-                <title>Access Beauty Account</title>
+                <title>Tạo tài khoản Beauty</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <div className="min-h-screen py-8">
                 <div className="max-w-6xl mx-auto px-4">
-                    <Breadcrumb items={[{ label: "Home", href: '/' }, { label: "Sign Up" }]} />
+                    <Breadcrumb items={[{ label: "Trang chủ", href: '/' }, { label: "Đăng ký" }]} />
                 </div>
 
                 <div className="flex justify-center mt-8">
                     <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
                         {/* Form Side */}
                         <div className="w-1/2 bg-white p-8 flex flex-col justify-center">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Create Beauty Account</h1>
-                            <p className="text-gray-600 mb-6">Join us and enjoy exclusive benefits!</p>
+                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Tạo tài khoản Beauty</h1>
+                            <p className="text-gray-600 mb-6">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
                             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                                 <div className="mb-4">
                                     <Input
-                                        placeholder="Enter your username"
+                                        placeholder="Nhập tài khoản người dùng"
                                         {...register('username')}
                                         error={!!errors.username}
                                         message={errors.username?.message}
@@ -67,7 +67,7 @@ const RegisterPage = () => {
 
                                 <div className="mb-4">
                                     <Input
-                                        placeholder="Enter your email"
+                                        placeholder="Nhập email của bạn"
                                         {...register('email')}
                                         error={!!errors.email}
                                         message={errors.email?.message}
@@ -76,7 +76,7 @@ const RegisterPage = () => {
 
                                 <div className="mb-4">
                                     <Input
-                                        placeholder="Enter your phone"
+                                        placeholder="Nhập số điện thoại"
                                         {...register('phone')}
                                         error={!!errors.phone}
                                         message={errors.phone?.message}
@@ -85,7 +85,7 @@ const RegisterPage = () => {
 
                                 <div className="mb-4">
                                     <Input
-                                        placeholder="Enter your password"
+                                        placeholder="Nhập mật khẩu"
                                         type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
                                         {...register('password')}
                                         tailIcon={showPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
@@ -97,7 +97,7 @@ const RegisterPage = () => {
 
                                 <div className="mb-4">
                                     <Input
-                                        placeholder="Confirm your password"
+                                        placeholder="Xác nhận mật khẩu"
                                         type={showConfirmPassword ? typeInput.TEXT : typeInput.PASSWORD}
                                         {...register('confirmPassword')}
                                         tailIcon={showConfirmPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
@@ -112,14 +112,14 @@ const RegisterPage = () => {
                                     disabled={isLoading}
                                     className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition disabled:bg-purple-400"
                                 >
-                                    {isLoading ? 'Signing up...' : 'Sign Up'}
+                                    {isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
                                 </button>
                             </form>
 
                             <p className="text-center text-sm text-gray-600 mt-4">
-                                Already have an account?{' '}
+                                Đã có tài khoản?{' '}
                                 <Link href={LOGIN_URL} className="text-purple-600 hover:underline">
-                                    Log In
+                                    Đăng nhập
                                 </Link>
                             </p>
                         </div>

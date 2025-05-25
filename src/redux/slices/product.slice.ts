@@ -48,6 +48,7 @@ export const productApi = createApi({
     getProductFilter: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = toQueryString(params);
+
         const url = `/products?${queryString}`;
         return {
           url: url,
@@ -62,8 +63,9 @@ export const productApi = createApi({
     }),
     getAllProductsInternal: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
-        const queryString = new URLSearchParams(params).toString();
-        const url = `/products?limitnumber=4&page=1`;
+        const queryString = toQueryString(params);
+        console.log("check ;:: url ", queryString);
+        const url = `/products?${queryString}`;
         return {
           url: url,
           timeout: 10000,
@@ -76,8 +78,8 @@ export const productApi = createApi({
     }),
     getAllProductsDiscount: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
-        const queryString = new URLSearchParams(params).toString();
-        const url = `/products?limitnumber=4&page=1`;
+        const queryString = toQueryString(params);
+        const url = `/products?${queryString}`;
         return {
           url: url,
           timeout: 10000,
@@ -90,6 +92,11 @@ export const productApi = createApi({
     }),
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
+      // query: (id) => {
+      //   return {
+      //     url: "http://localhost:5001/1",
+      //   };
+      // },
       transformResponse: (response: Product) => {
         console.log("product detail ::: ", response);
         return response;

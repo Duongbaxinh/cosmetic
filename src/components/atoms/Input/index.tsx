@@ -37,6 +37,7 @@ interface InputInterface {
     onHandleLeadingIcon?: any;
     onHandleTailIcon?: VoidFunction;
     onHandleTailIconSecond?: VoidFunction;
+    onKeyDown?: (e: any) => void;
     onHandleFocus?: any;
     maxWidth?: string;
     minWidth?: string;
@@ -74,6 +75,7 @@ const Input = forwardRef(({
     onHandleTailIconSecond,
     onHandleFocus,
     defaultValue,
+    onKeyDown,
     onBlur,
     ...rest
 }: InputInterface,
@@ -82,12 +84,12 @@ const Input = forwardRef(({
     const variantType = {
         underline: `border-b-[0.5px] focus-within:border-b-[2px]`,
         outline:
-            "border-[0.5px]   rounded-sm px-2 py-1"
+            "  rounded-sm px-2 py-1"
     };
     return (
         <>
             <div
-                className={`relative flex justify-start items-center ${variantType[variant]} ${error ? "border-red-400" : "border-green"} relative pt-[7px] pr-[6px] pb-[6px] w-full ${className}`}
+                className={`relative flex justify-start items-center ${variantType[variant]} ${error ? "border-red-400" : "border-green"} relative  w-full ${className}`}
                 onClick={(e) => e.stopPropagation()}>
                 {leadingIcon && (
                     <div
@@ -107,6 +109,7 @@ const Input = forwardRef(({
                     onFocus={onHandleFocus}
                     onBlur={onBlur}
                     disabled={disabled}
+                    onKeyDown={onKeyDown}
                     defaultValue={defaultValue}
                     {...rest}
                 />

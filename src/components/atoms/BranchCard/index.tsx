@@ -1,25 +1,26 @@
 // components/BrandCard.tsx
 
 'use client'
+
+import Image from "next/image";
+
 interface BrandCardProps {
-    productImage: string;
-    logoImage: string;
+    id: string
+    brandImage: string;
     title: string;
-    discount: string;
+
+
 }
 
 const BrandCard: React.FC<BrandCardProps> = ({
-    productImage,
-    logoImage,
-    title,
-    discount,
+    title, brandImage
 }) => {
     return (
         <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden border border-gray-300">
             {/* Hình ảnh sản phẩm */}
             <div className="flex justify-center p-4">
-                <img
-                    src={productImage}
+                <Image
+                    src={brandImage}
                     alt="Product"
                     width={300}
                     height={300}

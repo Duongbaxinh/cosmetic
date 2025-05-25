@@ -3,21 +3,24 @@ import GroupStart from '@/components/organisms/GroupStart';
 import { CardProductFullProps } from '@/types';
 import React from 'react';
 import Price from '../../atoms/Price';
+import Image from 'next/image';
 
-const CardProductFull: React.FC<CardProductFullProps> = ({ product_name, product_price, product_thumbnail, className, product_rate }) => {
+const CardProductFull: React.FC<CardProductFullProps> = ({ product_name, product_price, product_thumbnail, className, product_rate, product_brand, product_description }) => {
     return (
-        <div className={`w-full  bg-white max-h-[380px] min-h-[330px] border border-gray-200 shadow-sm cursor-pointer rounded-lg p-2 flex flex-col gap-2 ${className}`}>
-            <div className="flex flex-col justify-start gap-1 pb-6 border-b border-gray-200">
-                <img src={product_thumbnail} alt={product_name} className=" w-[150px] h-[150px] max-h-[150px] object-cover cursor-pointer" />
-                <p className="text-[15px] font-thin line-clamp-3 max-h-[60px] min-h-[60px]">{product_name}</p>
-                <div className="flex space-x-1">
+        <div className={`w-full min-w-[270] max-w-[270]  bg-white max-h-[410px] min-h-[410px] cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2 ${className} hover:shadow-md`}>
+            <div className="flex flex-col justify-start gap-1 pb-6  border-gray-200">
+                <Image src={product_thumbnail ?? null} alt={product_name} width={270} height={270} className="object-cover cursor-pointer" />
+                <p className="text-[14px] font-[600] text-center">{product_brand ?? "ASENA"}</p>
+                <p className="text-[12px] leading-6 text-center font-thin line-clamp-3 ">{product_name}</p>
+                <Price className='text-red-400 justify-center' product_price={product_price} />
+                <div className="flex space-x-1 justify-center">
                     <GroupStart
                         starActive={product_rate}
                     />
+                    <p>({product_rate})</p>
                 </div>
-                <Price className='text-red-400' product_price={product_price} />
             </div>
-            <p className="text-xs text-gray-400">Giao thứ 2, 19/02</p>
+
         </div>
     );
 };

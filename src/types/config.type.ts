@@ -42,6 +42,7 @@ export type Props = {
     category_key: string;
     text_search: string;
     type_edit: keyof TypeEdit;
+    value: string;
     token: string;
   }>;
   searchParams: Promise<{

@@ -1,62 +1,52 @@
 'use client'
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
+import CountdownTimer from '@/components/organisms/CountdownTimer';
 import { categories } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
+import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
+import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
+import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
-import { useGetBrand } from '@/services';
 import { ProductResponse } from '@/types';
 import { createParams, handleError } from '@/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { SwiperSlide } from 'swiper/react';
-import BrandCard from '../../atoms/BranchCard';
 import Carousel from '../../atoms/Carousel';
-import CardProduct from '../../molecules/CardProduct';
 import CardProductFull from '../../molecules/CardProductFull';
 import ListTemplate from '../../molecules/ListTemplate';
-import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
-import { useDispatch } from 'react-redux';
-import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
 
-const TITLE = [
-    {
-        leading: 'Giá tốt hôm nay',
-        trailing: 'Xem tất cả',
-    },
-    {
-        leading: 'Nhập khẩu chính hãng',
-        trailing: '',
-    },
-];
 
 const breakpoints = {
     300: {
         slidesPerView: 2,
     },
     640: {
-        slidesPerView: 3,
+        slidesPerView: 2,
     },
     768: {
-        slidesPerView: 4,
+        slidesPerView: 3,
     },
     1024: {
-        slidesPerView: 5,
+        slidesPerView: 4,
     },
     1280: {
-        slidesPerView: 5,
+        slidesPerView: 4,
     },
 }
 const HomePage: React.FC = () => {
+
     const accessToken = typeof window !== "undefined"
         ? (() => {
             const token = localStorage.getItem("accessToken");
-            console.log("tioooo", token === null)
             return token ? JSON.parse(token) : null;
         })()
         : null;
@@ -77,7 +67,7 @@ const HomePage: React.FC = () => {
     const { data, error, isLoading: loading } = useGetAllProductsQuery(filter)
     const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
-    const { brands: brands, loading: loading_brand } = useGetBrand(filterParams, true);
+    const { data: brands, isLoading: loading_brand } = useGetBrandsQuery();
 
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
@@ -125,228 +115,287 @@ const HomePage: React.FC = () => {
     const products_display = products?.results ?? []
 
     return (
-        <ContainerLayout >
-            <div className="w-full flex-col gap-8 space-y-4 text-black">
+        <ContainerLayout isSidebar={false} classHeader="sticky top-0 z-30" >
+            <div className="w-full flex-col gap-8 space-y-4 text-black bg-white">
                 {/* CATEGORY */}
-                <div className=" w-full p-3 bg-white rounded-md">
-                    <Carousel slidesPerView={2} clickable>
-                        {categories.map(({ id, product_thumbnail }) => (
-                            <SwiperSlide key={id}>
-                                <Link href={`/category/${id}`}>
-                                    <img
-                                        src={product_thumbnail}
-                                        alt="carousel-image"
-                                        className="h-full max-h-[250px] w-full object-cover"
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))}
+                <div className="grid grid-cols-4 grid-rows-2 space-x-2 space-y-2 w-full rounded-md ">
+                    <div className="col-span-3 row-span-2">
+                        <Carousel customSwipeWrap='!p-0' slidesPerView={1} clickable>
+                            {categories.map(({ id, product_thumbnail }) => (
+                                <SwiperSlide key={id}>
+                                    <Link href={`${CATEGORY_URL}/product_brand/${id}`}>
+                                        <Image
+                                            src={product_thumbnail}
+                                            alt="carousel-image"
+                                            className="h-full max-h-[300px] w-full object-cover"
+                                            width={702} height={301}
+                                        />
+                                    </Link>
+                                </SwiperSlide>
+                            ))}
 
-                    </Carousel>
+                        </Carousel>
+                    </div>
+                    <div className="col-span-1 row-span-1 relative">
+                        <Image src={"/images/banner.webp"} className=' object-fill rounded-md w-[369px] min-h-[142px]' alt="" width={369} height={147} />
+                    </div>
+                    <div className="col-span-1 row-span-1 relative">
+                        <Image src={"/images/banner.webp"} className=' object-fill rounded-md min-h-[142px]' alt="" width={369} height={147} />
+                    </div>
                 </div>
 
-                {/* Giá tốt hôm nay */}
-                <div className="w-full bg-white rounded-md">
-                    <ListTemplate
-                        time={{ hour: 1, minus: 30 }}
-                        leading={TITLE[0].leading}
-                        trailing={<Link href={`${CATEGORY_URL}/category_key`} className="text-sm text-blue-400 cursor-pointer">Xem tất cả</Link>}
-                    >
-                        {loadingDiscount ? (
-                            <ProductSkeleton />
-                        ) : (
+
+                <div className="w-full bg-white rounded-md mt-[30px]">
+                    <h1 className='text-[26px] leading-[36px] font-[700] text-center'>Top Sản phẩm bán chạy</h1>
+                    {loadingDiscount ? (
+                        <ProductSkeleton />
+                    ) : (
+                        <div className='space-y-3'>
                             <Carousel
                                 breakpoints={breakpoints}
                             >
-                                {product_discounts_display.map(
-                                    ({
-                                        id,
-                                        product_price,
-                                        product_thumbnail,
-
-                                    }) => (
-                                        <SwiperSlide key={id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`} className='block w-full h-full'>
-                                                <CardProduct
-                                                    key={id}
-                                                    product_price={product_price}
-                                                    product_purchase={product_price ?? 0}
-                                                    product_thumbnail={product_thumbnail}
+                                {products_display.map(
+                                    (product) => (
+                                        <SwiperSlide key={product.id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`}>
+                                                <CardProductFull
+                                                    key={product.id}
+                                                    id={product.id}
+                                                    product_thumbnail={product.product_thumbnail}
+                                                    product_name={product.product_name}
+                                                    product_price={product.product_price}
+                                                    product_rate={product.product_rate}
+                                                    product_brand={product.product_brand}
+                                                    product_description={product.product_description}
                                                 />
                                             </Link>
                                         </SwiperSlide>
                                     )
                                 )}
                             </Carousel>
-                        )}
-
-                    </ListTemplate>
+                            <div className="flex justify-center">
+                                <Link href={`${CATEGORY_URL}/product_sold/asc`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
-
-                {/* Nhập khẩu chính hãng */}
-                <div className="w-full bg-white rounded-md min-h-[330px]  ">
-                    <ListTemplate
-                        leading='Nhập khẩu chính hãng'
-                        trailing={<Link href={`${CATEGORY_URL}/category_key`} className="text-sm text-blue-400 cursor-pointer">Xem tất cả</Link>}
+                <div className="w-full p-3">
+                    <Carousel customSwipeWrap='!p-3'
+                        breakpoints={{
+                            300: {
+                                slidesPerView: 2,
+                            },
+                            640: {
+                                slidesPerView: 2,
+                            },
+                            768: {
+                                slidesPerView: 4,
+                            },
+                            1024: {
+                                slidesPerView: 5,
+                            },
+                            1280: {
+                                slidesPerView: 5,
+                            },
+                        }}
                     >
-                        {loading ? (
-                            <ProductSkeleton />
-                        ) :
-                            (<Carousel
+                        {brands && brands.map(
+                            (brand) => (
+                                <SwiperSlide key={brand.id}>
+                                    <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className='block w-full h-full'>
+                                        <Image src={brand.image} alt={brand.title} width={217} height={106} className='rounded-md' />
+                                    </Link>
+                                </SwiperSlide>
+                            )
+                        )}
+                    </Carousel>
+                </div>
+                {/*  */}
+                <div className="w-full max-w-[1138px] mx-auto p-[25px] rounded-2xl bg-yellow-300 space-y-5">
+                    <div className="w-full flex justify-between items-end">
+                        <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
+                        <div >
+                            <p className='font-[700]'>Thời gian còn lại</p>
+                            <CountdownTimer targetTime='2025-06-30T23:59:59+07:00' />
+                        </div>
+                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" block py-3 px-6 rounded-md text-sm text-yellow-500 bg-white cursor-pointer   font-bold w-fit">Xem tất cả</Link>
+                    </div>
+                    {loadingDiscount ? (
+                        <ProductSkeleton length={4} />
+                    ) :
+                        (
+                            <Carousel
+                                spaceBetween={40}
                                 breakpoints={breakpoints}
                             >
-                                {products_display.map(
-                                    ({
-                                        id,
-                                        product_name,
-                                        product_thumbnail,
-                                        product_price,
-                                        product_rate
-                                    }) => (
-                                        <SwiperSlide key={id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
+                                {product_discounts_display.map(
+                                    (product) => (
+                                        <SwiperSlide key={product.id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`}>
                                                 <CardProductFull
-                                                    key={id}
-                                                    id={id}
-                                                    product_thumbnail={product_thumbnail}
-                                                    product_name={product_name}
-                                                    product_price={product_price}
-                                                    product_rate={product_rate}
+                                                    key={product.id}
+                                                    id={product.id}
+                                                    product_thumbnail={product.product_thumbnail}
+                                                    product_name={product.product_name}
+                                                    product_price={product.product_price}
+                                                    product_rate={product.product_rate}
+                                                    product_brand={product.product_brand}
+                                                    product_description={product.product_description}
                                                 />
                                             </Link>
                                         </SwiperSlide>
                                     )
                                 )}
                             </Carousel>)}
-
-                    </ListTemplate>
                 </div>
+
 
                 {/* Thương hiệu nổi bật */}
-                <div className="w-full bg-white rounded-md  min-h-[330px] ">
-                    <ListTemplate
-                        leading='Thương hiệu nổi bật'
-                        trailing={<Link href={`${CATEGORY_URL}/category_key`} className="text-sm text-blue-400 cursor-pointer">Xem tất cả</Link>}
+                <div className="w-full p-3">
+                    <Carousel
+                        customSwipeWrap='!p-3'
+                        spaceBetween={40}
+                        breakpoints={{
+                            300: {
+                                slidesPerView: 1,
+                            },
+                            640: {
+                                slidesPerView: 1,
+                            },
+                            768: {
+                                slidesPerView: 1.5,
+                            },
+                            1024: {
+                                slidesPerView: 2.5,
+                            },
+                            1280: {
+                                slidesPerView: 2.5,
+                            },
+                        }}
                     >
-                        {loading ? (
-                            <ProductSkeleton />
-                        ) :
-                            (<Carousel
-                                breakpoints={breakpoints}
-                            >
-                                {brands.map(
-                                    ({
-                                        discount, id,
-                                        logo_image,
-                                        product_image,
-                                        title
-                                    }) => (
-                                        <SwiperSlide key={id}>
-                                            <Link href={"#"}>
-                                                <BrandCard
-                                                    key={id}
-                                                    discount={discount}
-                                                    productImage={product_image}
-                                                    logoImage={logo_image}
-                                                    title={title}
-                                                // discount={discount}
-                                                />
-                                            </Link>
-                                        </SwiperSlide>
-                                    )
-                                )}
-                            </Carousel>)}
-
-                    </ListTemplate>
+                        {brands && brands.map(
+                            (brand) => (
+                                <SwiperSlide key={brand.id}>
+                                    <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className=' relative block w-full h-full min-h-[210px] min-w-[442px]'>
+                                        <Image src={brand.image} alt={brand.title} fill className='rounded-md w-full h-full' />
+                                    </Link>
+                                </SwiperSlide>
+                            )
+                        )}
+                    </Carousel>
                 </div>
 
                 {/* Nhập khẩu chính hãng */}
-                <div className="w-full bg-white rounded-md  min-h-[330px] ">
-                    <ListTemplate
-                        leading='Hàng ngoại giá tốt'
-                        trailing={<Link href={`${CATEGORY_URL}/category_key`} className="text-sm text-blue-400 cursor-pointer">Xem tất cả</Link>}
-
-                    >
-                        {loadingInternal ? (
-                            <ProductSkeleton />
-                        ) :
-                            (<Carousel
+                <div className="w-full bg-white rounded-md mt-[30px]">
+                    <h1 className='text-[26px] leading-[36px] font-[700] text-center'>Hàng ngoại giá tốt</h1>
+                    {loadingInternal ? (
+                        <ProductSkeleton />
+                    ) : (
+                        <div className='space-y-3'>
+                            <Carousel
                                 breakpoints={breakpoints}
                             >
                                 {product_internal_display.map(
-                                    ({
-                                        id,
-                                        product_name,
-                                        product_thumbnail,
-                                        product_rate,
-                                        product_price,
-                                    }) => (
-                                        <SwiperSlide key={id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${id}`}>
+                                    (product) => (
+                                        <SwiperSlide key={product.id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`}>
                                                 <CardProductFull
-                                                    key={id}
-                                                    className='min-h-[330px]'
-                                                    id={id}
-                                                    product_thumbnail={product_thumbnail}
-                                                    product_name={product_name}
-                                                    product_price={product_price}
-                                                    product_rate={product_rate}
+                                                    key={product.id}
+                                                    id={product.id}
+                                                    product_thumbnail={product.product_thumbnail}
+                                                    product_name={product.product_name}
+                                                    product_price={product.product_price}
+                                                    product_rate={product.product_rate}
+                                                    product_brand={product.product_brand}
+                                                    product_description={product.product_description}
                                                 />
                                             </Link>
                                         </SwiperSlide>
                                     )
                                 )}
-                            </Carousel>)}
-
-                    </ListTemplate>
+                            </Carousel>
+                            <div className="flex justify-center">
+                                <Link href={`${CATEGORY_URL}/product_international/${true}`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                {/* Nhập khẩu chính hãng */}
+                <div className="w-full bg-white rounded-md mt-[30px]">
+                    <h1 className='text-[26px] leading-[36px] font-[700] text-center'>Sản Phẩm mới</h1>
+                    {loadingDiscount ? (
+                        <ProductSkeleton />
+                    ) : (
+                        <div className='space-y-3'>
+                            <Carousel
+                                breakpoints={breakpoints}
+                            >
+                                {products_display.map(
+                                    (product) => (
+                                        <SwiperSlide key={product.id}>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`}>
+                                                <CardProductFull
+                                                    key={product.id}
+                                                    id={product.id}
+                                                    product_thumbnail={product.product_thumbnail}
+                                                    product_name={product.product_name}
+                                                    product_price={product.product_price}
+                                                    product_rate={product.product_rate}
+                                                    product_brand={product.product_brand}
+                                                    product_description={product.product_description}
+                                                />
+                                            </Link>
+                                        </SwiperSlide>
+                                    )
+                                )}
+                            </Carousel>
+                            <div className="flex justify-center">
+                                <Link href={`${CATEGORY_URL}/product_new/asc`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                <div className="w-full bg-white rounded-md  min-h-[330px] ">
-                    <ListTemplate
-                        leading='Gợi ý hôm nay'
-                        trailing={<Link href={`${CATEGORY_URL}/category_key`} className="text-sm text-blue-400 cursor-pointer">Xem tất cả</Link>}
-                    >
-
-                        {loading ? (
-                            <ProductSkeleton length={20} />
-                        ) :
-                            (<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5  space-x-3 space-y-3">
-                                {/* Banner */}
-                                <div className=" col-span-1  md:col-span-2  flex items-center justify-center">
-                                    <img src='' alt='' className='w-full h-full object-cover' />
+                <div className="w-full bg-white rounded-md mt-[30px]">
+                    <h1 className='text-[26px] leading-[36px] font-[700] text-center'>Giợi ý hôm nay</h1>
+                    {loading ? (
+                        <ProductSkeleton length={20} />
+                    ) :
+                        (<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  space-x-3 space-y-3">
+                            {/* Banner */}
+                            <div className=" col-span-1  md:col-span-2  flex items-center justify-center">
+                                <img src='' alt='' className='w-full h-full object-cover' />
+                            </div>
+                            {/* Products */}
+                            {products_display.map((product) => (
+                                <div key={product.id} className=" flex items-center justify-center">
+                                    <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
+                                        <CardProductFull
+                                            key={product.id}
+                                            id={product.id}
+                                            product_thumbnail={product.product_thumbnail}
+                                            product_name={product.product_name}
+                                            product_price={product.product_price}
+                                            product_rate={product.product_rate}
+                                            product_brand={product.product_brand}
+                                            product_description={product.product_description}
+                                        />
+                                    </Link>
                                 </div>
-                                {/* Products */}
-                                {products_display.map(({
-                                    id,
-                                    product_name,
-                                    product_thumbnail,
-                                    product_rate,
-                                    product_price,
-                                }) => (
-                                    <div key={id} className=" flex items-center justify-center">
-                                        <Link href={`${DETAIL_PRODUCT_URL}/${id}`} className='block w-full h-full'>
-                                            <CardProductFull
-                                                key={id}
-                                                id={id}
-                                                product_thumbnail={product_thumbnail}
-                                                product_name={product_name}
-                                                product_price={product_price}
-                                                product_rate={product_rate}
-                                            /></Link>
-                                    </div>
-                                ))}
-                                {/* Banner */}
-                            </div>)}
-
-                    </ListTemplate>
+                            ))}
+                            {/* Banner */}
+                        </div>)}
                 </div>
 
-                {check_load && (
-                    <div className="w-full flex items-center justify-center ">
-                        <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-blue-300 rounded-md' onClick={handleLoadMore} >Xem Them</button>
-                    </div>
-                )}
-            </div>
+
+                {
+                    check_load && (
+                        <div className="w-full flex items-center justify-center ">
+                            <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-blue-300 rounded-md' onClick={handleLoadMore} >Xem Them</button>
+                        </div>
+                    )
+                }
+            </div >
 
 
         </ContainerLayout >

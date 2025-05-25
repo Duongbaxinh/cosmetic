@@ -4,7 +4,7 @@ import React from "react";
 
 const Price: React.FC<PriceProps> = ({ product_price, className }) => {
     return (
-        <div className={`flex `}>
+        <div className={`flex ${className} `}>
             <span className={`text-[13px] font-semibold ${className}`}>
                 {Number(product_price).toLocaleString("vi-VN")}
             </span>

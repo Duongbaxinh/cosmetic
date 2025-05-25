@@ -2,32 +2,32 @@ export const categories = [
   {
     id: "01",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713343/tiki/download_kcrw2f.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830917/Cosmes/c10cf785-2185-4e9d-ad52-b0733db22020_qvxpey.webp",
   },
   {
     id: "02",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713425/tiki/15ba4ddfa1ef3ea24c6b09d241404601.jpg_beyejx.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830960/Cosmes/4b71b3cc-a809-4c48-99fe-076480582116_ffzubs.webp",
   },
   {
     id: "03",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713441/tiki/73eddf051400ca82fd9e47cab068277e.jpeg_cvqtpw.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830960/Cosmes/4b71b3cc-a809-4c48-99fe-076480582116_ffzubs.webp",
   },
   {
     id: "04",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713464/tiki/d5db15680173462dc14a84de57e69993.jpeg_nko2mp.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747831021/Cosmes/0dc38783-5d53-4270-9aa4-6ea32c436840_u3va7v.webp",
   },
   {
     id: "05",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713494/tiki/bd999c11cc5f3023bc9b40260c47785d.jpeg_vo4xra.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747831033/Cosmes/1ea11379-f1d1-4a82-8db1-1622bbb81387_rukhu2.webp",
   },
   {
     id: "06",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1706713494/tiki/bd999c11cc5f3023bc9b40260c47785d.jpeg_vo4xra.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830960/Cosmes/4b71b3cc-a809-4c48-99fe-076480582116_ffzubs.webp",
   },
 ];
 export const categoryData = [

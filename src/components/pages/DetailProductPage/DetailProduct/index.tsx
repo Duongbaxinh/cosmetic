@@ -1,5 +1,8 @@
 'use client'
+import CartIcon from '@/assets/icons/CartIcon';
+import Breadcrumb, { BreadcrumbItem } from '@/components/atoms/Breadcrumb';
 import Carousel from '@/components/atoms/Carousel';
+import IconButton from '@/components/atoms/IconButton';
 import Price from '@/components/atoms/Price';
 import { ProductSkeleton, Skeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductSimilar from '@/components/molecules/CardProductSimilar';
@@ -9,6 +12,7 @@ import { useAuth } from '@/contexts/auth.context';
 import { Product, ShippingAddress } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
+import { BiMinus, BiPlus } from 'react-icons/bi';
 import { SwiperSlide } from 'swiper/react';
 
 interface DetailProductProps {
@@ -16,49 +20,93 @@ interface DetailProductProps {
     similarProduct?: Product[];
     shippingAddress?: ShippingAddress[],
     similarProductLoading?: boolean
+    numberReview: number;
+    product_price: number;
+    product_quantity: number;
+    cost_tentative: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
+    onChangeQuantity: (value: number) => void;
+    onPurchase: () => void;
+    onAddToCart: ({ product_id, quantity }: { product_id: string, quantity: number }) => void;
+    breadcrumbDetailProduct: BreadcrumbItem[]
 }
 
-const DetailProduct: React.FC<DetailProductProps> = ({ product, similarProduct, similarProductLoading, shippingAddress }) => {
+const DetailProduct: React.FC<DetailProductProps> = ({
+    product,
+    similarProduct,
+    shippingAddress,
+    breadcrumbDetailProduct,
+    product_quantity,
+    cost_tentative,
+    onIncrease,
+    onDecrease,
+    onChangeQuantity,
+    onPurchase,
+    onAddToCart
+}) => {
     const { user } = useAuth()
     const [showMore, setShowMore] = useState({
         productDescription: false,
         productInfo: false,
     });
-    console.log("chekkk11", shippingAddress)
 
-    if (shippingAddress && shippingAddress?.length > 0) {
-        console.log("chekkk", shippingAddress[0])
-    }
     return (
-        <div className="flex flex-col gap-2.5 w-full max-w-full lg:max-w-[424px]  rounded-md  order-2 lg:order-1 ">
+        <div className="flex flex-col gap-2.5 w-full max-w-full   rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
-            <div className="p-4  bg-white rounded-md ">
+            <div className="px-4  bg-white rounded-md ">
                 <div className="flex flex-col gap-2.5">
+                    <div className="pb-3">
+                        <Breadcrumb items={breadcrumbDetailProduct} />
+                    </div>
                     <div className="flex">
                         <div className="flex space-x-2.5">
-                            <p className="text-[12px]">{`Thương hiệu: ${product.product_brand}`}</p>
+                            <p className="text-[14px] font-[700] leading-5 uppercase">{`${product.product_brand}`}</p>
                         </div>
                     </div>
-                    <p className=" text-[20px] leading-[30px]">{product.product_name}</p>
-                    <p className="text-[14px] text-gray-400">{`Made in ${product.product_made}`}</p>
+                    <p className=" text-[20px] font-[700] leading-[26px]">{product.product_name}</p>
+
                     <div className="flex justify-start items-center gap-2 pr-24">
                         <div className="flex items-center gap-2.5">
-                            <p className="text-[14px] font-[500] leading-[21px]">{product.product_rate.toFixed(1)}</p>
                             <GroupStart starActive={product.product_rate} h="10px" w="10px" />
-                            <p className='text-[14px] text-gray-400 font-[500]'>({product.product_rate})</p>
+                            <p className='text-[14px]  font-[500]'>({product.product_rate})</p>
+                            <p className="text-[12px] "> <b>xuất xứ</b> {`${product.product_made}`}</p>
                         </div>
-                        <p className="text-[14px] leading-[24px] text-gray-400">{`Đã bán (${product.product_sold})`}</p>
+                        <p className="text-[12px] leading-[24px] "> <b>Đã bán</b> {` (${product.product_sold})`}</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Price className='text-[24px] text-red-400' product_price={product.product_price} />
                         {/* {(product.product_discount) && (<Chip title={product.dis} />)} */}
                         {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}
                     </div>
+                    <div className="mb-4">
+                        <div className="flex justify-between gap-3 fixed left-0 bottom-0 z-50 w-full md:static py-5 md:py-0 bg-white ">
+                            <div className="flex items-center gap-2 border-[2px] border-gray-200 rounded-full overflow-hidden ">
+                                <IconButton icon={<BiMinus />} onClick={() => onDecrease()} className='w-[30px] h-full ' />
+                                <input value={product_quantity} type='number' onChange={(e) => { onChangeQuantity(Number(e.target.value)) }} className=" bg-white w-[30px] h-full  rounded-sm text-black text-center " />
+                                <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
+                            </div>
+                            <button onClick={() => onAddToCart({ product_id: product.id, quantity: 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
+                                <CartIcon className='text-white' fill='#ffffff' /> Thêm vào giỏ hàng
+                            </button>
+                            <button onClick={onPurchase} className=" bg-gradient text-white py-[14px] px-[23px] rounded-full cursor-pointer hover:bg-red-600">
+                                Mua ngay
+                            </button>
+
+
+                        </div>
+                        <div className='flex items-center gap-5 pt-4' >
+                            <p className="font-medium">Tạm tính</p>
+                            <p className="text-2xl font-bold text-black">
+                                <Price className='text-[24px]' product_price={cost_tentative} />
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             {/* Shipping Info */}
-            <div className="p-4 space-y-2  bg-white rounded-md ">
+            <div className="px-4 space-y-2  bg-white rounded-md ">
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin vận chuyển</h2>
                 <div className="flex justify-between items-center gap-2.5 text-[14px] leading-[21px] font-light">
                     <p>Giao đến: {shippingAddress && shippingAddress.length > 0 ? (shippingAddress[0].address) : MESS_DELIVERY.ADDRESS_MESS}</p>
@@ -109,6 +157,8 @@ const DetailProduct: React.FC<DetailProductProps> = ({ product, similarProduct, 
                                                 similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product) => (
                                                     <Link key={index} href={`/detail/${product.id}`} >
                                                         <CardProductSimilar
+                                                            product_brand={product.product_brand}
+                                                            product_description={product.product_description}
                                                             product_rate={product.product_rate}
                                                             key={product.id}
                                                             id={product.id}

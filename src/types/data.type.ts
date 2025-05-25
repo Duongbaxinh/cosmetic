@@ -6,7 +6,7 @@ export enum ProductEnum {
 }
 
 export type Product = {
-  id: string | number;
+  id: string;
   product_name: string;
   product_description: string;
   product_ingredient: string;
@@ -74,8 +74,8 @@ export type OrderProduct = {
   product_price: number;
   product_thumbnail: string;
   quantity: number;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type OrderCheckout = {
@@ -167,7 +167,8 @@ export type OrderDetail = {
 
 export type Brand = {
   id: string;
-  name: string;
+  image: string;
+  title: string;
 };
 
 // REVIEW PRODUCT

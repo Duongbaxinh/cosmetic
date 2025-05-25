@@ -45,7 +45,11 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     getUser: builder.query<UserProfileType, void>({
       queryFn: async (arg, api, extraOptions) => {
-        const result = await baseQueryWithToken(PROFILE_API, api, extraOptions);
+        const result = await customFetchBaseQuery(
+          PROFILE_API,
+          api,
+          extraOptions
+        );
         if (result.error) {
           handleError(result.error);
         }
@@ -138,6 +142,7 @@ export const {
 
 // src/store/userSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { customFetchBaseQuery } from "../customeBaseQuery";
 
 type UserState = {
   user: UserProfileType | null;

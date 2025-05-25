@@ -41,7 +41,7 @@ const LoginPage = () => {
     } = register('username');
 
     const [showPassword, setShowPassword] = useState(false);
-    const { setIsLogin, setAccessToken, setUser } = useAuth();
+    const { setIsLogin, setAccessToken, setRefetchToken } = useAuth();
     const [login, { isLoading, error }] = useLoginMutation();
     const router = useRouter();
 
@@ -51,9 +51,9 @@ const LoginPage = () => {
         if (error) return handleError(error);
         if (res) {
             setAccessToken(res.data.access_token);
+            setRefetchToken(res.data.refresh_token);
             router.push('/');
         }
-        console.log('check res login :::: ', res);
     };
 
     const onSubmit: SubmitHandler<AuthDataLogin> = (data) => {
@@ -63,26 +63,26 @@ const LoginPage = () => {
     return (
         <div className="bg-white w-full h-full">
             <Head>
-                <title>Access Beauty Account</title>
+                <title>Truy cập tài khoản Beauty</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <div className="min-h-screen py-8">
                 <div className="max-w-6xl mx-auto px-4">
-                    <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Login' }]} />
+                    <Breadcrumb items={[{ label: 'Trang chủ', href: '/' }, { label: 'Đăng nhập' }]} />
                 </div>
 
                 <div className="flex justify-center mt-8">
                     <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
                         {/* Left Side - Form */}
                         <div className="w-1/2 bg-white p-8 flex flex-col justify-center">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Access Beauty Account</h1>
-                            <p className="text-gray-600 mb-6">Your beauty journey starts here</p>
+                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Truy cập tài khoản Beauty</h1>
+                            <p className="text-gray-600 mb-6">Hành trình làm đẹp của bạn bắt đầu từ đây</p>
                             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                                 <div className="mb-4 relative">
                                     <Input
                                         type={typeInput.TEXT}
-                                        placeholder="Enter your email"
+                                        placeholder="Nhập email của bạn"
                                         error={!!errors.username}
                                         message={errors.username?.message}
                                         ref={usernameRef}
@@ -95,7 +95,7 @@ const LoginPage = () => {
                                 <div className="mb-4 relative">
                                     <Input
                                         type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
-                                        placeholder="Enter your password"
+                                        placeholder="Nhập mật khẩu của bạn"
                                         error={!!errors.password}
                                         message={errors.password?.message}
                                         ref={passwordRef}
@@ -109,7 +109,7 @@ const LoginPage = () => {
 
                                 <div className="flex justify-end mb-6">
                                     <Link target='_blank' href={FORGOT_PASSWORD_URL} className="text-sm text-purple-600 hover:underline">
-                                        Forgot password?
+                                        Quên mật khẩu?
                                     </Link>
                                 </div>
                                 <button
@@ -117,13 +117,13 @@ const LoginPage = () => {
                                     disabled={isLoading}
                                     className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition disabled:bg-purple-400"
                                 >
-                                    {isLoading ? 'Logging in...' : 'Log In'}
+                                    {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                                 </button>
                             </form>
                             <p className="text-center text-sm text-gray-600 mt-4">
-                                Need to create an account?{' '}
+                                Cần tạo tài khoản?{' '}
                                 <Link href={REGISTER_URL} className="text-purple-600 hover:underline">
-                                    Sign Up
+                                    Đăng ký
                                 </Link>
                             </p>
                         </div>

@@ -2,7 +2,7 @@
 import { ChevronRightIcon } from "@/assets/icons";
 import Link from "next/link";
 
-interface BreadcrumbItem {
+export interface BreadcrumbItem {
     label: string;
     href?: string;
 }
@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className }) => {
     return (
-        <nav className={`text-[14px] font-[300] leading-[20px] text-gray-500 flex items-center" aria-label="Breadcrumb ${className}`}>
+        <nav className={`text-[12px] font-[300] leading-[20px] text-gray-500 flex items-center" aria-label="Breadcrumb ${className}`}>
             {items.map((item, index) => (
                 <div key={index} className="flex items-center">
                     {item.href ? (

@@ -6,7 +6,7 @@ export const brandApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
   endpoints: (builder) => ({
     getBrands: builder.query<Brand[], void>({
-      query: () => "/brand",
+      query: () => "/brands",
     }),
   }),
 });

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 
-import { LocationIcon } from '@/assets/icons';
+import { LocationIcon, UserIcon } from '@/assets/icons';
 import Container from '@/components/atoms/Container';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
@@ -21,15 +21,21 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
+import CartIcon from '@/assets/icons/CartIcon';
+import Carousel from '@/components/atoms/Carousel';
+import { SwiperSlide } from 'swiper/react';
+import IconButton from '@/components/atoms/IconButton';
+import { useCart } from '@/contexts/cart.context';
 
 // Type definition for component props
 interface HeaderProps {
-    // You can add any specific props here if needed
+    classHeader?: string
 }
 
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
     const { user, isLogin, logout } = useAuth()
+    const { isOpen: openCart, toggleDrawer } = useCart()
 
     const router = useRouter()
     const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +49,7 @@ const Header: React.FC<HeaderProps> = () => {
 
     const handleLogout = () => {
         logout()
-        router.replace("/")
+        router.push("/")
     };
 
     useEffect(() => {
@@ -52,75 +58,77 @@ const Header: React.FC<HeaderProps> = () => {
             dispatch(setShippingAddress(JSON.parse(shippingData)));
         }
     }, []);
-    const isAddress = user?.address !== '' && user?.address !== null
+
     return (
-        <Container  >
-            <div className="w-full bg-white py-3 px-6  ">
-                <div className="flex items-start md:items-center justify-between gap-[20px]  lg:gap-[48px]  ">
+        <Container className={classHeader && classHeader}   >
+            <div className="w-full bg-white py-2  min-h-[140px]">
+                <div className="flex items-start md:items-center justify-between gap-[20px] lg:gap-[48px] h-[60px]  ">
                     {/* Logo */}
                     <Link href="/">
-                        <Image src={"/LOGO.png"} alt="Logo" width={20} height={20} className="min-w-[60px] min-h-[60px] max-w-[60px] max-h-[60px]" />
+                        <Image src={"/images/Logo.webp"} alt="Logo" width={190} height={39} className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]" />
                     </Link>
 
                     {/* Search Input */}
-                    <div className="flex-grow space-x-2 space-y-2 text-gray-400 ">
+                    <div className="space-x-2 space-y-2 text-gray-400 ">
                         <div className="flex items-center space-x-2">
                             <BoxSearch />
                         </div>
-                        <div className="hidden md:block space-x-2">
-                            {CATEGORY_CONFIG.map((item) => (
-                                <Link href={item.url} key={item.url} className='text-[14px] leading-[21px] text-gray-400'>{item.title}</Link>
-                            ))}
-                        </div>
                     </div>
 
-                    {/* Info Section */}
-                    <div className="max-w-[300px] hidden md:block space-y-2">
-                        <div className="flex text-gray-400 ">
-                            <ItemRectangle
-                                className='!w-fit'
-                                icon={<BiHome />}
-                                title="Trang Chu"
-                            />
-                            <div className="relative">
-                                <Link href={!isLogin ? LOGIN_URL : '#'}>
-                                    <ItemRectangle
-                                        onFunction={() => setIsOpen(!isOpen)}
-                                        icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
-                                        title={isLogin ? 'Tài khoản' : 'Log-in'}
-                                    /></Link>
-                                {isOpen && isLogin && (
-                                    <div ref={profileRef} className="absolute right-0 top-12 w-64 bg-white overflow-hidden rounded-lg shadow-lg z-50"                                    >
-                                        <Container >
-                                            {PROFILE.map(({ path, title }, index) => (
-                                                <Link key={index} href={path}>
-                                                    <div className="py-2 px-4 hover:bg-gray-200" title={title}                                                    >
-                                                        <p className='text-[14px]'>{title}</p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                            <div className="cursor-pointer hover:bg-gray-200" onClick={handleLogout}                                            >
-                                                <div className="py-2 px-4 hover:bg-gray-200">
-                                                    <p className='text-[14px]'>Đăng xuất</p>
+                    <div className="flex text-black ">
+                        <ItemRectangle
+                            className='!w-fit !font-bold hidden md:block'
+                            icon={<UserIcon />}
+                            title="Hệ thống cửa hàng"
+                        />
+                        <ItemRectangle
+                            className='!w-fit !font-bold hidden md:block'
+                            icon={<UserIcon />}
+                            title="Tạp chí làm đẹp"
+                        />
+                        <div className="relative">
+                            <Link href={!isLogin ? LOGIN_URL : '#'}>
+                                <ItemRectangle
+                                    onFunction={() => setIsOpen(!isOpen)}
+                                    icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
+                                    title={isLogin ? 'Tài khoản' : 'Đăng nhập'}
+                                /></Link>
+                            {isOpen && isLogin && (
+                                <div ref={profileRef} className="absolute right-0 top-12 w-64 bg-white overflow-hidden rounded-lg shadow-lg z-50"                                    >
+                                    <Container >
+                                        {PROFILE.map(({ path, title }, index) => (
+                                            <Link key={index} href={path}>
+                                                <div className="py-2 px-4 hover:bg-gray-200" title={title}                                                    >
+                                                    <p className='text-[14px]'>{title}</p>
                                                 </div>
+                                            </Link>
+                                        ))}
+                                        <div className="cursor-pointer hover:bg-gray-200" onClick={handleLogout}                                            >
+                                            <div className="py-2 px-4 hover:bg-gray-200">
+                                                <p className='text-[14px]'>Đăng xuất</p>
                                             </div>
-                                        </Container>
-                                    </div>
-                                )}
-                            </div>
-                            <ItemRectangle
-                                className='!w-fit'
-                                icon={<Link href={`${CART_URL}`}><BiCartAdd /></Link>}
-                            />
+                                        </div>
+                                    </Container>
+                                </div>
+                            )}
                         </div>
-                        {isAddress && (
-                            <div className="flex items-center gap-2">
-                                <LocationIcon className='w-[20px]' />
-                                <p className=' text-[14px] leading-[21px] text-gray-400 underline truncate'> {shippingAddress[0]?.address ?? MESS_DELIVERY.ADDRESS_MESS}</p>
-                            </div>
-                        )}
+                        <ItemRectangle
+                            className='!w-fit'
+                            onFunction={toggleDrawer}
+                            icon={<CartIcon />}
+                        />
                     </div>
 
+                </div>
+                <div className="h-[25px] mt-4">
+                    <Carousel slidesPerView={8} >
+                        {CATEGORY_CONFIG.map(({ title }) => (
+                            <SwiperSlide key={title} className='!w-fit'>
+                                <IconButton className='whitespace-nowrap border-[0.5px] border-gray-200 rounded-md !p-1 !text-black overflow-hidden !px-5 ' title={title} />
+                            </SwiperSlide>
+                        ))}
+
+                    </Carousel>
                 </div>
             </div >
         </Container >

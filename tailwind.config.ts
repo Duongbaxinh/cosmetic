@@ -27,6 +27,8 @@ const config: Config = {
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(to bottom, transparent 0%, transparent 60%, white 100%)",
+        "custom-gradient2":
+          "linear-gradient(90deg, rgb(255, 212, 0), rgb(199, 49, 48) 50.52%, rgb(102, 54, 149) 99.61%)",
       },
       fontFamily: {
         sans: ["Inter", "Roboto", "sans-serif"],
@@ -38,7 +40,7 @@ const config: Config = {
         secondColor: "#005AC3",
         fadeBlue: "#e6f1fe",
         fadeGray: "#f7f8f9",
-        lightGray: "#e8eaed",
+        lightGray: "#dfdfdf",
         gray: "#EEEFF1",
         darkGray: "#85909d",
         lightBlue: "#CCE2FD",
@@ -49,6 +51,7 @@ const config: Config = {
         green: "#00B63E",
         darkGreen: "#006D25",
         orange: "#FAAE59",
+        yellowCustom: "#f8ea67",
       },
       animation: {
         dropdown: "dropdown 0.2s ease-in-out forwards",

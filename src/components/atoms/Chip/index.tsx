@@ -4,9 +4,9 @@ import React from "react";
 
 const Chip: React.FC<ChipProps> = ({ leading, title, trailing, className }) => {
     return (
-        <div className={`flex items-center gap-1  px-1 py-[1px] rounded-lg bg-gray-200 ${className}`}>
+        <div className={`flex items-center gap-1  p-2 rounded-lg border border-color ${className}`}>
             {leading && leading}
-            <span className="text-[10px] font-medium">{title}</span>
+            <span className="text-[10px] font-medium whitespace-nowrap">{title}</span>
             {trailing && trailing}
         </div>
     );

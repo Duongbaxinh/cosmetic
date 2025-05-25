@@ -1,6 +1,9 @@
+import { FilterProductType } from "@/types";
+import { isArray } from "lodash";
+
 export const createParams = (customParams: any) => ({
-  limit: 10,
-  page: 0,
+  limitnumber: 10,
+  page: 1,
   ...customParams,
 });
 
@@ -29,3 +32,17 @@ export const query = toQueryString({
   order: "asc",
   sortBy: "",
 });
+
+export const cleanFilter = (filter: any) => {
+  const newFilter: { [key: string]: any } = {};
+  for (const filed in filter) {
+    if (filed === "price") {
+      newFilter["price"] = filter["price"]?.value;
+    } else if (isArray(filter[filed as keyof FilterProductType])) {
+      newFilter[filed] = filter[filed].map((item: any) => item.value);
+    } else {
+      newFilter[filed] = filter[filed as keyof FilterProductType];
+    }
+  }
+  return newFilter;
+};

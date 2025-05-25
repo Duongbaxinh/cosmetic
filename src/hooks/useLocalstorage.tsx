@@ -6,7 +6,7 @@ const useSaveLocalStorage = <T,>(key: string, initialValue: any) => {
         if (typeof window !== "undefined") {
             const savedState = localStorage.getItem(key);
             return savedState !== null && savedState !== "undefined"
-                ? JSON.parse(savedState)
+                ? JSON.parse(savedState) as T
                 : initialValue;
         }
         return initialValue;

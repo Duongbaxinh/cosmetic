@@ -15,6 +15,7 @@ export const useGetProductCart = (authenticated = false) => {
         const url = `/cart`;
         const response = await getData(url, authenticated);
         setCart(response as CartCheckout);
+        console.log("checkk datfa cart::::", response);
         setLoading(false);
         return response as CartCheckout;
       } catch (error) {

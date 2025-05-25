@@ -1,6 +1,6 @@
 import { IconProps } from "@/types";
 
-const UserIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
+const MenuIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
     return (
         <svg
             width="24"
@@ -10,9 +10,9 @@ const UserIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
             className={className}
             xmlns="http://www.w3.org/2000/svg"
         >
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
         </svg>
     );
 };
 
-export default UserIcon;
+export default MenuIcon;

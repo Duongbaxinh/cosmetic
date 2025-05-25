@@ -6,34 +6,36 @@ import Price from '@/components/atoms/Price';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { deleteCartManyProduct, deleteCartProduct, useGetProductCart } from '@/services/cart.service';
 import { handleCheckout } from '@/services/checkout.service';
-import { CartCheckout } from '@/types';
+import { CartCheckout, ShippingAddress } from '@/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
 import { MESS_CART } from '@/config/mess.config';
 import { placeOrder } from '@/services';
 import { redirect } from 'next/navigation';
+import Drawer from '@/components/molecules/Drawer';
+import { useCart } from '@/contexts/cart.context';
+import Image from 'next/image';
+import { useOrder } from '@/contexts/order.context';
+import PopupPrivate from '@/components/molecules/PopupPrivate';
+import PopupInfo from '@/components/molecules/PopupInfo';
 
 function CartPage() {
 
-    const { cart, loading, setCart } = useGetProductCart(true)
+    const { cart, updateCartItem } = useCart()
+    const { handlePurchase, proceedToCheckout, isOpen, setIsOpen } = useOrder()
+    const { isOpen: openDrawer, toggleDrawer } = useCart()
     const [localQuantities, setLocalQuantities] = useState<Record<string, number>>({});
     const [itemSelected, setItemSelected] = useState<string[]>([])
 
     const debounceChangeQuantity = useCallback(
-        debounce(async (cart_id: string, id: string, quantity: number, selected: boolean) => {
-            try {
-                const payload = {
-                    cart_id,
-                    id,
-                    product_quantity: quantity,
-                    product_selected: selected,
-                };
-                const result = await handleCheckout(payload, true);
-                setCart(result as CartCheckout);
-            } catch (err) {
-                console.error("Update quantity failed", err);
-                // Optional: rollback localQuantities or notify user
-            }
+        debounce(async (cart_id: string, product_id: string, quantity: number, selected: boolean) => {
+            const payload = {
+                cart_id,
+                product_id,
+                product_quantity: quantity,
+                product_selected: selected,
+            };
+            const result = await updateCartItem(cart_id, product_id, quantity);
         }, 500),
         []
     );
@@ -43,16 +45,12 @@ function CartPage() {
             ...prev,
             [id]: newQuantity
         }));
-        // debounceChangeQuantity(cart.cart_id, id, newQuantity, itemSelected.includes(id));
+        debounceChangeQuantity(cart.cart_id, id, newQuantity, itemSelected.includes(id));
     };
 
     const handlePlaceOrder = async () => {
-        if (cart && !cart.cart_id) return
-        if (cart?.cart_products && cart?.cart_products.length <= 0 || itemSelected.length === 0) return alert("vui long chon san pham")
-        alert(`place order checkout ${cart?.cart_id}`)
-        const payload = { cart_id: cart?.cart_id }
-        const result = await placeOrder(payload, true)
-        redirect(`/checkout/${result?.order_id}`)
+        if (!cart || cart?.cart_products.length <= 0) return
+        return handlePurchase(cart.cart_products)
     }
 
     const handleSelectAll = (checked: boolean) => {
@@ -77,18 +75,18 @@ function CartPage() {
         const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_ONE)
         if (confirm_delete && cart && cart.cart_id) {
             const result = await deleteCartProduct(cart.cart_id, id, true)
-            setCart(result as CartCheckout)
+            // setCart(result as CartCheckout)
         }
     }
 
-    const handleDeleteMany = async () => {
-        if (itemSelected.length === 0) return alert(MESS_CART.ERROR_EMPTY_DELETE)
-        const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_MANY)
-        if (confirm_delete && cart && cart.cart_id) {
-            const result = await deleteCartManyProduct(cart.cart_id, itemSelected, true)
-            setCart(result as CartCheckout)
-        }
-    }
+    // const handleDeleteMany = async () => {
+    //     if (itemSelected.length === 0) return alert(MESS_CART.ERROR_EMPTY_DELETE)
+    //     const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_MANY)
+    //     if (confirm_delete && cart && cart.cart_id) {
+    //         const result = await deleteCartManyProduct(cart.cart_id, itemSelected, true)
+    //         setCart(result as CartCheckout)
+    //     }
+    // }
 
     const handleIncrease = (id: string) => {
         const current = localQuantities[id] ?? cart?.cart_products.find(p => p.id === id)?.quantity ?? 1;
@@ -111,6 +109,12 @@ function CartPage() {
         updateQuantity(id, newValue);
     };
 
+    const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
+        if (!cart || cart?.cart_products.length <= 0) return
+        proceedToCheckout({ shippingAddressId: shippingAddressNew, product: cart.cart_products })
+    }
+
+
     const totalPrice = useMemo(() => {
         if (!cart || !cart.cart_products) return 0;
 
@@ -123,7 +127,7 @@ function CartPage() {
 
 
     useEffect(() => {
-        if (!cart || !cart.cart_products) return;
+        if (!cart || cart.cart_products.length <= 0) return;
 
         const initialQuantities: Record<string, number> = {};
         cart.cart_products.forEach((product) => {
@@ -133,90 +137,73 @@ function CartPage() {
         setLocalQuantities(initialQuantities);
     }, [cart]);
 
-
-    if (loading) return <h1>Loading</h1>
+    const handleClosePopup = (filed: "openLogin" | "openContact") => {
+        setIsOpen(prev => ({ ...prev, [filed]: false }))
+    }
+    // if (!cart) return <h1>Loading</h1>
     const product_quantity = cart && cart.cart_products ? cart.cart_products.length : 0
     const isAll = cart && cart.cart_products.length === itemSelected.length;
 
     return (
-        <ContainerLayout isSidebar={false} >
-            <div className="w-full p-4">
-                <h1>Giỏ hàng</h1>
-                <div className='w-full flex flex-col md:flex-row gap-3'>
-                    <div className="flex-grow ">
-                        <div className="grid grid-cols-12 space-y-3">
-                            <div className="col-span-5 py-3 pr-[20px] text-[14px] text-gray-400 leading-[20px] font-light flex items-center gap-2 bg-white rounded-tl-sm rounded-bl-sm pl-2 ">
-                                <input type='checkbox' checked={isAll ?? false} onChange={(e) => handleSelectAll(e.target.checked)} />
-                                <p>Tất cả ${product_quantity}</p>
-                            </div>
-                            <p className='col-span-2 py-3 text-[14px] text-gray-400 leading-[20px] font-light bg-white'>Đơn giá</p>
-                            <p className='col-span-2 py-3 text-[14px] text-gray-400 leading-[20px] font-light  bg-white'>Số lượng</p>
-                            <p className='col-span-2 py-3 text-[14px] text-gray-400 leading-[20px] font-light bg-white'>Thành tiền</p>
-                            <div className='col-span-1 bg-white rounded-tr-sm rounded-br-sm flex items-center'
-                                onClick={() => handleDeleteMany()}
-                            ><TrashIcon /></div>
+        <Drawer isOpen={openDrawer} onClose={toggleDrawer} title='Giỏ hàng của tôi'>
+            {isOpen.openLogin && (<PopupPrivate isOpen={isOpen.openLogin} onClose={() => handleClosePopup('openLogin')} />)}
+            {isOpen.openContact && (<PopupInfo isOpen={isOpen.openContact} onClose={() => handleClosePopup('openContact')} callBack={proceedToCheckoutOrder} />)}
+            <div className="w-full">
 
-                            {cart?.cart_products.map((product) => (
-                                <>
-                                    <div className="col-span-5 py-3 pr-[20px] text-[14px] leading-[20px] font-light flex items-center gap-3 bg-white rounded-tl-sm rounded-bl-sm pl-2 ">
-                                        <input type='checkbox' checked={itemSelected.includes(product.id)} onChange={(e) => handleSelectItem(e.target.checked, product.id)} />
-                                        <img className='w-[80px] h-[80px]' src={product.product_thumbnail ?? null} alt='product image' />
-                                        <span className='break-words line-clamp-3 text-[14px] leading-[20px]'>{product.product_name}</span>
-                                    </div>
-                                    <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light bg-white'>
-                                        <Price product_price={product.product_price} />
-                                    </div>
-                                    <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light  bg-white'>
-                                        <IconButton icon={<BiMinus />} onClick={() => handleDecrease(product.id)} className='w-[30px] h-[30px] shadow-sm' />
-                                        <input value={localQuantities[product.id] ? localQuantities[product.id] : product.quantity} type='number' onChange={(e) => { handleChangeQuantity(product.id, Number(e.target.value)) }} className=" bg-white w-[30px] h-[30px] shadow-sm rounded-sm text-black text-center " />
-                                        <IconButton icon={<BiPlus />} onClick={() => handleIncrease(product.id)} className='w-[30px] h-[30px] shadow-sm' />
-                                    </div>
-                                    <div className='col-span-2 flex items-center py-3 text-[14px] leading-[20px] font-light bg-white'>
-                                        <Price product_price={localQuantities[product.id] ? product.product_price * (localQuantities[product.id]) : product.product_price} />
-                                    </div>
-                                    <div className='col-span-1 bg-white rounded-tr-sm rounded-br-sm flex items-center h-full max-h-[104px] '
-                                        onClick={() => handleDeleteOne(product.id)}>
-                                        <TrashIcon />
-                                    </div>
-                                </>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="sticky top-2 max-w-[320px] h-[100px] w-full space-y-3 ">
-                        <div className="bg-white p-4 rounded-lg shadow-sm max-w-md">
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-gray-700 font-semibold">Giao tới</h3>
-                                <button className="text-blue-600 text-sm hover:underline">Thay đổi</button>
-                            </div>
-                            <p className="text-gray-900 font-medium">{cart?.cart_user.user_name} </p>
-                            <p className="text-green-600 text-sm">{cart?.cart_user.user_address} </p>
-                        </div>
-                        {/* CHECKOUT */}
-                        <div className="bg-white p-4 rounded-lg shadow-sm max-w-md">
-                            <div className="space-y-2">
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Tổng tiền hàng</span>
-                                    <Price product_price={totalPrice} />
+                <div className='w-full flex flex-col md:flex-row gap-3'>
+                    <div className="flex-grow">
+                        <div className='pt-4'>
+                            <div className="border-b border-color">
+                                <div className=" px-4 col-span-5 pb-5 pr-[20px] text-[14px] text-gray-400 leading-[20px] font-light flex items-center gap-2 bg-white rounded-tl-sm rounded-bl-sm border-b border-color  ">
+                                    <input type='checkbox' checked={isAll ?? false} onChange={(e) => handleSelectAll(e.target.checked)} />
+                                    <p>Chọn tất cả {product_quantity}</p>
                                 </div>
-                                {/* <div className="flex justify-between">
-                                    <span className="text-gray-600">Giảm giá trực tiếp</span>
-                                    <Price product_price={cart?.cart_discount ?? 0} />
-                                </div> */}
-                                <div className="flex justify-between bcart-t pt-2">
-                                    <span className="text-gray-800 font-semibold">Tổng tiền thanh toán</span>
-                                    <Price product_price={totalPrice ?? 0} />
+
+                                <div className="pt-5">
+                                    {cart?.cart_products.map((product) => (
+                                        <div
+                                            key={product.id}
+                                            className="flex gap-3 items-start text-[12px] py-2  px-4"
+                                        >
+                                            <input type='checkbox' checked={itemSelected.includes(product.id)} onChange={(e) => handleSelectItem(e.target.checked, product.id)} />
+                                            <Image src={product.product_thumbnail} alt={product.product_name} width={80} height={80} className='shadow rounded-lg' />
+                                            <div className="flex flex-col  gap-2 text-black text-3 leading-[19px]">
+                                                <p className=" line-clamp-2">
+                                                    {product.product_name}
+                                                </p>
+                                                <div className="flex items-center gap-1 border-[2px] border-gray-200 rounded-full overflow-hidden w-[60px] ">
+                                                    <IconButton icon={<BiMinus />} onClick={() => handleDecrease(product.id)} className='w-[30px] h-full !px-0 !py-[2px] ' />
+                                                    <input value={localQuantities[product.id] ? localQuantities[product.id] : product.quantity} type='number'
+                                                        onChange={(e) => { handleChangeQuantity(product.id, Number(e.target.value)) }}
+                                                        className=" bg-white w-[20px]  text-black text-center outline-none border-0 " />
+                                                    <IconButton icon={<BiPlus />} onClick={() => handleIncrease(product.id)} className='w-[30px] h-full !px-0 !py-[2px]' />
+                                                </div>
+                                                <Price product_price={localQuantities[product.id] ? product.product_price * (localQuantities[product.id]) : product.product_price} />
+                                            </div>
+                                            <IconButton className='!bg-gray-300' onClick={() => handleDeleteOne(product.id)} icon={<BiMinus />} />
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <button className="mt-4 w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
-                                onClick={() => handlePlaceOrder()}
-                            >
-                                Mua Hàng (1)
-                            </button>
+
+                            <div className="bg-white pt-3  px-4 ">
+                                <div className="space-y-2">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600">Tổng tiền hàng</span>
+                                        <Price product_price={totalPrice} />
+                                    </div>
+                                </div>
+                                <button className="mt-4 w-full text-white py-2 rounded-lg  bg-gradient"
+                                    onClick={() => handlePlaceOrder()}
+                                >
+                                    Mua Hàng
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </ContainerLayout>
+        </Drawer>
     );
 }
 

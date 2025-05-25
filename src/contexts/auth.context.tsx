@@ -1,6 +1,7 @@
 "use client"
 import useSaveLocalStorage from "@/hooks/useLocalstorage";
 import { clearUser } from "@/redux/slices/auth.slice";
+import { clearShippingAddress } from "@/redux/slices/shippingAddress.slice";
 import { UserType } from "@/types";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect } from "react";
@@ -11,7 +12,8 @@ interface AuthContextType {
     accessToken: string,
     setAccessToken: (token: string) => void
     setUser: (user: any) => void,
-
+    setRefetchToken: (token: string) => void
+    refetchToken: (user: any) => void,
     setIsLogin: (isLogin: boolean) => void,
     isLogin: boolean,
     logout: () => void,
@@ -22,6 +24,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useSaveLocalStorage("user", null);
     const [accessToken, setAccessToken] = useSaveLocalStorage('accessToken', null)
+    const [refetchToken, setRefetchToken] = useSaveLocalStorage('refetchToken', null)
     const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
 
     const dispatch = useDispatch();
@@ -34,14 +37,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     const logout = () => {
-        setIsLogin(false);
         dispatch(clearUser());
-        localStorage.removeItem("accessToken");
+        dispatch(clearShippingAddress());
         localStorage.clear()
-        router.replace('/')
+        localStorage.setItem("isLogin", JSON.stringify(false))
+        router.push('/')
     };
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin }}>
+        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refetchToken, setRefetchToken }}>
             {children}
         </AuthContext.Provider>
     )

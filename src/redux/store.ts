@@ -5,6 +5,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { categoryApi } from "./slices/category.slice";
 import { brandApi } from "./slices/brand.slice";
 import { authApi } from "./slices/auth.slice";
+import { cartApi } from "./slices/cart.slice";
 import userReducer from "./slices/auth.slice";
 import shippingAddressReducer, {
   shippingAddressApi,
@@ -17,6 +18,7 @@ export const store = configureStore({
     user: userReducer,
     address: shippingAddressReducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [shippingAddressApi.reducerPath]: shippingAddressApi.reducer,
     [brandApi.reducerPath]: brandApi.reducer,
@@ -30,6 +32,7 @@ export const store = configureStore({
       shippingAddressApi.middleware,
       categoryApi.middleware,
       brandApi.middleware,
+      cartApi.middleware,
       authApi.middleware,
       orderProductApi.middleware,
       reviewProductApi.middleware

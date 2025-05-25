@@ -20,7 +20,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { useDispatch } from 'react-redux';
-import { ShippingAddress } from '@/types';
+import { OrderProduct, ShippingAddress } from '@/types';
+import { useCart } from '@/contexts/cart.context';
+import { useOrder } from '@/contexts/order.context';
+import { createParams } from '@/utils';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -28,13 +31,10 @@ export type PopupContactType = {
 }
 
 function DetailProductPage({ id }: { id: string | number }) {
-    const { user } = useAuth()
-    const [isOpen, setIsOpen] = useState({
-        openLogin: false,
-        openContact: false
-    })
+    const { handlePurchase, proceedToCheckout, isOpen, setIsOpen } = useOrder()
+    const { cart, addToCart } = useCart()
     const [quantity, setQuantity] = useState<number>(1)
-    const params = useMemo(() => { return { product_type: '' } }, []);
+    const params = createParams({ product_type: '' });
     const { data: product, isLoading: loadingProduct, error: errorProduct } = useGetProductByIdQuery(id);
     const { data: products, isLoading: loading, error } = useGetAllProductsQuery(params);
     const { data: reviewProduct, error: errorReview, isLoading: reviewLoading } = useGetReviewProductByIdQuery(id);
@@ -74,55 +74,36 @@ function DetailProductPage({ id }: { id: string | number }) {
     }
 
 
-    const handlePurchase = () => {
-        if (!userInfo) {
-            return setIsOpen(prev => ({ ...prev, openLogin: true }))
+    const handlePurchaseProcess = () => {
+        if (!product) return
+        const orderProduct: OrderProduct = {
+            id: product.id,
+            product_name: product.product_name,
+            product_price: product.product_price,
+            product_thumbnail: product.product_thumbnail,
+            quantity: quantity,
         }
-        if (shippingAddress.length <= 0) {
-            return setIsOpen(prev => ({ ...prev, openContact: true }))
-        }
-        return proceedToCheckout()
+        return handlePurchase(orderProduct)
+
     }
 
-    const proceedToCheckout = (shippingAddressNew?: ShippingAddress) => {
-        console.log("check prodcess shipping ;:::", shippingAddressNew)
-        const totalPrice = product?.product_price ? product.product_price * quantity : 0
-        const orderTemporary = {
-            "order_quantity": quantity,
-            "order_total_price": totalPrice,
-            "order_discount": 0,
-            "order_final_price": totalPrice,
-            "order_shipping": 15000,
-            "order_shippingAddress": shippingAddressNew ? shippingAddressNew : shippingAddress[0],
-            "order_expected_delivery_time": "2025-04-13T19:00:00Z",
-            "order_user": {
-                "user_id": user?.id,
-                "user_name": user?.username,
-                "user_address": user?.address
-            },
-            "order_products": [
-                {
-                    "id": product?.id,
-                    "product_price": product?.product_price,
-                    "product_thumbnail": product?.product_thumbnail,
-                    "product_name": product?.product_name,
-                    "quantity": quantity,
-                    "product_total_price": (product?.product_price ?? 0) * quantity,
-                    "product_discount": 0
-                },
-            ]
+    const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
+        if (!product) return
+        const orderProduct: OrderProduct = {
+            id: product.id,
+            product_name: product.product_name,
+            product_price: product.product_price,
+            product_thumbnail: product.product_thumbnail,
+            quantity: quantity,
         }
-        if (userInfo && shippingAddress || shippingAddressNew) {
-            console.log("order ", orderTemporary, shippingAddress)
-            sessionStorage.setItem(`order`, JSON.stringify(orderTemporary))
-            redirect(`${CHECKOUT_URL}`)
-        }
+        proceedToCheckout({ shippingAddressId: shippingAddressNew, product: orderProduct })
     }
 
 
-
-    const handleAddToCart = () => {
-        alert("add to cart")
+    const handleAddToCart = async ({ product_id, quantity }: { product_id: string, quantity: number }) => {
+        console.log("check cart", cart)
+        if (!cart || !cart?.cart_id) return
+        await addToCart(cart?.cart_id, product_id, quantity)
     }
 
     const handleClosePopup = (filed: "openLogin" | "openContact") => {
@@ -137,20 +118,18 @@ function DetailProductPage({ id }: { id: string | number }) {
 
             {/* <Popup isOpen={true} /> */}
             {isOpen.openLogin && (<PopupPrivate isOpen={isOpen.openLogin} onClose={() => handleClosePopup('openLogin')} />)}
-            {isOpen.openContact && (<PopupInfo isOpen={isOpen.openContact} onClose={() => handleClosePopup('openContact')} callBack={proceedToCheckout} />)}
-            <div className="pb-3">
-                <Breadcrumb items={breadcrumbDetailProduct} />
-            </div>
-            <div className="w-full flex flex-col lg:flex-row  gap-3">
+            {isOpen.openContact && (<PopupInfo isOpen={isOpen.openContact} onClose={() => handleClosePopup('openContact')} callBack={proceedToCheckoutOrder} />)}
+
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 ">
                 <OverviewProduct
                     product={product}
                 />
                 <DetailProduct
+                    breadcrumbDetailProduct={breadcrumbDetailProduct}
                     shippingAddress={shippingAddress}
                     product={product}
                     similarProduct={products?.results ?? []}
-                    similarProductLoading={loading} />
-                <Purchase
+                    similarProductLoading={loading}
                     numberReview={reviewProduct?.total_reviews ?? 0}
                     product_price={product.product_price}
                     product_quantity={quantity}
@@ -158,8 +137,9 @@ function DetailProductPage({ id }: { id: string | number }) {
                     onIncrease={handleIncrease}
                     onDecrease={handleDecrease}
                     onChangeQuantity={handleChangeQuantity}
-                    onPurchase={handlePurchase}
-                    onAddToCart={handleAddToCart} />
+                    onPurchase={handlePurchaseProcess}
+                    onAddToCart={handleAddToCart}
+                />
             </div>
             <div className="w-full  bg-white rounded-md shadow-sm mt-3">
                 <ReviewProduct review={reviewProduct} />

@@ -5,11 +5,14 @@ export type TCheckoutPage = {
 export type FilterProductType = {
   limitnumber: number;
   page: number;
-  category?: string;
-  brand?: string[];
-  rate?: number;
-  price?: number[];
-  sortBy?: string;
+  product_type?: { title: string; value: string }[];
+  brand?: { title: string; value: string }[];
+  rate?: number | null;
+  price?: {
+    key: string | null;
+    value: (number | null)[];
+  };
+  sortBy?: string | null;
   sortPrice?: "" | "asc" | "desc";
   order?: "asc" | "desc";
   textSearch?: string;

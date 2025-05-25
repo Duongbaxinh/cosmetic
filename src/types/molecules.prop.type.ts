@@ -2,7 +2,13 @@ import { Product } from "./data.type";
 
 export type CardProductFullProps = Pick<
   Product,
-  "id" | "product_name" | "product_price" | "product_thumbnail" | "product_rate"
+  | "id"
+  | "product_name"
+  | "product_price"
+  | "product_thumbnail"
+  | "product_rate"
+  | "product_brand"
+  | "product_description"
 > & { className?: string };
 export interface ListTemplateProps {
   children: React.ReactNode;

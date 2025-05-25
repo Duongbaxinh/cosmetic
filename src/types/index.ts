@@ -5,4 +5,5 @@ export * from "./config.type";
 export * from "./micro.type";
 export * from "./page.type";
 export * from "./slice.type";
+export * from "./context.type";
 export * from "./response.type";

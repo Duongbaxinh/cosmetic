@@ -1,15 +1,9 @@
 "use client"
 import Price from '@/components/atoms/Price';
-import { PAYMENT_METHOD } from '@/consts';
 import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetOrderDetailQuery } from '@/redux/slices/order.slice';
-import { useGetProductOrder } from '@/services';
-import clsx from 'clsx';
 import Image from 'next/image';
-import React from 'react';
-import { BiCheckCircle } from 'react-icons/bi';
-import { BsTruck } from 'react-icons/bs';
 
 function OrderDetailPage({ order_id }: { order_id: string }) {
     const auth = useAuth()
@@ -82,13 +76,13 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                     <div className=" bg-white p-4 space-y-[20px] mt-[30px] rounded-md">
                         {orderDetail?.order_details.map((product, index) => (
                             <div key={product.id} className={`flex gap-3 pt-4 ${index !== 0 && "border-t border-gray-300"}`}>
-                                {/* <Image
+                                <Image
                                     src={product.product_thumbnail}
                                     alt={product.product_name}
-                                    width={50}
-                                    height={70}
-                                    className="object-cover w-[60px] h-[60px]"
-                                /> */}
+                                    width={100}
+                                    height={100}
+                                    className="object-cover w-[100px] h-[100px] rounded-md shadow"
+                                />
                                 <div className="flex-1">
                                     <div className="text-sm text-gray-800 line-clamp-2">{product.product_name}</div>
                                     <div className="text-xs text-gray-500">SL: x{product.quantity}</div>

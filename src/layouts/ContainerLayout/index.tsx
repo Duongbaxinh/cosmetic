@@ -1,10 +1,12 @@
 'use client'
-import React, { ReactNode } from 'react';
-import Header from '../Header';
+import CartPage from '@/components/pages/CartPage';
+import { useCart } from '@/contexts/cart.context';
+import React, { ReactNode, useEffect } from 'react';
 import Footer from '../Footer';
+import Header from '../Header';
 import SideBar from '../SideBar';
-import './index.css';  // Import CSS file
 import SideBarDetail from '../SideBarDetail';
+import './index.css'; // Import CSS file
 
 interface ContainerLayoutProps {
     children: ReactNode;
@@ -12,17 +14,33 @@ interface ContainerLayoutProps {
     isFooter?: Boolean;
     isSidebar?: Boolean;
     isSidebarDetail?: Boolean;
+    classHeader?: string
+
 
 }
 
-const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = true, isFooter = true, isSidebar = true, isSidebarDetail = false }) => {
+const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = true, classHeader, isFooter = true, isSidebar = true, isSidebarDetail = false }) => {
+    const { isOpen } = useCart();
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+        return () => {
+            document.body.classList.remove('no-scroll');
+        };
+    }, [isOpen]);
+
     return (
-        <div className="container-layout">
-            {isHeader && <Header />}
-            <div className="flex w-full px-3 py-3">
+        <div className={`container-layout px-3 md:px-[63px]`}>
+            <CartPage />
+            {isHeader && <Header classHeader={classHeader} />}
+            <div className="flex w-full py-3">
                 {isSidebar && <div className="sidebar"><SideBar /></div>}
                 {isSidebarDetail && <div><SideBarDetail /></div>}
-                <div className={`${isSidebar ? 'content' : 'w-full'} min-h-[100vh] pl-0 lg:pl-5`}>
+                <div className={`${isSidebar ? 'content' : 'w-full'} min-h-[100vh] pl-0`}>
                     {children}
                 </div>
             </div>
@@ -30,5 +48,4 @@ const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = 
         </div>
     );
 };
-
 export default ContainerLayout;

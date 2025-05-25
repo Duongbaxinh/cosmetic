@@ -6,6 +6,8 @@ import { AuthProvider } from "@/contexts/auth.context";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import ReduxProvider from "@/redux/ReduxProvider";
+import { CartProvider } from "@/contexts/cart.context";
+import { OrderProvider } from "@/contexts/order.context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +37,11 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <AuthProvider>
-            {children}
+            <CartProvider>
+              <OrderProvider>
+                {children}
+              </OrderProvider>
+            </CartProvider>
           </AuthProvider>
         </ReduxProvider>
       </body>
