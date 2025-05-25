@@ -110,11 +110,13 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
             country: "Việt Nam",
             phone: userInfo?.phone ?? "",
         };
-
         const dataCreateShippingAddress = await createShippingAddress(dataShipping);
         if (dataCreateShippingAddress.data) {
+            onClose()
             dispatch(setShippingAddress([dataCreateShippingAddress.data]))
             if (callBack) callBack(dataCreateShippingAddress.data);
+        } else {
+            console.log('error ', error)
         }
     };
 

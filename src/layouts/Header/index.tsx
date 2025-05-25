@@ -3,29 +3,25 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 
-import { LocationIcon, UserIcon } from '@/assets/icons';
+import { UserIcon } from '@/assets/icons';
+import CartIcon from '@/assets/icons/CartIcon';
+import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
+import IconButton from '@/components/atoms/IconButton';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { PROFILE } from '@/components/config/profile';
 import BoxSearch from '@/components/molecules/BoxSearch';
-import { MESS_DELIVERY } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
-import useClickOutside from '@/hooks/useClickOuside';
-import { CART_URL, LOGIN_URL } from '@/routers';
-import Image from 'next/image';
-import { BiCartAdd, BiHome } from 'react-icons/bi';
-import { useRouter } from 'next/navigation';
-import { setUser } from '@/redux/slices/auth.slice';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
-import CartIcon from '@/assets/icons/CartIcon';
-import Carousel from '@/components/atoms/Carousel';
-import { SwiperSlide } from 'swiper/react';
-import IconButton from '@/components/atoms/IconButton';
 import { useCart } from '@/contexts/cart.context';
+import useClickOutside from '@/hooks/useClickOuside';
+import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
+import { RootState } from '@/redux/store';
+import { LOGIN_URL } from '@/routers';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { SwiperSlide } from 'swiper/react';
 
 // Type definition for component props
 interface HeaderProps {

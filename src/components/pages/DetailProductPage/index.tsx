@@ -1,29 +1,22 @@
 'use client'
 
-import Breadcrumb from '@/components/atoms/Breadcrumb';
-import PopupPrivate from '@/components/molecules/PopupPrivate';
-import { useAuth } from '@/contexts/auth.context';
-import ContainerLayout from '@/layouts/ContainerLayout';
-import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
-import { useGetAllProductsQuery, useGetProductByIdQuery } from '@/redux/slices/product.slice';
-import { useGetReviewProductByIdQuery } from '@/redux/slices/review.slice';
-import { CHECKOUT_URL } from '@/routers';
-import { placeOrder } from '@/services';
-import { redirect } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import DetailProduct from './DetailProduct';
-import OverviewProduct from './OverviewProduct';
-import Purchase from './Purchase';
-import ReviewProduct from './ReviewProduct';
 import PopupInfo from '@/components/molecules/PopupInfo';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
-import { useDispatch } from 'react-redux';
-import { OrderProduct, ShippingAddress } from '@/types';
+import PopupPrivate from '@/components/molecules/PopupPrivate';
 import { useCart } from '@/contexts/cart.context';
 import { useOrder } from '@/contexts/order.context';
+import ContainerLayout from '@/layouts/ContainerLayout';
+import { setUser } from '@/redux/slices/auth.slice';
+import { useGetAllProductsQuery, useGetProductByIdQuery } from '@/redux/slices/product.slice';
+import { useGetReviewProductByIdQuery } from '@/redux/slices/review.slice';
+import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
+import { RootState } from '@/redux/store';
+import { OrderProduct, ShippingAddress } from '@/types';
 import { createParams } from '@/utils';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import DetailProduct from './DetailProduct';
+import OverviewProduct from './OverviewProduct';
+import ReviewProduct from './ReviewProduct';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -88,6 +81,8 @@ function DetailProductPage({ id }: { id: string | number }) {
     }
 
     const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
+        alert("new address ::: ")
+        console.log("shipping address :::: ", shippingAddressNew)
         if (!product) return
         const orderProduct: OrderProduct = {
             id: product.id,
@@ -96,7 +91,7 @@ function DetailProductPage({ id }: { id: string | number }) {
             product_thumbnail: product.product_thumbnail,
             quantity: quantity,
         }
-        proceedToCheckout({ shippingAddressId: shippingAddressNew, product: orderProduct })
+        proceedToCheckout({ shippingAddressNew: shippingAddressNew, product: orderProduct })
     }
 
 

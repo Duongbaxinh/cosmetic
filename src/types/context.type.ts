@@ -23,8 +23,10 @@ export type CartContextType = {
 
 export type OrderContextType = {
   handlePurchase: (product: OrderProduct | OrderProduct[]) => void;
-  proceedToCheckout: (arg: {
-    shippingAddressId?: ShippingAddress;
+  proceedToCheckout: ({
+    ...arg
+  }: {
+    shippingAddressNew?: ShippingAddress;
     product?: OrderProduct | OrderProduct[];
   }) => void;
   isOpen: { openLogin: boolean; openContact: boolean };
