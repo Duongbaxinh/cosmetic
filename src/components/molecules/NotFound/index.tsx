@@ -4,11 +4,12 @@ import React from 'react';
 export type NotFoundType = {
     content: string,
     labelButton?: string,
-    onFc?: () => void
+    onFc?: () => void,
+    className?: string,
 }
-function NotFound({ content, labelButton, onFc }: NotFoundType) {
+function NotFound({ content, labelButton, onFc, className }: NotFoundType) {
     return (
-        <div className='w-full h-full flex flex-col items-center justify-start'>
+        <div className={`w-full h-full flex flex-col items-center justify-start ${className ? className : ''}`}>
             <h1>{content}</h1>
             {onFc && (<IconButton onClick={onFc} title={labelButton} />)}
         </div>

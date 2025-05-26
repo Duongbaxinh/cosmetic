@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setUser } from "@/redux/slices/auth.slice";
+import { toast } from "react-toastify";
 
 export type Province = { code: number; name: string };
 export type District = { code: number; name: string };
@@ -116,7 +117,7 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
             dispatch(setShippingAddress([dataCreateShippingAddress.data]))
             if (callBack) callBack(dataCreateShippingAddress.data);
         } else {
-            console.log('error ', error)
+            toast.error("Lỗi khi tạo địa chỉ giao hàng. Vui lòng thử lại sau.");
         }
     };
 

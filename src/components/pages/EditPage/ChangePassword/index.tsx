@@ -49,7 +49,7 @@ function ChangePassword() {
         const dataChangePassword = await changePassword(payload)
 
         if (dataChangePassword.data) {
-            console.log(dataChangePassword)
+
             alert(dataChangePassword.data)
             redirect(LOGIN_URL)
         }

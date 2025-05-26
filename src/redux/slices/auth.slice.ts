@@ -72,7 +72,6 @@ export const authApi = createApi({
         body: dataRegister,
       }),
       transformResponse: (response: RegisterResponse) => {
-        console.log("check register ::: ", response);
         return response;
       },
     }),
@@ -105,7 +104,6 @@ export const authApi = createApi({
         body: forgotPasswordPayload,
       }),
       transformResponse: (response: string) => {
-        console.log("check forgot ::: ", response);
         return response;
       },
     }),
@@ -116,7 +114,6 @@ export const authApi = createApi({
         body: resetPasswordPayload,
       }),
       transformResponse: (response: string) => {
-        console.log("check reset ::: ", response);
         return response;
       },
     }),

@@ -45,3 +45,9 @@ export enum MESS_AUTH {
 export enum MESS_DELIVERY {
   ADDRESS_MESS = "Bạn muốn giao hàng đến địa điểm nào ??",
 }
+
+// SYSTEM
+
+export enum MESS_SYSTEM {
+  UNKNOWN_ERROR = "Đã có sự cố xảy ra vui lòng thử lại !!!",
+}

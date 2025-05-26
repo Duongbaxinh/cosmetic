@@ -22,11 +22,12 @@ interface DetailProductProps {
     similarProductLoading?: boolean
     numberReview: number;
     product_price: number;
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
     product_quantity: number;
     cost_tentative: number;
     onIncrease: () => void;
     onDecrease: () => void;
-    onChangeQuantity: (value: number) => void;
+    onChangeQuantity: (value: string) => void;
     onPurchase: () => void;
     onAddToCart: ({ product_id, quantity }: { product_id: string, quantity: number }) => void;
     breadcrumbDetailProduct: BreadcrumbItem[]
@@ -40,6 +41,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
     product_quantity,
     cost_tentative,
     onIncrease,
+    onBlur,
     onDecrease,
     onChangeQuantity,
     onPurchase,
@@ -52,9 +54,9 @@ const DetailProduct: React.FC<DetailProductProps> = ({
     });
 
     return (
-        <div className="flex flex-col gap-2.5 w-full max-w-full   rounded-md  order-2 lg:order-1 ">
+        <div className="flex flex-col gap-2.5 w-full max-w-full  rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
-            <div className="px-4  bg-white rounded-md ">
+            <div className="px-1 md:px-4  bg-white rounded-md ">
                 <div className="flex flex-col gap-2.5">
                     <div className="pb-3">
                         <Breadcrumb items={breadcrumbDetailProduct} />
@@ -80,16 +82,22 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                         {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}
                     </div>
                     <div className="mb-4">
-                        <div className="flex justify-between gap-3 fixed left-0 bottom-0 z-50 w-full md:static py-5 md:py-0 bg-white ">
-                            <div className="flex items-center gap-2 border-[2px] border-gray-200 rounded-full overflow-hidden ">
-                                <IconButton icon={<BiMinus />} onClick={() => onDecrease()} className='w-[30px] h-full ' />
-                                <input value={product_quantity} type='number' onChange={(e) => { onChangeQuantity(Number(e.target.value)) }} className=" bg-white w-[30px] h-full  rounded-sm text-black text-center " />
-                                <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
+                        <div className="flex flex-col sm:flex-row justify-between gap-3 fixed left-0 bottom-0 z-50 w-full md:static px-2 sm:px-0 py-5 md:py-0 bg-white ">
+                            <div className=" flex h-[48px] gap-5 flex-grow">
+                                <div className="  h-full flex items-center gap-2 border-[2px] border-gray-200 rounded-full overflow-hidden ">
+                                    <IconButton icon={<BiMinus />} onClick={() => onDecrease()} className='w-[30px] h-full ' />
+                                    <input value={product_quantity === 0 ? "" : product_quantity.toString()} type='text'
+                                        onBlur={(e) => onBlur(e)}
+                                        onChange={(e) => {
+                                            onChangeQuantity(e.target.value);
+                                        }} className=" bg-white w-[30px] h-full  rounded-sm text-black text-center " />
+                                    <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
+                                </div>
+                                <button onClick={() => onAddToCart({ product_id: product.id, quantity: 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
+                                    <CartIcon className='text-white' fill='#ffffff' /> Thêm vào giỏ hàng
+                                </button>
                             </div>
-                            <button onClick={() => onAddToCart({ product_id: product.id, quantity: 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
-                                <CartIcon className='text-white' fill='#ffffff' /> Thêm vào giỏ hàng
-                            </button>
-                            <button onClick={onPurchase} className=" bg-gradient text-white py-[14px] px-[23px] rounded-full cursor-pointer hover:bg-red-600">
+                            <button onClick={onPurchase} className=" bg-gradient text-white py-[14px] px-[23px] min-w-[100px] rounded-full cursor-pointer hover:bg-red-600">
                                 Mua ngay
                             </button>
 
@@ -152,9 +160,9 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                             {
                                 Array.from({ length: Math.ceil(similarProduct.length / 6) }).map((_, index) => (
                                     <SwiperSlide key={index}>
-                                        <div className=" w-full grid grid-cols-3 space-x-2 space-y-2 grid-rows-2 ">
+                                        <div className=" w-full grid grid-cols-3 space-x-2 space-y-2  ">
                                             {
-                                                similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product) => (
+                                                similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product, index) => (
                                                     <Link key={index} href={`/detail/${product.id}`} >
                                                         <CardProductSimilar
                                                             product_brand={product.product_brand}

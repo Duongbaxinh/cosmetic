@@ -7,6 +7,7 @@ import ProfileIcon from '@/assets/icons/ProfileIcon';
 import InputForm from '@/components/atoms/InputForm';
 import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
+import SideBarDetail from '@/layouts/SideBarDetail';
 import { setUser, useChangeProfileMutation } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
 import { CHANGE_PASSWORD_URL, EDIT_EMAIL_URL, EDIT_PHONE_URL } from '@/routers';
@@ -49,28 +50,28 @@ function ProfilePage() {
 
 
     return (
-        <ContainerLayout isSidebar={false} isSidebarDetail={true}>
-            <FormProvider {...methods}>
-                <div className="flex  bg-gray-100">
-                    <div className="bg-white p-6 rounded-lg shadow-md flex w-full max-w-4xl">
-                        {/* Left Section */}
-                        <div className="w-1/2 pr-6">
-                            <h2 className="text-lg text-gray-400  mb-4">Thông tin cá nhân</h2>
+        <ContainerLayout isSidebar={false} >
+            <div className="flex gap-4 max-w-[1024px] mx-auto ">
+                <SideBarDetail />
+                <div className="flex flex-col gap-5 space-x-5 w-full">
+                    <FormProvider {...methods}>
+                        <div className="flex ">
+                            <div className="bg-white p-6 rounded-lg shadow-md flex w-full max-w-4xl">
+                                {/* Left Section */}
+                                <div className="w-full pr-6">
+                                    <h2 className="text-lg font-[700]  mb-4">Tài khoản</h2>
 
-                            {/* Profile Picture and Name */}
-                            <div className="flex items-center mb-4">
-                                <div className="w-[80px] h-[80px] rounded-full bg-gray-200 flex items-center justify-center mr-4">
-                                    <ProfileIcon className="w-[50px] h-[50px]" />
-                                </div>
-                                <div className="flex-1">
-                                    <InputForm
-                                        label='User name'
-                                        name="username"
-                                        placeholder="Username"
-                                        defaultValue={user?.username}
-                                    />
+                                    {/* Profile Picture and Name */}
+                                    <div className="grid grid-cols-2 grid-rows-2 gap-4 mb-4">
 
-                                    <div className="flex items-center mt-2">
+                                        <InputForm
+                                            label='User name'
+                                            name="username"
+                                            placeholder="Username"
+                                            defaultValue={user?.username}
+                                        />
+
+
                                         <InputForm
                                             label='Nickname'
                                             name="nickname"
@@ -82,126 +83,50 @@ function ProfilePage() {
                                                 },
                                             }}
                                         />
+                                        <InputForm
+                                            label='Số điện thoại'
+                                            name="phone"
+                                            placeholder="Số điện thoại"
+                                            defaultValue={user?.phone}
+                                        />
+                                        <InputForm
+                                            label='Email'
+                                            name="email"
+                                            placeholder="Email"
+                                            defaultValue={user?.email}
+                                        />
+
                                     </div>
-                                </div>
-                            </div>
-
-                            {/* Date of Birth */}
-                            {/* <DatePicker
-                                dayName="user_day"
-                                monthName="user_month"
-                                yearName="user_year"
-                                label="Ngày sinh"
-                            /> */}
-
-                            {/* Gender */}
-                            {/* <div className="flex gap-8 py-8">
-                                <label className="block text-[13px]">Giới tính</label>
-                                <div className="flex space-x-4 text-[13px]">
-                                    <label>
-                                        <input type="radio" {...register('gender')} value="Nam" className="mr-1" /> Nam
-                                    </label>
-                                    <label>
-                                        <input type="radio" {...register('gender')} value="Nữ" className="mr-1" /> Nữ
-                                    </label>
-                                    <label>
-                                        <input type="radio" {...register('gender')} value="Khác" className="mr-1" /> Khác
-                                    </label>
-                                </div>
-                            </div> */}
-
-                            {/* Nationality */}
-                            {/* <div className="flex items-center gap-8 mb-8 text-[13px] ">
-                                <label className="whitespace-nowrap">Quốc tịch</label>
-                                <Select
-                                    name="nationality"
-                                    options={[
-                                        { value: "", label: "Chọn quốc tịch" },
-                                        { value: "Việt Nam", label: "Việt Nam" },
-                                        { value: "Other", label: "Other" },
-                                    ]}
-
-                                />
-                            </div> */}
-
-                            {/* Save Button */}
-                            <button
-                                type="button"
-                                onClick={handleSubmit(onSubmit)}
-                                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                            >
-                                Lưu thay đổi
-                            </button>
-                        </div>
-
-                        {/* Right Section */}
-                        <div className="w-1/2 pl-6 border-l text-[13px]">
-                            <h2 className="text-lg text-gray-400 mb-4">Số điện thoại và Email</h2>
-
-                            {/* Phone Number */}
-                            <div className="mb-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex gap-2 items-center text-[14px] text-gray-400">
-                                        <PhoneIcon />
-                                        <div className="">
-                                            <p>Số điện thoại</p>
-                                            <p>{user?.phone}</p>
+                                    <div className="flex items-center justify-between w-full mb-4">
+                                        <div className="flex gap-2 items-center">
+                                            <LockIcon />
+                                            <span>Đổi mật khẩu</span>
                                         </div>
+                                        <Link href={CHANGE_PASSWORD_URL} className="block text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm w-[100px]">Cập nhật</Link>
                                     </div>
-                                    <Link href={EDIT_PHONE_URL} className=" block text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm cursor-pointer">Cập nhật</Link>
+                                    <div className="flex items-center justify-between w-full mb-4">
+                                        <div className="flex gap-2 items-center">
+                                            <TrashIcon />
+                                            <span>Yêu cầu xóa tài khoản</span>
+                                        </div>
+                                        <button className="text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm w-[100px]">Yêu cầu</button>
+                                    </div>
+                                    {/* Save Button */}
+                                    <button
+                                        type="button"
+                                        onClick={handleSubmit(onSubmit)}
+                                        className="w-full bg-gradient text-white p-2  rounded-full"
+                                    >
+                                        Lưu thay đổi
+                                    </button>
                                 </div>
+
+
                             </div>
-
-                            {/* Email */}
-                            <div className="flex items-center justify-between">
-                                <div className="flex gap-2 items-center text-[14px] text-gray-400">
-                                    <EmailIcon />
-                                    <div className="">
-                                        <p>Địa chỉ email</p>
-                                        <p>{user?.email ?? ""}</p>
-                                    </div>
-                                </div>
-                                <Link href={`${EDIT_EMAIL_URL}/phone`} className="block text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm cursor-pointer">Cập nhật</Link>
-                            </div>
-                            <h2 className="text-lg text-gray-400 my-4">Bảo mật</h2>
-                            {/* Password */}
-                            <div className="mb-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex gap-2 items-center">
-                                        <LockIcon />
-                                        <span>Đổi mật khẩu</span>
-                                    </div>
-                                    <Link href={CHANGE_PASSWORD_URL} className="block text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm">Cập nhật</Link>
-                                </div>
-                            </div>
-
-                            {/* PIN */}
-                            {/* <div className="mb-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex gap-2 items-center">
-                                        <ShieldCheckIcon />
-                                        <span>Thiết lập mã PIN</span>
-                                    </div>
-                                    <button className="text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm">Thiết lập</button>
-                                </div>
-                            </div> */}
-
-                            {/* Delete Account */}
-                            <div className="mb-4">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex gap-2 items-center">
-                                        <TrashIcon />
-                                        <span>Yêu cầu xóa tài khoản</span>
-                                    </div>
-                                    <button className="text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm">Yêu cầu</button>
-                                </div>
-                            </div>
-
-
                         </div>
-                    </div>
+                    </FormProvider>
                 </div>
-            </FormProvider>
+            </div>
         </ContainerLayout>
     );
 }

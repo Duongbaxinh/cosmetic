@@ -33,14 +33,13 @@ export const productApi = createApi({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/products?${queryString}`;
-        console.log("check url search :::: ", params, url);
+
         return {
           url: url,
           timeout: 10000,
         };
       },
       transformResponse: (response: ProductResponse) => {
-        console.log("check product query :::: ", response);
         return response;
       },
       providesTags: ["Product"],
@@ -64,7 +63,7 @@ export const productApi = createApi({
     getAllProductsInternal: builder.query<ProductResponse, ParamsType>({
       query: (params: any) => {
         const queryString = toQueryString(params);
-        console.log("check ;:: url ", queryString);
+
         const url = `/products?${queryString}`;
         return {
           url: url,
@@ -98,7 +97,6 @@ export const productApi = createApi({
       //   };
       // },
       transformResponse: (response: Product) => {
-        console.log("product detail ::: ", response);
         return response;
       },
       keepUnusedDataFor: 0,

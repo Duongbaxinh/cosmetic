@@ -8,6 +8,7 @@ import Chip from '@/components/atoms/Chip';
 import IconButton from '@/components/atoms/IconButton';
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
+import Drawer from '@/components/molecules/Drawer';
 import NotFound from '@/components/molecules/NotFound';
 import { priceRanges } from '@/config/data.config';
 import { categories as example } from '@/fakes';
@@ -40,7 +41,9 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         sortBy: ''
     }
     const [filters, setFilter] = useState<FilterProductType>(initFilter)
-    const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery({ ...cleanFilter(filters), category_key: value })
+    const [showFilter, setShowFilter] = useState<boolean>(false)
+
+    const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery({ ...cleanFilter(filters), [category_key]: value })
     const { data: categories, isLoading, error } = useGetAllCategoryQuery(category_key)
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
@@ -110,11 +113,15 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
     const disableStyle = "pointer-events-none opacity-40"
-    console.log("check filter ", toQueryString(cleanFilter({ ...filters, [category_key]: value })))
     return (
         <ContainerLayout isSidebar={false}>
+            <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
+                <div className=" w-full px-3">
+                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                </div>
+            </Drawer>
             <div className="w-full h-full py-5 space-y-5">
-                <Carousel slidesPerView={1} clickable >
+                <Carousel slidesPerView={1} clickable className='!h-fit'>
                     {example.map(({ id, product_thumbnail }) => (
                         <SwiperSlide key={id}>
                             <Link href={`/category/${id}`}>
@@ -134,6 +141,8 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                 <h1 className='text[25px] font-[700] leading-[25px] uppercase'>{category_key} {value}</h1>
                 <div className="flex items-center justify-between">
                     <div className="flex gap-3 flex-grow items-center">
+                        <div className="block md:hidden cursor-pointer" onClick={() => setShowFilter(!showFilter)}>  <FilterIcon /></div>
+
                         <h1 className='text[18px] font-[700] leading-[28px] uppercase'>Bộ lọc</h1>
                         <div className="flex gap-2 max-w-[500px] overflow-auto no-scrollbar ">
                             {isFiltered.map((item) => (
@@ -158,7 +167,9 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
 
                 </div>
                 <div className="flex gap-2">
-                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                    <div className="hidden md:block">
+                        <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                    </div>
                     <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
                         <div className="w-full flex justify-between px-3 py-2">
                             {totalPage >= 2 && (
@@ -176,10 +187,9 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                             productsDisplay.length > 0 ? (
                                 <div className="grid grid-cols-2 grid-rows-auto md:grid-cols-2 lg:grid-cols-3 gap-2 px-2">
                                     {productsDisplay.map((product) => (
-                                        <div key={product.id} className=" flex items-center justify-center ">
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block shadow'>
+                                        <div key={product.id} className=" flex items-center justify-center w-full h-full ">
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block shadow w-full h-full '>
                                                 <CardProductFull
-
                                                     product_brand={product.product_brand}
                                                     product_description={product.product_description}
                                                     key={product.id}

@@ -27,7 +27,7 @@ function ResetPasswordPage({ token }: { token: string }) {
         }
         const dataForgotPassword = await resetPassword(payload)
         if (dataForgotPassword.data) {
-            console.log(dataForgotPassword)
+
             alert(dataForgotPassword.data)
             redirect(LOGIN_URL)
         }

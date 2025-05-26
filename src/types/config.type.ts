@@ -7,6 +7,7 @@ export type MenuItem = {
 export type CategoryConfig = {
   title: string;
   url: string;
+  id: number;
 };
 
 export type RouteConfig = {

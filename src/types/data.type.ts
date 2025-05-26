@@ -1,4 +1,4 @@
-import { ShippingAddress, UserProfileType } from "./auth.type";
+import { ShippingAddress, UserProfileType, UserType } from "./auth.type";
 
 export enum ProductEnum {
   "PRODUCT_INTERNAL" = "product_internationals",
@@ -141,16 +141,20 @@ export type MomoPaymentResponse = {
   qrCodeUrl: string;
 };
 
+export type CartDetail = {
+  id: string;
+  product: Product;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type CartCheckout = {
-  cart_id: string;
-  cart_quantity: number;
-  cart_total_price: number;
-  cart_discount: number;
-  cart_final_price: number;
-  cart_shipping: number;
-  cart_discount_shipping: number;
-  cart_user: OrderUser;
-  cart_products: OrderProduct[];
+  id: string;
+  user: UserType;
+  cart_details: CartDetail[];
+  created_at: string;
+  updated_at: string;
 };
 export type TrackingItem = {
   time: string;

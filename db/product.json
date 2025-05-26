@@ -3,24 +3,7 @@
     "data": {
       "overall_rating": 3.8,
       "total_reviews": 6,
-      "reviews": [
-        {
-          "user_name": "Duong Ba Xinh",
-          "rating": 4,
-          "rating_text": "Rất hài lòng",
-          "comment": "Gia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệt. Gia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệtGia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệt.",
-          "time_ago": "2 Ngày trước",
-          "images": []
-        },
-        {
-          "user_name": "Nguyen Van A",
-          "rating": 4,
-          "rating_text": "Rất hài lòng",
-          "comment": "Gia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệt. Gia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệtGia đình mình hiện tại đã sử dụng sản phẩm này được 2 tuần và thấy hiệu quả rõ rệt.",
-          "time_ago": "2 Ngày trước",
-          "images": []
-        }
-      ],
+      "reviews": [],
       "joyBoy_care_response": {
         "message": "Cảm ơn bạn đã dành thời gian đánh giá sản phẩm. JoyBoy rất vui khi biết bạn hài lòng với sản phẩm và dịch vụ của JoyBoy. Nếu có bất kỳ câu hỏi nào khác, vui lòng liên hệ với JoyBoy qua các kênh hỗ trợ của JoyBoy nhé. Chúc bạn một ngày vui vẻ!",
         "time_ago": "2 ngày trước"

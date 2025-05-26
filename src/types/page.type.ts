@@ -16,4 +16,5 @@ export type FilterProductType = {
   sortPrice?: "" | "asc" | "desc";
   order?: "asc" | "desc";
   textSearch?: string;
+  [key: string]: any;
 };

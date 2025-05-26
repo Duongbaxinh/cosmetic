@@ -1,21 +1,32 @@
 "use client"
 import CloseIcon from '@/assets/icons/CloseIcon';
 import IconButton from '@/components/atoms/IconButton';
-import React, { Children, useState } from 'react';
+import React, { Children, useEffect, useState } from 'react';
 
 export type DrawerType = {
     isOpen: boolean,
     onClose: () => void,
     title?: string,
-    children: React.ReactNode
+    children: React.ReactNode,
+    className?: string
 }
 
-const Drawer = ({ isOpen, onClose, title, children }: DrawerType) => {
+const Drawer = ({ isOpen, onClose, title, children, className }: DrawerType) => {
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+        return () => {
+            document.body.classList.remove('no-scroll');
+        };
+    }, [isOpen]);
     return (
         <div className="relative">
             {/* Drawer */}
             <div
-                className={`min-w-[490px] fixed top-0 right-0 z-60 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                className={`w-full fixed top-0 right-0 z-60 h-full bg-white shadow-lg transform transition-transform duration-300 ${className && className}  ${isOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
                 <div className=" overflow-auto max-h-screen">

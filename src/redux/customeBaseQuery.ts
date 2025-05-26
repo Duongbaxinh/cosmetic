@@ -1,11 +1,16 @@
-// customFetchBaseQuery.ts
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { BaseQueryFn } from "@reduxjs/toolkit/query";
-import type { FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { BASE_API, REFETCH_TOKEN_API } from "@/config/api.config";
-import { redirect } from "next/navigation";
+import {
+  BaseQueryFn,
+  fetchBaseQuery,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query";
+import { FetchArgs } from "@reduxjs/toolkit/query";
 
-const baseQuery = fetchBaseQuery({
+const refreshBaseQuery = fetchBaseQuery({
+  baseUrl: BASE_API,
+});
+
+export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_API,
   prepareHeaders: (headers) => {
     const token =
@@ -31,34 +36,41 @@ export const customFetchBaseQuery: BaseQueryFn<
     "code" in result.error.data &&
     (result.error.data as { code?: string }).code === "token_not_valid"
   ) {
-    // Gọi refresh token
     const refreshToken =
       typeof window !== "undefined"
-        ? localStorage.getItem("refetchToken")
+        ? localStorage.getItem("refreshToken")
         : null;
-
     if (refreshToken) {
-      const refreshResult = await baseQuery(
-        {
-          url: REFETCH_TOKEN_API,
-          method: "POST",
-          body: { refresh_token: refreshToken },
-        },
-        api,
-        extraOptions
-      );
-      console.log("check 00000", refreshResult);
-      if (refreshResult.data) {
-        const newAccessToken = (refreshResult.data as any).access_token;
-        alert("access token");
-        localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
-
-        result = await baseQuery(args, api, extraOptions);
-      } else {
+      try {
+        const parsedRefreshToken = JSON.parse(refreshToken);
+        const refreshResult = await refreshBaseQuery(
+          {
+            url: REFETCH_TOKEN_API,
+            method: "POST",
+            body: { refresh_token: parsedRefreshToken },
+          },
+          api,
+          extraOptions
+        );
+        if (refreshResult.data) {
+          const newAccessToken = (refreshResult.data as any).access_token;
+          const newRefreshToken = (refreshResult.data as any).refresh_token;
+          localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
+          localStorage.setItem("refreshToken", JSON.stringify(newRefreshToken));
+          result = await baseQuery(args, api, extraOptions);
+        } else {
+          console.error("Failed to refresh token:", refreshResult.error);
+          localStorage.clear();
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error("Failed to parse refreshToken:", error);
         localStorage.clear();
+        return {
+          error: { status: "CUSTOM_ERROR", error: "Invalid refresh token" },
+        };
       }
     }
   }
-
   return result;
 };

@@ -61,7 +61,6 @@ export const orderProductApi = createApi({
         body: { shipping_id: shippingAddressId },
       }),
       transformResponse: (response: OrderType) => {
-        console.log("check response order", response);
         return response;
       },
     }),
@@ -75,7 +74,6 @@ export const orderProductApi = createApi({
         body: orderDetail,
       }),
       transformResponse: (response: OrderItemDisplayType) => {
-        console.log("check response order", response);
         return response;
       },
     }),
@@ -86,7 +84,6 @@ export const orderProductApi = createApi({
         body: { order_id: order_id },
       }),
       transformResponse: (response: MomoPaymentResponse) => {
-        console.log("check response order payment", response);
         return response;
       },
     }),

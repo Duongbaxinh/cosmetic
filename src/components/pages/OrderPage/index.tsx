@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { SearchIcon } from '@/assets/icons';
 import IconButton from '@/components/atoms/IconButton';
 import Input from '@/components/atoms/Input';
@@ -13,33 +13,41 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BiMinus } from 'react-icons/bi';
+import LoadingPage from '../LoadingPage';
 
 function OrderPage() {
-    const [status, setStatus] = useState<string>("")
-    const [textSearch, setTextSearch] = useState<string>("")
-    const { data, isLoading: loading, error } = useGetAllOrderQuery(status)
+    const [status, setStatus] = useState<string>("");
+    const [textSearch, setTextSearch] = useState<string>("");
+    const { data, isLoading: loading, error } = useGetAllOrderQuery(status);
     const handleChangeStatus = (new_status: string) => {
-        setStatus(new_status)
-    }
-    const orders = data || []
+        setStatus(new_status);
+    };
+    const orders = data || [];
     const orderFilter = orders.filter(item =>
         item.id.toLowerCase().includes(textSearch.toLowerCase()) ||
         item.order_details.some(pro =>
             pro.product_name.toLowerCase().includes(textSearch.trim().toLowerCase())
         )
-    )
+    );
+
     return (
-        <ContainerLayout isSidebar={false} classHeader='sticky top-0 left-0 z-60'>
-            <div className="flex gap-4 max-w-[1024px] mx-auto ">
+        <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
+            <div className="flex gap-4  max-w-[1024px] mx-auto">
                 <SideBarDetail />
-                <div className=" flex flex-col gap-5 space-x-5 max-w-[660px]  ">
-                    <p className=' text-[19px] font-[700] '> Đơn hàng của tôi</p>
-                    <div className=" bg-white  h-[42px] overflow-auto no-scrollbar  mr-0 flex items-center text-[14px] leading-4 text-gray-400 shadow inset-[5px] ">
+                <div className="flex flex-col gap-5 w-full">
+                    <p className="text-[19px] font-[700] text-gray-900">Đơn hàng của tôi</p>
+                    <div className="bg-white h-[42px] overflow-auto no-scrollbar flex items-center text-[14px] leading-4 text-gray-500 shadow-sm rounded-lg">
                         {ORDER_TABS.map((tab: OrderTabItem, index) => (
-                            <div key={index} className={`relative w-full min-w-[138px] px-2 h-full bg-white flex items-center justify-center whitespace-nowrap ${status === tab.status && "text-blue-600"}`}
-                                onClick={() => handleChangeStatus(tab.status)}>
+                            <div
+                                key={index}
+                                className={`relative w-full min-w-[138px] px-2 h-full flex items-center justify-center whitespace-nowrap cursor-pointer transition-colors duration-200 ${status === tab.status ? "text-pink-600 bg-pink-100" : "hover:bg-pink-50"
+                                    }`}
+                                onClick={() => handleChangeStatus(tab.status)}
+                            >
                                 {tab.title}
-                                {status === tab.status && <div className="absolute bottom-0 left-0 h-[2px] w-full bg-blue-600" />}
+                                {status === tab.status && (
+                                    <div className="absolute bottom-0 left-0 h-[2px] w-full bg-pink-600" />
+                                )}
                             </div>
                         ))}
                     </div>
@@ -47,45 +55,68 @@ function OrderPage() {
                         leadingIcon={<SearchIcon />}
                         value={textSearch}
                         onChange={(e) => setTextSearch(e.target.value)}
-                        placeholder='Tìm đơn hàng theo mã đơn hàng, tên sản phẩm'
-                        className='w-full bg-white h-[35px] border-0' />
-                    <div className="flex flex-col gap-4">
+                        placeholder="Tìm đơn hàng theo mã đơn hàng, tên sản phẩm"
+                        className="w-full bg-white h-[35px] border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-200"
+                    />
+                    <div className="w-full flex flex-col gap-4">
                         {loading ? (
-                            <h1>Loading...</h1>
+                            <LoadingPage className="w-full h-[150px]" />
                         ) : (
                             <>
-                                {orderFilter && orderFilter.length > 0 ? orderFilter.map((order) => (
-                                    <div key={order.id} className=" bg-white p-4 rounded-md border-b border-color  ">
-                                        {order?.order_details.map((product) => (
-                                            <div key={product.id} className="flex items-start justify-between">
-                                                <div className="flex gap-3 py-2">
-                                                    <Image
-                                                        src={product.product_thumbnail ?? '/default-image.jpg'}
-                                                        alt={product.product_name}
-                                                        width={120}
-                                                        height={120}
-                                                        className="object-cover rounded-md w-[120px] h-[120px] shadow"
-                                                    />
-                                                    <div className="flex-1 space-y-3 text-[20px] text-black ">
-                                                        <div className="line-clamp-2">{product.product_name}</div>
-                                                        <div className="">SL: x{product.quantity}</div>
-                                                        <div className="">
-                                                            <Price product_price={product.product_price} className='!font-light text-red-400' />
+                                {orderFilter && orderFilter.length > 0 ? (
+                                    orderFilter.map((order) => (
+                                        <div
+                                            key={order.id}
+                                            className="bg-white p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200"
+                                        >
+                                            {order?.order_details.map((product) => (
+                                                <div key={product.id} className="flex items-start justify-between py-2">
+                                                    <div className="flex gap-3">
+                                                        <Image
+                                                            src={product.product_thumbnail ?? '/default-image.jpg'}
+                                                            alt={product.product_name}
+                                                            width={120}
+                                                            height={120}
+                                                            className="object-cover rounded-md w-[120px] h-[120px] shadow-sm"
+                                                        />
+                                                        <div className="flex-1 space-y-2 text-gray-900">
+                                                            <div className="line-clamp-2 text-sm font-medium">
+                                                                {product.product_name}
+                                                            </div>
+                                                            <div className="text-sm">SL: x{product.quantity}</div>
+                                                            <div>
+                                                                <Price
+                                                                    product_price={product.product_price}
+                                                                    className="text-pink-600 font-light"
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <IconButton
+                                                        icon={<BiMinus />}
+                                                        className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
+                                                    />
                                                 </div>
-                                                <IconButton icon={<BiMinus />} className='!bg-gray-300' />
+                                            ))}
+                                            <div className="flex gap-2 w-full py-2 items-center justify-between">
+                                                <div className="flex gap-2 items-center">
+                                                    <span className="text-gray-900">Thành tiền:</span>
+                                                    <Price
+                                                        product_price={order.total_price}
+                                                        className="text-pink-600 text-[20px]"
+                                                    />
+                                                </div>
+                                                <Link
+                                                    href={`${PURCHASE_URL}/${order.id}`}
+                                                    className="flex gap-2 w-fit p-1 items-center justify-start text-purple-500 hover:text-purple-600 transition-colors duration-200"
+                                                >
+                                                    Xem chi tiết
+                                                </Link>
                                             </div>
-                                        ))}
-                                        <div className='flex gap-2 w-full py-2 pr-[30px] items-center justify-between '>
-                                            <div className="flex gap-2 items-center">
-                                                <span>Thành tiền :</span> <Price product_price={order.total_price} className='text-red-400 text-[20px]' />
-                                            </div>
-                                            <Link href={`${PURCHASE_URL}/${order.id}`} className='flex gap-2 w-fit p-1 mb-2 items-center justify-start text-blue-400  '>Xem chi tiết</Link>
                                         </div>
-                                    </div>
-                                )) : (
-                                    <p>Không tìm thấy đơn hàng nào.</p>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500 text-center">Không tìm thấy đơn hàng nào.</p>
                                 )}
                             </>
                         )}

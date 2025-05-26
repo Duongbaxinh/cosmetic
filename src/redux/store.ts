@@ -12,11 +12,13 @@ import shippingAddressReducer, {
 } from "./slices/shippingAddress.slice";
 import { reviewProductApi } from "./slices/review.slice";
 import { orderProductApi } from "./slices/order.slice";
+import { chatApi } from "./slices/chat.slice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     address: shippingAddressReducer,
+    [chatApi.reducerPath]: chatApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [cartApi.reducerPath]: cartApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
@@ -30,6 +32,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       productApi.middleware,
       shippingAddressApi.middleware,
+      chatApi.middleware,
       categoryApi.middleware,
       brandApi.middleware,
       cartApi.middleware,

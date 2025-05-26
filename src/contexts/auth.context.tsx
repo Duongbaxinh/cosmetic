@@ -13,7 +13,7 @@ interface AuthContextType {
     setAccessToken: (token: string) => void
     setUser: (user: any) => void,
     setRefetchToken: (token: string) => void
-    refetchToken: (user: any) => void,
+    refreshToken: (user: any) => void,
     setIsLogin: (isLogin: boolean) => void,
     isLogin: boolean,
     logout: () => void,
@@ -24,12 +24,19 @@ const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useSaveLocalStorage("user", null);
     const [accessToken, setAccessToken] = useSaveLocalStorage('accessToken', null)
-    const [refetchToken, setRefetchToken] = useSaveLocalStorage('refetchToken', null)
+    const [refreshToken, setRefetchToken] = useSaveLocalStorage('refreshToken', null)
     const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
 
     const dispatch = useDispatch();
     const router = useRouter()
     useEffect(() => {
+        const accessToken = typeof window !== "undefined"
+            ? (() => {
+                const token = localStorage.getItem("accessToken");
+                return token ? JSON.parse(token) : null;
+            })()
+            : null;
+        setAccessToken(accessToken)
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
@@ -42,9 +49,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.clear()
         localStorage.setItem("isLogin", JSON.stringify(false))
         router.push('/')
+        window.location.reload();
     };
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refetchToken, setRefetchToken }}>
+        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken }}>
             {children}
         </AuthContext.Provider>
     )

@@ -6,6 +6,7 @@ import { forgotPasswordSchema } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 function ForgotPasswordPage() {
     const {
@@ -29,8 +30,9 @@ function ForgotPasswordPage() {
         }
         const dataForgotPassword = await forgotPassword(payload)
         if (dataForgotPassword.data) {
-            console.log(dataForgotPassword)
-            alert(dataForgotPassword.data)
+
+            toast.success("Yêu cầu đặt lại mật khẩu đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư đến hoặc thư mục spam.");
+
         }
     };
 

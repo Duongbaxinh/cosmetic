@@ -1,14 +1,5 @@
-import {
-  BASE_API,
-  PROFILE_API,
-  SHIPPING_ADDRESS_API,
-} from "@/config/api.config";
-import { handleError } from "@/utils";
+import { BASE_API, SHIPPING_ADDRESS_API } from "@/config/api.config";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_API,
-});
 
 const baseQueryWithToken = fetchBaseQuery({
   baseUrl: BASE_API,
@@ -24,22 +15,10 @@ const baseQueryWithToken = fetchBaseQuery({
 
 export const shippingAddressApi = createApi({
   reducerPath: "shippingAddressApi",
-  baseQuery: customFetchBaseQuery, // ⚠️ Dùng baseQuery có token
+  baseQuery: customFetchBaseQuery,
   endpoints: (builder) => ({
     getAddress: builder.query<ShippingAddress[], void>({
-      queryFn: async (arg, api, extraOptions) => {
-        const result = await baseQueryWithToken(
-          SHIPPING_ADDRESS_API,
-          api,
-          extraOptions
-        );
-        if (result.error) {
-          handleError(result.error);
-        }
-        return {
-          data: result.data as ShippingAddress[],
-        };
-      },
+      query: () => SHIPPING_ADDRESS_API,
     }),
     changeShippingAddress: builder.mutation({
       query: ({
@@ -67,8 +46,8 @@ export const shippingAddressApi = createApi({
 export const { useGetAddressQuery, useCreateShippingAddressMutation } =
   shippingAddressApi;
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddressInfo, ShippingAddress } from "@/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { customFetchBaseQuery } from "../customeBaseQuery";
 
 type ShippingType = {

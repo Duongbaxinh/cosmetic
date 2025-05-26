@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsEye } from 'react-icons/bs';
 import { HiEyeOff } from 'react-icons/hi';
@@ -59,6 +59,13 @@ const LoginPage = () => {
     const onSubmit: SubmitHandler<AuthDataLogin> = (data) => {
         handleLogin(data);
     };
+
+    useEffect(() => {
+        const token = JSON.parse(localStorage.getItem('accessToken') || 'null');
+        if (token) {
+            router.push('/');
+        }
+    }, []);
 
     return (
         <div className="bg-white w-full h-full">

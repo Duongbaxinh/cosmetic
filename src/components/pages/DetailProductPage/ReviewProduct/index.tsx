@@ -5,8 +5,8 @@ import { calculateRating } from '@/utils';
 import Image from 'next/image';
 
 
-function ReviewProduct({ review }: { review?: Review }) {
-    if (!review) return <div>Không có đánh giá nào</div>;
+function ReviewProduct({ review }: { review: Review }) {
+
     const renderStars = (rating: number) => {
         const filledStars = Math.floor(rating);
         const emptyStars = 5 - filledStars;

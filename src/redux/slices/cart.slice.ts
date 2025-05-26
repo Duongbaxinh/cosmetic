@@ -1,18 +1,29 @@
+import { BASE_API, CART_API, PROFILE_API } from "@/config/api.config";
 import { CartCheckout } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { customFetchBaseQuery } from "../customeBaseQuery";
+import { handleError } from "@/utils";
+import { isArray } from "lodash";
 
 export const cartApi = createApi({
   reducerPath: "cartApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: customFetchBaseQuery,
   tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCart: builder.query<CartCheckout, void>({
-      query: () => "/cart",
-      providesTags: ["Cart"],
-      transformResponse: (response: CartCheckout) => {
-        console.log("check cart --- ::: ", response);
-        return response;
+      queryFn: async (arg, api, extraOptions) => {
+        const result = await customFetchBaseQuery(CART_API, api, extraOptions);
+        if (result.error) {
+          handleError(result.error);
+        }
+
+        return {
+          data: isArray(result.data)
+            ? (result.data[0] as CartCheckout)
+            : (result.data as CartCheckout),
+        };
       },
+      providesTags: ["Cart"],
     }),
 
     addToCart: builder.mutation<
@@ -20,7 +31,7 @@ export const cartApi = createApi({
       { cart_id: string; product_id: string; quantity: number }
     >({
       query: ({ cart_id, product_id, quantity }) => ({
-        url: "/cart",
+        url: "/carts",
         method: "POST",
         body: { cart_id, product_id, quantity },
       }),
@@ -29,19 +40,19 @@ export const cartApi = createApi({
 
     updateCartItem: builder.mutation<
       void,
-      { cart_id: string; product_id: string; quantity: number }
+      { cartDetailId: string; quantity: number }
     >({
-      query: ({ cart_id, product_id, quantity }) => ({
-        url: `/cart/${product_id}`,
+      query: ({ cartDetailId, quantity }) => ({
+        url: `/cart-details/${cartDetailId}`,
         method: "PUT",
-        body: { cart_id, product_id, quantity },
+        body: { quantity },
       }),
       invalidatesTags: ["Cart"],
     }),
 
     removeFromCart: builder.mutation<void, string>({
-      query: (product_id) => ({
-        url: `/cart/${product_id}`,
+      query: (cartDetailId) => ({
+        url: `/cart-details/${cartDetailId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Cart"],

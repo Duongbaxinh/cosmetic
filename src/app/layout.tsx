@@ -1,13 +1,14 @@
 
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { AuthProvider } from "@/contexts/auth.context";
-import { Provider } from "react-redux";
-import { store } from "@/redux/store";
-import ReduxProvider from "@/redux/ReduxProvider";
 import { CartProvider } from "@/contexts/cart.context";
 import { OrderProvider } from "@/contexts/order.context";
+import ReduxProvider from "@/redux/ReduxProvider";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ToastContainer } from 'react-toastify';
+import "./globals.css";
+import { NetworkStatusProvider } from "@/contexts/network.context";
+import ChatBox from "@/components/pages/ChatBox";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,15 +36,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReduxProvider>
-          <AuthProvider>
-            <CartProvider>
-              <OrderProvider>
-                {children}
-              </OrderProvider>
-            </CartProvider>
-          </AuthProvider>
-        </ReduxProvider>
+        <NetworkStatusProvider>
+          <ReduxProvider>
+            <AuthProvider>
+              <CartProvider>
+                <OrderProvider>
+                  <ToastContainer />
+
+                  {children}
+                  <ChatBox />
+                </OrderProvider>
+              </CartProvider>
+            </AuthProvider>
+          </ReduxProvider>
+        </NetworkStatusProvider>
       </body>
     </html>
   );

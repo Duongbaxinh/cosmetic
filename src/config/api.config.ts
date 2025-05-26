@@ -13,3 +13,5 @@ export const SHIPPING_ADDRESS_API = "/shipping-addresses";
 export const ORDER_API = "/orders";
 export const ORDER_DETAIL_API = "/order-details";
 export const ORDER_PAYMENT_API = "/payments/momo";
+
+export const CART_API = "/carts";

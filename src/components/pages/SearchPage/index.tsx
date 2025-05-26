@@ -1,11 +1,13 @@
 "use client"
 import { ChevronLeftIcon, ChevronRightIcon } from '@/assets/icons';
 import CloseIcon from '@/assets/icons/CloseIcon';
+import FilterIcon from '@/assets/icons/FilterIcon';
 import Breadcrumb from '@/components/atoms/Breadcrumb';
 import Chip from '@/components/atoms/Chip';
 import IconButton from '@/components/atoms/IconButton';
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
+import Drawer from '@/components/molecules/Drawer';
 import { priceRanges } from '@/config/data.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
@@ -32,9 +34,23 @@ const initFilter: FilterProductType = {
 }
 function SearchPage({ text_search }: { text_search: string }) {
     const [filters, setFilter] = useState<FilterProductType>(initFilter)
+    const [showFilter, setShowFilter] = useState<boolean>(false)
     const { data: productSearch, isLoading: loadingSearch, error: errorProductSearch } = useGetProductFilterQuery({ ...cleanFilter(filters), textSearch: text_search })
     const { data: categories, isLoading, error } = useGetAllCategoryQuery("")
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
+
+
+    const totalPage = productSearch ? Math.ceil(productSearch.count / productSearch.limitnumber) : 1
+    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.number_page ?? 1))
+    const productsDisplay = productSearch?.results ?? []
+
+    const isFiltered = [
+        ...(filters.product_type?.map(item => `type_${item.title}`) || []),
+        filters.price?.value && filters.price.value.length > 0 ? "price_" + filters.price?.key || null : null,
+        filters.rate !== null ? "rate_" + filters.rate || null : null,
+        filters.sortBy !== "" ? filters.sortBy || null : null,
+        ...(filters.brand?.map(item => `brand_${item.title}`) || [])
+    ].filter(Boolean);
 
     const handlePagination = (type: "next" | "prev") => {
         if (type === 'next' && currentPage < totalPage) {
@@ -46,8 +62,8 @@ function SearchPage({ text_search }: { text_search: string }) {
     }
 
     const newArr = (arr: any[], element: any) => {
-        if (arr.includes(element)) {
-            return arr.filter((i) => i !== element)
+        if (arr.flatMap(item => item.value).includes(element.value)) {
+            return arr.filter((i) => i.value !== element.value)
         } else {
             return [...arr, element]
         }
@@ -65,6 +81,9 @@ function SearchPage({ text_search }: { text_search: string }) {
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
 
+    const handleResetFilter = () => {
+        setFilter(initFilter)
+    }
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("_")
         if (key === "price") {
@@ -79,39 +98,26 @@ function SearchPage({ text_search }: { text_search: string }) {
         const check = isArray(filters[filed]) && filters[filed].flatMap(item => item.title).includes(value)
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
-
-
-    const handleResetFilter = () => {
-        setFilter(initFilter)
-    }
     useEffect(() => {
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [productSearch])
 
-    const totalPage = productSearch ? productSearch.number_page : 1
-    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.number_page ?? 1))
-    const productsDisplay = productSearch?.results ?? []
-
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
     const disableStyle = "pointer-events-none opacity-40"
-
-    const isFiltered = [
-        ...(filters.product_type?.map(item => `type_${item.title}`) || []),
-        filters.price?.value && filters.price.value.length > 0 ? "price_" + filters.price?.key || null : null,
-        filters.rate !== null ? "rate_" + filters.rate || null : null,
-        filters.sortBy !== "" ? filters.sortBy || null : null,
-        ...(filters.brand?.map(item => `brand_${item.title}`) || [])
-    ].filter(Boolean);
-
     return (
         <ContainerLayout isSidebar={false}>
+            <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
+                <div className=" w-full px-3">
+                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                </div>
+            </Drawer>
             <div className="pb-3">
                 <Breadcrumb items={[{ label: 'Trang chủ', href: '/' }, { label: `Kết quả tìm kiếm "${text_search}"`, href: '#' }]} />
                 <div className="flex items-center justify-between">
-
                     <div className="flex items-center justify-between">
                         <div className="flex gap-3 flex-grow items-center">
+                            <div className="block md:hidden cursor-pointer" onClick={() => setShowFilter(!showFilter)}>  <FilterIcon /></div>
                             <h1 className='text[18px] font-[700] leading-[28px] uppercase'>Bộ lọc</h1>
                             <div className="flex gap-2 max-w-[500px] overflow-auto no-scrollbar ">
                                 {isFiltered.map((item) => (
@@ -139,7 +145,7 @@ function SearchPage({ text_search }: { text_search: string }) {
             </div>
             <div className="w-full h-full py-2">
                 <div className="flex gap-2">
-                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                    <div className="hidden md:block"> <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} /></div>
                     {productsDisplay.length > 0 ? (
                         <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
                             <div className="w-full flex justify-between px-3 py-2">
@@ -156,13 +162,12 @@ function SearchPage({ text_search }: { text_search: string }) {
                             {loadingSearch ? (
                                 <ProductSkeleton length={20} />
                             ) :
-                                (<div className="grid grid-cols-2 grid-rows-6 md:grid-cols-3 lg:grid-cols-3 gap-2 px-2">
+                                (<div className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-3 gap-2 px-2">
                                     {productsDisplay.map((product) => (
-                                        <div key={product.id} className=" flex items-center justify-center">
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full'>
+                                        <div key={product.id} className=" flex items-center justify-center w-full h-full">
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
-                                                    className='min-h-[330px]'
                                                     id={product.id}
                                                     product_brand={product.product_brand}
                                                     product_description={product.product_description}
@@ -176,22 +181,24 @@ function SearchPage({ text_search }: { text_search: string }) {
                                     ))}
                                     {/* Banner */}
                                 </div>)}
-                            <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
-                                <ReactPaginate
-                                    className='flex gap-4 items-center justify-center '
-                                    breakLabel="..."
-                                    nextLabel={<ChevronRightIcon />}
-                                    activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
-                                    pageRangeDisplayed={4}
-                                    initialPage={currentPage - 1}
-                                    onPageChange={(selectedItem) => {
-                                        handleFilter("page", selectedItem.selected + 1);
-                                    }}
-                                    pageCount={totalPage}
-                                    previousLabel={<ChevronLeftIcon />}
-                                    renderOnZeroPageCount={null}
-                                />
-                            </div>
+                            {totalPage >= 2 && (
+                                <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
+                                    <ReactPaginate
+                                        className='flex gap-4 items-center justify-center '
+                                        breakLabel="..."
+                                        nextLabel={<ChevronRightIcon />}
+                                        activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
+                                        pageRangeDisplayed={4}
+                                        initialPage={currentPage - 1}
+                                        onPageChange={(selectedItem) => {
+                                            handleFilter("page", selectedItem.selected + 1);
+                                        }}
+                                        pageCount={totalPage}
+                                        previousLabel={<ChevronLeftIcon />}
+                                        renderOnZeroPageCount={null}
+                                    />
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className=" flex w-full h-full min-h-screen items-center justify-center">Rong</div>

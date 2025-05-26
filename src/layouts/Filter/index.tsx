@@ -16,12 +16,12 @@ export type FilterType = {
 function Filter({ categories, brands, isFiltered, onFilter, className }: FilterType) {
 
     return (
-        <div className={`max-w-[250px] min-w-[250px] w-fit rounded-md hidden md:block text-black ${className && className}`}>
+        <div className={`max-w-[250px] min-w-[250px] w-fit rounded-md  text-black ${className && className}`}>
             {categories && (
                 <>
                     <div className="">
                         <FilterOption title='Loại sản phẩm' customTextSelected=' pb-2 text-black !text-[14px] !leading-[21px] !font-[600]' customIcon='px-2' >
-                            <div className="max-h-[250px] overflow-auto">
+                            <div className="max-h-[250px] overflow-auto no-scrollbar shadow">
                                 {categories && categories.map((category) => (
                                     <div
                                         key={category.key}
@@ -42,7 +42,7 @@ function Filter({ categories, brands, isFiltered, onFilter, className }: FilterT
 
             <div className="py-3 ">
                 <FilterOption title='Thương hiệu' customTextSelected=' pb-2 text-black !text-[14px] !leading-[21px] !font-[600]' customIcon='px-2'>
-                    <div className="max-h-[250px] overflow-auto">
+                    <div className="max-h-[250px] overflow-auto no-scrollbar shadow">
                         {brands && brands.map((brand) => (
                             <div key={brand.id} className={`w-full flex gap-2 items-center`}>
                                 <input id={brand.id} checked={isFiltered.includes(`brand_${brand.title}`)} type='checkbox' onChange={() => onFilter("brand", { title: brand.title, value: brand.id })}

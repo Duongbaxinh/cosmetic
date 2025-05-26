@@ -9,6 +9,8 @@ import { CHECKOUT_URL } from "@/routers";
 import { redirect } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "./cart.context";
+import { toast } from "react-toastify";
+import { MESS_SYSTEM } from "@/config/mess.config";
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
@@ -45,7 +47,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         if (shippingAddress.length <= 0) {
             return setIsOpen(prev => ({ ...prev, openContact: true }));
         }
-        alert("RUN AT HERE")
+
         return proceedToCheckout({ product: product });
     };
 
@@ -65,8 +67,8 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
 
         const totalPrice = products.reduce((acc, item) => acc + item.product_price * item.quantity, 0);
-        console.log("new shipping", shippingAddressNew)
-        if (!shippingAddressNew || shippingAddress.length > 0) return alert("error")
+
+        if (!shippingAddressNew && shippingAddress.length < 0) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         const orderTemporary = {
             order_quantity: products.reduce((acc, item) => acc + item.quantity, 0),
             order_total_price: totalPrice,
@@ -92,10 +94,8 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         };
 
         if (userInfo && (shippingAddress.length > 0 || shippingAddressNew)) {
-            console.log("run at here ::: ", shippingAddressNew, shippingAddress)
             sessionStorage.setItem("order", JSON.stringify(orderTemporary));
             setIsOpenCart(false)
-
             redirect(`${CHECKOUT_URL}`);
         }
     };

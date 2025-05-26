@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
                                 </svg>
                             </a>
                         </div>
-                        <img src="/da-thong-bao.png" alt="Đã thông báo" className="h-10" />
+
                     </div>
 
                     {/* Vẻ Beauty Box Section */}

@@ -9,8 +9,16 @@ import { useRef, useEffect } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { NavigationOptions } from "swiper/types";
 
-function Carousel({ className, customSwipeWrap, slidesPerView, direction, breakpoints, clickable = false, spaceBetween, children }: {
-    className?: string, slidesPerView?: number, breakpoints?: any, clickable?: boolean, direction?: "vertical" | "horizontal", spaceBetween?: number, customSwipeWrap?: string, children: any
+function Carousel({ className, customSwipeWrap, customButtonRight,
+    customButtonLeft, slidesPerView, direction, breakpoints,
+    clickable = false, spaceBetween, loop, enableAutoPlay = false, children
+}: {
+    className?: string, slidesPerView?: number, breakpoints?: any,
+    clickable?: boolean, direction?: "vertical" | "horizontal",
+    spaceBetween?: number, customSwipeWrap?: string,
+    customButtonLeft?: string, customButtonRight?: string,
+    enableAutoPlay?: boolean,
+    loop?: boolean, children: any
 }) {
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
@@ -35,34 +43,34 @@ function Carousel({ className, customSwipeWrap, slidesPerView, direction, breakp
     }, [swiperRef.current, prevRef.current, nextRef.current]);
 
     return (
-        <div className={`w-full max-h-fit ${className}`}>
+        <div className={`w-full h-full ${className && className}`}>
             <div className="relative w-full h-full mx-auto">
                 <Swiper
                     direction={direction ? direction : "horizontal"} modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={spaceBetween || 20}
-                    // autoplay={{ delay: 3000, disableOnInteraction: false }}
+                    autoplay={enableAutoPlay ? { delay: 3000, disableOnInteraction: false } : false}
                     slidesPerGroupSkip={slidesPerView || 1}
                     pagination={clickable ? { clickable: true } : false}
-
+                    loop={loop ? true : false}
                     slidesPerView={slidesPerView || 1}
                     breakpoints={breakpoints ? { ...breakpoints } : null}
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
-                    className={`rounded-md  ${customSwipeWrap}`}
+                    className={`rounded-md  h-full ${customSwipeWrap}`}
                 >
                     {children}
                 </Swiper>
 
                 <button
                     ref={prevRef}
-                    className="absolute top-1/2 left-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition"
+                    className={`absolute top-1/2 left-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition ${customButtonLeft ? customButtonLeft : ''}`}
                 >
                     ❮
                 </button>
                 <button
                     ref={nextRef}
-                    className="absolute top-1/2 right-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition"
+                    className={`absolute top-1/2 right-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition ${customButtonRight ? customButtonRight : ''}`}
                 >
                     ❯
                 </button>

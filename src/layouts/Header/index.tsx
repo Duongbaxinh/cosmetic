@@ -1,9 +1,7 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from 'react';
-
 import Link from 'next/link';
-
-import { UserIcon } from '@/assets/icons';
+import { HeartIcon, UserIcon } from '@/assets/icons';
 import CartIcon from '@/assets/icons/CartIcon';
 import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
@@ -17,7 +15,7 @@ import { useCart } from '@/contexts/cart.context';
 import useClickOutside from '@/hooks/useClickOuside';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
-import { LOGIN_URL } from '@/routers';
+import { CATEGORY_URL, LOGIN_URL } from '@/routers';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,27 +23,25 @@ import { SwiperSlide } from 'swiper/react';
 
 // Type definition for component props
 interface HeaderProps {
-    classHeader?: string
+    classHeader?: string;
 }
 
-
 const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
-    const { user, isLogin, logout } = useAuth()
-    const { isOpen: openCart, toggleDrawer } = useCart()
-
-    const router = useRouter()
+    const { user, isLogin, logout } = useAuth();
+    const { isOpen: openCart, toggleDrawer } = useCart();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const profileRef = useRef<HTMLDivElement | null>(null);
     const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
+    const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
     useClickOutside([profileRef], () => {
-        setIsOpen(false)
+        setIsOpen(false);
     });
 
     const handleLogout = () => {
-        logout()
-        router.push("/")
+        logout();
+        router.push("/");
     };
 
     useEffect(() => {
@@ -53,55 +49,67 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
         if (shippingData) {
             dispatch(setShippingAddress(JSON.parse(shippingData)));
         }
-    }, []);
+    }, [dispatch]);
 
     return (
-        <Container className={classHeader && classHeader}   >
-            <div className="w-full bg-white py-2  min-h-[140px]">
-                <div className="flex items-start md:items-center justify-between gap-[20px] lg:gap-[48px] h-[60px]  ">
+        <Container className={`bg-pink-50 ${classHeader}`}>
+            <div className="w-full bg-white py-2 px-2 min-h-[140px]  rounded-b-lg">
+                <div className="flex items-start md:items-center justify-between gap-[20px] lg:gap-[48px] h-[60px]">
                     {/* Logo */}
                     <Link href="/">
-                        <Image src={"/images/Logo.webp"} alt="Logo" width={190} height={39} className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]" />
+                        <Image
+                            src="/images/Logo.webp"
+                            alt="Logo"
+                            width={190}
+                            height={39}
+                            className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px] hidden md:block"
+                        />
+                        <Image
+                            src="/images/momo.png"
+                            alt="Logo"
+                            width={30}
+                            height={30}
+                            className="rounded-full min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px] block md:hidden"
+                        />
                     </Link>
 
                     {/* Search Input */}
-                    <div className="space-x-2 space-y-2 text-gray-400 ">
-                        <div className="flex items-center space-x-2">
-                            <BoxSearch />
+                    <div className="space-x-2 space-y-2 w-full">
+                        <div className="flex items-center space-x-2 w-full">
+                            <BoxSearch
+
+                            />
                         </div>
                     </div>
 
-                    <div className="flex text-black ">
-                        <ItemRectangle
-                            className='!w-fit !font-bold hidden md:block'
-                            icon={<UserIcon />}
-                            title="Hệ thống cửa hàng"
-                        />
-                        <ItemRectangle
-                            className='!w-fit !font-bold hidden md:block'
-                            icon={<UserIcon />}
-                            title="Tạp chí làm đẹp"
-                        />
+                    <div className="flex gap-2 items-center">
                         <div className="relative">
                             <Link href={!isLogin ? LOGIN_URL : '#'}>
                                 <ItemRectangle
+                                    className="border border-gray-200 !rounded-full bg-gradient-to-r from-pink-300 to-purple-400 text-white hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500 transition-all duration-200"
                                     onFunction={() => setIsOpen(!isOpen)}
-                                    icon={<img src={"/icons/account.png"} alt="Account" className="w-6 h-6" />}
                                     title={isLogin ? 'Tài khoản' : 'Đăng nhập'}
-                                /></Link>
+                                />
+                            </Link>
                             {isOpen && isLogin && (
-                                <div ref={profileRef} className="absolute right-0 top-12 w-64 bg-white overflow-hidden rounded-lg shadow-lg z-50"                                    >
-                                    <Container >
+                                <div
+                                    ref={profileRef}
+                                    className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
+                                >
+                                    <Container>
                                         {PROFILE.map(({ path, title }, index) => (
                                             <Link key={index} href={path}>
-                                                <div className="py-2 px-4 hover:bg-gray-200" title={title}                                                    >
-                                                    <p className='text-[14px]'>{title}</p>
+                                                <div className="py-2 px-4 hover:bg-pink-50 transition-colors duration-200">
+                                                    <p className="text-[14px] text-gray-900">{title}</p>
                                                 </div>
                                             </Link>
                                         ))}
-                                        <div className="cursor-pointer hover:bg-gray-200" onClick={handleLogout}                                            >
-                                            <div className="py-2 px-4 hover:bg-gray-200">
-                                                <p className='text-[14px]'>Đăng xuất</p>
+                                        <div
+                                            className="cursor-pointer hover:bg-pink-50 transition-colors duration-200"
+                                            onClick={handleLogout}
+                                        >
+                                            <div className="py-2 px-4">
+                                                <p className="text-[14px] text-gray-900">Đăng xuất</p>
                                             </div>
                                         </div>
                                     </Container>
@@ -109,25 +117,38 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                             )}
                         </div>
                         <ItemRectangle
-                            className='!w-fit'
+                            className="!w-fit border border-gray-200 !rounded-full min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center bg-pink-50 hover:bg-pink-100 transition-colors duration-200"
+                            onFunction={() => { }}
+                            icon={<HeartIcon className="text-pink-600" />}
+                        />
+                        <ItemRectangle
+                            className="!w-fit border border-gray-200 !rounded-full min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center bg-pink-50 hover:bg-pink-100 transition-colors duration-200"
                             onFunction={toggleDrawer}
-                            icon={<CartIcon />}
+                            icon={<CartIcon className="text-pink-600" />}
                         />
                     </div>
-
                 </div>
                 <div className="h-[25px] mt-4">
-                    <Carousel slidesPerView={8} >
-                        {CATEGORY_CONFIG.map(({ title }) => (
-                            <SwiperSlide key={title} className='!w-fit'>
-                                <IconButton className='whitespace-nowrap border-[0.5px] border-gray-200 rounded-md !p-1 !text-black overflow-hidden !px-5 ' title={title} />
+                    <Carousel
+                        slidesPerView={8}
+                        customSwipeWrap="!h-[50px]"
+                        customButtonLeft="!top-[25px] left-[-25px] bg-pink-300 hover:bg-pink-400 text-white"
+                        customButtonRight="!top-[25px] right-[-20px] bg-pink-300 hover:bg-pink-400 text-white"
+                    >
+                        {CATEGORY_CONFIG.map(({ title, url, id }, index) => (
+                            <SwiperSlide key={index} className="!w-fit">
+                                <Link href={`${url}/${id}`} className="flex items-center justify-center h-full">
+                                    <IconButton
+                                        className="whitespace-nowrap border border-gray-200 rounded-md !p-1 !text-gray-900 hover:bg-pink-100 transition-colors duration-200 !px-5"
+                                        title={title}
+                                    />
+                                </Link>
                             </SwiperSlide>
                         ))}
-
                     </Carousel>
                 </div>
-            </div >
-        </Container >
+            </div>
+        </Container>
     );
 };
 

@@ -28,6 +28,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const toggleDrawer = () => setIsOpen((prev) => !prev);
 
     useEffect(() => {
+
+
         if (cartData) {
             setCart(cartData);
         }
@@ -35,22 +37,20 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 
     const addToCart = async (cart_id: string, product_id: string, quantity: number) => {
-        alert("add to cart")
         await addToCartMutation({ cart_id, product_id, quantity });
     };
 
-    const updateCartItem = async (cart_id: string, product_id: string, quantity: number) => {
-        await updateCartItemMutation({ cart_id, product_id, quantity });
+    const updateCartItem = async (cartDetailId: string, quantity: number) => {
+        await updateCartItemMutation({ cartDetailId, quantity });
     };
 
-    const removeFromCart = async (product_id: string) => {
-        await removeFromCartMutation(product_id);
+    const removeFromCart = async (cartDetailId: string) => {
+        await removeFromCartMutation(cartDetailId);
     };
 
     const clearCart = async () => {
         await clearCartMutation();
     };
-
     return (
         <CartContext.Provider
             value={{

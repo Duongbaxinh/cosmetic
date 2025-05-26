@@ -18,7 +18,7 @@ const OverviewProduct: React.FC<OverviewProductProps> = ({ product }) => {
     }
     return (
         <div className="lg:sticky top-0 left-0 h-fit p-0 w-full max-w-full  h-fit-content max-h-[620px] bg-white rounded-md">
-            <div className="p-[16px]">
+            <div className="p-0 md:p-4">
                 <div className="flex gap-[5px]">
                     <div className="space-y-2">
                         {product && product.product_images.length > 0 && [...product?.product_images, product.product_thumbnail].map((image, index) => (

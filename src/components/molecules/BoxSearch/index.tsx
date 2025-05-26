@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { HiSearchCircle } from 'react-icons/hi'; // Tail icon (can be replaced with a custom icon)
 
-function BoxSearch() {
+function BoxSearch({ className }: { className?: string }) {
     const router = useRouter();
     const [textSearch, setTextSearch] = useState('');
     const paramSearch = useMemo(() => ({ textSearch: textSearch }), [textSearch]);
@@ -55,7 +55,7 @@ function BoxSearch() {
             />
 
             {products && products.length > 0 && showBox && (
-                <div className="absolute top-auto left-0 right-0 bg-white shadow-lg border border-gray-200 mt-1 rounded z-50">
+                <div className="absolute top-auto left-0 right-0 w-[250px] sm:w-full bg-white shadow-lg border border-gray-200 mt-1 rounded z-50">
                     {products.map((item, index) => (
                         <Link
                             href={`${DETAIL_PRODUCT_URL}/${item.id}`}
