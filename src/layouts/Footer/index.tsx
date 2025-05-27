@@ -3,8 +3,8 @@ import React from 'react';
 const Footer: React.FC = () => {
     return (
         <footer className="bg-white py-6 text-black mt-[30px]">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="w-full mx-auto px-2 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 sm:grid-cols-4  gap-8">
                     {/* Beauty Box Section */}
                     <div>
                         <h3 className="text-xl font-bold mb-4">BEAUTY BOX</h3>

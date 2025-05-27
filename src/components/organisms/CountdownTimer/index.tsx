@@ -40,21 +40,21 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetTime }) => {
 
     return (
         <div className="w-full bg-white py-2 px-4 rounded-lg flex justify-center space-x-4 text-center text-pink-600">
-            <div className='flex items-center gap-2 text-3 font-[700] leading-[17px]'>
-                <span className="text-2xl font-bold ">{formatNumber(timeLeft.days)}</span>
-                <span className="block text-sm uppercase">Ngày</span>
+            <div className='flex items-center gap-2 text-[13px] sm:text-3 font-[700] leading-[17px]'>
+                <span className=" text-[13px] sm:text-2xl font-bold ">{formatNumber(timeLeft.days)}</span>
+                <span className="block text-[10px] sm:text-sm uppercase">Ngày</span>
             </div>
             <div className='flex items-center gap-2 text-3 font-[700] leading-[17px]'>
-                <span className="text-2xl font-bold ">{formatNumber(timeLeft.hours)}</span>
-                <span className="block text-sm uppercase">Giờ</span>
+                <span className=" text-[13px] sm:text-2xl font-bold ">{formatNumber(timeLeft.hours)}</span>
+                <span className="block text-[10px] sm:text-sm uppercase">Giờ</span>
             </div>
             <div className='flex items-center gap-2 text-3 font-[700] leading-[17px]'>
-                <span className="text-2xl font-bold ">{formatNumber(timeLeft.minutes)}</span>
-                <span className="block text-sm uppercase">Phút</span>
+                <span className=" text-[13px] sm:text-2xl font-bold ">{formatNumber(timeLeft.minutes)}</span>
+                <span className="block text-[10px] sm:text-sm uppercase">Phút</span>
             </div>
             <div className='flex items-center gap-2 text-3 font-[700] leading-[17px]'>
-                <span className="text-2xl font-bold ">{formatNumber(timeLeft.seconds)}</span>
-                <span className="block text-sm uppercase">Giây</span>
+                <span className=" text-[13px] sm:text-2xl font-bold ">{formatNumber(timeLeft.seconds)}</span>
+                <span className="block text-[10px] sm:text-sm uppercase">Giây</span>
             </div>
         </div>
     );

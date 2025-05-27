@@ -1,23 +1,21 @@
 "use client";
-import PopupInfo from '@/components/molecules/PopupInfo';
-import PopupPrivate from '@/components/molecules/PopupPrivate';
+import NotFound from '@/components/molecules/NotFound';
 import { useCart } from '@/contexts/cart.context';
 import { useOrder } from '@/contexts/order.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { useGetAllProductsQuery, useGetProductByIdQuery } from '@/redux/slices/product.slice';
 import { useGetReviewProductByIdQuery } from '@/redux/slices/review.slice';
+import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
 import { OrderProduct, ShippingAddress } from '@/types';
 import { createParams } from '@/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import LoadingPage from '../LoadingPage';
 import DetailProduct from './DetailProduct';
 import OverviewProduct from './OverviewProduct';
 import ReviewProduct from './ReviewProduct';
-import NotFound from '@/components/molecules/NotFound';
-import LoadingPage from '../LoadingPage';
-import { toast } from 'react-toastify';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -63,6 +61,17 @@ function DetailProductPage({ id }: { id: string | number }) {
         }
     };
 
+    const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
+        if (!product) return;
+        const orderProduct: OrderProduct = {
+            id: product.id,
+            product_name: product.product_name,
+            product_price: product.product_price,
+            product_thumbnail: product.product_thumbnail,
+            quantity: quantity,
+        };
+        proceedToCheckout({ shippingAddressNew: shippingAddressNew, product: orderProduct });
+    };
     const handlePurchaseProcess = () => {
         if (!product) return;
         const orderProduct: OrderProduct = {
@@ -75,17 +84,7 @@ function DetailProductPage({ id }: { id: string | number }) {
         return handlePurchase(orderProduct);
     };
 
-    const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
-        if (!product) return;
-        const orderProduct: OrderProduct = {
-            id: product.id,
-            product_name: product.product_name,
-            product_price: product.product_price,
-            product_thumbnail: product.product_thumbnail,
-            quantity: quantity,
-        };
-        proceedToCheckout({ shippingAddressNew: shippingAddressNew, product: orderProduct });
-    };
+
 
     const handleAddToCart = async ({ product_id, quantity }: { product_id: string; quantity: number }) => {
 
@@ -112,16 +111,16 @@ function DetailProductPage({ id }: { id: string | number }) {
 
     return (
         <ContainerLayout isSidebar={false}>
-            {isOpen.openLogin && (
+            {/* {isOpen.openLogin && (
                 <PopupPrivate isOpen={isOpen.openLogin} onClose={() => handleClosePopup('openLogin')} />
-            )}
-            {isOpen.openContact && (
+            )} */}
+            {/* {isOpen.openContact && (
                 <PopupInfo
                     isOpen={isOpen.openContact}
                     onClose={() => handleClosePopup('openContact')}
                     callBack={proceedToCheckoutOrder}
                 />
-            )}
+            )} */}
 
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <OverviewProduct product={product} />

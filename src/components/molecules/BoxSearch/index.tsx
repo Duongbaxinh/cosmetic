@@ -36,7 +36,9 @@ function BoxSearch({ className }: { className?: string }) {
     });
 
     const handleMovePageSearch = () => {
-        router.push(`${SEARCH_URL}/${encodeURIComponent(textSearch)}`);
+        if (textSearch !== '') {
+            router.push(`${SEARCH_URL}/${encodeURIComponent(textSearch)}`);
+        }
     };
 
     const products = data ? data : [];
@@ -46,7 +48,7 @@ function BoxSearch({ className }: { className?: string }) {
             <Input
                 value={textSearch}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
-                placeholder="Tìm kiếm sản phẩm..." // You can change this to "Mua 1 Tặng 1 Kem Ch..." if needed
+                placeholder="Tìm kiếm sản phẩm..."
                 className="p-2 text-gray-700 bg-gray-100 !rounded-full"
                 leadingIcon={<SearchIcon className="text-gray-500 w-[20px] h-[20px]" />}
                 tailIcon={<HiSearchCircle className="text-blue-500 w-[24px] h-[24px]" />}

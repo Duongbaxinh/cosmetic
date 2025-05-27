@@ -25,6 +25,8 @@ export type OrderContextType = {
   handlePurchase: (product: OrderProduct | OrderProduct[]) => void;
   proceedToCheckout: ({ ...arg }: ProcessOrder) => void;
   isOpen: { openLogin: boolean; openContact: boolean };
+  orderProducts: OrderProduct | OrderProduct[];
+  setOrderProduct: Dispatch<SetStateAction<OrderProduct | OrderProduct[]>>;
   setIsOpen: Dispatch<
     SetStateAction<{ openLogin: boolean; openContact: boolean }>
   >;

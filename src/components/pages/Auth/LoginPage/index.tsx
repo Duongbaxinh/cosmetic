@@ -63,12 +63,6 @@ const LoginPage = () => {
     const moveRegister = () => {
         setIsAuth({ form: 'register', isOpen: true })
     }
-    // useEffect(() => {
-    //     const token = JSON.parse(localStorage.getItem('accessToken') || 'null');
-    //     if (token) {
-    //         router.push('/');
-    //     }
-    // }, []);
 
     return (
 
