@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: Brand[] | undefined, isLoading: boolean, error: any };
 
-
+    console.log("error ", errorProfile, errorShippingAddress)
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
 
@@ -109,7 +109,7 @@ const HomePage: React.FC = () => {
         }
     }, [data]);
 
-    if (errDiscount || errInternal || errorProduct || errorBrand) return toast(MESS_SYSTEM.UNKNOWN_ERROR)
+    // if (errDiscount || errInternal || errorProduct || errorBrand) return toast(MESS_SYSTEM.UNKNOWN_ERROR)
 
     const product_internal_display = productsInternal?.results ?? []
     const product_discounts_display = productsDiscount?.results ?? []

@@ -27,7 +27,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
-    const { user, isLogin, logout } = useAuth();
+    const { user, isLogin, logout, setIsAuth } = useAuth();
+    const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
@@ -44,12 +45,21 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
         router.push("/");
     };
 
+    const openLogin = () => {
+        alert("run at here")
+        setIsAuth({ form: "login", isOpen: true })
+    }
+
     useEffect(() => {
         const shippingData = localStorage.getItem("shippingAddress");
         if (shippingData) {
             dispatch(setShippingAddress(JSON.parse(shippingData)));
         }
     }, [dispatch]);
+
+    const cartQuantity = cart?.cart_details.reduce((a, b) => {
+        return a + b.quantity
+    }, 0)
 
     return (
         <Container className={`bg-pink-50 ${classHeader}`}>
@@ -84,13 +94,13 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
 
                     <div className="flex gap-2 items-center">
                         <div className="relative">
-                            <Link href={!isLogin ? LOGIN_URL : '#'}>
+                            <button onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
                                     className="border border-gray-200 !rounded-full bg-gradient-to-r from-pink-300 to-purple-400 text-white hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500 transition-all duration-200"
                                     onFunction={() => setIsOpen(!isOpen)}
                                     title={isLogin ? 'Tài khoản' : 'Đăng nhập'}
                                 />
-                            </Link>
+                            </button>
                             {isOpen && isLogin && (
                                 <div
                                     ref={profileRef}
@@ -122,6 +132,8 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                             icon={<HeartIcon className="text-pink-600" />}
                         />
                         <ItemRectangle
+                            babe
+                            quantity={cartQuantity}
                             className="!w-fit border border-gray-200 !rounded-full min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center bg-pink-50 hover:bg-pink-100 transition-colors duration-200"
                             onFunction={toggleDrawer}
                             icon={<CartIcon className="text-pink-600" />}

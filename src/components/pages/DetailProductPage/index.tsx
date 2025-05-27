@@ -17,6 +17,7 @@ import OverviewProduct from './OverviewProduct';
 import ReviewProduct from './ReviewProduct';
 import NotFound from '@/components/molecules/NotFound';
 import LoadingPage from '../LoadingPage';
+import { toast } from 'react-toastify';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -90,6 +91,8 @@ function DetailProductPage({ id }: { id: string | number }) {
 
         if (!cart || !cart?.id) return;
         await addToCart(cart?.id, product_id, quantity);
+        toast.success("Đã thêm vào giỏ hàng thành công")
+
     };
 
     const handleClosePopup = (field: "openLogin" | "openContact") => {
@@ -99,7 +102,7 @@ function DetailProductPage({ id }: { id: string | number }) {
     if (loadingProduct)
         return <LoadingPage className="w-screen h-screen bg-pink-50" />;
     if (!product)
-        return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center bg-pink-50" />;
+        return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center w-screen h-screen" />;
 
     const breadcrumbDetailProduct = [
         { label: "Trang Chủ", href: "/" },

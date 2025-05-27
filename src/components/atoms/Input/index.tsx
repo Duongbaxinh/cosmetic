@@ -23,6 +23,7 @@ interface InputInterface {
     placeholder?: string;
     name?: string;
     error?: boolean,
+    styleError?: string,
     message?: string,
     value?: string | number;
     leadingIcon?: ReactNode;
@@ -55,6 +56,7 @@ interface InputInterface {
 const Input = forwardRef(({
     placeholder,
     error,
+    styleError,
     message,
     value,
     type = typeInput.TEXT,
@@ -129,7 +131,7 @@ const Input = forwardRef(({
                         {tailIconSecond}
                     </div>
                 )}
-                <p className={` absolute ${!error ? "hidden " : ""} text-red-500 top-[34px] left-0  text-[12px] italic`}>
+                <p className={` absolute ${!error ? "hidden " : ""} text-red-500 top-[34px] left-0  text-[12px] line-clamp-1 whitespace-nowrap italic ${styleError ? styleError : ''}`}>
                     {message}
                 </p>
             </div>

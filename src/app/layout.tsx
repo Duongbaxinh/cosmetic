@@ -9,6 +9,10 @@ import { ToastContainer } from 'react-toastify';
 import "./globals.css";
 import { NetworkStatusProvider } from "@/contexts/network.context";
 import ChatBox from "@/components/pages/ChatBox";
+import { Login } from "@/services/auth.service";
+import LoginPage from "@/components/pages/Auth/LoginPage";
+import RegisterPage from "@/components/pages/Auth/RegisterPage";
+import AuthPage from "@/components/pages/Auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +49,7 @@ export default function RootLayout({
 
                   {children}
                   <ChatBox />
+                  <AuthPage />
                 </OrderProvider>
               </CartProvider>
             </AuthProvider>

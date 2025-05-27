@@ -1,12 +1,12 @@
 'use client';
-import Breadcrumb from '@/components/atoms/Breadcrumb';
 import Input, { typeInput } from '@/components/atoms/Input';
+import Popup from '@/components/atoms/Popup';
+import { useAuth } from '@/contexts/auth.context';
 import { useSignUpMutation } from '@/redux/slices/auth.slice';
 import { LOGIN_URL } from '@/routers';
 import { AuthDataRegister } from '@/types';
 import { authRegisterValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,7 @@ const RegisterPage = () => {
     } = useForm<AuthDataRegister>({
         resolver: yupResolver(authRegisterValid),
     });
-
+    const { setIsAuth } = useAuth()
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [signUp, { isLoading }] = useSignUpMutation();
@@ -36,110 +36,99 @@ const RegisterPage = () => {
     const onSubmit: SubmitHandler<AuthDataRegister> = (data) => {
         handleRegister(data);
     };
-    useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            router.push('/account');
-        }
-    }, []);
+
+    const moveLogin = () => {
+        setIsAuth({ form: 'login', isOpen: true })
+    }
+    // useEffect(() => {
+    //     const token = localStorage.getItem('accessToken');
+    //     if (token) {
+    //         router.push('/');
+    //     }
+    // }, []);
     return (
-        <div className="w-full h-full bg-white">
-            <Head>
-                <title>Tạo tài khoản Beauty</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
 
-            <div className="min-h-screen py-8">
-                <div className="max-w-6xl mx-auto px-4">
-                    <Breadcrumb items={[{ label: "Trang chủ", href: '/' }, { label: "Đăng ký" }]} />
-                </div>
-
-                <div className="flex justify-center mt-8">
-                    <div className="flex w-full max-w-4xl shadow-lg rounded-lg overflow-hidden">
-                        {/* Form Side */}
-                        <div className="w-1/2 bg-white p-8 flex flex-col justify-center">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-2">Tạo tài khoản Beauty</h1>
-                            <p className="text-gray-600 mb-6">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
-                            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                                <div className="mb-4">
-                                    <Input
-                                        placeholder="Nhập tài khoản người dùng"
-                                        {...register('username')}
-                                        error={!!errors.username}
-                                        message={errors.username?.message}
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <Input
-                                        placeholder="Nhập email của bạn"
-                                        {...register('email')}
-                                        error={!!errors.email}
-                                        message={errors.email?.message}
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <Input
-                                        placeholder="Nhập số điện thoại"
-                                        {...register('phone')}
-                                        error={!!errors.phone}
-                                        message={errors.phone?.message}
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <Input
-                                        placeholder="Nhập mật khẩu"
-                                        type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
-                                        {...register('password')}
-                                        tailIcon={showPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
-                                        onHandleTailIcon={() => setShowPassword(!showPassword)}
-                                        error={!!errors.password}
-                                        message={errors.password?.message}
-                                    />
-                                </div>
-
-                                <div className="mb-4">
-                                    <Input
-                                        placeholder="Xác nhận mật khẩu"
-                                        type={showConfirmPassword ? typeInput.TEXT : typeInput.PASSWORD}
-                                        {...register('confirmPassword')}
-                                        tailIcon={showConfirmPassword ? <HiEyeOff size={20} /> : <BsEye size={20} />}
-                                        onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        error={!!errors.confirmPassword}
-                                        message={errors.confirmPassword?.message}
-                                    />
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition disabled:bg-purple-400"
-                                >
-                                    {isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
-                                </button>
-                            </form>
-
-                            <p className="text-center text-sm text-gray-600 mt-4">
-                                Đã có tài khoản?{' '}
-                                <Link href={LOGIN_URL} className="text-purple-600 hover:underline">
-                                    Đăng nhập
-                                </Link>
-                            </p>
+        <div className="bg-white w-[280px] h-fit sm:w-[500px] sm:h-[500px] my-0 mx-auto px-0 sm:px-[30px] md:px-[60px] py-3 md:py-6">
+            <div className="w-full bg-white flex flex-col justify-center">
+                <h1 className=" text-[13px] sm:text-2xl font-bold text-center uppercase mb-2">Tạo tài khoản Beauty</h1>
+                <p className=" text-[10px] sm:text-[14px] leading-[17px] font-[500] mb-6 text-center">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                    <div className="w-full grid grid-cols-2 gap-1 sm:gap-3 ">
+                        <div className="mb-4 col-span-2">
+                            <Input
+                                className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
+                                placeholder="Nhập tài khoản người dùng"
+                                {...register('username')}
+                                error={!!errors.username}
+                                message={errors.username?.message}
+                            />
                         </div>
 
-                        {/* Image Side */}
-                        <div
-                            className="w-1/2 bg-cover bg-center"
-                            style={{
-                                backgroundImage: `url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')`,
-                            }}
-                        ></div>
+                        <div className="mb-4">
+                            <Input
+                                className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
+                                placeholder="Nhập email của bạn"
+                                {...register('email')}
+                                error={!!errors.email}
+                                message={errors.email?.message}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <Input
+                                className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
+                                placeholder="Nhập số điện thoại"
+                                {...register('phone')}
+                                error={!!errors.phone}
+                                message={errors.phone?.message}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <Input
+                                className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
+                                placeholder="Nhập mật khẩu"
+                                type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
+                                {...register('password')}
+                                tailIcon={showPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
+                                onHandleTailIcon={() => setShowPassword(!showPassword)}
+                                error={!!errors.password}
+                                message={errors.password?.message}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <Input
+                                className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
+                                placeholder="Xác nhận mật khẩu"
+                                type={showConfirmPassword ? typeInput.TEXT : typeInput.PASSWORD}
+                                {...register('confirmPassword')}
+                                tailIcon={showConfirmPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
+                                onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
+                                error={!!errors.confirmPassword}
+                                message={errors.confirmPassword?.message}
+                            />
+                        </div>
+
                     </div>
-                </div>
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-gradient rounded-full text-white p-1 sm:p-3  hover:bg-purple-700 transition disabled:bg-purple-400"
+                    >
+                        {isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
+                    </button>
+                </form>
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                    Đã có tài khoản?{' '}
+                    <button onClick={moveLogin} className="text-purple-600 hover:underline">
+                        Đăng nhập
+                    </button>
+                </p>
             </div>
         </div>
+
     );
 };
 

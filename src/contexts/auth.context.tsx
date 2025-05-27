@@ -4,7 +4,7 @@ import { clearUser } from "@/redux/slices/auth.slice";
 import { clearShippingAddress } from "@/redux/slices/shippingAddress.slice";
 import { UserType } from "@/types";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface AuthContextType {
@@ -17,6 +17,8 @@ interface AuthContextType {
     setIsLogin: (isLogin: boolean) => void,
     isLogin: boolean,
     logout: () => void,
+    isAuth: { form: "login" | "register", isOpen: boolean } | null,
+    setIsAuth: (form: { form: "login" | "register", isOpen: boolean }) => void
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -25,7 +27,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [user, setUser] = useSaveLocalStorage("user", null);
     const [accessToken, setAccessToken] = useSaveLocalStorage('accessToken', null)
     const [refreshToken, setRefetchToken] = useSaveLocalStorage('refreshToken', null)
-    const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
+    const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin",false);
+    const [isAuth, setIsAuth] = useState<{ form: "login" | "register", isOpen: boolean } | null>(null);
 
     const dispatch = useDispatch();
     const router = useRouter()
@@ -52,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.location.reload();
     };
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken }}>
+        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken, isAuth, setIsAuth }}>
             {children}
         </AuthContext.Provider>
     )

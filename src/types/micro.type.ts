@@ -30,6 +30,8 @@ export interface ItemRectangleProps {
   onFunction?: () => void;
   onmousedown?: () => void;
   className?: string;
+  babe?: boolean;
+  quantity?: number;
 }
 
 export interface PriceProps {

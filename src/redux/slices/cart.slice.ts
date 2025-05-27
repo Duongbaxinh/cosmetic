@@ -31,7 +31,7 @@ export const cartApi = createApi({
       { cart_id: string; product_id: string; quantity: number }
     >({
       query: ({ cart_id, product_id, quantity }) => ({
-        url: "/carts",
+        url: "/cart-details",
         method: "POST",
         body: { cart_id, product_id, quantity },
       }),

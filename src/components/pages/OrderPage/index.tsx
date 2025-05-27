@@ -34,7 +34,7 @@ function OrderPage() {
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
             <div className="flex gap-4  max-w-[1024px] mx-auto">
                 <SideBarDetail />
-                <div className="flex flex-col gap-5 w-full">
+                <div className="flex flex-col gap-5 w-full overflow-hidden">
                     <p className="text-[19px] font-[700] text-gray-900">Đơn hàng của tôi</p>
                     <div className="bg-white h-[42px] overflow-auto no-scrollbar flex items-center text-[14px] leading-4 text-gray-500 shadow-sm rounded-lg">
                         {ORDER_TABS.map((tab: OrderTabItem, index) => (
