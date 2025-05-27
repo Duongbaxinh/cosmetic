@@ -2,10 +2,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useGetCartQuery, useAddToCartMutation, useUpdateCartItemMutation, useRemoveFromCartMutation, useClearCartMutation } from "@/redux/slices/cart.slice";
 import { CartCheckout, CartContextType } from "@/types";
+import { useAuth } from "./auth.context";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { isLogin, setIsAuth } = useAuth()
     const [isOpen, setIsOpen] = useState(false);
     const [cart, setCart] = useState<CartCheckout | null>(null);
 
@@ -25,11 +27,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [removeFromCartMutation] = useRemoveFromCartMutation();
     const [clearCartMutation] = useClearCartMutation();
 
-    const toggleDrawer = () => setIsOpen((prev) => !prev);
+    const toggleDrawer = () => {
+        if (!isLogin) return setIsAuth({ form: 'login', isOpen: true })
+        setIsOpen((prev) => !prev)
+    };
 
     useEffect(() => {
-
-
         if (cartData) {
             setCart(cartData);
         }

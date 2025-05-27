@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setUser, useChangePasswordMutation, useChangeProfileMutation } from "@/redux/slices/auth.slice";
 import { redirect } from "next/navigation";
 import { LOGIN_URL } from "@/routers";
+import { useAuth } from "@/contexts/auth.context";
 
 type FormData = {
     currentPassword: string;
@@ -30,6 +31,7 @@ function ChangePassword() {
         resolver: yupResolver(changePasswordSchema),
     });
 
+    const { logout } = useAuth()
     const [showCurrent, setShowCurrent] = React.useState(false);
     const [showNew, setShowNew] = React.useState(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -49,9 +51,8 @@ function ChangePassword() {
         const dataChangePassword = await changePassword(payload)
 
         if (dataChangePassword.data) {
-
             alert(dataChangePassword.data)
-            redirect(LOGIN_URL)
+            logout()
         }
     };
     useEffect(() => {
@@ -62,77 +63,88 @@ function ChangePassword() {
         }
     }, [])
     return (
-        <>
-            <h1 className='mb-4'>Thay đổi mật khẩu</h1>
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="w-full bg-white rounded-md flex items-center justify-center py-8"
-            >
-                <div className="border border-gray-300 md:min-w-[400px] p-3 rounded-md space-y-4">
-                    <div>
-                        <p className="text-[13px]">Mật khẩu hiện tại</p>
-                        <Input
-                            type={showCurrent ? typeInput.TEXT : typeInput.PASSWORD}
-                            placeholder="Nhập mật khẩu hiện tại"
-                            {...register("currentPassword")}
-                            tailIcon={
-                                <div onClick={() => setShowCurrent(!showCurrent)} className="cursor-pointer">
-                                    {showCurrent ? <BsEyeSlash /> : <EyeIcon />}
-                                </div>
-                            }
-                        />
-                        {errors.currentPassword && (
-                            <p className="text-red-500 text-xs mt-1">{errors.currentPassword.message}</p>
-                        )}
-                    </div>
 
-                    <div>
-                        <p className="text-[13px]">Mật khẩu mới</p>
-                        <Input
-                            type={showNew ? typeInput.TEXT : typeInput.PASSWORD}
-                            placeholder="Nhập mật khẩu mới"
-                            {...register("newPassword")}
-                            tailIcon={
-                                <div onClick={() => setShowNew(!showNew)} className="cursor-pointer">
-                                    {showNew ? <BsEyeSlash /> : <EyeIcon />}
-                                </div>
-                            }
-                        />
-                        <p className="text-[13px] text-gray-400">Mật khẩu phải dài từ 8 đến 32 ký tự, bao gồm chữ và số</p>
-                        {errors.newPassword && (
-                            <p className="text-red-500 text-xs mt-1">{errors.newPassword.message}</p>
-                        )}
-                    </div>
+        <div className="flex flex-col gap-5 space-x-5 w-full">
+            <h1 className='font-[700] text-center'>Thay đổi mật khẩu</h1>
+            <div className="w-full h-full bg-white flex items-center justify-center">
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-full bg-white rounded-md flex items-center justify-center py-8"
+                >
+                    <div className=" shadow shadow-pink-400 md:min-w-[400px] p-3 rounded-md space-y-4">
+                        <div>
+                            <p className="text-[13px] pb-2">Mật khẩu hiện tại</p>
+                            <Input
+                                className='px-1 py-2 sm:px-3 sm:py-2 border border-color'
+                                styleError='!top-[44px] sm:!top-[60px]'
+                                type={showCurrent ? typeInput.TEXT : typeInput.PASSWORD}
+                                placeholder="Nhập mật khẩu hiện tại"
+                                {...register("currentPassword")}
+                                tailIcon={
+                                    <div onClick={() => setShowCurrent(!showCurrent)} className="cursor-pointer">
+                                        {showCurrent ? <BsEyeSlash /> : <EyeIcon />}
+                                    </div>
+                                }
+                            />
+                            {errors.currentPassword && (
+                                <p className="text-red-500 text-xs mt-1">{errors.currentPassword.message}</p>
+                            )}
+                        </div>
 
-                    <div>
-                        <p className="text-[13px]">Nhập lại mật khẩu mới</p>
-                        <Input
-                            type={showConfirm ? typeInput.TEXT : typeInput.PASSWORD}
-                            placeholder="Nhập lại mật khẩu mới"
-                            {...register("confirmPassword")}
-                            tailIcon={
-                                <div onClick={() => setShowConfirm(!showConfirm)} className="cursor-pointer">
-                                    {showConfirm ? <BsEyeSlash /> : <EyeIcon />}
-                                </div>
-                            }
-                        />
-                        {errors.confirmPassword && (
-                            <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
-                        )}
-                    </div>
+                        <div>
+                            <p className="text-[13px] pb-2">Mật khẩu mới</p>
+                            <Input
+                                className='px-1 py-2 sm:px-3 sm:py-2 border border-color'
+                                styleError='!top-[44px] sm:!top-[60px]'
+                                type={showNew ? typeInput.TEXT : typeInput.PASSWORD}
+                                placeholder="Nhập mật khẩu mới"
+                                {...register("newPassword")}
+                                tailIcon={
+                                    <div onClick={() => setShowNew(!showNew)} className="cursor-pointer">
+                                        {showNew ? <BsEyeSlash /> : <EyeIcon />}
+                                    </div>
+                                }
+                            />
+                            <p className="text-[13px] text-gray-400">Mật khẩu phải dài từ 8 đến 32 ký tự, bao gồm chữ và số</p>
+                            {errors.newPassword && (
+                                <p className="text-red-500 text-xs mt-1">{errors.newPassword.message}</p>
+                            )}
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={!isValid || !isDirty}
-                        className={`w-full p-2 text-white text-[14px] rounded-md transition ${!isValid || !isDirty
-                            ? "bg-gray-200 cursor-not-allowed"
-                            : "bg-blue-500 hover:bg-blue-600"
-                            }`}
-                    >
-                        {isLoading ? "Changing..." : "Lưu thay đổi"}
-                    </button>
-                </div>
-            </form></>
+                        <div>
+                            <p className="text-[13px] pb-2">Nhập lại mật khẩu mới</p>
+                            <Input
+                                className='px-1 py-2 sm:px-3 sm:py-2 border border-color'
+                                styleError='!top-[44px] sm:!top-[60px]'
+                                type={showConfirm ? typeInput.TEXT : typeInput.PASSWORD}
+                                placeholder="Nhập lại mật khẩu mới"
+                                {...register("confirmPassword")}
+                                tailIcon={
+                                    <div onClick={() => setShowConfirm(!showConfirm)} className="cursor-pointer">
+                                        {showConfirm ? <BsEyeSlash /> : <EyeIcon />}
+                                    </div>
+                                }
+                            />
+                            {errors.confirmPassword && (
+                                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                            )}
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={!isValid || !isDirty}
+                            className={`w-full p-2 text-white text-[14px] rounded-md transition ${!isValid || !isDirty
+                                ? "bg-gray-200 cursor-not-allowed"
+                                : "bg-gradient"
+                                }`}
+                        >
+                            {isLoading ? "Changing..." : "Lưu thay đổi"}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     );
 }
 

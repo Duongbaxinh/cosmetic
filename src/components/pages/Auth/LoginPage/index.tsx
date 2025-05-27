@@ -19,6 +19,8 @@ import { BsEye } from 'react-icons/bs';
 import { HiEyeOff } from 'react-icons/hi';
 
 const LoginPage = () => {
+
+    const { isAuth, setIsAuth } = useAuth()
     const {
         register,
         handleSubmit,
@@ -40,7 +42,6 @@ const LoginPage = () => {
         onBlur: onUsernameBlur,
         name: usernameName,
     } = register('username');
-    const { setIsAuth } = useAuth()
     const [showPassword, setShowPassword] = useState(false);
     const { setIsLogin, setAccessToken, setRefetchToken } = useAuth();
     const [login, { isLoading, error }] = useLoginMutation();
@@ -53,7 +54,7 @@ const LoginPage = () => {
         if (res) {
             setAccessToken(res.data.access_token);
             setRefetchToken(res.data.refresh_token);
-            router.push('/');
+            setIsAuth({ form: 'login', isOpen: false });
         }
     };
 
@@ -63,12 +64,6 @@ const LoginPage = () => {
     const moveRegister = () => {
         setIsAuth({ form: 'register', isOpen: true })
     }
-    // useEffect(() => {
-    //     const token = JSON.parse(localStorage.getItem('accessToken') || 'null');
-    //     if (token) {
-    //         router.push('/');
-    //     }
-    // }, []);
 
     return (
 

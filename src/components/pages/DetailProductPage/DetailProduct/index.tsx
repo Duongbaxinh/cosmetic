@@ -9,6 +9,7 @@ import CardProductSimilar from '@/components/molecules/CardProductSimilar';
 import GroupStart from '@/components/organisms/GroupStart';
 import { MESS_DELIVERY } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
+import { DETAIL_PRODUCT_URL } from '@/routers';
 import { Product, ShippingAddress } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -163,7 +164,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                                         <div className=" w-full grid grid-cols-3 space-x-2 space-y-2  ">
                                             {
                                                 similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product, index) => (
-                                                    <Link key={index} href={`/detail/${product.id}`} >
+                                                    <Link key={index} href={`${DETAIL_PRODUCT_URL}/${product.id}`} >
                                                         <CardProductSimilar
                                                             product_brand={product.product_brand}
                                                             product_description={product.product_description}

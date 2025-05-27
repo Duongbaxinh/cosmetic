@@ -29,8 +29,8 @@ const RegisterPage = () => {
     const router = useRouter();
 
     const handleRegister = async (dataRegister: AuthDataRegister) => {
-        const res = await signUp(dataRegister);
-        router.push(LOGIN_URL);
+        await signUp(dataRegister);
+        setIsAuth({ form: 'login', isOpen: true });
     };
 
     const onSubmit: SubmitHandler<AuthDataRegister> = (data) => {
@@ -40,12 +40,7 @@ const RegisterPage = () => {
     const moveLogin = () => {
         setIsAuth({ form: 'login', isOpen: true })
     }
-    // useEffect(() => {
-    //     const token = localStorage.getItem('accessToken');
-    //     if (token) {
-    //         router.push('/');
-    //     }
-    // }, []);
+
     return (
 
         <div className="bg-white w-[280px] h-fit sm:w-[500px] sm:h-[500px] my-0 mx-auto px-0 sm:px-[30px] md:px-[60px] py-3 md:py-6">

@@ -28,7 +28,7 @@ const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = 
         setCheckPrivate(true);
         const token = JSON.parse(localStorage.getItem('accessToken') || 'null');
         if (!token && isPrivate) {
-            router.push(LOGIN_URL);
+            router.push('/');
         } else {
             setCheckPrivate(false);
         }

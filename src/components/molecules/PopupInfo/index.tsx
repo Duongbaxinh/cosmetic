@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setUser } from "@/redux/slices/auth.slice";
 import { toast } from "react-toastify";
+import { useOrder } from "@/contexts/order.context";
 
 export type Province = { code: number; name: string };
 export type District = { code: number; name: string };
@@ -33,6 +34,7 @@ export type FormValues = {
 };
 
 function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
+    const { proceedToCheckout, orderProducts } = useOrder();
     const router = useRouter();
 
     const methods = useForm<FormValues>();
@@ -115,7 +117,7 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
         if (dataCreateShippingAddress.data) {
             onClose()
             dispatch(setShippingAddress([dataCreateShippingAddress.data]))
-            if (callBack) callBack(dataCreateShippingAddress.data);
+            proceedToCheckout({ shippingAddressNew: dataCreateShippingAddress.data, product: orderProducts });
         } else {
             toast.error("Lỗi khi tạo địa chỉ giao hàng. Vui lòng thử lại sau.");
         }

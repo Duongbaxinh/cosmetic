@@ -1,10 +1,8 @@
 "use client"
 import CloseIcon from '@/assets/icons/CloseIcon';
 import Breadcrumb from '@/components/atoms/Breadcrumb';
-import Carousel from '@/components/atoms/Carousel';
 import IconButton from '@/components/atoms/IconButton';
 import Price from '@/components/atoms/Price';
-import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
 import GroupStart from '@/components/organisms/GroupStart';
 import ContainerLayout from '@/layouts/ContainerLayout';
@@ -19,6 +17,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { BiChevronUp, BiMinus, BiPlus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
 import LoadingIcon from '../LoadingPage/LoadingIcon';
+import NotFound from '@/components/molecules/NotFound';
 
 function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo">("cash")
@@ -194,7 +193,7 @@ function CheckoutPage() {
         return sum + price * quantity;
     }, 0);
 
-    !orderCheckout && <h1>ERROR</h1>
+    if (!orderCheckout) return <NotFound content='Không tìm thấy đơn hàng' className='w-screen h-screen' />
 
     const isOrderAble = orderCheckout && orderCheckout.order_products.length > 0
     const shipping = orderCheckout && orderCheckout?.order_products.length > 0 ? orderCheckout?.order_shipping ?? 0 : 0;

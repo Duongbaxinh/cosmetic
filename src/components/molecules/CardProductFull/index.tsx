@@ -16,7 +16,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
 }) => {
     return (
         <div
-            className={`w-full h-full bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2 border border-gray-200 hover:shadow-lg transition-shadow duration-200 ${className}`}
+            className={` p-2 sm:p-0 w-full h-full bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2 border border-gray-200 hover:shadow-lg transition-shadow duration-200 ${className}`}
         >
             <div className="flex flex-col justify-start gap-2 pb-6">
                 <Image
@@ -24,7 +24,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                     alt={product_name}
                     width={270}
                     height={270}
-                    className="object-cover cursor-pointer w-full h-[270px] rounded-t-lg"
+                    className="object-scale-down sm:object-cover cursor-pointer w-full h-[100px] sm:h-[270px] rounded-t-lg"
                 />
                 <p className="text-[14px] font-[600] text-center text-gray-900">
                     {product_brand ?? "ASENA"}

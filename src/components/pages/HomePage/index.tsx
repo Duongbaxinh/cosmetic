@@ -117,9 +117,9 @@ const HomePage: React.FC = () => {
 
     return (
         <ContainerLayout isSidebar={false} classHeader="sticky top-0 z-30" >
-            <div className="w-full flex-col gap-8 space-y-4 text-black bg-pink-50">
+            <div className="w-full flex-col gap-8 space-y-4 text-black ">
                 {/* CATEGORY */}
-                <div className="grid grid-cols-6 grid-rows-2 gap-2  w-full rounded-md min-h-[306px] ">
+                <div className="grid grid-cols-6 grid-rows-2 gap-2  w-full rounded-md min-h-[150px] sm:min-h-[306px] ">
                     <div className="col-span-6 md:col-span-4 row-span-2 h-full">
                         <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} clickable enableAutoPlay>
                             {categories.map(({ id, product_thumbnail }) => (
@@ -146,8 +146,8 @@ const HomePage: React.FC = () => {
                 </div>
 
 
-                <div className="w-full bg-pink-50 rounded-md mt-[30px]">
-                    <h1 className='text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Top Sản phẩm bán chạy</h1>
+                <div className="w-full  rounded-md mt-[30px]">
+                    <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Top Sản phẩm bán chạy</h1>
                     {loadingDiscount ? (
                         <LoadingPage className='w-full !h-[400px]' />
                     ) : (
@@ -221,24 +221,23 @@ const HomePage: React.FC = () => {
                     )}
                 </div>
                 {/*  */}
-                <div className="w-full max-w-[1138px] mx-auto p-[25px] rounded-2xl bg-yellow-300 space-y-5">
-                    <div className="w-full  flex flex-col md:flex-row justify-between items-end">
+                <div className="w-full max-w-[1138px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
+                    <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end">
                         <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
                         <div >
-                            <p className='font-[700]'>Thời gian còn lại</p>
+                            <p className=' font-[700] text-center lg:text-start'>Thời gian còn lại</p>
                             <CountdownTimer targetTime='2025-06-30T23:59:59+07:00' />
                         </div>
-                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" block py-3 px-6 rounded-md text-sm text-yellow-500 bg-pink-50 cursor-pointer   font-bold w-fit">Xem tất cả</Link>
+                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" hidden  lg:block py-3 px-6 mt-1 lg:mt-0 rounded-md text-sm text-yellow-500  cursor-pointer   font-bold w-fit border border-color bg-white">Xem tất cả</Link>
                     </div>
                     {loadingDiscount ? (
-                        <LoadingPage className='w-full !h-[400px]' />
+                        <LoadingPage className='w-full !h-[275px] sm:!h-[400px]' />
                     ) :
                         (
                             <Carousel
                                 spaceBetween={10}
                                 breakpoints={breakpoints}
-                                className='!h-[400px]'
-                                customSwipeWrap=' !h-[340px] sm:!!h-[400px]'
+                                customSwipeWrap=' !h-[275px] sm:!h-[400px]'
                             >
                                 {product_discounts_display.map((product) => (
                                     <SwiperSlide
@@ -263,6 +262,7 @@ const HomePage: React.FC = () => {
                                 ))}
                             </Carousel>
                         )}
+                    <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" flex lg:hidden w-full justify-center  mt-1 lg:mt-0 rounded-md text-sm  cursor-pointer   "><p className='text-center  font-bold border border-color py-3 px-6 text-pink-500 rounded-full bg-white '>Xem tất cả</p></Link>
                 </div>
 
 
@@ -306,8 +306,8 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Nhập khẩu chính hãng */}
-                <div className="w-full bg-pink-50 rounded-md mt-[30px]">
-                    <h1 className='text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Hàng ngoại giá tốt</h1>
+                <div className="w-full  rounded-md mt-[30px]">
+                    <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Hàng ngoại giá tốt</h1>
                     {loadingInternal ? (
                         <LoadingPage className='w-full !h-[400px]' />
                     ) : (
@@ -341,8 +341,8 @@ const HomePage: React.FC = () => {
                     )}
                 </div>
                 {/* Nhập khẩu chính hãng */}
-                <div className="w-full bg-pink-50 rounded-md mt-[30px]">
-                    <h1 className='text-[26px] leading-[36px] font-[700] text-center  pb-[30px]'>Sản Phẩm mới</h1>
+                <div className="w-full  rounded-md mt-[30px]">
+                    <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Sản Phẩm mới</h1>
                     {loadingDiscount ? (
                         <LoadingPage className='w-full !h-[400px]' />
                     ) : (
@@ -376,14 +376,14 @@ const HomePage: React.FC = () => {
                     )}
                 </div>
 
-                <div className="w-full bg-pink-50 rounded-md mt-[30px]">
-                    <h1 className='text-[26px] leading-[36px] font-[700] text-center  pb-[30px]'>Gợi ý hôm nay</h1>
+                <div className="w-full  rounded-md mt-[30px]">
+                    <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Gợi ý hôm nay</h1>
                     {loading ? (
                         <LoadingPage className='w-full !h-[400px]' />
                     ) :
                         (<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-3">
                             {/* Banner */}
-                            <div className=" col-span-1  md:col-span-2  flex items-center justify-center">
+                            <div className=" col-span-2  md:col-span-2  flex items-center justify-center">
                                 <Carousel customSwipeWrap='!p-0' slidesPerView={1} clickable>
                                     {categories.map(({ id, product_thumbnail }) => (
                                         <SwiperSlide key={id}>
@@ -391,7 +391,7 @@ const HomePage: React.FC = () => {
                                                 <Image
                                                     src={product_thumbnail}
                                                     alt="carousel-image"
-                                                    className="h-full min-h-[410px] w-full object-cover"
+                                                    className=" h-[250px] md:h-[410px] w-full object-cover"
                                                     width={557} height={410}
                                                 />
                                             </Link>

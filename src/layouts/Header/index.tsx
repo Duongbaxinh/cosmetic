@@ -1,7 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { HeartIcon, UserIcon } from '@/assets/icons';
+import { HeartIcon } from '@/assets/icons';
 import CartIcon from '@/assets/icons/CartIcon';
 import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
@@ -15,9 +13,10 @@ import { useCart } from '@/contexts/cart.context';
 import useClickOutside from '@/hooks/useClickOuside';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
-import { CATEGORY_URL, LOGIN_URL } from '@/routers';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SwiperSlide } from 'swiper/react';
 
@@ -27,7 +26,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
-    const { user, isLogin, logout, setIsAuth } = useAuth();
+    const { isLogin, logout, setIsAuth } = useAuth();
     const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
     const router = useRouter();

@@ -30,15 +30,13 @@ export default function ChatBox() {
     const [streamedProducts, setStreamedProducts] = useState<Product[]>([]);
     const [isStreaming, setIsStreaming] = useState(false);
 
-    // Use the sendMessage mutation from chatApi
+
     const [sendMessage, { isLoading }] = useSendMessageMutation();
 
-    // Log state changes for debugging
     useEffect(() => {
 
     }, [isChatOpen]);
 
-    // Function to call the chat API
     const fetchAIResponse = async (userMessage: string): Promise<ChatMessage> => {
         try {
             const response = await sendMessage({ role: "user", content: userMessage }).unwrap();
@@ -187,6 +185,12 @@ export default function ChatBox() {
                         <div className="flex items-center space-x-2">
                             <input
                                 type="text"
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleSendMessage();
+                                    }
+                                }}
                                 value={inputMessage}
                                 onChange={(e) => setInputMessage(e.target.value)}
                                 placeholder="Nhập nội dung chat"

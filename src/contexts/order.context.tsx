@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCart } from "./cart.context";
 import { toast } from "react-toastify";
 import { MESS_SYSTEM } from "@/config/mess.config";
+import { useAuth } from "./auth.context";
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { setIsOpen: setIsOpenCart } = useCart()
-
+    const { setIsOpen: setIsOpenCart, isOpen: isOpenCart } = useCart()
+    const { isAuth, setIsAuth } = useAuth()
+    const [orderProduct, setOrderProduct] = useState<OrderProduct | OrderProduct[]>([]);
     const [isOpen, setIsOpen] = useState<{ openLogin: boolean, openContact: boolean }>({
         openLogin: false,
         openContact: false
@@ -41,10 +43,12 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, []);
 
     const handlePurchase = (product: OrderProduct | OrderProduct[]) => {
+        if (isOpenCart) setIsOpenCart(false);
         if (!userInfo) {
-            return setIsOpen(prev => ({ ...prev, openLogin: true }));
+            return setIsAuth({ form: "login", isOpen: true });
         }
         if (shippingAddress.length <= 0) {
+            setOrderProduct(product);
             return setIsOpen(prev => ({ ...prev, openContact: true }));
         }
 
@@ -95,7 +99,6 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
         if (userInfo && (shippingAddress.length > 0 || shippingAddressNew)) {
             sessionStorage.setItem("order", JSON.stringify(orderTemporary));
-            setIsOpenCart(false)
             redirect(`${CHECKOUT_URL}`);
         }
     };
@@ -106,7 +109,9 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 handlePurchase,
                 proceedToCheckout,
                 isOpen,
-                setIsOpen
+                setIsOpen,
+                orderProducts: orderProduct,
+                setOrderProduct
             }}
         >
             {children}
