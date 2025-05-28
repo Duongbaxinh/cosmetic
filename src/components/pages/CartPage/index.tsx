@@ -5,7 +5,6 @@ import Drawer from '@/components/molecules/Drawer';
 import { MESS_CART } from '@/config/mess.config';
 import { useCart } from '@/contexts/cart.context';
 import { useOrder } from '@/contexts/order.context';
-import { LOGIN_URL } from '@/routers';
 import { deleteCartManyProduct } from '@/services/cart.service';
 import { debounce } from 'lodash';
 import Image from 'next/image';
@@ -171,28 +170,18 @@ function CartPage() {
                                                     </p>
                                                     <div className="flex items-center gap-1 border-[2px] border-gray-200 rounded-full overflow-hidden w-[60px] ">
                                                         <IconButton icon={<BiMinus />} onClick={() => handleDecrease(productDetail.id)} className='w-[30px] h-full !px-0 !py-[2px] ' />
-                                                        <input
-                                                            type="text"
-                                                            value={product_quantity === 0 ? "" : product_quantity.toString()}
-                                                            onBlur={(e) => handleOnBlur(productDetail.id, e)}
-                                                            onChange={(e) => {
-                                                                const value = e.target.value;
-                                                                if (/^\d*$/.test(value)) {
-                                                                    handleChangeQuantity(productDetail.id, value);
-                                                                }
-                                                            }}
-                                                            className=" bg-white w-[20px]  text-black text-center outline-none border-0 "
-                                                        />
+
                                                         <IconButton icon={<BiPlus />} onClick={() => handleIncrease(productDetail.id)} className='w-[30px] h-full !px-0 !py-[2px]' />
-                                                    </div>
+                                                    </div >
                                                     <Price product_price={localQuantities[productDetail.id] ? productDetail.product.product_price * (localQuantities[productDetail.id]) : productDetail.product.product_price} />
-                                                </div>
-                                            </div>
+                                                </div >
+                                            </div >
                                             <IconButton className='!bg-gray-300' onClick={() => handleDeleteOne(productDetail.id)} icon={<BiMinus />} />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                        </div >
+                                    ))
+                                    }
+                                </div >
+                            </div >
 
                             <div className="bg-white pt-3  px-4 ">
                                 <div className="space-y-2">
@@ -207,11 +196,11 @@ function CartPage() {
                                     Mua Hàng
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Drawer>
+                        </div >
+                    </div >
+                </div >
+            </div >
+        </Drawer >
     );
 }
 

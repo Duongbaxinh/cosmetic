@@ -126,8 +126,6 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
     const handlePopup = (type: "cancel" | "continue") => {
         if (type === "cancel") {
             onClose();
-        } else {
-            router.push(LOGIN_URL);
         }
     };
 
