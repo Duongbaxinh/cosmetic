@@ -17,6 +17,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const orderProductApi = createApi({
   reducerPath: "orderProductApi",
+  tagTypes: ["order"],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_API,
     prepareHeaders: (headers) => {
@@ -64,12 +65,16 @@ export const orderProductApi = createApi({
         return response;
       },
     }),
-    createOrder: builder.mutation<OrderType, string>({
-      query: (shippingAddressId) => ({
-        url: ORDER_API,
-        method: "POST",
-        body: { shipping_id: shippingAddressId },
+    cancelOrder: builder.mutation<
+      OrderType,
+      { status: string; orderId: string }
+    >({
+      query: ({ status, orderId }) => ({
+        url: `${ORDER_API}/${orderId}`,
+        method: "PUT",
+        body: { status: status },
       }),
+      invalidatesTags: ["order"],
       transformResponse: (response: OrderType) => {
         return response;
       },
@@ -106,4 +111,5 @@ export const {
   useCreateOrderMutation,
   useCreateOrderDetailMutation,
   usePaymentOrderMutation,
+  useCancelOrderMutation,
 } = orderProductApi;

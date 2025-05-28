@@ -6,7 +6,7 @@ import Price from '@/components/atoms/Price';
 import { ORDER_TABS } from '@/components/config/order.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
-import { useGetAllOrderQuery } from '@/redux/slices/order.slice';
+import { useCancelOrderMutation, useGetAllOrderQuery } from '@/redux/slices/order.slice';
 import { PURCHASE_URL } from '@/routers';
 import { OrderTabItem } from '@/types';
 import Image from 'next/image';
@@ -15,11 +15,13 @@ import { useState } from 'react';
 import { BiMinus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
 import ContainerAuth from '@/components/atoms/ContainerAuth';
+import { toast } from 'react-toastify';
 
 function OrderPage() {
     const [status, setStatus] = useState<string>("");
     const [textSearch, setTextSearch] = useState<string>("");
     const { data, isLoading: loading, error } = useGetAllOrderQuery(status);
+    const [cancelOrder] = useCancelOrderMutation();
     const handleChangeStatus = (new_status: string) => {
         setStatus(new_status);
     };
@@ -30,7 +32,13 @@ function OrderPage() {
             pro.product_name.toLowerCase().includes(textSearch.trim().toLowerCase())
         )
     );
-
+    const handleCancelOrder = async (orderId: string) => {
+        try {
+            await cancelOrder({ status: "cancel", orderId }).unwrap();
+        } catch (error) {
+            toast.error("Hủy đơn hàng không thành công. Vui lòng thử lại sau.");
+        }
+    };
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
             <ContainerAuth>
@@ -95,6 +103,7 @@ function OrderPage() {
                                                     </div>
                                                     <IconButton
                                                         icon={<BiMinus />}
+                                                        onClick={() => handleCancelOrder(order.id)}
                                                         className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
                                                     />
                                                 </div>
