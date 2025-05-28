@@ -51,14 +51,14 @@ function ProfilePage() {
 
     return (
         <ContainerLayout isSidebar={false} >
-            <div className="flex gap-4 max-w-[1024px] mx-auto ">
+            <div className="flex gap-4 max-w-[1024px] mx-auto overflow-hidden ">
                 <SideBarDetail />
-                <div className="flex flex-col gap-5 space-x-5 w-full">
+                <div className="flex flex-col gap-5 space-x-5 w-full min-w-[300px]">
                     <FormProvider {...methods}>
                         <div className="flex ">
-                            <div className="bg-white p-6 rounded-lg shadow-md flex w-full max-w-4xl">
+                            <div className="bg-white p-2 md:p-6 rounded-lg shadow-md flex w-full ">
                                 {/* Left Section */}
-                                <div className="w-full pr-6">
+                                <div className="w-full ">
                                     <h2 className="text-lg font-[700]  mb-4">Tài khoản</h2>
 
                                     {/* Profile Picture and Name */}

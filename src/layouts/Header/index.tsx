@@ -1,6 +1,7 @@
 "use client";
 import { HeartIcon } from '@/assets/icons';
 import CartIcon from '@/assets/icons/CartIcon';
+import MenuIcon from '@/assets/icons/MenuIcon';
 import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
 import IconButton from '@/components/atoms/IconButton';
@@ -8,6 +9,7 @@ import ItemRectangle from '@/components/atoms/ItemRetangle';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { PROFILE } from '@/components/config/profile';
 import BoxSearch from '@/components/molecules/BoxSearch';
+import Drawer from '@/components/molecules/Drawer';
 import { useAuth } from '@/contexts/auth.context';
 import { useCart } from '@/contexts/cart.context';
 import useClickOutside from '@/hooks/useClickOuside';
@@ -17,6 +19,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import { BiLogOutCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { SwiperSlide } from 'swiper/react';
 
@@ -62,28 +65,62 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
 
     return (
         <Container className={`bg-pink-50 ${classHeader}`}>
-            <div className="w-full bg-white py-2 px-2 min-h-[140px]  rounded-b-lg">
-                <div className="flex items-start md:items-center justify-between gap-[20px] lg:gap-[48px] h-[60px]">
+            <Drawer
+                title={<Image
+                    src="/images/Logo.webp"
+                    alt="Logo"
+                    width={190}
+                    height={39}
+                    className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]"
+                />}
+                className="!w-[300px] font-sans"
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+            >
+                <div
+                    ref={profileRef}
+                    className="w-full bg-white rounded-lg z-50 overflow-hidden"
+                >
+                    {PROFILE.map(({ path, title }, index) => (
+                        <Link key={index} href={path}>
+                            <div
+                                className={`py-2 px-4 flex items-center gap-3 hover:bg-pink-50 transition-all duration-200 rounded-md  "text-gray-900"
+                                        } hover:scale-[1.02]`}
+                            >
+                                {/* {Icon && <Icon className="w-5 h-5 text-pink-500" />} */}
+                                <p className="text-[14px] font-medium">{title}</p>
+                            </div>
+                        </Link>
+                    ))}
+                    <div
+                        className="cursor-pointer hover:bg-pink-50 transition-colors duration-200"
+                        onClick={handleLogout}
+                    >
+                        <div className="py-2 px-4">
+                            <p className="text-[14px] text-gray-900">Đăng xuất</p>
+                        </div>
+                    </div>
+
+                </div>
+            </Drawer>
+            <div className="w-full bg-white py-2 px-2 min-h-[150px] sm:min-h-[110px]  rounded-b-lg">
+                <div className="flex items-center sm:items-start md:items-center justify-between gap-[10px] sm:gap-[20px] lg:gap-[48px] h-[35px]">
                     {/* Logo */}
+                    <div onClick={() => setIsOpen(true)} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
+
                     <Link href="/">
                         <Image
                             src="/images/Logo.webp"
                             alt="Logo"
                             width={190}
                             height={39}
-                            className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px] hidden md:block"
+                            className="min-w-[150px] sm:min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]"
                         />
-                        <Image
-                            src="/images/momo.png"
-                            alt="Logo"
-                            width={30}
-                            height={30}
-                            className="rounded-full min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px] block md:hidden"
-                        />
+
                     </Link>
 
                     {/* Search Input */}
-                    <div className="space-x-2 space-y-2 w-full">
+                    <div className=" hidden sm:block space-x-2 space-y-2 w-full">
                         <div className="flex items-center space-x-2 w-full">
                             <BoxSearch
 
@@ -91,9 +128,9 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                         </div>
                     </div>
 
-                    <div className="flex gap-2 items-center">
+                    <div className=" flex gap-2 items-center">
                         <div className="relative">
-                            <button onClick={() => { !isLogin ? openLogin() : () => { } }}>
+                            <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
                                     className="border border-gray-200 !rounded-full bg-gradient-to-r from-pink-300 to-purple-400 text-white hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500 transition-all duration-200"
                                     onFunction={() => setIsOpen(!isOpen)}
@@ -103,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                             {isOpen && isLogin && (
                                 <div
                                     ref={profileRef}
-                                    className="absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
+                                    className="hidden sm:block absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
                                 >
                                     <Container>
                                         {PROFILE.map(({ path, title }, index) => (
@@ -139,7 +176,13 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                         />
                     </div>
                 </div>
-                <div className="h-[25px] mt-4">
+                <div className=" block sm:hidden  pt-3 w-full">
+                    <div className="flex items-center space-x-2 w-full">
+                        <BoxSearch
+                        />
+                    </div>
+                </div>
+                <div className=" h-[25px] mt-4">
                     <Carousel
                         slidesPerView={8}
                         customSwipeWrap="!h-[50px]"
@@ -150,7 +193,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                             <SwiperSlide key={index} className="!w-fit">
                                 <Link href={`${url}/${id}`} className="flex items-center justify-center h-full">
                                     <IconButton
-                                        className="whitespace-nowrap border border-gray-200 rounded-md !p-1 !text-gray-900 hover:bg-pink-100 transition-colors duration-200 !px-5"
+                                        className="whitespace-nowrap border border-gray-200 rounded-md !p-1 !text-gray-900 hover:text-pink-500  hover:bg-pink-100 transition-colors duration-200 !px-5"
                                         title={title}
                                     />
                                 </Link>

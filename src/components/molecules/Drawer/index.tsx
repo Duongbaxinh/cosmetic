@@ -1,15 +1,15 @@
-"use client"
+"use client";
 import CloseIcon from '@/assets/icons/CloseIcon';
 import IconButton from '@/components/atoms/IconButton';
-import React, { Children, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 export type DrawerType = {
-    isOpen: boolean,
-    onClose: () => void,
-    title?: string,
-    children: React.ReactNode,
-    className?: string
-}
+    isOpen: boolean;
+    onClose: () => void;
+    title?: string | React.ReactNode;
+    children: React.ReactNode;
+    className?: string;
+};
 
 const Drawer = ({ isOpen, onClose, title, children, className }: DrawerType) => {
     useEffect(() => {
@@ -22,32 +22,42 @@ const Drawer = ({ isOpen, onClose, title, children, className }: DrawerType) => 
             document.body.classList.remove('no-scroll');
         };
     }, [isOpen]);
+
     return (
-        <div className="relative">
+        <div className="relative font-sans">
             {/* Drawer */}
             <div
-                className={`w-full fixed top-0 right-0 z-60 h-full bg-white shadow-lg transform transition-transform duration-300 ${className && className}  ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                className={`w-[300px] fixed top-0 right-0 z-60 h-full bg-white shadow-xl transform transition-transform duration-500 ease-in-out ${className} ${isOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
-                <div className=" overflow-auto max-h-screen">
-                    <div className="h-[80px] sticky top-0 left-0 z-90 px-2 flex items-center justify-between text-black bg-white border-b border-color ">
-                        <p className='!text-[22px] font-[700] leading-[22px] '>{title && title}</p>
+                <div className="overflow-auto max-h-screen">
+                    <div className="h-[80px] sticky top-0 left-0 z-90 px-4 flex items-center justify-between bg-pink-50 border-b border-pink-200">
+                        {title && typeof (title) === "string" ? (
+                            <h2 className="text-lg font-semibold text-gray-800">
+                                {title}
+                            </h2>
+                        ) : (
+                            title
+                        )}
                         <IconButton
                             onClick={onClose}
-                            className="text-gray-500 hover:text-gray-700 "
-                            icon={<CloseIcon />}
+                            className="text-pink-500 hover:text-pink-700 transition-transform duration-200 hover:scale-110"
+                            icon={<CloseIcon className="w-6 h-6" />}
+                            aria-label="Close drawer"
                         />
                     </div>
-                    {children}
+                    <div>{children}</div>
                 </div>
             </div>
 
             {/* Overlay */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black opacity-80 z-50"
+                    className="fixed inset-0 bg-gradient-to-b from-black/50 to-pink-900/30 opacity-0 transition-opacity duration-500 ease-in-out z-50"
+                    style={{ opacity: isOpen ? 0.8 : 0 }}
                     onClick={onClose}
-                ></div>
+                    aria-hidden="true"
+                />
             )}
         </div>
     );

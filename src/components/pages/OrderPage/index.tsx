@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { BiMinus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
+import ContainerAuth from '@/components/atoms/ContainerAuth';
 
 function OrderPage() {
     const [status, setStatus] = useState<string>("");
@@ -32,7 +33,7 @@ function OrderPage() {
 
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
-            <div className="flex gap-4  max-w-[1024px] mx-auto">
+            <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
                     <p className="text-[19px] font-[700] text-gray-900">Đơn hàng của tôi</p>
@@ -58,7 +59,7 @@ function OrderPage() {
                         placeholder="Tìm đơn hàng theo mã đơn hàng, tên sản phẩm"
                         className="w-full bg-white h-[35px] border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-200"
                     />
-                    <div className="w-full flex flex-col gap-4">
+                    <div className="w-full flex flex-col gap-4 max-h-[80vh] overflow-auto">
                         {loading ? (
                             <LoadingPage className="w-full h-[150px]" />
                         ) : (
@@ -67,27 +68,27 @@ function OrderPage() {
                                     orderFilter.map((order) => (
                                         <div
                                             key={order.id}
-                                            className="bg-white p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200"
+                                            className="bg-white text-[12px] sm:text-auto p-[5px] sm:p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200 "
                                         >
                                             {order?.order_details.map((product) => (
-                                                <div key={product.id} className="flex items-start justify-between py-2">
+                                                <div key={product.id} className="flex items-start justify-between py-1 sm:py-2">
                                                     <div className="flex gap-3">
                                                         <Image
                                                             src={product.product_thumbnail ?? '/default-image.jpg'}
                                                             alt={product.product_name}
                                                             width={120}
                                                             height={120}
-                                                            className="object-cover rounded-md w-[120px] h-[120px] shadow-sm"
+                                                            className="object-cover rounded-md w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] shadow-sm"
                                                         />
                                                         <div className="flex-1 space-y-2 text-gray-900">
-                                                            <div className="line-clamp-2 text-sm font-medium">
+                                                            <div className="line-clamp-2 text-[12px] sm:text-sm font-medium">
                                                                 {product.product_name}
                                                             </div>
-                                                            <div className="text-sm">SL: x{product.quantity}</div>
+                                                            <div className="text-[12px] sm:text-sm">SL: x{product.quantity}</div>
                                                             <div>
                                                                 <Price
                                                                     product_price={product.product_price}
-                                                                    className="text-pink-600 font-light"
+                                                                    className="text-[12px] sm:text-sm text-pink-600 font-light"
                                                                 />
                                                             </div>
                                                         </div>
@@ -98,12 +99,12 @@ function OrderPage() {
                                                     />
                                                 </div>
                                             ))}
-                                            <div className="flex gap-2 w-full py-2 items-center justify-between">
+                                            <div className="flex gap-2 w-full py-0 sm:py-2 items-center justify-between">
                                                 <div className="flex gap-2 items-center">
                                                     <span className="text-gray-900">Thành tiền:</span>
                                                     <Price
                                                         product_price={order.total_price}
-                                                        className="text-pink-600 text-[20px]"
+                                                        className=" text-pink-600 text-[12px] sm:text-[20px]"
                                                     />
                                                 </div>
                                                 <Link
@@ -122,7 +123,7 @@ function OrderPage() {
                         )}
                     </div>
                 </div>
-            </div>
+            </ContainerAuth>
         </ContainerLayout>
     );
 }

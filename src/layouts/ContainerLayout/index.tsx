@@ -36,12 +36,12 @@ const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = 
     }, []);
     if (checkPrivate) return <LoadingPage className='w-screen h-screen' />
     return (
-        <div className={`container-layout px-3 lg:px-[63px] bg-white`}>
+        <div className={`container-layout px-1 md:px-3 lg:px-[63px] bg-white`}>
             <CartPage />
             {isHeader && <Header classHeader={classHeader} />}
             <div className="flex w-full py-3 justify-center">
                 {isSidebarDetail && <div><SideBarDetail /></div>}
-                <div className={`${isSidebar ? 'content' : 'w-full'} min-h-[100vh] pl-0`}>
+                <div className={`w-full min-h-[100vh] pl-0`}>
                     {children}
                 </div>
             </div>
