@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BiMinus, BiPlus } from 'react-icons/bi';
+import { toast } from 'react-toastify';
 
 function CartPage() {
 
@@ -49,6 +50,7 @@ function CartPage() {
                 }
             }
         }).filter(product => product !== undefined);
+        if (productCarts.length <= 0) return toast.error("Vui lòng chọn sản phẩm bạn muốn mua")
         return handlePurchase(productCarts)
     }
 
@@ -102,9 +104,14 @@ function CartPage() {
         updateQuantity(id, current - 1);
     };
 
-    const handleChangeQuantity = (id: string, value: number) => {
-        const newValue = Math.max(1, value);
-        updateQuantity(id, newValue);
+    const handleChangeQuantity = (id: string, value: string) => {
+        updateQuantity(id, Number(value));
+    };
+    const handleOnBlur = (id: string, e: React.FocusEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (value === '') {
+            updateQuantity(id, 1);
+        }
     };
 
     const totalPrice = useMemo(() => {
@@ -164,9 +171,18 @@ function CartPage() {
                                                     </p>
                                                     <div className="flex items-center gap-1 border-[2px] border-gray-200 rounded-full overflow-hidden w-[60px] ">
                                                         <IconButton icon={<BiMinus />} onClick={() => handleDecrease(productDetail.id)} className='w-[30px] h-full !px-0 !py-[2px] ' />
-                                                        <input value={localQuantities[productDetail.id] ? localQuantities[productDetail.id] : productDetail.quantity} type='number'
-                                                            onChange={(e) => { handleChangeQuantity(productDetail.id, Number(e.target.value)) }}
-                                                            className=" bg-white w-[20px]  text-black text-center outline-none border-0 " />
+                                                        <input
+                                                            type="text"
+                                                            value={product_quantity === 0 ? "" : product_quantity.toString()}
+                                                            onBlur={(e) => handleOnBlur(productDetail.id, e)}
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (/^\d*$/.test(value)) {
+                                                                    handleChangeQuantity(productDetail.id, value);
+                                                                }
+                                                            }}
+                                                            className=" bg-white w-[20px]  text-black text-center outline-none border-0 "
+                                                        />
                                                         <IconButton icon={<BiPlus />} onClick={() => handleIncrease(productDetail.id)} className='w-[30px] h-full !px-0 !py-[2px]' />
                                                     </div>
                                                     <Price product_price={localQuantities[productDetail.id] ? productDetail.product.product_price * (localQuantities[productDetail.id]) : productDetail.product.product_price} />

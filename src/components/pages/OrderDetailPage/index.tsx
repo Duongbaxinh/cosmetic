@@ -23,7 +23,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
 
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
-            <div className="px-8 lg:px-0 pb-8 mr-8">
+            <div className="px-0 md:px-8 lg:px-0 pb-0 md:pb-8 mr-0 md:mr-8">
                 <h1 className=' py-5  text-[20px] leading-6 font-light'>Địa chỉ nhận hàng</h1>
                 <div className='flex flex-col bg-white sm:flex-row rounded-md'>
                     <div className=" p-3 min-w-[280px] flex flex-col gap-2  text-[12px]  text-gray-300  border-r-1 border-gray-300 ">

@@ -87,11 +87,19 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                             <div className=" flex h-[48px] gap-5 flex-grow">
                                 <div className="  h-full flex items-center gap-2 border-[2px] border-gray-200 rounded-full overflow-hidden ">
                                     <IconButton icon={<BiMinus />} onClick={() => onDecrease()} className='w-[30px] h-full ' />
-                                    <input value={product_quantity === 0 ? "" : product_quantity.toString()} type='text'
+                                    <input
+                                        type="text"
+                                        value={product_quantity === 0 ? "" : product_quantity.toString()}
                                         onBlur={(e) => onBlur(e)}
                                         onChange={(e) => {
-                                            onChangeQuantity(e.target.value);
-                                        }} className=" bg-white w-[30px] h-full  rounded-sm text-black text-center " />
+                                            const value = e.target.value;
+                                            if (/^\d*$/.test(value)) {
+                                                onChangeQuantity(value);
+                                            }
+                                        }}
+                                        className="bg-white w-[30px] h-full rounded-sm text-black text-center"
+                                    />
+
                                     <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
                                 </div>
                                 <button onClick={() => onAddToCart({ product_id: product.id, quantity: 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
