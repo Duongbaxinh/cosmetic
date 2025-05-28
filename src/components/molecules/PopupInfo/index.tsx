@@ -132,7 +132,7 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
     return (
         <Popup isOpen={isOpen} onClose={onClose} title="Thông tin địa chỉ">
             <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 min-w-[400px] md:min-w-[500px]">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4  min-w-[300px] sm:min-w-[400px] md:min-w-[500px]">
                     <Select
                         name="province"
                         label="Tỉnh / Thành phố"

@@ -64,6 +64,16 @@ export const orderProductApi = createApi({
         return response;
       },
     }),
+    createOrder: builder.mutation<OrderType, string>({
+      query: (shippingAddressId) => ({
+        url: ORDER_API,
+        method: "POST",
+        body: { shipping_id: shippingAddressId },
+      }),
+      transformResponse: (response: OrderType) => {
+        return response;
+      },
+    }),
     createOrderDetail: builder.mutation<
       OrderItemDisplayType,
       OrderDetailType | OrderDetailType[]

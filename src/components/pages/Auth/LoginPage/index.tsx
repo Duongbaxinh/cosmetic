@@ -20,7 +20,7 @@ import { HiEyeOff } from 'react-icons/hi';
 
 const LoginPage = () => {
 
-    const { isAuth, setIsAuth } = useAuth()
+    const { isAuth, setIsAuth, fetchUserInfo } = useAuth()
     const {
         register,
         handleSubmit,

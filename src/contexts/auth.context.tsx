@@ -1,21 +1,23 @@
 "use client"
 import useSaveLocalStorage from "@/hooks/useLocalstorage";
-import { clearUser } from "@/redux/slices/auth.slice";
-import { clearShippingAddress } from "@/redux/slices/shippingAddress.slice";
-import { UserType } from "@/types";
+import { clearUser, setUser, useGetUserQuery } from "@/redux/slices/auth.slice";
+import { clearShippingAddress, setShippingAddress, useGetAddressQuery } from "@/redux/slices/shippingAddress.slice";
+import { ShippingAddress, UserProfileType, UserType } from "@/types";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface AuthContextType {
-    user: UserType | null,
     accessToken: string,
     setAccessToken: (token: string) => void
-    setUser: (user: any) => void,
     setRefetchToken: (token: string) => void
     refreshToken: (user: any) => void,
     setIsLogin: (isLogin: boolean) => void,
     isLogin: boolean,
+    fetchUserInfo: () => Promise<any>,
+    fetchShipping: () => Promise<any>,
+    userProfile: UserProfileType | undefined,
+    shippingAddress: ShippingAddress[] | undefined,
     logout: () => void,
     isAuth: { form: "login" | "register", isOpen: boolean } | null,
     setIsAuth: (form: { form: "login" | "register", isOpen: boolean }) => void
@@ -24,11 +26,18 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useSaveLocalStorage("user", null);
     const [accessToken, setAccessToken] = useSaveLocalStorage('accessToken', null)
     const [refreshToken, setRefetchToken] = useSaveLocalStorage('refreshToken', null)
-    const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin",false);
+    const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
     const [isAuth, setIsAuth] = useState<{ form: "login" | "register", isOpen: boolean } | null>(null);
+
+    const { data: userProfile, error: errorProfile, isLoading, refetch: fetchUserInfo } = useGetUserQuery(undefined, {
+        skip: !accessToken,
+    });
+
+    const { data: shippingAddress, error: errorShippingAddress, refetch: fetchShipping } = useGetAddressQuery(undefined, {
+        skip: !accessToken,
+    });
 
     const dispatch = useDispatch();
     const router = useRouter()
@@ -40,11 +49,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             })()
             : null;
         setAccessToken(accessToken)
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
     }, []);
+    useEffect(() => {
+        if (userProfile) {
+            dispatch(setUser(userProfile));
+        }
+        if (shippingAddress) {
+            dispatch(setShippingAddress(shippingAddress))
+        }
+    }, [userProfile, shippingAddress]);
 
     const logout = () => {
         dispatch(clearUser());
@@ -55,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.location.reload();
     };
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken, isAuth, setIsAuth }}>
+        <AuthContext.Provider value={{ logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken, isAuth, setIsAuth, userProfile, shippingAddress, fetchUserInfo, fetchShipping }}>
             {children}
         </AuthContext.Provider>
     )

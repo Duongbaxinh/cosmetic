@@ -48,7 +48,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
     onPurchase,
     onAddToCart
 }) => {
-    const { user } = useAuth()
+    const { userProfile } = useAuth()
     const [showMore, setShowMore] = useState({
         productDescription: false,
         productInfo: false,
@@ -69,7 +69,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                     </div>
                     <p className=" text-[20px] font-[700] leading-[26px]">{product.product_name}</p>
 
-                    <div className="flex justify-start items-center gap-2 pr-24">
+                    <div className="flex justify-start items-center gap-2 pr-0 md:pr-24">
                         <div className="flex items-center gap-2.5">
                             <GroupStart starActive={product.product_rate} h="10px" w="10px" />
                             <p className='text-[14px]  font-[500]'>({product.product_rate})</p>
@@ -83,7 +83,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                         {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}
                     </div>
                     <div className="mb-4">
-                        <div className="flex flex-col sm:flex-row justify-between gap-3 fixed left-0 bottom-0 z-50 w-full md:static px-2 sm:px-0 py-5 md:py-0 bg-white ">
+                        <div className="flex flex-col sm:flex-row justify-between gap-3 fixed left-0 bottom-0 z-30 w-full md:static px-2 sm:px-0 py-5 md:py-0 bg-white ">
                             <div className=" flex h-[48px] gap-5 flex-grow">
                                 <div className="  h-full flex items-center gap-2 border-[2px] border-gray-200 rounded-full overflow-hidden ">
                                     <IconButton icon={<BiMinus />} onClick={() => onDecrease()} className='w-[30px] h-full ' />
@@ -127,7 +127,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin vận chuyển</h2>
                 <div className="flex justify-between items-center gap-2.5 text-[14px] leading-[21px] font-light">
                     <p>Giao đến: {shippingAddress && shippingAddress.length > 0 ? (shippingAddress[0].address) : MESS_DELIVERY.ADDRESS_MESS}</p>
-                    {user?.address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)}
+                    {shippingAddress && shippingAddress[0] && shippingAddress[0].address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)}
                 </div>
             </div >
             <div className="relative p-4 space-y-2  bg-white rounded-md ">

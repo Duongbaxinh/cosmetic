@@ -4,9 +4,10 @@ import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetOrderDetailQuery } from '@/redux/slices/order.slice';
 import Image from 'next/image';
+import { use, useEffect } from 'react';
 
 function OrderDetailPage({ order_id }: { order_id: string }) {
-    const auth = useAuth()
+    const { userProfile, shippingAddress } = useAuth()
     const { data: orderDetail, isLoading } = useGetOrderDetailQuery(order_id)
     const status_color = (type: any) => {
         return {
@@ -20,6 +21,12 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
     const discount_direct = 0
     // const discount_shipping = orderDetail?.order_discount_shipping ?? 0
     const discount_shipping = 0
+    useEffect(() => {
+        if (!userProfile || shippingAddress) {
+            window.location.href = '/auth/login';
+        }
+    }
+        , [userProfile]);
 
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
@@ -27,9 +34,9 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                 <h1 className=' py-5  text-[20px] leading-6 font-light'>Địa chỉ nhận hàng</h1>
                 <div className='flex flex-col bg-white sm:flex-row rounded-md'>
                     <div className=" p-3 min-w-[280px] flex flex-col gap-2  text-[12px]  text-gray-300  border-r-1 border-gray-300 ">
-                        <p className='text-[14px] leading-[22px] text-gray-400'>{auth?.user?.last_name} {auth?.user?.first_name}</p>
-                        <p>{auth?.user?.phone}</p>
-                        <p>{auth?.user?.address}</p>
+                        <p className='text-[14px] leading-[22px] text-gray-400'>{userProfile?.username} </p>
+                        <p>{userProfile?.phone}</p>
+                        <p>{is_order && orderDetail?.shipping_address ? orderDetail.shipping_address.address : ''}</p>
                     </div>
                     <div className="w-full p-3  " >
                         <div className="px-8 w-full">

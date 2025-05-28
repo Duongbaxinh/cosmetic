@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/auth.context';
 import React from 'react';
 
 function PhoneEdit() {
-    const { user } = useAuth()
+    const { userProfile } = useAuth()
     const [phone, setPhone] = React.useState<string>('');
     const [announce, setAnnounce] = React.useState<boolean>(false);
     const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +18,7 @@ function PhoneEdit() {
             <div className="w-full bg-white rounded-md flex items-center justify-center py-8">
                 <div className=" border-gray-300 border-[1px] md:min-w-[400px] md:max-w-[400px] p-3 rounded-md space-y-4">
                     <p className='text-[13px]'>Số điện thoại</p>
-                    <Input leadingIcon={<PhoneIcon />} type={typeInput.NUMBER} placeholder={user?.phone ?? "Nhập số điện thoại"} value={phone ?? user?.phone} onChange={(e: any) => handleChangePhone(e)} classInput='border-gray-400' />
+                    <Input leadingIcon={<PhoneIcon />} type={typeInput.NUMBER} placeholder={userProfile?.phone ?? "Nhập số điện thoại"} value={phone ?? userProfile?.phone} onChange={(e: any) => handleChangePhone(e)} classInput='border-gray-400' />
                     <p className='text-[13px] text-gray-400 '>{announce && announceText}</p>
                     <button className='w-full p-2 bg-blue-400 text-white text-[14px] rounded-md'>Lưu thay đổi</button>
                 </div>

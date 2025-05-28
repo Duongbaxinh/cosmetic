@@ -48,20 +48,10 @@ const breakpoints = {
     },
 }
 const HomePage: React.FC = () => {
-    const { accessToken } = useAuth()
+    const { accessToken, userProfile, shippingAddress } = useAuth()
     const { valueOf } = useNetworkStatus()
 
     if (!valueOf) return redirect("/not-found")
-
-
-    const { data: userProfile, error: errorProfile, isLoading } = useGetUserQuery(undefined, {
-        skip: !accessToken,
-    });
-
-    const { data: shippingAddress, error: errorShippingAddress, isLoading: loadingShippingAddress } = useGetAddressQuery(undefined, {
-        skip: !accessToken,
-    });
-
 
     const [filter, setFilter] = useState<Record<string, number>>({ page: 1, limitnumber: 10, });
     const filterParams = useMemo(() => createParams(filter), [filter]);
@@ -73,7 +63,6 @@ const HomePage: React.FC = () => {
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: Brand[] | undefined, isLoading: boolean, error: any };
 
-    console.log("error ", errorProfile, errorShippingAddress)
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
 
@@ -87,15 +76,6 @@ const HomePage: React.FC = () => {
             handleError(error)
         }
     }
-
-    useEffect(() => {
-        if (userProfile) {
-            dispatch(setUser(userProfile));
-        }
-        if (shippingAddress) {
-            dispatch(setShippingAddress(shippingAddress))
-        }
-    }, [userProfile, shippingAddress]);
 
     useEffect(() => {
         if (data) {

@@ -19,7 +19,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { BiLogOutCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import { SwiperSlide } from 'swiper/react';
 
@@ -33,13 +32,13 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
     const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<{ openPhone: boolean, "openComputer": boolean }>({ "openPhone": false, "openComputer": false });
     const profileRef = useRef<HTMLDivElement | null>(null);
     const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
     const dispatch = useDispatch();
 
     useClickOutside([profileRef], () => {
-        setIsOpen(false);
+        setIsOpen(prev => ({ ...prev, 'openComputer': false }));
     });
 
     const handleLogout = () => {
@@ -48,7 +47,6 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
     };
 
     const openLogin = () => {
-        alert("run at here")
         setIsAuth({ form: "login", isOpen: true })
     }
 
@@ -66,16 +64,17 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
     return (
         <Container className={`bg-pink-50 ${classHeader}`}>
             <Drawer
-                title={<Image
+                title=
+                {<Image
                     src="/images/Logo.webp"
                     alt="Logo"
                     width={190}
                     height={39}
                     className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]"
                 />}
-                className="!w-[300px] font-sans"
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
+                className="!w-[300px] font-sans  block sm:!hidden"
+                isOpen={isOpen.openPhone}
+                onClose={() => setIsOpen(prev => ({ ...prev, openPhone: false }))}
             >
                 <div
                     ref={profileRef}
@@ -103,10 +102,11 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
 
                 </div>
             </Drawer>
+
             <div className="w-full bg-white py-2 px-2 min-h-[150px] sm:min-h-[110px]  rounded-b-lg">
                 <div className="flex items-center sm:items-start md:items-center justify-between gap-[10px] sm:gap-[20px] lg:gap-[48px] h-[35px]">
                     {/* Logo */}
-                    <div onClick={() => setIsOpen(true)} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
+                    <div onClick={() => setIsOpen(prev => ({ openPhone: true, openComputer: false }))} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
 
                     <Link href="/">
                         <Image
@@ -133,11 +133,11 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                             <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
                                     className="border border-gray-200 !rounded-full bg-gradient-to-r from-pink-300 to-purple-400 text-white hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500 transition-all duration-200"
-                                    onFunction={() => setIsOpen(!isOpen)}
+                                    onFunction={() => setIsOpen(prev => ({ openPhone: false, openComputer: !prev.openComputer }))}
                                     title={isLogin ? 'Tài khoản' : 'Đăng nhập'}
                                 />
                             </button>
-                            {isOpen && isLogin && (
+                            {isOpen.openComputer && isLogin && (
                                 <div
                                     ref={profileRef}
                                     className="hidden sm:block absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
@@ -186,8 +186,8 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                     <Carousel
                         slidesPerView={8}
                         customSwipeWrap="!h-[50px]"
-                        customButtonLeft="!top-[25px] left-[-25px] bg-pink-300 hover:bg-pink-400 text-white"
-                        customButtonRight="!top-[25px] right-[-20px] bg-pink-300 hover:bg-pink-400 text-white"
+                        customButtonLeft="!top-[25px] left-0 md:left-[-25px] bg-pink-300 hover:bg-pink-400 text-white"
+                        customButtonRight="!top-[25px] right-0 md:right-[-20px] bg-pink-300 hover:bg-pink-400 text-white"
                     >
                         {CATEGORY_CONFIG.map(({ title, url, id }, index) => (
                             <SwiperSlide key={index} className="!w-fit">

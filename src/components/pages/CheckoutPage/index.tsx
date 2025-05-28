@@ -167,7 +167,6 @@ function CheckoutPage() {
         const orderdetail = await createOrderDetail(orderDetailProduct)
 
         if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
-            alert("momo")
             const datPayment = await paymentOrder(dataOrder.data?.id)
 
             window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
