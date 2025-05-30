@@ -89,7 +89,6 @@ const HomePage: React.FC = () => {
         }
     }, [data]);
 
-    // if (errDiscount || errInternal || errorProduct || errorBrand) return toast(MESS_SYSTEM.UNKNOWN_ERROR)
 
     const product_internal_display = productsInternal?.results ?? []
     const product_discounts_display = productsDiscount?.results ?? []
@@ -371,7 +370,7 @@ const HomePage: React.FC = () => {
                                                 <Image
                                                     src={product_thumbnail}
                                                     alt="carousel-image"
-                                                    className=" h-[250px] md:h-[410px] w-full object-cover"
+                                                    className=" h-[200px] md:h-[410px] w-full  object-cover"
                                                     width={557} height={410}
                                                 />
                                             </Link>

@@ -64,6 +64,10 @@ export const authApi = createApi({
         method: "POST",
         body: credentials,
       }),
+      transformResponse: (response: any) => {
+        console.log("check response ", response);
+        return response;
+      },
     }),
     signUp: builder.mutation({
       query: (dataRegister: AuthDataRegister) => ({

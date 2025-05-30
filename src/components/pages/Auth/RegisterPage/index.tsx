@@ -45,8 +45,8 @@ const RegisterPage = () => {
 
         <div className="bg-white w-[280px] h-fit sm:w-[500px] sm:h-[500px] my-0 mx-auto px-0 sm:px-[30px] md:px-[60px] py-3 md:py-6">
             <div className="w-full bg-white flex flex-col justify-center">
-                <h1 className=" text-[13px] sm:text-2xl font-bold text-center uppercase mb-2">Tạo tài khoản Beauty</h1>
-                <p className=" text-[10px] sm:text-[14px] leading-[17px] font-[500] mb-6 text-center">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
+                <h1 className=" text-xl sm:text-2xl font-bold  mb-2 uppercase text-center">Tạo tài khoản Beauty</h1>
+                <p className=" text-[14px] leading-[17px] font-[500] mb-6 text-center">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <div className="w-full grid grid-cols-2 gap-1 sm:gap-3 ">
                         <div className="mb-4 col-span-2">
@@ -54,32 +54,35 @@ const RegisterPage = () => {
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập tài khoản người dùng"
                                 {...register('username')}
+                                styleError='max-w-[260px] sm:max-w-[480px]'
                                 error={!!errors.username}
                                 message={errors.username?.message}
                             />
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-4 col-span-2 sm:col-span-1">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập email của bạn"
                                 {...register('email')}
+                                styleError='max-w-[260px] sm:max-w-[480px]'
                                 error={!!errors.email}
                                 message={errors.email?.message}
                             />
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-4 col-span-2 sm:col-span-1">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập số điện thoại"
                                 {...register('phone')}
+                                styleError='max-w-[260px] sm:max-w-[480px]'
                                 error={!!errors.phone}
                                 message={errors.phone?.message}
                             />
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-4 col-span-2 sm:col-span-1">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập mật khẩu"
@@ -88,11 +91,13 @@ const RegisterPage = () => {
                                 tailIcon={showPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowPassword(!showPassword)}
                                 error={!!errors.password}
+                                styleError='max-w-[260px] sm:max-w-[480px]'
                                 message={errors.password?.message}
+
                             />
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-4 col-span-2 sm:col-span-1">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Xác nhận mật khẩu"
@@ -101,6 +106,7 @@ const RegisterPage = () => {
                                 tailIcon={showConfirmPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
                                 error={!!errors.confirmPassword}
+                                styleError='max-w-[260px] sm:max-w-[480px]'
                                 message={errors.confirmPassword?.message}
                             />
                         </div>

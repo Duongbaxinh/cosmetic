@@ -9,6 +9,7 @@ interface Props {
     isOpen?: boolean;
     title?: string;
     subName?: string;
+    isHeader?: boolean;
     position?: string;
     onClose?: () => void;
 }
@@ -19,6 +20,7 @@ export default function Popup({
     isOpen,
     title,
     subName,
+    isHeader,
     position,
     onClose
 }: Props) {
@@ -33,13 +35,21 @@ export default function Popup({
                     onClick={(e) => e.stopPropagation()}
                     className={`min-w-[200px] bg-white flex flex-col gap-[15px] max-h-[90vh] p-[10px] rounded-md ${className}`}>
                     <div className="w-full sticky top-0 bg-white">
-                        <div className="w-full flex justify-between">
-                            <p className="text-[18px] font-[700] text-text">
-                                {title}
-                            </p>
-                            <IconButton icon={<CloseIcon />}
-                                onClick={onClose} />
-                        </div>
+                        {title ? (
+                            <div className="w-full flex justify-between">
+                                <p className="text-[18px] font-[700] text-text">
+                                    {title}
+                                </p>
+                                <IconButton icon={<CloseIcon />}
+                                    onClick={onClose} />
+                            </div>
+                        ) : (
+                            <div className="absolute top-0 right-0">
+                                <IconButton icon={<CloseIcon />}
+                                    onClick={onClose} />
+                            </div>
+                        )}
+
                     </div>
                     <div className="w-full ">{children}</div>
                 </div>

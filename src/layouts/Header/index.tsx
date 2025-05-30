@@ -1,6 +1,7 @@
 "use client";
-import { HeartIcon } from '@/assets/icons';
+import { HeartIcon, UserIcon } from '@/assets/icons';
 import CartIcon from '@/assets/icons/CartIcon';
+import LoginIcon from '@/assets/icons/LoginIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
 import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
@@ -106,7 +107,10 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
             <div className="w-full bg-white py-2 px-2 min-h-[150px] sm:min-h-[110px]  rounded-b-lg">
                 <div className="flex items-center sm:items-start md:items-center justify-between gap-[10px] sm:gap-[20px] lg:gap-[48px] h-[35px]">
                     {/* Logo */}
-                    <div onClick={() => setIsOpen(prev => ({ openPhone: true, openComputer: false }))} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
+                    {isLogin ? (<div onClick={() => setIsOpen(prev => ({ openPhone: true, openComputer: false }))} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
+                    ) : (
+                        <div onClick={() => { !isLogin ? openLogin() : () => { } }}> <LoginIcon className=' block sm:hidden w-[35px] ' /></div>
+                    )}
 
                     <Link href="/">
                         <Image

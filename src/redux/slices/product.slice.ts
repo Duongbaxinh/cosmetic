@@ -11,7 +11,7 @@ interface ParamsType {
 export const productApi = createApi({
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_API,
+    baseUrl: "http://localhost:5000",
   }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
@@ -90,12 +90,12 @@ export const productApi = createApi({
       providesTags: ["Product"],
     }),
     getProductById: builder.query({
-      query: (id) => `/products/${id}`,
-      // query: (id) => {
-      //   return {
-      //     url: "http://localhost:5001/1",
-      //   };
-      // },
+      // query: (id) => `/products/${id}`,
+      query: (id) => {
+        return {
+          url: "http://localhost:5001/1",
+        };
+      },
       transformResponse: (response: Product) => {
         return response;
       },
