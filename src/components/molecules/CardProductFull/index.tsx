@@ -36,10 +36,10 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                     className="text-pink-600 justify-center font-medium"
                     product_price={product_price}
                 />
-                <div className="flex space-x-1 justify-center items-center">
+                <div className="flex space-x-1  justify-center items-center w-full h-[30px]">
                     <GroupStart
-                        starActive={product_rate}
-                        className="text-yellow-400" // Gold for star ratings
+                        starActive={Math.round(product_rate)}
+                        className="text-yellow-400 w-[100px] max-h-[20px]" // Gold for star ratings
                     />
                     <p className="text-[12px] text-gray-500">({product_rate})</p>
                 </div>

@@ -44,9 +44,10 @@ function Carousel({ className, customSwipeWrap, customButtonRight,
 
     return (
         <div className={`w-full h-full ${className && className}`}>
-            <div className="relative w-full h-full mx-auto">
+            <div className="relative w-full h-full mx-auto group">
                 <Swiper
-                    direction={direction ? direction : "horizontal"} modules={[Navigation, Pagination, Autoplay]}
+                    direction={direction ? direction : "horizontal"}
+                    modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={spaceBetween || 20}
                     autoplay={enableAutoPlay ? { delay: 3000, disableOnInteraction: false } : false}
                     slidesPerGroupSkip={slidesPerView || 1}
@@ -57,20 +58,20 @@ function Carousel({ className, customSwipeWrap, customButtonRight,
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
-                    className={`rounded-md  h-full ${customSwipeWrap}`}
+                    className={`rounded-md h-full ${customSwipeWrap}`}
                 >
                     {children}
                 </Swiper>
 
                 <button
                     ref={prevRef}
-                    className={`absolute top-1/2 left-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition ${customButtonLeft ? customButtonLeft : ''}`}
+                    className={`absolute top-1/2 left-0 z-10 -translate-y-1/2 bg-pink-100 !w-[30px] !h-[30px] flex justify-center items-center text-pink-500 p-2 rounded-full hover:bg-pink-500 hover:text-white transition opacity-0 group-hover:opacity-100 ${customButtonLeft ? customButtonLeft : ''}`}
                 >
                     ❮
                 </button>
                 <button
                     ref={nextRef}
-                    className={`absolute top-1/2 right-0 z-10 -translate-y-1/2 bg-transparent !w-[30px] !h-[30px] flex justify-center items-center text-gray-300 p-2 rounded-full hover:bg-gray-600 transition ${customButtonRight ? customButtonRight : ''}`}
+                    className={`absolute top-1/2 right-0 z-10 -translate-y-1/2 bg-pink-100 !w-[30px] !h-[30px] flex justify-center items-center text-pink-500 p-2 rounded-full hover:bg-pink-500 hover:text-white transition opacity-0 group-hover:opacity-100 ${customButtonRight ? customButtonRight : ''}`}
                 >
                     ❯
                 </button>

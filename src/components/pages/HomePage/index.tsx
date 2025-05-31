@@ -154,7 +154,7 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_sold/asc`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${CATEGORY_URL}/product_sold/asc`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}
@@ -207,7 +207,7 @@ const HomePage: React.FC = () => {
                             <p className=' font-[700] text-center lg:text-start'>Thời gian còn lại</p>
                             <CountdownTimer targetTime='2025-06-30T23:59:59+07:00' />
                         </div>
-                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" hidden  lg:block py-3 px-6 mt-1 lg:mt-0 rounded-md text-sm text-yellow-500  cursor-pointer   font-bold w-fit border border-color bg-white">Xem tất cả</Link>
+                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" hidden  lg:block py-3 px-6 mt-1 lg:mt-0 rounded-md text-sm text-pink-400 cursor-pointer   font-bold w-fit border border-color bg-white">Xem tất cả</Link>
                     </div>
                     {loadingDiscount ? (
                         <LoadingPage className='w-full !h-[275px] sm:!h-[400px]' />
@@ -314,7 +314,7 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_international/${true}`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${CATEGORY_URL}/product_international/${true}`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}
@@ -323,7 +323,7 @@ const HomePage: React.FC = () => {
                 <div className="w-full  rounded-md mt-[30px]">
                     <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Sản Phẩm mới</h1>
                     {loadingDiscount ? (
-                        <LoadingPage className='w-full !h-[400px]' />
+                        <LoadingPage className='w-full !h-[430px]' />
                     ) : (
                         <div className='space-y-3'>
                             <Carousel
@@ -349,7 +349,7 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_new/asc`} className=" block py-2 px-4 rounded-full text-sm text-blue-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${CATEGORY_URL}/product_new/asc`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}
@@ -404,7 +404,7 @@ const HomePage: React.FC = () => {
                 {
                     check_load && (
                         <div className="w-full flex items-center justify-center ">
-                            <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-blue-300 rounded-md' onClick={handleLoadMore} >Xem Them</button>
+                            <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-pink-400 rounded-full' onClick={handleLoadMore} >Xem Thêm</button>
                         </div>
                     )
                 }

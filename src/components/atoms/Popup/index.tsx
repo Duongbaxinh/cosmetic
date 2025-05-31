@@ -27,7 +27,8 @@ export default function Popup({
     return (
         <div
             onClick={onClose}
-            className={`modal w-[100vw] fixed inset-0 z-30  transition flex justify-center items-center  
+            style={{ zIndex: 999 }}
+            className={`modal w-[100vw] fixed inset-0  transition flex justify-center items-center  
                ${isOpen ? "show" : ""} ${position}
             `}>
             <div>

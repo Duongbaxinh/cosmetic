@@ -16,11 +16,13 @@ import { BiMinus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
 import ContainerAuth from '@/components/atoms/ContainerAuth';
 import { toast } from 'react-toastify';
+import ReviewPage from '../ReviewPage';
 
 function OrderPage() {
     const [status, setStatus] = useState<string>("");
     const [textSearch, setTextSearch] = useState<string>("");
     const { data, isLoading: loading, error } = useGetAllOrderQuery(status);
+    const [isReview, setIsReview] = useState(false)
     const [cancelOrder] = useCancelOrderMutation();
     const handleChangeStatus = (new_status: string) => {
         setStatus(new_status);
@@ -41,6 +43,7 @@ function OrderPage() {
     };
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
+            <ReviewPage isReview={true} setIsReview={setIsReview} />
             <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
@@ -69,7 +72,7 @@ function OrderPage() {
                     />
                     <div className="w-full flex flex-col gap-4 max-h-[80vh] overflow-auto">
                         {loading ? (
-                            <LoadingPage className="w-full h-[150px]" />
+                            <LoadingPage className="w-full min-h-[450px]" />
                         ) : (
                             <>
                                 {orderFilter && orderFilter.length > 0 ? (
@@ -80,32 +83,39 @@ function OrderPage() {
                                         >
                                             {order?.order_details.map((product) => (
                                                 <div key={product.id} className="flex items-start justify-between py-1 sm:py-2">
-                                                    <div className="flex gap-3">
-                                                        <Image
-                                                            src={product.product_thumbnail ?? '/default-image.jpg'}
-                                                            alt={product.product_name}
-                                                            width={120}
-                                                            height={120}
-                                                            className="object-cover rounded-md w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] shadow-sm"
-                                                        />
-                                                        <div className="flex-1 space-y-2 text-gray-900">
-                                                            <div className="line-clamp-2 text-[12px] sm:text-sm font-medium">
-                                                                {product.product_name}
-                                                            </div>
-                                                            <div className="text-[12px] sm:text-sm">SL: x{product.quantity}</div>
-                                                            <div>
-                                                                <Price
-                                                                    product_price={product.product_price}
-                                                                    className="text-[12px] sm:text-sm text-pink-600 font-light"
-                                                                />
+                                                    <div className="w-full flex gap-3 justify-between items-start">
+                                                        <div className="flex gap-3">
+                                                            <Image
+                                                                src={product.product_thumbnail ?? '/default-image.jpg'}
+                                                                alt={product.product_name}
+                                                                width={120}
+                                                                height={120}
+                                                                className="object-cover rounded-md w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] shadow-sm"
+                                                            />
+                                                            <div className="flex-1 space-y-2 text-gray-900">
+                                                                <div className="line-clamp-2 text-[12px] sm:text-sm font-medium">
+                                                                    {product.product_name}
+                                                                </div>
+                                                                <div className="text-[12px] sm:text-sm">SL: x{product.quantity}</div>
+                                                                <div>
+                                                                    <Price
+                                                                        product_price={product.product_price}
+                                                                        className="text-[12px] sm:text-sm text-pink-600 font-light"
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        {order.status !== "delivered" && (
+                                                            <button onClick={() => setIsReview(true)} >Đánh giá sản phẩm</button>
+                                                        )}
                                                     </div>
-                                                    <IconButton
-                                                        icon={<BiMinus />}
-                                                        onClick={() => handleCancelOrder(order.id)}
-                                                        className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
-                                                    />
+                                                    {order.status === "delivered" && (
+                                                        <IconButton
+                                                            icon={<BiMinus />}
+                                                            onClick={() => handleCancelOrder(order.id)}
+                                                            className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
+                                                        />
+                                                    )}
                                                 </div>
                                             ))}
                                             <div className="flex gap-2 w-full py-0 sm:py-2 items-center justify-between">

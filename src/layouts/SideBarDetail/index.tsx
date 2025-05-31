@@ -59,8 +59,8 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
                         <Link
                             key={index}
                             href={item.path}
-                            className={`block px-2 py-2 md:px-4 ${path_name === item.path ? "bg-[#ebebf0]" : ""
-                                } hover:bg-[#ebebf0] rounded-sm w-full flex ${showFull ? "justify-start" : "justify-center"
+                            className={`block px-2 py-2 md:px-4 ${path_name === item.path ? "bg-pink-300 text-white" : ""
+                                } hover:bg-pink-300 hover:text-white rounded-sm w-full flex ${showFull ? "justify-start" : "justify-center"
                                 } md:justify-start transition-all duration-300`}
                         >
                             <div className="flex items-center gap-1 sm:gap-6">
