@@ -1,15 +1,12 @@
 'use client'
 import CartPage from '@/components/pages/CartPage';
-import { useCart } from '@/contexts/cart.context';
-import React, { ReactNode, use, useEffect, useState } from 'react';
+import LoadingPage from '@/components/pages/LoadingPage';
+import { useRouter } from 'next/navigation';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Footer from '../Footer';
 import Header from '../Header';
-import SideBar from '../SideBar';
 import SideBarDetail from '../SideBarDetail';
 import './index.css'; // Import CSS file
-import { useRouter } from 'next/navigation';
-import { LOGIN_URL } from '@/routers';
-import LoadingPage from '@/components/pages/LoadingPage';
 
 interface ContainerLayoutProps {
     children: ReactNode;
@@ -19,9 +16,10 @@ interface ContainerLayoutProps {
     isSidebarDetail?: Boolean;
     classHeader?: string
     isPrivate?: Boolean;
+    isCategory?: Boolean
 }
 
-const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = true, classHeader, isFooter = true, isSidebar = true, isSidebarDetail = false, isPrivate = false }) => {
+const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = true, classHeader, isFooter = true, isSidebar = true, isSidebarDetail = false, isPrivate = false, isCategory }) => {
     const [checkPrivate, setCheckPrivate] = useState(isPrivate);
     const router = useRouter();
     useEffect(() => {
@@ -38,7 +36,7 @@ const ContainerLayout: React.FC<ContainerLayoutProps> = ({ children, isHeader = 
     return (
         <div className={`container-layout px-1 md:px-3 lg:px-[63px] bg-white`}>
             <CartPage />
-            {isHeader && <Header classHeader={classHeader} />}
+            {isHeader && <Header classHeader={classHeader} isCategory={isCategory} />}
             <div className="flex w-full py-3 justify-center">
                 {isSidebarDetail && <div><SideBarDetail /></div>}
                 <div className={`w-full min-h-[100vh] pl-0`}>

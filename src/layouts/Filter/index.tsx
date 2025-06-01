@@ -26,7 +26,7 @@ function Filter({ categories, brands, isFiltered, onFilter, className }: FilterT
                                     <div
                                         key={category.key}
                                         onClick={() => onFilter("product_type", category.key)}
-                                        className={`cursor-pointer p-2 text-[12px] font-[500] leading-[18px] rounded-sm flex `}>
+                                        className={`cursor-pointer text-[12px] font-[500] leading-[18px] rounded-sm flex `}>
                                         <input id={category.key} checked={isFiltered.includes(`type_${category.title}`)} type='checkbox' onChange={() => onFilter("product_type", { title: category.title, value: category.key })}
                                             className='min-w-[20px] min-h-[20px]'
                                         />

@@ -57,17 +57,6 @@ export type OrderStorage = {
   }[];
 };
 
-// export type OrderProduct = {
-//   id: string;
-//   product_price: number;
-//   product_price_cost: number;
-//   product_thumbnail: string;
-//   product_name: string;
-//   product_quantity: number;
-//   product_total_price: number;
-//   product_discount: number;
-// };
-
 export type OrderProduct = {
   id: string;
   product_name: string;

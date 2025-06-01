@@ -120,7 +120,7 @@ export const forgotPasswordSchema = yup.object({
     .string()
     .transform(sanitizeInput)
     .required("Vui lòng nhập email")
-    .email("Email không đúng định dạng"),
+    .matches(emailRegex, "Email không đúng định dạng"),
 });
 
 export const resetPasswordSchema = yup.object({

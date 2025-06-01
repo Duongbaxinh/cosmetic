@@ -26,9 +26,10 @@ import { SwiperSlide } from 'swiper/react';
 // Type definition for component props
 interface HeaderProps {
     classHeader?: string;
+    isCategory?: Boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ classHeader, isCategory }: HeaderProps) => {
     const { isLogin, logout, setIsAuth } = useAuth();
     const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
@@ -193,7 +194,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader }: HeaderProps) => {
                         customButtonLeft="!top-[25px] left-0 md:left-[-25px] bg-pink-300 hover:bg-pink-400 text-white"
                         customButtonRight="!top-[25px] right-0 md:right-[-20px] bg-pink-300 hover:bg-pink-400 text-white"
                     >
-                        {CATEGORY_CONFIG.map(({ title, url, id }, index) => (
+                        {isCategory && CATEGORY_CONFIG.map(({ title, url, id }, index) => (
                             <SwiperSlide key={index} className="!w-fit">
                                 <Link href={`${url}/${id}`} className="flex items-center justify-center h-full">
                                     <IconButton

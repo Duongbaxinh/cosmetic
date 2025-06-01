@@ -30,7 +30,7 @@ import { SwiperSlide } from 'swiper/react';
 
 function CategoryPage({ category_key, value }: { category_key: string, value: string }) {
     const initFilter: FilterProductType = {
-        limitnumber: 30,
+        limitnumber: 5,
         page: 1,
         brand: [],
         product_type: [],
@@ -48,7 +48,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
 
-    const totalPage = products ? Math.ceil(products.count / products.limitnumber) : 1
+    const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
     const currentPage = Math.min(filters.page, Math.max(1, products?.number_page ?? 1))
     const productsDisplay = products?.results ?? []
 
@@ -237,16 +237,6 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     );
 }
 
-// const FilterComponent = () => (<div className="hidden  space-x-2 text-[14px] leading-[17px] md:flex flex-nowrap items-center">
-//     <span className="">Sắp xếp theo </span>
-//     {/* <button className='bg-gray-200 px-3 py-2'>Phổ biến</button> */}
-//     <button className='bg-gray-200 px-3 py-2'>Mới nhất</button>
-//     <button onClick={() => handleFilter("sortBy", "product_sold")} className={`bg-gray-200 px-3 py-2 ${isFiltered.includes("product_sold") && "bg-red-400 text-white"}`}>Bán chạy</button>
-//     <select value={filters.sortPrice} onChange={(e) => handleFilter("sortPrice", e.target.value)} className='px-3 py-2 outline-none bg-gray-200'>
-//         <option value={""} >Giá</option>
-//         <option value={"asc"} >Giá thấp đến cao</option>
-//         <option value={"desc"}>Giá cao đến thấp</option>
-//     </select>
-// </div>)
+
 
 export default CategoryPage;
