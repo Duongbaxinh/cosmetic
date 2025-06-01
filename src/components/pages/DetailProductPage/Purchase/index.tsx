@@ -34,7 +34,7 @@ function Purchase({
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                     <img
-                        src="/logo.png"
+                        src="/ogo.png"
                         alt="LinhCosmetics"
                         className="w-8 h-8 object-cover"
                     />

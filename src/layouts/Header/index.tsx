@@ -29,7 +29,7 @@ interface HeaderProps {
     isCategory?: Boolean
 }
 
-const Header: React.FC<HeaderProps> = ({ classHeader, isCategory }: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: HeaderProps) => {
     const { isLogin, logout, setIsAuth } = useAuth();
     const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory }: HeaderProps)
             <Drawer
                 title=
                 {<Image
-                    src="/images/Logo.webp"
+                    src="/images/Logo.png"
                     alt="Logo"
                     width={190}
                     height={39}
@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory }: HeaderProps)
 
                     <Link href="/">
                         <Image
-                            src="/images/Logo.webp"
+                            src="/images/Logo.png"
                             alt="Logo"
                             width={190}
                             height={39}

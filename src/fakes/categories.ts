@@ -2,12 +2,12 @@ export const categories = [
   {
     id: "01",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830917/Cosmes/c10cf785-2185-4e9d-ad52-b0733db22020_qvxpey.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1748770625/JOYBOY/1ea11379-f1d1-4a82-8db1-1622bbb81387_rukhu2_ndanlf.png",
   },
   {
     id: "02",
     product_thumbnail:
-      "https://res.cloudinary.com/dwu92ycra/image/upload/v1747830960/Cosmes/4b71b3cc-a809-4c48-99fe-076480582116_ffzubs.webp",
+      "https://res.cloudinary.com/dwu92ycra/image/upload/v1748770622/JOYBOY/c10cf785-2185-4e9d-ad52-b0733db22020_qvxpey_qzwlw9.png",
   },
   {
     id: "03",
