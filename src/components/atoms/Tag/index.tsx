@@ -7,7 +7,7 @@ interface DiscountTagProps {
 const Tag: React.FC<DiscountTagProps> = ({ value }) => {
     return (
         <div className="relative inline-block">
-            <div className="bg-red-600 text-white text-[10px] h-[22px] px-3 flex items-center rounded-r-md">
+            <div className="bg-red-600 text-white text-[10px] font-[500] h-[22px] px-3 flex items-center rounded-r-md">
                 {`${value} %`}
             </div>
             <div

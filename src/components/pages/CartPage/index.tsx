@@ -61,8 +61,8 @@ function CartPage() {
                         product_name: productDetail.product.product_name,
                         product_price: productDetail.product.product_price,
                         product_thumbnail: productDetail.product.product_thumbnail,
-                        product_type: productDetail.product.product_type.slug,
-                        product_brand: productDetail.product.product_brand.slug,
+                        product_type: productDetail.product.product_type?.slug,
+                        product_brand: productDetail.product.product_brand?.slug,
                         quantity: localQuantities[productDetail.id] ?? productDetail.quantity,
 
                     };

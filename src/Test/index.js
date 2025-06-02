@@ -55,7 +55,11 @@ var createProductWithImages = function (productData) { return __awaiter(void 0, 
             case 0:
                 _a.trys.push([0, 4, , 5]);
                 product_images = productData.product_images, productBody = __rest(productData, ["product_images"]);
-                return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/products", productBody)];
+                return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/products", productBody, {
+                        headers: {
+                            Authorization: "Bearer AKVlALtnZ1jWtgXubBTT6NOJgfueB7",
+                        },
+                    })];
             case 1:
                 createProductResponse = _a.sent();
                 if (!createProductResponse.data) return [3 /*break*/, 3];
@@ -66,8 +70,7 @@ var createProductWithImages = function (productData) { return __awaiter(void 0, 
                 }); });
                 return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/product-images", imagePayload, {
                         headers: {
-                            Authorization: "Bearer qVWDMCEgJcz6U8kQyca2CDxbQxYljP",
-                            "Content-Type": "application/json",
+                            Authorization: "Bearer AKVlALtnZ1jWtgXubBTT6NOJgfueB7",
                         },
                     })];
             case 2:
@@ -84,31 +87,22 @@ var createProductWithImages = function (productData) { return __awaiter(void 0, 
     });
 }); };
 var dataTest = {
-    product_name: "Phấn Nước Clio Căng Mướt Da Kill Cover Mesh Glow Cushion SPF50+, PA++++ 15g (tặng kèm lõi)",
-    product_slug: "phan-nuoc-clio-cang-muot-da-kill-cover-mesh-glow-cushion-spf50-pa-15g-tang-kem-loi",
-    product_price: 450000,
-    product_thumbnail: "https://image.hsv-tech.io/600x600/bbx/common/683af880-fca3-4860-a01e-b792e3faf075.webp",
-    product_images: [
-        "https://image.hsv-tech.io/600x600/bbx/common/1950acf5-cbe5-40bc-9b1d-ffff7197ffe2.webp",
-        "https://image.hsv-tech.io/600x600/bbx/common/5dd78b10-7061-4cdd-b6e2-2be4771055f6.webp",
-        "https://image.hsv-tech.io/600x600/bbx/common/f62b8753-47c5-4792-bef1-7a2c002b7d4c.webp",
-        "https://image.hsv-tech.io/600x600/bbx/common/19018b51-fac9-4512-b2bb-c12f3bf0338d.webp",
-        "https://image.hsv-tech.io/600x600/bbx/common/a1fb9bb4-8e33-4be9-8b08-3c0b245334c7.webp",
-    ],
-    product_type_id: "Sữa Rửa Mặt",
-    product_brand_id: "CLIO",
-    product_discount_percent: null,
-    product_category_id: "Dưỡng da",
+    product_name: "Son Thỏi Lì THE FACE SHOP Fmgt New Bold Velvet Lipstick 7.5g",
+    product_price: 25000,
+    product_thumbnail: "https://image.hsv-tech.io/600x600/bbx/common/ec82968b-50fc-4625-ae04-837ca98b03a4.webp",
     product_made: "South Korea",
-    product_discount: false,
+    product_discount: 0,
     product_discount_start: null,
     product_discount_end: null,
-    product_promotion_id: "8d83dc00-ed42-422b-961c-c15a1120d2c5",
-    product_sold: 1200,
+    product_promotion_id: "Giảm 50%",
+    product_sold: 280,
+    product_images: [
+        "https://image.hsv-tech.io/600x600/bbx/common/ec82968b-50fc-4625-ae04-837ca98b03a4.webp",
+    ],
     product_international: true,
-    product_rate: 4.8,
-    product_ingredient: "Water, Titanium Dioxide, Cyclopentasiloxane, Glycerin, Niacinamide, Adenosine, SPF50+ PA++++",
-    product_stock_quantity: 500,
+    product_rate: 5.0,
+    product_ingredient: "Dimethicone, Shea Butter, Pigments, Beeswax, Tocopherol",
+    product_stock_quantity: 100,
     product_expiration_date: null,
 };
 createProductWithImages(dataTest);

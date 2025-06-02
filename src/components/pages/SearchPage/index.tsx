@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 const initFilter: FilterProductType = {
-    limitnumber: 5,
+    limitnumber: 10,
     page: 1,
     product_brand: [],
     product_category: [],
@@ -43,7 +43,7 @@ function SearchPage({ text_search }: { text_search: string }) {
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
     const totalPage = productSearch ? Math.ceil(productSearch.count / productSearch.limitnumber) : 1
-    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.number_page ?? 1))
+    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.page ?? 1))
     const productsDisplay = productSearch?.results ?? []
 
     const isFiltered = [

@@ -85,7 +85,7 @@ export default function ChatBox() {
 
             setMessages(prev => [...prev, { role: "ai", content: message }, { role: "ai", content: newProducts }])
 
-            setChat(""); // Xóa chat sau khi lưu vào messages
+            setChat("");
         }
     }, [isStreaming, chat]);
 

@@ -31,7 +31,7 @@ const createProductWithImages = async (productData: CreateProductPayload) => {
       productBody,
       {
         headers: {
-          Authorization: `Bearer qVWDMCEgJcz6U8kQyca2CDxbQxYljP`,
+          Authorization: `Bearer AKVlALtnZ1jWtgXubBTT6NOJgfueB7`,
         },
       }
     );
@@ -46,7 +46,7 @@ const createProductWithImages = async (productData: CreateProductPayload) => {
         imagePayload,
         {
           headers: {
-            Authorization: `Bearer qVWDMCEgJcz6U8kQyca2CDxbQxYljP`,
+            Authorization: `Bearer AKVlALtnZ1jWtgXubBTT6NOJgfueB7`,
           },
         }
       );
@@ -59,7 +59,7 @@ const createProductWithImages = async (productData: CreateProductPayload) => {
 };
 
 const dataTest: CreateProductPayload = {
-  product_name: "Son Thỏi Lì THE FACE SHOP Fmgt New Bold Velvet Lipstick 6.5g",
+  product_name: "Son Thỏi Lì THE FACE SHOP Fmgt New Bold Velvet Lipstick 7.5g",
   product_price: 25000,
   product_thumbnail:
     "https://image.hsv-tech.io/600x600/bbx/common/ec82968b-50fc-4625-ae04-837ca98b03a4.webp",
@@ -67,7 +67,7 @@ const dataTest: CreateProductPayload = {
   product_discount: 0,
   product_discount_start: null,
   product_discount_end: null,
-  product_promotion_id: "Giảm 40%",
+  product_promotion_id: "Giảm 50%",
   product_sold: 280,
   product_images: [
     "https://image.hsv-tech.io/600x600/bbx/common/ec82968b-50fc-4625-ae04-837ca98b03a4.webp",

@@ -9,7 +9,7 @@ import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
-import { Brand, ProductBrand, ProductResponse } from '@/types';
+import { Brand, ProductBrand, ProductResponse, Promotion } from '@/types';
 import { createParams, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ import LoadingPage from '../LoadingPage';
 import { useAuth } from '@/contexts/auth.context';
 import { useNetworkStatus } from '@/contexts/network.context';
 import { redirect } from 'next/navigation';
-import { CATEGORY_URL, DETAIL_PRODUCT_URL, PROMOTION_URL } from '@/routers';
+import { CATEGORY_URL, DETAIL_PRODUCT_URL, INTERNATIONAL_PRODUCT_URL, NEW_PRODUCT_URL, PROMOTION_URL, TOP_PRODUCT_URL } from '@/routers';
 import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
 
 
@@ -95,7 +95,7 @@ const HomePage: React.FC = () => {
     const product_internal_display = productsInternal?.results ?? []
     const product_discounts_display = productsDiscount?.results ?? []
     const products_display = products?.results ?? []
-
+    const flashSale: Promotion | null = promotions ? promotions[promotions?.length - 1] : null
     return (
         <ContainerLayout isSidebar={false} classHeader="sticky top-0 z-30" >
             <div className="w-full flex-col gap-8 space-y-4 text-black ">
@@ -118,12 +118,12 @@ const HomePage: React.FC = () => {
 
                         </Carousel>
                     </div>
-                    <div className="hidden md:block col-span-2 row-span-1 relative">
+                    <Link href={`${PROMOTION_URL}/anessa`} className="hidden md:block col-span-2 row-span-1 relative">
                         <Image src={"/images/banner.webp"} className=' object-fill rounded-md w-full h-full' alt="" width={369} height={147} />
-                    </div>
-                    <div className=" hidden md:block col-span-2 row-span-1 relative">
+                    </Link>
+                    <Link href={`${PROMOTION_URL}/anessa`} className=" hidden md:block col-span-2 row-span-1 relative">
                         <Image src={"/images/banner.webp"} className=' object-fill rounded-md w-full h-full' alt="" width={369} height={147} />
-                    </div>
+                    </Link>
                 </div>
 
 
@@ -156,11 +156,12 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_sold/asc`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${TOP_PRODUCT_URL}`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}
                 </div>
+
                 <div className="w-full p-3">
                     {!errorBrand ? (
                         <Carousel customSwipeWrap='!p-3'
@@ -201,51 +202,54 @@ const HomePage: React.FC = () => {
                         <div className="">Wrong</div>
                     )}
                 </div>
-                {/*  */}
-                <div className="w-full max-w-[1138px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
-                    <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end">
-                        <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
-                        <div >
-                            <p className=' font-[700] text-center lg:text-start'>Thời gian còn lại</p>
-                            <CountdownTimer targetTime='2025-06-30T23:59:59+07:00' />
-                        </div>
-                        <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" hidden  lg:block py-3 px-6 mt-1 lg:mt-0 rounded-md text-sm text-pink-400 cursor-pointer   font-bold w-fit border border-color bg-white">Xem tất cả</Link>
-                    </div>
-                    {loadingDiscount ? (
-                        <LoadingPage className='w-full !h-[275px] sm:!h-[400px]' />
-                    ) :
-                        (
-                            <Carousel
-                                spaceBetween={10}
-                                breakpoints={breakpoints}
-                                customSwipeWrap=' !h-[275px] sm:!h-[400px]'
-                            >
-                                {product_discounts_display.map((product) => (
-                                    <SwiperSlide
-                                        key={product.id}
-                                        className="flex h-full items-stretch"
-                                    >
-                                        <Link
-                                            href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`}
-                                            className="block w-full h-full"
-                                        >
-                                            <CardProductFull
-                                                id={product.id}
-                                                product_thumbnail={product.product_thumbnail}
-                                                product_name={product.product_name}
-                                                product_price={product.product_price}
-                                                product_rate={product.product_rate}
-                                                product_brand={product.product_brand}
-                                                product_description={product.product_description}
-                                            />
-                                        </Link>
-                                    </SwiperSlide>
-                                ))}
-                            </Carousel>
-                        )}
-                    <Link href={`${CATEGORY_URL}/product_discount/${true}`} className=" flex lg:hidden w-full justify-center  mt-1 lg:mt-0 rounded-md text-sm  cursor-pointer   "><p className='text-center  font-bold border border-color py-3 px-6 text-pink-500 rounded-full bg-white '>Xem tất cả</p></Link>
-                </div>
 
+                {/*  */}
+                {flashSale && promotions && (
+                    <div className="w-full max-w-[1138px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
+                        <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end">
+                            <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
+                            <div >
+                                <p className=' font-[700] text-center lg:text-start'>Thời gian còn lại</p>
+                                {flashSale.end_date && (<CountdownTimer targetTime={flashSale?.end_date} />)}
+                            </div>
+                            <Link href={`${PROMOTION_URL}/${flashSale.slug}`} className=" hidden  lg:block py-3 px-6 mt-1 lg:mt-0 rounded-md text-sm text-pink-400 cursor-pointer   font-bold w-fit border border-color bg-white">Xem tất cả</Link>
+                        </div>
+                        {isLoadingPromotion ? (
+                            <LoadingPage className='w-full !h-[275px] sm:!h-[400px]' />
+                        ) :
+                            (
+                                <Carousel
+                                    spaceBetween={10}
+                                    breakpoints={breakpoints}
+                                    customSwipeWrap=' !h-[275px] sm:!h-[400px]'
+                                >
+                                    {flashSale.products.map((product) => (
+                                        <SwiperSlide
+                                            key={product.id}
+                                            className="flex h-full items-stretch"
+                                        >
+                                            <Link
+                                                href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`}
+                                                className="block w-full h-full"
+                                            >
+                                                <CardProductFull
+                                                    id={product.id}
+                                                    product_thumbnail={product.product_thumbnail}
+                                                    product_name={product.product_name}
+                                                    product_price={product.product_price}
+                                                    product_rate={product.product_rate}
+                                                    product_brand={product.product_brand}
+                                                    product_description={product.product_description}
+                                                />
+                                            </Link>
+                                        </SwiperSlide>
+                                    ))}
+                                </Carousel>
+                            )}
+                        <Link href={`${PROMOTION_URL}/${flashSale.slug}`} className=" flex lg:hidden w-full justify-center  mt-1 lg:mt-0 rounded-md text-sm  cursor-pointer   "><p className='text-center  font-bold border border-color py-3 px-6 text-pink-500 rounded-full bg-white '>Xem tất cả</p></Link>
+                    </div>
+
+                )}
 
                 {/* Thương hiệu nổi bật */}
                 <div className="w-full p-3">
@@ -286,7 +290,7 @@ const HomePage: React.FC = () => {
                     </Carousel>
                 </div>
 
-                {/* Nhập khẩu chính hãng */}
+
                 <div className="w-full  rounded-md mt-[30px]">
                     <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Hàng ngoại giá tốt</h1>
                     {loadingInternal ? (
@@ -316,12 +320,12 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_international/${true}`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${INTERNATIONAL_PRODUCT_URL}`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}
                 </div>
-                {/* Nhập khẩu chính hãng */}
+
                 <div className="w-full  rounded-md mt-[30px]">
                     <h1 className=' text-[18px] sm:text-[20px] md:text-[26px] leading-[36px] font-[700] text-center pb-[30px]'>Sản Phẩm mới</h1>
                     {loadingDiscount ? (
@@ -351,7 +355,7 @@ const HomePage: React.FC = () => {
                                 )}
                             </Carousel>
                             <div className="flex justify-center">
-                                <Link href={`${CATEGORY_URL}/product_new/asc`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
+                                <Link href={`${NEW_PRODUCT_URL}`} className=" block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit">Xem tất cả</Link>
                             </div>
                         </div>
                     )}

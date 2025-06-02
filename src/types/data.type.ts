@@ -35,6 +35,12 @@ export type ProductBrand = {
   specific: boolean;
 };
 
+export type ProductPromotion = {
+  id: string;
+  title: string;
+  discount_percent: number;
+};
+
 export type Product = {
   id: string;
   product_name: string;
@@ -55,7 +61,7 @@ export type Product = {
   product_exp?: string;
   product_discount_start: string;
   product_discount_end: string;
-  product_promotion: null | any;
+  product_promotion: ProductPromotion;
   product_stock_quantity: number;
   is_active: boolean;
   product_expiration_date: null | string;

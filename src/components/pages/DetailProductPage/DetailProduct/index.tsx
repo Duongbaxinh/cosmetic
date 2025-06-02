@@ -5,6 +5,7 @@ import Carousel from '@/components/atoms/Carousel';
 import IconButton from '@/components/atoms/IconButton';
 import Price from '@/components/atoms/Price';
 import { ProductSkeleton, Skeleton } from '@/components/atoms/ProductSkeleton';
+import Tag from '@/components/atoms/Tag';
 import CardProductSimilar from '@/components/molecules/CardProductSimilar';
 import GroupStart from '@/components/organisms/GroupStart';
 import { MESS_DELIVERY } from '@/config/mess.config';
@@ -53,7 +54,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
         productDescription: false,
         productInfo: false,
     });
-
+    const productDiscount = product.product_promotion?.discount_percent ? product.product_price * (product.product_promotion.discount_percent / 100) : 0
     return (
         <div className="flex flex-col gap-2.5 w-full max-w-full  rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
@@ -77,8 +78,20 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                         </div>
                         <p className="text-[12px] leading-[24px] "> <b>Đã bán</b> {` (${product.product_sold})`}</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Price className='text-[24px] text-red-400' product_price={product.product_price} />
+                    <div className="flex items-center gap-5">
+                        {productDiscount > 0 && (
+                            <Price
+                                className="text-pink-600 justify-center font-medium text-[20px]"
+                                product_price={productDiscount}
+                            />
+                        )}
+                        <Price
+                            className={`!text-[14px] justify-center  ${productDiscount ? "line-through text-gray-400 font-600 " : 'text-pink-300 font-bold'}`}
+                            product_price={product.product_price}
+                        />
+                        {productDiscount > 0 && (
+                            <Tag value={product.product_promotion?.discount_percent?.toString() ?? ''} />
+                        )}
                         {/* {(product.product_discount) && (<Chip title={product.dis} />)} */}
                         {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}
                     </div>

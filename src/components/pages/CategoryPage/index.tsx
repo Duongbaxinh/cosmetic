@@ -11,7 +11,6 @@ import CardProductFull from '@/components/molecules/CardProductFull';
 import Drawer from '@/components/molecules/Drawer';
 import NotFound from '@/components/molecules/NotFound';
 import { priceRanges } from '@/config/data.config';
-import { categories as example } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
@@ -20,7 +19,7 @@ import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
 import { useGetAllTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
 import { FilterProductType } from '@/types';
-import { cleanFilter, toQueryString } from '@/utils';
+import { cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,10 +27,17 @@ import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { SwiperSlide } from 'swiper/react';
 
+const labelCategory = {
+    top_sales: "Sản phẩm bán chạy",
+    product_discount: "Sản phẩm giảm giá",
+    product_international: "Hàng ngoại giá tốt",
+    new_products: "Sản phẩm mới",
+    product_brand: "Thương hiệu nổi bật"
+}
 
 function CategoryPage({ category_key, value }: { category_key: string, value: string }) {
     const initFilter: FilterProductType = {
-        limitnumber: 5,
+        limitnumber: 10,
         page: 1,
         product_brand: [],
         product_category: [],
@@ -50,9 +56,6 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes } = useGetAllTypeQuery()
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
-    const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
-    const currentPage = Math.min(filters.page, Math.max(1, products?.number_page ?? 1))
-    const productsDisplay = products?.results ?? []
 
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
@@ -95,6 +98,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const handleResetFilter = () => {
         setFilter(initFilter)
     }
+
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("-")
         if (key === "price") {
@@ -109,13 +113,21 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         const check = isArray(filters[filed]) && filters[filed].flatMap(item => item.title).includes(value)
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
+
     useEffect(() => {
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [products])
 
+    const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
+    const currentPage = Math.min(filters.page, Math.max(1, products?.page ?? 1))
+    const productsDisplay = products?.results ?? []
+
+
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
     const disableStyle = "pointer-events-none opacity-40"
+    const banner = category_key === "product_brand" ? brands?.find(brand => brand.slug === value)?.image : ""
+
     return (
         <ContainerLayout isSidebar={false}>
             <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
@@ -124,24 +136,34 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                 </div>
             </Drawer>
             <div className="w-full h-full py-5 space-y-5">
-                <Carousel slidesPerView={1} clickable className='!h-fit'>
-                    {example.map(({ id, product_thumbnail }) => (
-                        <SwiperSlide key={id}>
-                            <Link href={`/category/${id}`}>
-                                <Image
-                                    src={product_thumbnail}
-                                    alt="carousel-image"
-                                    className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
-                                    width={500}
-                                    height={350}
-                                />
-                            </Link>
-                        </SwiperSlide>
-                    ))}
+                {banner ? (
+                    <Image
+                        src={banner ?? ""}
+                        alt="carousel-image"
+                        className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
+                        width={500}
+                        height={350}
+                    />
+                ) : (
+                    <Carousel slidesPerView={1} clickable className='!h-fit'>
+                        {brands && brands.map(({ id, slug, image }) => (
+                            <SwiperSlide key={id}>
+                                <Link href={`/category/product_brand/${slug}`}>
+                                    <Image
+                                        src={image}
+                                        alt="carousel-image"
+                                        className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
+                                        width={500}
+                                        height={350}
+                                    />
+                                </Link>
+                            </SwiperSlide>
+                        ))}
 
-                </Carousel>
+                    </Carousel>
+                )}
                 <Breadcrumb items={[{ label: "Trang chủ", href: "/" }, { label: category_key, href: "#" }]} />
-                <h1 className='text[25px] font-[700] leading-[25px] uppercase'>{category_key} {value}</h1>
+                <h1 className='text[25px] font-[700] leading-[25px] uppercase'>{labelCategory[category_key as keyof typeof labelCategory]}</h1>
                 <div className="flex items-center justify-between">
                     <div className="flex gap-3 flex-grow items-center">
                         <div className="block md:hidden cursor-pointer" onClick={() => setShowFilter(!showFilter)}>  <FilterIcon /></div>
@@ -169,21 +191,20 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                     </div>
 
                 </div>
+                <div className="w-full flex justify-end px-3 py-2">
+                    {totalPage >= 2 && (
+                        <div className="flex items-center gap-1">
+                            <span>{currentPage}/{totalPage}</span>
+                            <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
+                            <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
+                        </div>
+                    )}
+                </div>
                 <div className="flex gap-2">
                     <div className="hidden md:block">
                         <Filter onFilter={handleFilter} productType={productTypes ?? []} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
                     </div>
                     <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
-                        <div className="w-full flex justify-between px-3 py-2">
-                            {totalPage >= 2 && (
-                                <div className="flex items-center gap-1">
-                                    <span>{currentPage}/{totalPage}</span>
-                                    <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
-                                    <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
-                                </div>
-                            )}
-                        </div>
-
                         {loadingProduct ? (
                             <ProductSkeleton length={20} />
                         ) :
