@@ -61,17 +61,6 @@ function DetailProductPage({ id }: { id: string | number }) {
         }
     };
 
-    const proceedToCheckoutOrder = (shippingAddressNew?: ShippingAddress) => {
-        if (!product) return;
-        const orderProduct: OrderProduct = {
-            id: product.id,
-            product_name: product.product_name,
-            product_price: product.product_price,
-            product_thumbnail: product.product_thumbnail,
-            quantity: quantity,
-        };
-        proceedToCheckout({ shippingAddressNew: shippingAddressNew, product: orderProduct });
-    };
     const handlePurchaseProcess = () => {
         if (!product) return;
         const orderProduct: OrderProduct = {
@@ -79,6 +68,8 @@ function DetailProductPage({ id }: { id: string | number }) {
             product_name: product.product_name,
             product_price: product.product_price,
             product_thumbnail: product.product_thumbnail,
+            product_type: product.product_type?.slug,
+            product_brand: product.product_brand?.slug,
             quantity: quantity,
         };
         return handlePurchase(orderProduct);

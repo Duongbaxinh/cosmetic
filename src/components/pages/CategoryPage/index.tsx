@@ -17,6 +17,7 @@ import Filter from '@/layouts/Filter';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
+import { useGetAllTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
 import { FilterProductType } from '@/types';
 import { cleanFilter, toQueryString } from '@/utils';
@@ -32,7 +33,8 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const initFilter: FilterProductType = {
         limitnumber: 5,
         page: 1,
-        brand: [],
+        product_brand: [],
+        product_category: [],
         product_type: [],
         price: { key: "", value: [] },
         rate: null,
@@ -44,20 +46,21 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const [showFilter, setShowFilter] = useState<boolean>(false)
 
     const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery({ ...cleanFilter(filters), [category_key]: value })
-    const { data: categories, isLoading, error } = useGetAllCategoryQuery(category_key)
+    const { data: categories, isLoading, error } = useGetAllCategoryQuery()
+    const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes } = useGetAllTypeQuery()
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
-
 
     const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
     const currentPage = Math.min(filters.page, Math.max(1, products?.number_page ?? 1))
     const productsDisplay = products?.results ?? []
 
     const isFiltered = [
-        ...(filters.product_type?.map(item => `type_${item.title}`) || []),
+        ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
         filters.price?.value && filters.price.value.length > 0 ? "price_" + filters.price?.key || null : null,
-        filters.rate !== null ? "rate_" + filters.rate || null : null,
+        filters.rate !== null ? "rate-" + filters.rate || null : null,
         filters.sortBy !== "" ? filters.sortBy || null : null,
-        ...(filters.brand?.map(item => `brand_${item.title}`) || [])
+        ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
+        ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
     ].filter(Boolean);
 
     const handlePagination = (type: "next" | "prev") => {
@@ -93,7 +96,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         setFilter(initFilter)
     }
     const handleRemoveFilter = (str: string) => {
-        const [key, value] = str.split("_")
+        const [key, value] = str.split("-")
         if (key === "price") {
             const priceValue = priceRanges.find(item => item.key === value)
             if (priceValue) {
@@ -117,7 +120,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         <ContainerLayout isSidebar={false}>
             <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
                 <div className=" w-full px-3">
-                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} productType={productTypes ?? []} isFiltered={isFiltered} />
                 </div>
             </Drawer>
             <div className="w-full h-full py-5 space-y-5">
@@ -146,7 +149,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                         <h1 className='text[18px] font-[700] leading-[28px] uppercase'>Bộ lọc</h1>
                         <div className="flex gap-2 max-w-[500px] overflow-auto no-scrollbar ">
                             {isFiltered.map((item) => (
-                                <Chip title={item?.toString() ?? ""} trailing={
+                                <Chip title={(item?.split("-")[1] ?? "").toString() ?? ""} trailing={
                                     <div onClick={() => handleRemoveFilter(item as string)}><CloseIcon /></div>
                                 } />
                             ))}
@@ -156,19 +159,19 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                     <div className="flex items-center gap-2 text-[14px]">
                         <span>{products?.count} Kết quả</span>
                         <span> Lọc theo</span>
-                        <select value={filters.sortPrice}
-                            onChange={(e) => handleFilter("sortPrice", e.target.value)}
+                        <select value={filters.sortBy ? filters.sortBy : 'Tất cả'}
+                            onChange={(e) => handleFilter("sortBy", e.target.value)}
                             className='py-2 outline-none font-bold w-fit'>
                             <option value={""} >Tất cả</option>
-                            <option value={"asc"} >Giá thấp đến cao</option>
-                            <option value={"desc"}>Giá cao đến thấp</option>
+                            <option value={"price"} >Giá thấp đến cao</option>
+                            <option value={"-price"}>Giá cao đến thấp</option>
                         </select>
                     </div>
 
                 </div>
                 <div className="flex gap-2">
                     <div className="hidden md:block">
-                        <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                        <Filter onFilter={handleFilter} productType={productTypes ?? []} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
                     </div>
                     <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
                         <div className="w-full flex justify-between px-3 py-2">
@@ -188,7 +191,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                 <div className="grid grid-cols-2 grid-rows-auto md:grid-cols-2 lg:grid-cols-3 gap-2 px-2">
                                     {productsDisplay.map((product) => (
                                         <div key={product.id} className=" flex items-center justify-center w-full h-full ">
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block shadow w-full h-full '>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block shadow w-full h-full '>
                                                 <CardProductFull
                                                     product_brand={product.product_brand}
                                                     product_description={product.product_description}
@@ -217,7 +220,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                     breakLabel="..."
                                     nextLabel={<ChevronRightIcon />}
                                     activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
-                                    pageRangeDisplayed={4}
+                                    pageRangeDisplayed={products?.page}
                                     initialPage={currentPage - 1}
                                     onPageChange={(selectedItem) => {
                                         handleFilter("page", selectedItem.selected + 1);

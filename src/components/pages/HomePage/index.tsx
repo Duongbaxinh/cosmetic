@@ -27,7 +27,8 @@ import LoadingPage from '../LoadingPage';
 import { useAuth } from '@/contexts/auth.context';
 import { useNetworkStatus } from '@/contexts/network.context';
 import { redirect } from 'next/navigation';
-import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
+import { CATEGORY_URL, DETAIL_PRODUCT_URL, PROMOTION_URL } from '@/routers';
+import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
 
 
 
@@ -63,7 +64,7 @@ const HomePage: React.FC = () => {
     const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: ProductBrand[] | undefined, isLoading: boolean, error: any };
-
+    const { data: promotions, isLoading: isLoadingPromotion, error: errorPromotion } = useGetAllPromotionQuery()
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
 
@@ -102,11 +103,11 @@ const HomePage: React.FC = () => {
                 <div className="grid grid-cols-6 grid-rows-2 gap-2  w-full rounded-md min-h-[150px] sm:min-h-[306px] ">
                     <div className="col-span-6 md:col-span-4 row-span-2 h-full">
                         <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} clickable enableAutoPlay>
-                            {categories.map(({ id, product_thumbnail }) => (
+                            {promotions && promotions.map(({ id, slug, thumbnail }) => (
                                 <SwiperSlide key={id}>
-                                    <Link href={`${CATEGORY_URL}/product_brand/${id}`} className='w-full h-full relative'>
+                                    <Link href={`${PROMOTION_URL}/${slug}`} className='w-full h-full relative'>
                                         <Image
-                                            src={product_thumbnail}
+                                            src={thumbnail}
                                             alt="carousel-image"
                                             className="h-full w-full object-cover"
                                             width={702} height={301}
@@ -184,9 +185,9 @@ const HomePage: React.FC = () => {
                             {!loadingBrand ? (
                                 <>
                                     {brands && brands.map(
-                                        (brand: Brand) => (
+                                        (brand) => (
                                             <SwiperSlide key={brand.id}>
-                                                <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className='block w-full h-full'>
+                                                <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} className='block w-full h-full'>
                                                     <Image src={brand.image} alt={brand.title} width={217} height={106} className='rounded-md' />
                                                 </Link>
                                             </SwiperSlide>

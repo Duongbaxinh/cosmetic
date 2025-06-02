@@ -64,7 +64,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                     </div>
                     <div className="flex">
                         <div className="flex space-x-2.5">
-                            <p className="text-[14px] font-[700] leading-5 uppercase">{`${product.product_brand}`}</p>
+                            <p className="text-[14px] font-[700] leading-5 uppercase">{`${product.product_brand?.title}`}</p>
                         </div>
                     </div>
                     <p className=" text-[20px] font-[700] leading-[26px]">{product.product_name}</p>

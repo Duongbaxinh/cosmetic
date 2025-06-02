@@ -106,7 +106,7 @@ export default function ChatBox() {
             {/* Chat Box */}
             {isChatOpen && (
                 <div
-                    className="fixed bottom-[90px] right-10 w-[500px] sm:[600px] h-[500px] bg-pink-50 rounded-xl shadow-2xl flex flex-col z-50 transition-all duration-300 ease-in-out transform"
+                    className="fixed bottom-[90px] right-10 w-[300px] sm:w-[600px] h-[500px] bg-pink-50 rounded-xl shadow-2xl flex flex-col z-50 transition-all duration-300 ease-in-out transform"
                     style={{ opacity: isChatOpen ? 1 : 0, scale: isChatOpen ? 1 : 0.95 }}
                 >
                     {/* Header */}
@@ -132,7 +132,7 @@ export default function ChatBox() {
                                     <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mr-2"></div>
                                 )}
                                 <div
-                                    className={`p-3 rounded-lg shadow-md max-w-[70%] ${message.role === "user"
+                                    className={`p-3 rounded-lg shadow-md max-w-[50%] sm:max-w-[70%] ${message.role === "user"
                                         ? "bg-purple-100 text-gray-900"
                                         : "bg-white text-gray-900"
                                         }`}

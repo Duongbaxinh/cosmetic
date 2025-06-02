@@ -6,6 +6,12 @@ export enum ProductEnum {
 }
 
 //
+export interface ImageProduct {
+  id: string;
+  image_url: string;
+  alt_text: string;
+  is_primary: boolean;
+}
 
 export type Category = {
   id: string;
@@ -44,7 +50,7 @@ export type Product = {
   product_discount: boolean;
   product_made: string;
   product_brand: ProductBrand;
-  product_images: string[];
+  product_images: ImageProduct[];
   product_special?: string[];
   product_exp?: string;
   product_discount_start: string;
@@ -93,6 +99,8 @@ export type OrderProduct = {
   id: string;
   product_name: string;
   product_price: number;
+  product_brand: string;
+  product_type: string;
   product_thumbnail: string;
   quantity: number;
   created_at?: string;
@@ -216,3 +224,17 @@ export type Review = {
   reviews: ReviewItem[];
   joyBoy_care_response: JoyBoyCareResponse;
 };
+
+// PROMOTION
+export interface Promotion {
+  id: string;
+  title: string;
+  slug: string;
+  thumbnail: string;
+  discount_percent: number;
+  start_date: string | null;
+  end_date: string | null;
+  products: Product[];
+  created_at: string;
+  updated_at: string;
+}

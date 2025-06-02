@@ -33,7 +33,7 @@ export const productApi = createApi({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/products?${queryString}`;
-
+        console.log("check product filter :::: ", url);
         return {
           url: url,
           timeout: 10000,
@@ -49,6 +49,7 @@ export const productApi = createApi({
         const queryString = toQueryString(params);
 
         const url = `/products?${queryString}`;
+        console.log("check product filter :::: ", url);
         return {
           url: url,
           timeout: 10000,

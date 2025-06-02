@@ -15,3 +15,5 @@ export const ORDER_DETAIL_API = "/order-details";
 export const ORDER_PAYMENT_API = "/payments/momo";
 
 export const CART_API = "/carts";
+
+export const PROMOTION_API = "/promotions";

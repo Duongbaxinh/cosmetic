@@ -42,6 +42,7 @@ export type Props = {
     order_id: string;
     category_key: string;
     text_search: string;
+    promotion: string;
     type_edit: keyof TypeEdit;
     value: string;
     token: string;

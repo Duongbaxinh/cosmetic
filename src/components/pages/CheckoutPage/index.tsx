@@ -109,6 +109,8 @@ function CheckoutPage() {
                     id: product.id,
                     product_price: product.product_price,
                     product_thumbnail: product.product_thumbnail,
+                    product_type: product.product_type.slug,
+                    product_brand: product.product_brand.slug,
                     quantity: 1
                 }
                 orderProduct.push(newProduct)
@@ -198,7 +200,7 @@ function CheckoutPage() {
     const shipping = orderCheckout && orderCheckout?.order_products.length > 0 ? orderCheckout?.order_shipping ?? 0 : 0;
     const shippingDiscount = orderCheckout?.order_discount_shipping ?? 0;
     const discount = orderCheckout?.order_discount ?? 0
-    const finalPrice = (totalPrice ?? 0) - discount - shippingDiscount + shipping;
+    const finalPrice = (totalPrice ?? 0) - discount - shippingDiscount - 15000;
 
     return (
         <ContainerLayout isPrivate={true} isFooter={false}  >
@@ -229,7 +231,8 @@ function CheckoutPage() {
 
                                                     <div className="flex space-x-1">
                                                         <GroupStart
-                                                            starActive={product.product_rate}
+                                                            starActive={Math.round(product.product_rate)}
+                                                            className="text-yellow-400 w-[100px] max-h-[20px]" // Gold for star ratings
                                                         />
                                                         <p>({product.product_rate})</p>
                                                     </div>

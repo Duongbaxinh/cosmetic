@@ -1,4 +1,5 @@
-import { CategoryFilter } from "@/types";
+import { BASE_API } from "@/config/api.config";
+import { Category, CategoryFilter, ProductType } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface ParamsType {
   limit?: number;
@@ -7,10 +8,10 @@ interface ParamsType {
 }
 export const categoryApi = createApi({
   reducerPath: "categoryApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_API }),
   tagTypes: ["category"],
   endpoints: (builder) => ({
-    getAllCategory: builder.query<CategoryFilter[], string>({
+    getAllCategory: builder.query<Category[], void>({
       query: () => `/categories`,
       providesTags: ["category"],
     }),

@@ -60,7 +60,7 @@ function BoxSearch({ className }: { className?: string }) {
                 <div className="absolute top-auto left-0 right-0 w-[250px] sm:w-full bg-white shadow-lg border border-gray-200 mt-1 rounded z-50">
                     {products.map((item, index) => (
                         <Link
-                            href={`${DETAIL_PRODUCT_URL}/${item.id}`}
+                            href={`${DETAIL_PRODUCT_URL}/${item.product_slug}`}
                             key={index}
                             className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 cursor-pointer"
                         >

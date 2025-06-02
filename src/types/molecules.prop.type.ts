@@ -8,7 +8,11 @@ export type CardProductFullProps = Pick<
   | "product_thumbnail"
   | "product_rate"
   | "product_description"
-> & { className?: string; product_brand: ProductBrand };
+> & {
+  className?: string;
+  product_brand: ProductBrand;
+  product_discount?: number;
+};
 export interface ListTemplateProps {
   children: React.ReactNode;
   time?: {

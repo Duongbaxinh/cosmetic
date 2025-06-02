@@ -21,7 +21,7 @@ const OverviewProduct: React.FC<OverviewProductProps> = ({ product }) => {
             <div className="p-0 md:p-4 h-full">
                 <div className="flex flex-col-reverse md:flex-row gap-[5px]">
                     <div className="flex space-x-5 md:space-x-0 md:block space-y-2 max-w-full md:max-h-[380px] overflow-x-scroll md:overflow-y-scroll no-scrollbar">
-                        {product && product.product_images.length > 0 && [...product?.product_images, product.product_thumbnail].map((image, index) => (
+                        {product && product.product_images.length > 0 && [...product?.product_images.flatMap(image => image.image_url), product.product_thumbnail].map((image, index) => (
                             <div
                                 key={index}
                                 onClick={() => handleChangeImage(image)}

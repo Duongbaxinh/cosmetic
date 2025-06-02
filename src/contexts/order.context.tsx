@@ -2,22 +2,22 @@
 import { OrderContextType, OrderProduct, ShippingAddress } from "@/types";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
+import { MESS_SYSTEM } from "@/config/mess.config";
 import { setUser } from "@/redux/slices/auth.slice";
 import { setShippingAddress } from "@/redux/slices/shippingAddress.slice";
 import { RootState } from "@/redux/store";
 import { CHECKOUT_URL } from "@/routers";
 import { redirect } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useCart } from "./cart.context";
 import { toast } from "react-toastify";
-import { MESS_SYSTEM } from "@/config/mess.config";
 import { useAuth } from "./auth.context";
+import { useCart } from "./cart.context";
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { setIsOpen: setIsOpenCart, isOpen: isOpenCart } = useCart()
-    const { isAuth, setIsAuth } = useAuth()
+    const { setIsAuth } = useAuth()
     const [orderProduct, setOrderProduct] = useState<OrderProduct | OrderProduct[]>([]);
     const [isOpen, setIsOpen] = useState<{ openLogin: boolean, openContact: boolean }>({
         openLogin: false,
@@ -91,6 +91,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 product_price: item.product_price,
                 product_thumbnail: item.product_thumbnail,
                 product_name: item.product_name,
+
                 quantity: item.quantity,
                 product_total_price: item.product_price * item.quantity,
                 product_discount: 0

@@ -61,7 +61,10 @@ function CartPage() {
                         product_name: productDetail.product.product_name,
                         product_price: productDetail.product.product_price,
                         product_thumbnail: productDetail.product.product_thumbnail,
+                        product_type: productDetail.product.product_type.slug,
+                        product_brand: productDetail.product.product_brand.slug,
                         quantity: localQuantities[productDetail.id] ?? productDetail.quantity,
+
                     };
                 }
             })
@@ -150,7 +153,7 @@ function CartPage() {
         setIsOpen((prev) => ({ ...prev, [field]: false }));
     };
 
-    console.log("check ::: ", localQuantities)
+
     const product_quantity = cart && cart.cart_details ? cart.cart_details.length : 0;
     const isAll = cart && cart.cart_details.length === itemSelected.length;
 
