@@ -105,11 +105,11 @@ function OrderPage() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {order.status !== "delivered" && (
+                                                        {order.status === "delivered" && (
                                                             <button onClick={() => setIsReview(true)} >Đánh giá sản phẩm</button>
                                                         )}
                                                     </div>
-                                                    {order.status === "delivered" && (
+                                                    {order.status === "pending" && (
                                                         <IconButton
                                                             icon={<BiMinus />}
                                                             onClick={() => handleCancelOrder(order.id)}
