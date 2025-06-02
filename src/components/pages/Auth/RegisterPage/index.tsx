@@ -54,7 +54,7 @@ const RegisterPage = () => {
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập tài khoản người dùng"
                                 {...register('username')}
-                                styleError='max-w-[260px] sm:max-w-[480px]'
+                                styleError='max-w-[260px] sm:max-w-[190px]'
                                 error={!!errors.username}
                                 message={errors.username?.message}
                             />
@@ -65,7 +65,7 @@ const RegisterPage = () => {
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập email của bạn"
                                 {...register('email')}
-                                styleError='max-w-[260px] sm:max-w-[480px]'
+                                styleError='max-w-[260px] sm:max-w-[190px]'
                                 error={!!errors.email}
                                 message={errors.email?.message}
                             />
@@ -76,7 +76,7 @@ const RegisterPage = () => {
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập số điện thoại"
                                 {...register('phone')}
-                                styleError='max-w-[260px] sm:max-w-[480px]'
+                                styleError='max-w-[260px] sm:max-w-[190px]'
                                 error={!!errors.phone}
                                 message={errors.phone?.message}
                             />
@@ -91,7 +91,7 @@ const RegisterPage = () => {
                                 tailIcon={showPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowPassword(!showPassword)}
                                 error={!!errors.password}
-                                styleError='max-w-[260px] sm:max-w-[480px]'
+                                styleError='max-w-[260px] sm:max-w-[190px] !top-[42px]'
                                 message={errors.password?.message}
 
                             />
@@ -106,7 +106,7 @@ const RegisterPage = () => {
                                 tailIcon={showConfirmPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
                                 error={!!errors.confirmPassword}
-                                styleError='max-w-[260px] sm:max-w-[480px]'
+                                styleError='max-w-[260px] sm:max-w-[190px] !top-[42px]'
                                 message={errors.confirmPassword?.message}
                             />
                         </div>

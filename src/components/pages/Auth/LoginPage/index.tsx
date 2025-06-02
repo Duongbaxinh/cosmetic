@@ -46,8 +46,8 @@ const LoginPage = () => {
     const handleLogin = async (dataLogin: AuthDataLogin) => {
         const res = await login(dataLogin);
         if (error) return handleError(error);
-        console.log("check res ", res)
         if (res.data) {
+            console.log("check login ", res.data)
             setIsLogin(true);
             setAccessToken(res.data.access_token);
             setRefetchToken(res.data.refresh_token);

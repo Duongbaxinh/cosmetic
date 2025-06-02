@@ -21,7 +21,7 @@ export enum MESS_AUTH {
   PASSWORD_REQUIRED = "Mật khẩu không được để trống",
   PASSWORD_NO_SPACES = "Mật khẩu không được chứa khoảng trắng",
   PASSWORD_MIN = "Mật khẩu ít nhất 8 ký tự",
-  PASSWORD_MAX = "Mật khẩu tối đa 14 ký tự",
+  PASSWORD_MAX = "Mật khẩu tối đa 20 ký tự",
   PASSWORD_INVALID_CHARACTERS = "Mật khẩu không được chứa ký tự lạ hoặc mã HTML",
   PASSWORD_WEAK = "Mật khẩu phải có ít nhất 1 ký tự Hoa, 1 ký tự thường và 1 ký tự đặc biệt",
   PASSWORD_NOT_MATCH = "Mật khẩu xác nhận không khớp",

@@ -109,8 +109,8 @@ function CheckoutPage() {
                     id: product.id,
                     product_price: product.product_price,
                     product_thumbnail: product.product_thumbnail,
-                    product_type: product.product_type.slug,
-                    product_brand: product.product_brand.slug,
+                    product_type: product.product_type?.slug,
+                    product_brand: product.product_brand?.slug,
                     quantity: 1
                 }
                 orderProduct.push(newProduct)
