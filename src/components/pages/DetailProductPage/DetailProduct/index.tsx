@@ -71,7 +71,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
 
                     <div className="flex justify-start items-center gap-2 pr-0 md:pr-24">
                         <div className="flex items-center gap-2.5">
-                            <GroupStart starActive={product.product_rate} h="10px" w="10px" />
+                            <GroupStart starActive={Math.round(Number(product.product_rate))} h="10px" w="10px" />
                             <p className='text-[14px]  font-[500]'>({product.product_rate})</p>
                             <p className="text-[12px] "> <b>xuất xứ</b> {`${product.product_made}`}</p>
                         </div>
@@ -136,7 +136,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                 </div>
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin chi tiết</h2>
                 <div className={`text-[14px] text-gray-400 leading-[21px] ${showMore.productInfo ? "" : "line-clamp-[15]"}`}>
-                    <div className="grid grid-cols-2 py-2"><p>Thương hiệu</p> <p>{product.product_brand}</p></div>
+                    <div className="grid grid-cols-2 py-2"><p>Thương hiệu</p> <p>{product.product_brand?.title}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Xuất xứ</p> <p>{product.product_made}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Thành phần</p> <p>{product.product_ingredient}</p></div>
                     <div className="grid grid-cols-2 py-2"> <p>Hạn sử dụng</p> <p>{product.product_exp}</p></div>
@@ -172,7 +172,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                                         <div className=" w-full grid grid-cols-3 space-x-2 space-y-2  ">
                                             {
                                                 similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product, index) => (
-                                                    <Link key={index} href={`${DETAIL_PRODUCT_URL}/${product.id}`} >
+                                                    <Link key={index} href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} >
                                                         <CardProductSimilar
                                                             product_brand={product.product_brand}
                                                             product_description={product.product_description}

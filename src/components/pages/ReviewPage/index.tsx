@@ -24,7 +24,6 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
     const onDrop = async (acceptedFiles: File[]) => {
         setUploading(true);
         setError(null);
-
         try {
             const uploadPromises = acceptedFiles.map(async (file) => {
                 const formData = new FormData();

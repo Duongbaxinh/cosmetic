@@ -1,4 +1,4 @@
-import { Product } from "./data.type";
+import { Product, ProductBrand } from "./data.type";
 
 export type CardProductFullProps = Pick<
   Product,
@@ -7,9 +7,8 @@ export type CardProductFullProps = Pick<
   | "product_price"
   | "product_thumbnail"
   | "product_rate"
-  | "product_brand"
   | "product_description"
-> & { className?: string };
+> & { className?: string; product_brand: ProductBrand };
 export interface ListTemplateProps {
   children: React.ReactNode;
   time?: {

@@ -1,251 +1,234 @@
 "use client";
 import CloseIcon from "@/assets/icons/CloseIcon";
-import { useSendMessageMutation } from "@/redux/slices/chat.slice";
-import { DETAIL_PRODUCT_URL } from "@/routers";
-import Link from "next/link";
 import { useState, useEffect } from "react";
-// Adjust path as needed
+import Link from "next/link";
+import { fetchStream } from "./fetchStream";
 
-// Define the structure of the response data
+// Định nghĩa kiểu cho sản phẩm
 interface Product {
-    id: string;
-    product_name: string;
+    productName: string;
+    linkProduct: string | null;
 }
 
-interface ChatMessage {
-    message: string;
-    data: Product[];
-}
-
+// Định nghĩa kiểu cho tin nhắn
 interface Message {
     role: "user" | "ai";
     content: string | Product[];
 }
 
 export default function ChatBox() {
-    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [inputMessage, setInputMessage] = useState("");
-    const [streamedMessage, setStreamedMessage] = useState("");
-    const [streamedProducts, setStreamedProducts] = useState<Product[]>([]);
-    const [isStreaming, setIsStreaming] = useState(false);
+    const [inputMessage, setInputMessage] = useState<string>("");
+    const [chat, setChat] = useState<string>("");
+    const [products, setProducts] = useState<Product[]>([]);
+    const [isStreaming, setIsStreaming] = useState<boolean>(false);
 
+    // Xử lý dữ liệu stream
+    const handleStream = async (): Promise<void> => {
+        setIsStreaming(true);
+        setChat("");
+        setProducts([]);
 
-    const [sendMessage, { isLoading }] = useSendMessageMutation();
-
-    useEffect(() => {
-
-    }, [isChatOpen]);
-
-    const fetchAIResponse = async (userMessage: string): Promise<ChatMessage> => {
         try {
-            const response = await sendMessage({ role: "user", content: userMessage }).unwrap();
-            return response;
+            await fetchStream(
+                "https://joyboybe-production.up.railway.app/chatbot/guest",
+                {
+                    role: "user",
+                    content: inputMessage,
+                },
+                (chunk: string) => {
+                    setChat((prev) => prev + chunk);
+                }
+            );
         } catch (error) {
-            console.error("Error fetching AI response:", error);
-            return {
-                message: "Đã xảy ra lỗi khi lấy phản hồi từ AI.",
-                data: [],
-            }
+            console.error("Error during streaming:", error);
+            setMessages((prev) => [
+                ...prev,
+                { role: "ai", content: "Đã xảy ra lỗi khi xử lý yêu cầu. Vui lòng thử lại!" },
+            ]);
+        } finally {
+            setIsStreaming(false);
         }
     };
 
-    const handleSendMessage = async () => {
+    const handleSendMessage = (): void => {
         if (inputMessage.trim()) {
             setMessages((prev) => [...prev, { role: "user", content: inputMessage }]);
             setInputMessage("");
-            setIsStreaming(true);
-            setStreamedMessage("");
-            setStreamedProducts([]);
-
-            const aiResponse = await fetchAIResponse(inputMessage);
-            streamResponse(aiResponse);
+            handleStream();
         }
     };
 
-    const streamResponse = (response: ChatMessage) => {
-        let currentMessageIndex = 0;
-        let currentProductIndex = 0;
+    useEffect(() => {
+        if (!isStreaming && chat) {
+            const parts = chat.split(/###+#/);
+            const message = parts[0].trim();
+            let newProducts: Product[] = [];
 
-        const streamMessage = () => {
-            if (currentMessageIndex < response.message.length) {
-                setStreamedMessage(response.message.slice(0, currentMessageIndex + 1));
-                currentMessageIndex++;
-                setTimeout(streamMessage, 20);
-            } else {
-                const streamProducts = () => {
-                    if (currentProductIndex < response.data.length) {
-                        setStreamedProducts(response.data.slice(0, currentProductIndex + 1));
-                        currentProductIndex++;
-                        setTimeout(streamProducts, 500);
-                    } else {
-                        setMessages((prev) => [
-                            ...prev,
-                            { role: "ai", content: response.message },
-                            { role: "ai", content: response.data },
-                        ]);
-                        setIsStreaming(false);
-                    }
-                };
-                streamProducts();
+            if (parts[1]) {
+                const text = parts[1];
+                const productText = text.split("- **").slice(1);
+                newProducts = productText.map((item) => {
+                    const product = item.split("**");
+                    const productLink = product[product.length - 1].trim();
+                    const regex = /\[.*?\]\((https?:\/\/[^\)]+)\)/;
+                    const match = productLink.match(regex);
+                    const link = match ? match[1] : null;
+                    return {
+                        productName: product[0],
+                        linkProduct: link,
+                    };
+                });
+                setProducts(newProducts);
             }
-        };
-        streamMessage();
-    };
 
-    // Handle chat icon click with logging
-    const handleChatToggle = () => {
+            setMessages(prev => [...prev, { role: "ai", content: message }, { role: "ai", content: newProducts }])
 
-        setIsChatOpen(!isChatOpen);
+            setChat(""); // Xóa chat sau khi lưu vào messages
+        }
+    }, [isStreaming, chat]);
+
+    const handleChatToggle = (): void => {
+        setIsChatOpen((prev) => !prev);
     };
 
     return (
         <div className="relative">
-            {/* Chat Icon with Hover Effect */}
+            {/* Chat Icon */}
             <button
                 onClick={handleChatToggle}
-                className="fixed bottom-4 right-4 bg-gradient-to-r from-pink-300 to-purple-400 text-white text-[30px] p-2 rounded-full shadow-lg z-50 transform hover:scale-110 transition-transform duration-200 hover:shadow-xl"
+                className="fixed bottom-4 right-4 bg-gradient-to-r from-pink-400 to-purple-500 text-white text-[30px] p-3 rounded-full shadow-lg z-50 transform hover:scale-110 transition-transform duration-300 hover:shadow-xl"
             >
                 💬
             </button>
 
-            {/* Chat Box with Simplified Animation */}
+            {/* Chat Box */}
             {isChatOpen && (
                 <div
-                    className="fixed bottom-[80px] right-4 w-80 sm:w-96 h-[500px] bg-pink-50 rounded-lg shadow-2xl flex flex-col z-50 transition-opacity duration-300 ease-in-out"
-                    style={{ opacity: isChatOpen ? 1 : 0 }}
+                    className="fixed bottom-[90px] right-10 w-[500px] sm:[600px] h-[500px] bg-pink-50 rounded-xl shadow-2xl flex flex-col z-50 transition-all duration-300 ease-in-out transform"
+                    style={{ opacity: isChatOpen ? 1 : 0, scale: isChatOpen ? 1 : 0.95 }}
                 >
-                    <div className="p-4 bg-gradient-to-r from-pink-300 to-purple-400 text-white flex justify-between items-center rounded-t-lg">
+                    {/* Header */}
+                    <div className="p-4 bg-gradient-to-r from-pink-400 to-purple-500 text-white flex justify-between items-center rounded-t-xl">
                         <h2 className="text-lg font-bold">Trò chuyện AI</h2>
                         <button
                             onClick={handleChatToggle}
-                            className="text-white hover:bg-pink-500 p-1 rounded-full transition-colors duration-200"
+                            className="text-white hover:bg-pink-600 p-1 rounded-full transition-colors duration-200"
                         >
                             <CloseIcon />
                         </button>
                     </div>
+
+                    {/* Messages Area */}
                     <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-pink-50">
-                        {messages.length === 0 && (
-                            <div className=""><h1>Xin chào bạn, tôi là AI hỗ trợ bạn. hãy đưa ra các vấn đề mà bạn đang thắc mắc</h1></div>
-                        )}
-                        {messages.map((msg, index) => (
+                        {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`flex items-start ${msg.role === "user" ? "justify-end" : "justify-start"} animate-slide-in`}
+                                className={`flex items-start ${message.role === "user" ? "justify-end" : "justify-start"
+                                    } animate-slide-in`}
                             >
-                                {msg.role === "ai" && (
+                                {message.role === "ai" && (
                                     <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mr-2"></div>
                                 )}
                                 <div
-                                    className={`p-3 rounded-lg shadow-md ${msg.role === "user" ? "bg-pink-100 text-pink-900" : "bg-white text-gray-900"} max-w-[70%] transform transition-all duration-300 hover:shadow-lg`}
+                                    className={`p-3 rounded-lg shadow-md max-w-[70%] ${message.role === "user"
+                                        ? "bg-purple-100 text-gray-900"
+                                        : "bg-white text-gray-900"
+                                        }`}
                                 >
-                                    {typeof msg.content === "string" ? (
-                                        <p className="text-sm">{msg.content}</p>
+                                    {typeof message.content === "string" ? (
+                                        <p className="text-sm whitespace-pre-line">{message.content}</p>
                                     ) : (
-                                        <div className="space-y-2">
-                                            {(msg.content as Product[]).map((product) => (
-                                                <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`}
-                                                    key={product.id}
-                                                    className="p-2 bg-pink-50 rounded-md hover:bg-pink-100 transition-colors duration-200 flex items-center space-x-2"
+                                        <div className="space-y-3">
+                                            {message.content.map((product: Product, idx: number) => (
+                                                <Link
+                                                    href={product.linkProduct ?? "#"}
+                                                    key={idx}
+                                                    className="p-4 bg-pink-100 rounded-lg hover:bg-pink-200 transition-all duration-200 flex items-center space-x-3 transform hover:scale-105 border border-pink-300 shadow-sm"
                                                 >
-                                                    <span className="text-pink-500">✨</span>
-                                                    <p className="text-sm">{product.product_name}</p>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                                {msg.role === "user" && (
-                                    <div className="w-8 h-8 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full ml-2"></div>
-                                )}
-                            </div>
-                        ))}
-                        {/* Streaming AI message with typing effect */}
-                        {(isStreaming || isLoading) && streamedMessage && (
-                            <div className="flex items-start justify-start animate-fade-in">
-                                <div className="bg-white p-3 rounded-lg shadow-md max-w-[70%]">
-                                    <p className="animate-typing text-sm">{streamedMessage}</p>
-                                    {streamedProducts.length > 0 && (
-                                        <div className="space-y-2 mt-2">
-                                            {streamedProducts.map((product) => (
-                                                <Link key={product.id} href={`${DETAIL_PRODUCT_URL}/${product.id}`}>
-                                                    <div className="p-2 bg-pink-50 rounded-md hover:bg-pink-100 transition-colors duration-200 flex items-center space-x-2">
-                                                        <span className="text-pink-500">✨</span>
-                                                        <p className="text-sm">{product.product_name}</p>
+                                                    <span className="text-pink-500 text-lg">✨</span>
+                                                    <div>
+                                                        <p className="text-sm font-semibold text-gray-800 line-clamp-2">
+                                                            {product.productName}
+                                                        </p>
+                                                        <p className="text-xs text-gray-500 mt-1">
+                                                            Nhấn để xem chi tiết sản phẩm
+                                                        </p>
                                                     </div>
                                                 </Link>
                                             ))}
                                         </div>
                                     )}
                                 </div>
+                                {message.role === "user" && (
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full ml-2"></div>
+                                )}
+                            </div>
+                        ))}
+                        {/* Hiển thị tin nhắn đang stream (nếu có) */}
+                        {isStreaming && chat && (
+                            <div className="flex items-start justify-start animate-slide-in">
+                                <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mr-2"></div>
+                                <div className="p-3 rounded-lg shadow-md bg-white text-gray-900 max-w-[70%]">
+                                    <p className="text-sm whitespace-pre-line">{chat}</p>
+                                </div>
                             </div>
                         )}
                     </div>
+
+                    {/* Input Area */}
                     <div className="p-4 bg-white border-t border-gray-200">
                         <div className="flex items-center space-x-2">
                             <input
                                 type="text"
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
+                                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                                    if (e.key === "Enter" && !isStreaming) {
                                         e.preventDefault();
                                         handleSendMessage();
                                     }
                                 }}
                                 value={inputMessage}
-                                onChange={(e) => setInputMessage(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setInputMessage(e.target.value)
+                                }
                                 placeholder="Nhập nội dung chat"
-                                className="flex-1 p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-200"
+                                className="flex-1 p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-200"
+                                disabled={isStreaming}
                             />
                             <button
                                 onClick={handleSendMessage}
-                                disabled={isLoading}
-                                className={`bg-gradient-to-r from-pink-300 to-purple-400 text-white p-2 rounded-lg hover:scale-105 transition-transform duration-200 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={isStreaming}
+                                className={`bg-gradient-to-r from-pink-400 to-purple-500 text-white p-2 rounded-lg hover:scale-105 transition-transform duration-200 ${isStreaming ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
                             >
-                                Gửi
+                                {isStreaming ? (
+                                    <svg
+                                        className="animate-spin h-5 w-5 text-white"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        />
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"
+                                        />
+                                    </svg>
+                                ) : (
+                                    "Gửi"
+                                )}
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-            {/* Custom CSS for Animations */}
-            <style jsx>{`
-                @keyframes slide-in {
-                    from {
-                        transform: translateY(10px);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateY(0);
-                        opacity: 1;
-                    }
-                }
-                @keyframes fade-in {
-                    from {
-                        opacity: 0;
-                    }
-                    to {
-                        opacity: 1;
-                    }
-                }
-                @keyframes typing {
-                    from {
-                        border-right: 2px solid transparent;
-                    }
-                    to {
-                        border-right: 2px solid #4A4A4A;
-                    }
-                }
-                .animate-slide-in {
-                    animation: slide-in 0.3s ease-out;
-                }
-                .animate-fade-in {
-                    animation: fade-in 0.3s ease-out;
-                }
-                .animate-typing {
-                    border-right: 2px solid #4A4A4A;
-                    animation: typing 0.5s infinite alternate;
-                }
-            `}</style>
         </div>
     );
 }

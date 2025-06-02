@@ -43,7 +43,7 @@ function OrderPage() {
     };
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
-            <ReviewPage isReview={true} setIsReview={setIsReview} />
+            <ReviewPage isReview={isReview} setIsReview={setIsReview} />
             <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">

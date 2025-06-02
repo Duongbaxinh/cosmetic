@@ -221,7 +221,7 @@ function CheckoutPage() {
                                                 <Image src={product.product_thumbnail} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
                                                 <div className="flex flex-col justify-between text-black text-3 leading-[19px]">
                                                     <p className=" font-[700] uppercase">
-                                                        {product.product_brand}
+                                                        {product.product_brand?.title}
                                                     </p>
                                                     <p className=" line-clamp-2">
                                                         {product.product_name}

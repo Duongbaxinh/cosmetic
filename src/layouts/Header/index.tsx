@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
 
                     <Link href="/">
                         <Image
-                            src="/images/Logo.png"
+                            src="/images/Logo.svg"
                             alt="Logo"
                             width={190}
                             height={39}

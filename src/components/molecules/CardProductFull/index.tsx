@@ -27,7 +27,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                     className="object-scale-down sm:object-cover cursor-pointer w-full h-[100px] sm:h-[270px] rounded-t-lg"
                 />
                 <p className="text-[14px] font-[600] text-center text-gray-900">
-                    {product_brand ?? "ASENA"}
+                    {product_brand?.title ?? "ASENA"}
                 </p>
                 <p className="text-[12px] leading-6 text-center font-light line-clamp-2 text-gray-700">
                     {product_name}

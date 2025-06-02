@@ -105,7 +105,7 @@ function DetailProductPage({ id }: { id: string | number }) {
 
     const breadcrumbDetailProduct = [
         { label: "Trang Chủ", href: "/" },
-        { label: product.product_type, href: "#" },
+        { label: product.product_type?.title, href: "#" },
         { label: product.product_name, href: "#" },
     ];
     const similarProduct = products?.results.filter((item) => item.id !== product.id) || [];

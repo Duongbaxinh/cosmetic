@@ -5,26 +5,58 @@ export enum ProductEnum {
   "PRODUCT_DISCOUNT" = "product_discounts",
 }
 
+//
+
+export type Category = {
+  id: string;
+  title: string;
+  image: string;
+  slug: string;
+};
+
+export type ProductType = {
+  id: string;
+  title: string;
+  slug: string;
+  category: Category;
+};
+
+export type ProductBrand = {
+  id: string;
+  title: string;
+  slug: string;
+  image: string;
+  specific: boolean;
+};
+
 export type Product = {
   id: string;
   product_name: string;
-  product_description: string;
+  product_slug: string;
+  product_description?: string;
   product_ingredient: string;
-  product_sold?: number;
+  product_sold: number;
   product_international: boolean;
   product_thumbnail: string;
   product_price: number;
   product_rate: number;
-  product_type: string;
+  product_type: ProductType;
   product_discount: boolean;
   product_made: string;
-  product_brand: string;
+  product_brand: ProductBrand;
   product_images: string[];
-  product_special: string[];
-  product_exp: string;
-  product_discount_start: number;
-  product_discount_end: number;
+  product_special?: string[];
+  product_exp?: string;
+  product_discount_start: string;
+  product_discount_end: string;
+  product_promotion: null | any;
+  product_stock_quantity: number;
+  is_active: boolean;
+  product_expiration_date: null | string;
+  created_at: string;
+  updated_at: string;
 };
+//
 
 // CHECKOUT ORDER
 

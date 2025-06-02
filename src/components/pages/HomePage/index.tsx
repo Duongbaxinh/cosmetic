@@ -8,8 +8,8 @@ import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
-import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
-import { Brand, ProductResponse } from '@/types';
+
+import { Brand, ProductBrand, ProductResponse } from '@/types';
 import { createParams, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,6 +27,7 @@ import LoadingPage from '../LoadingPage';
 import { useAuth } from '@/contexts/auth.context';
 import { useNetworkStatus } from '@/contexts/network.context';
 import { redirect } from 'next/navigation';
+import { CATEGORY_URL, DETAIL_PRODUCT_URL } from '@/routers';
 
 
 
@@ -61,7 +62,7 @@ const HomePage: React.FC = () => {
     const { data, error, isLoading: loading, error: errorProduct } = useGetAllProductsQuery(filter)
     const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
-    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: Brand[] | undefined, isLoading: boolean, error: any };
+    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: ProductBrand[] | undefined, isLoading: boolean, error: any };
 
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
@@ -137,7 +138,7 @@ const HomePage: React.FC = () => {
                                 {products_display.map(
                                     (product) => (
                                         <SwiperSlide key={product.id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
@@ -224,7 +225,7 @@ const HomePage: React.FC = () => {
                                         className="flex h-full items-stretch"
                                     >
                                         <Link
-                                            href={`${DETAIL_PRODUCT_URL}/${product.id}`}
+                                            href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`}
                                             className="block w-full h-full"
                                         >
                                             <CardProductFull
@@ -297,7 +298,7 @@ const HomePage: React.FC = () => {
                                 {product_internal_display.map(
                                     (product) => (
                                         <SwiperSlide key={product.id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
@@ -332,7 +333,7 @@ const HomePage: React.FC = () => {
                                 {products_display.map(
                                     (product) => (
                                         <SwiperSlide key={product.id}>
-                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
+                                            <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
@@ -382,7 +383,7 @@ const HomePage: React.FC = () => {
                             {/* Products */}
                             {products_display.map((product) => (
                                 <div key={product.id} className=" flex items-center justify-center w-full h-full">
-                                    <Link href={`${DETAIL_PRODUCT_URL}/${product.id}`} className='block w-full h-full'>
+                                    <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                         <CardProductFull
                                             key={product.id}
                                             id={product.id}
