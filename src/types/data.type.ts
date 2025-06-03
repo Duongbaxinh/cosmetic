@@ -20,6 +20,12 @@ export type Category = {
   slug: string;
 };
 
+export type ProductDiscount = {
+  discountDirect: number;
+  discountPromotion: number;
+  discountTitle: string;
+};
+
 export type ProductType = {
   id: string;
   title: string;
@@ -54,6 +60,7 @@ export type Product = {
   product_rate: number;
   product_type: ProductType;
   product_discount: boolean;
+  product_discount_percent: number;
   product_made: string;
   product_brand: ProductBrand;
   product_images: ImageProduct[];

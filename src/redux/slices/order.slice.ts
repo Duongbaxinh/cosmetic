@@ -14,26 +14,18 @@ import {
 } from "@/types";
 import { toQueryString } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { customFetchBaseQuery } from "../customeBaseQuery";
 
 export const orderProductApi = createApi({
   reducerPath: "orderProductApi",
   tagTypes: ["order"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_API,
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        headers.set("Authorization", `Bearer ${JSON.parse(token ?? "")}`);
-      }
-      return headers;
-    },
-  }),
-
+  baseQuery: customFetchBaseQuery,
   endpoints: (builder) => ({
-    getAllOrder: builder.query<OrderResponse[], string>({
+    getAllOrder: builder.query<OrderResponse[], any>({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/orders?${queryString}`;
+        console.log("check url status order:::", url);
         return {
           url: url,
         };
@@ -41,7 +33,7 @@ export const orderProductApi = createApi({
       transformResponse: (response: OrderResponse[]) => {
         return response;
       },
-      keepUnusedDataFor: 0,
+      providesTags: ["order"],
     }),
     getOrderDetail: builder.query<OrderResponse, string>({
       query: (order_id: string) => {

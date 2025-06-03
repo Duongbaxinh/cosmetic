@@ -11,7 +11,11 @@ export const ORDER_TABS: OrderTabItem[] = [
   },
   {
     title: "Đang xử lý",
-    status: "processing",
+    status: "preparing",
+  },
+  {
+    title: "Đã thanh toán",
+    status: "confirmed",
   },
   {
     title: "Đang vận chuyển",
@@ -24,5 +28,9 @@ export const ORDER_TABS: OrderTabItem[] = [
   {
     title: "Đã huỷ",
     status: "cancelled",
+  },
+  {
+    title: "Đã trả",
+    status: "returned",
   },
 ];

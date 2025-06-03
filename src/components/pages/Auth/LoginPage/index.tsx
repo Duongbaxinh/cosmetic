@@ -1,5 +1,6 @@
 'use client';
 import Input, { typeInput } from '@/components/atoms/Input';
+import { MESS_AUTH, MESS_SYSTEM } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
 import { useLoginMutation } from '@/redux/slices/auth.slice';
 import { FORGOT_PASSWORD_URL } from '@/routers';
@@ -13,6 +14,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsEye } from 'react-icons/bs';
 import { HiEyeOff } from 'react-icons/hi';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
 
@@ -44,14 +46,18 @@ const LoginPage = () => {
     const router = useRouter();
 
     const handleLogin = async (dataLogin: AuthDataLogin) => {
-        const res = await login(dataLogin);
-        if (error) return handleError(error);
-        if (res.data) {
-            console.log("check login ", res.data)
-            setIsLogin(true);
-            setAccessToken(res.data.access_token);
-            setRefetchToken(res.data.refresh_token);
-            setIsAuth({ form: 'login', isOpen: false });
+        try {
+            const res = await login(dataLogin);
+            if (error) return handleError(error);
+            if (res.data) {
+                console.log("check login ", res.data)
+                setIsLogin(true);
+                setAccessToken(res.data.access_token);
+                setRefetchToken(res.data.refresh_token);
+                setIsAuth({ form: 'login', isOpen: false });
+            }
+        } catch (error) {
+            toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     };
 

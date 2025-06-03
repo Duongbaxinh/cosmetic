@@ -10,7 +10,7 @@ import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetA
 import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
 import { Brand, ProductBrand, ProductResponse, Promotion } from '@/types';
-import { createParams, handleError } from '@/utils';
+import { calculateDiscount, createParams, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -234,6 +234,7 @@ const HomePage: React.FC = () => {
                                             >
                                                 <CardProductFull
                                                     id={product.id}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
@@ -307,6 +308,7 @@ const HomePage: React.FC = () => {
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
@@ -342,6 +344,7 @@ const HomePage: React.FC = () => {
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
@@ -392,6 +395,7 @@ const HomePage: React.FC = () => {
                                         <CardProductFull
                                             key={product.id}
                                             id={product.id}
+                                            product_discount={calculateDiscount(product)}
                                             product_thumbnail={product.product_thumbnail}
                                             product_name={product.product_name}
                                             product_price={product.product_price}

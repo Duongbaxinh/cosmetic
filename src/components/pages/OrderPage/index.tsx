@@ -21,7 +21,7 @@ import ReviewPage from '../ReviewPage';
 function OrderPage() {
     const [status, setStatus] = useState<string>("");
     const [textSearch, setTextSearch] = useState<string>("");
-    const { data, isLoading: loading, error } = useGetAllOrderQuery(status);
+    const { data, isLoading: loading, error } = useGetAllOrderQuery({ status: status });
     const [isReview, setIsReview] = useState(false)
     const [cancelOrder] = useCancelOrderMutation();
     const handleChangeStatus = (new_status: string) => {
@@ -36,7 +36,8 @@ function OrderPage() {
     );
     const handleCancelOrder = async (orderId: string) => {
         try {
-            await cancelOrder({ status: "cancel", orderId }).unwrap();
+            await cancelOrder({ status: "cancelled", orderId }).unwrap();
+            toast.success("Bạn đã hủy đơn hàng")
         } catch (error) {
             toast.error("Hủy đơn hàng không thành công. Vui lòng thử lại sau.");
         }
@@ -81,43 +82,48 @@ function OrderPage() {
                                             key={order.id}
                                             className="bg-white text-[12px] sm:text-auto p-[5px] sm:p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200 "
                                         >
-                                            {order?.order_details.map((product) => (
-                                                <div key={product.id} className="flex items-start justify-between py-1 sm:py-2">
-                                                    <div className="w-full flex gap-3 justify-between items-start">
-                                                        <div className="flex gap-3">
-                                                            <Image
-                                                                src={product.product_thumbnail ?? '/default-image.jpg'}
-                                                                alt={product.product_name}
-                                                                width={120}
-                                                                height={120}
-                                                                className="object-cover rounded-md w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] shadow-sm"
-                                                            />
-                                                            <div className="flex-1 space-y-2 text-gray-900">
-                                                                <div className="line-clamp-2 text-[12px] sm:text-sm font-medium">
-                                                                    {product.product_name}
-                                                                </div>
-                                                                <div className="text-[12px] sm:text-sm">SL: x{product.quantity}</div>
-                                                                <div>
-                                                                    <Price
-                                                                        product_price={product.product_price}
-                                                                        className="text-[12px] sm:text-sm text-pink-600 font-light"
+                                            <div className="flex justify-between items-start">
+                                                <div className="">
+                                                    {order?.order_details.map((product) => (
+                                                        <div key={product.id} className="flex items-start justify-between py-1 sm:py-2">
+                                                            <div className="w-full flex gap-3 justify-between items-start">
+                                                                <div className="flex gap-3">
+                                                                    <Image
+                                                                        src={product.product_thumbnail ?? '/default-image.jpg'}
+                                                                        alt={product.product_name}
+                                                                        width={120}
+                                                                        height={120}
+                                                                        className="object-cover rounded-md w-[80px] sm:w-[120px] h-[80px] sm:h-[120px] shadow-sm"
                                                                     />
+                                                                    <div className="flex-1 space-y-2 text-gray-900">
+                                                                        <div className="line-clamp-2 text-[12px] sm:text-sm font-medium">
+                                                                            {product.product_name}
+                                                                        </div>
+                                                                        <div className="text-[12px] sm:text-sm">SL: x{product.quantity}</div>
+                                                                        <div>
+                                                                            <Price
+                                                                                product_price={product.product_price}
+                                                                                className="text-[12px] sm:text-sm text-pink-600 font-light"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                {order.status === "delivered" && (
+                                                                    <button onClick={() => setIsReview(true)} >Đánh giá sản phẩm</button>
+                                                                )}
                                                             </div>
+
                                                         </div>
-                                                        {order.status === "delivered" && (
-                                                            <button onClick={() => setIsReview(true)} >Đánh giá sản phẩm</button>
-                                                        )}
-                                                    </div>
-                                                    {order.status === "pending" && (
-                                                        <IconButton
-                                                            icon={<BiMinus />}
-                                                            onClick={() => handleCancelOrder(order.id)}
-                                                            className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
-                                                        />
-                                                    )}
+                                                    ))}
                                                 </div>
-                                            ))}
+                                                {order.status === "pending" && (
+                                                    <IconButton
+                                                        icon={<BiMinus />}
+                                                        onClick={() => handleCancelOrder(order.id)}
+                                                        className="bg-gray-200 mt-2 rounded-full hover:bg-gray-300 transition-colors duration-200"
+                                                    />
+                                                )}
+                                            </div>
                                             <div className="flex gap-2 w-full py-0 sm:py-2 items-center justify-between">
                                                 <div className="flex gap-2 items-center">
                                                     <span className="text-gray-900">Thành tiền:</span>

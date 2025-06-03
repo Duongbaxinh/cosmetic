@@ -194,7 +194,11 @@ function PromotionPage({ promotion }: { promotion: string }) {
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
-                                                    product_discount={promotionData.discount_percent}
+                                                    product_discount={{
+                                                        discountDirect: product.product_discount ? product.product_discount_percent : 0,
+                                                        discountPromotion: promotionData.discount_percent ? promotionData.discount_percent : 0,
+                                                        discountTitle: promotionData.title || ""
+                                                    }}
                                                 />
                                             </Link>
                                         </div>

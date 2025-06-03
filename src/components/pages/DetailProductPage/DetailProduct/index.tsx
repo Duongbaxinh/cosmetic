@@ -72,7 +72,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
 
                     <div className="flex justify-start items-center gap-2 pr-0 md:pr-24">
                         <div className="flex items-center gap-2.5">
-                            <GroupStart starActive={Math.round(Number(product.product_rate))} h="10px" w="10px" />
+                            <GroupStart starActive={Math.round(Number(product.product_rate))} className='w-[100px]' />
                             <p className='text-[14px]  font-[500]'>({product.product_rate})</p>
                             <p className="text-[12px] "> <b>xuất xứ</b> {`${product.product_made}`}</p>
                         </div>
@@ -115,7 +115,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
 
                                     <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
                                 </div>
-                                <button onClick={() => onAddToCart({ product_id: product.id, quantity: 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
+                                <button onClick={() => onAddToCart({ product_id: product.id, quantity: product_quantity || 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
                                     <CartIcon className='text-white' fill='#ffffff' /> Thêm vào giỏ hàng
                                 </button>
                             </div>
@@ -136,14 +136,14 @@ const DetailProduct: React.FC<DetailProductProps> = ({
             </div>
 
             {/* Shipping Info */}
-            <div className="px-4 space-y-2  bg-white rounded-md ">
+            <div className="px-2 space-y-2  bg-white rounded-md ">
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin vận chuyển</h2>
                 <div className="flex justify-between items-center gap-2.5 text-[14px] leading-[21px] font-light">
                     <p>Giao đến: {shippingAddress && shippingAddress.length > 0 ? (shippingAddress[0].address) : MESS_DELIVERY.ADDRESS_MESS}</p>
                     {shippingAddress && shippingAddress[0] && shippingAddress[0].address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)}
                 </div>
             </div >
-            <div className="relative p-4 space-y-2  bg-white rounded-md ">
+            <div className="relative p-2 space-y-2  bg-white rounded-md ">
                 <div className={` ${showMore.productInfo && 'hidden'} absolute rounded-md pb-6 top-0 left-0 w-full h-full flex items-end justify-center bg-gradient-to-b from-transparent from-30% via-white via-80% to-white to-100% `}>
                     <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productInfo: true })}> Xem thêm </button>
                 </div>

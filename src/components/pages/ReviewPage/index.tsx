@@ -70,13 +70,10 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
             toast.error("Vui lòng nhập nội dung đánh giá của bạn")
             return;
         }
-
         setUploading(true);
         setError(null);
-
         try {
             console.log('Submitting review:', { content, numberStar, imageUrls });
-
             setIsReview(false);
             setImageUrls([]);
             setContent('');

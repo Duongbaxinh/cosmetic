@@ -1,18 +1,17 @@
 'use client';
 import Input, { typeInput } from '@/components/atoms/Input';
-import Popup from '@/components/atoms/Popup';
+import { MESS_SYSTEM } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
 import { useSignUpMutation } from '@/redux/slices/auth.slice';
-import { LOGIN_URL } from '@/routers';
 import { AuthDataRegister } from '@/types';
 import { authRegisterValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsEye } from 'react-icons/bs';
 import { HiEyeOff } from 'react-icons/hi';
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
     const {
@@ -29,8 +28,12 @@ const RegisterPage = () => {
     const router = useRouter();
 
     const handleRegister = async (dataRegister: AuthDataRegister) => {
-        await signUp(dataRegister);
-        setIsAuth({ form: 'login', isOpen: true });
+        try {
+            await signUp(dataRegister);
+            setIsAuth({ form: 'login', isOpen: true });
+        } catch (error) {
+            toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+        }
     };
 
     const onSubmit: SubmitHandler<AuthDataRegister> = (data) => {

@@ -97,7 +97,7 @@ export const forgotPasswordSchema = yup.object({
 });
 
 export const resetPasswordSchema = yup.object({
-  new_password: yup
+  newPassword: yup
     .string()
     .required(MESS_AUTH.PASSWORD_REQUIRED)
     .test(
@@ -121,4 +121,8 @@ export const resetPasswordSchema = yup.object({
       MESS_AUTH.PASSWORD_WEAK
     )
     .transform(sanitizeInput),
+  confirmPassword: yup
+    .string()
+    .required(MESS_AUTH.CONFIRM_PASSWORD_REQUIRED)
+    .oneOf([yup.ref("newPassword")], MESS_AUTH.PASSWORD_NOT_MATCH),
 });

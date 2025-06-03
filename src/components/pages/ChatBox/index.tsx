@@ -37,6 +37,7 @@ export default function ChatBox() {
                     role: "user",
                     content: inputMessage,
                 },
+                
                 (chunk: string) => {
                     setChat((prev) => prev + chunk);
                 }

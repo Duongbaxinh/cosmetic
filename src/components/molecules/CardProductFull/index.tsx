@@ -16,18 +16,26 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
     product_brand,
     product_description,
 }) => {
-    const priceDiscount = product_discount ? product_price * (product_discount / 100) : 0
+    const totalDiscount = product_discount ? (product_discount.discountDirect + product_discount.discountPromotion) : 0
+    const priceDiscount = product_discount ? product_price * (totalDiscount / 100) : 0
     return (
         <div
             className={` p-2 sm:p-0 w-full h-full bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2  hover:shadow-lg transition-shadow duration-200 ${className}`}
         >
-            <div className="flex flex-col justify-start gap-2 pb-6">
+            <div className=" relative flex flex-col justify-start gap-2 pb-6">
+                {totalDiscount > 0 && (
+                    <div className="absolute top-2 left-2 text-white  min-w-[50px] min-h-[50px] flex items-center justify-center bg-black rounded-full">
+                        {priceDiscount > 0 && (
+                            totalDiscount.toString().concat("%") ?? ""
+                        )}
+                    </div>
+                )}
                 <Image
-                    src={product_thumbnail ?? '/default-image.jpg'}
+                    src={product_thumbnail && product_thumbnail.startsWith("http") ? product_thumbnail : '/default-image.jpg'}
                     alt={product_name}
                     width={270}
                     height={270}
-                    className="object-scale-down sm:object-cover cursor-pointer w-full h-[100px] sm:h-[270px] rounded-t-lg"
+                    className="object-scale-down sm:object-cover cursor-pointer w-full h-full sm:h-[270px] rounded-t-lg"
                 />
                 <p className="text-[14px] font-[600] text-center text-gray-900">
                     {product_brand?.title ?? "ASENA"}
@@ -39,16 +47,14 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                     {priceDiscount > 0 && (
                         <Price
                             className="text-pink-600 justify-center font-medium !text-[14px]"
-                            product_price={priceDiscount}
+                            product_price={product_price - priceDiscount}
                         />
                     )}
                     <Price
                         className={`!text-[14px] justify-center  ${priceDiscount ? "line-through text-gray-400 font-thin " : 'text-pink-300 font-bold'}`}
                         product_price={product_price}
                     />
-                    {priceDiscount > 0 && (
-                        <Tag value={product_discount?.toString() ?? ''} />
-                    )}
+
                 </div>
                 <div className="flex space-x-1  justify-center items-center w-full h-[30px]">
                     <GroupStart

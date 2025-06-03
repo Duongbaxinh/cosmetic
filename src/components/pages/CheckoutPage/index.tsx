@@ -18,6 +18,8 @@ import { BiChevronUp, BiMinus, BiPlus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
 import LoadingIcon from '../LoadingPage/LoadingIcon';
 import NotFound from '@/components/molecules/NotFound';
+import { toast } from 'react-toastify';
+import { MESS_SYSTEM } from '@/config/mess.config';
 
 function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo">("cash")
@@ -115,9 +117,7 @@ function CheckoutPage() {
                 }
                 orderProduct.push(newProduct)
             }
-
             if (orderCheckout) {
-
                 setOrderCheckout({
                     ...orderCheckout,
                     order_products: orderProduct ?? orderCheckout.order_products,
@@ -158,22 +158,25 @@ function CheckoutPage() {
     }
 
     const handleConfirmOrder = async () => {
-        if (!orderCheckout) return;
-        const dataOrder = await createOrder(orderCheckout.order_shippingAddress.id)
+        try {
+            if (!orderCheckout) return;
+            const dataOrder = await createOrder(orderCheckout.order_shippingAddress.id)
 
-        const orderDetailProduct = orderCheckout.order_products.map((product) => ({
-            order_id: dataOrder.data?.id ?? "",
-            product_id: product.id,
-            quantity: product.quantity,
-        }))
-        const orderdetail = await createOrderDetail(orderDetailProduct)
+            const orderDetailProduct = orderCheckout.order_products.map((product) => ({
+                order_id: dataOrder.data?.id ?? "",
+                product_id: product.id,
+                quantity: product.quantity,
+            }))
+            await createOrderDetail(orderDetailProduct)
 
-        if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
-            const datPayment = await paymentOrder(dataOrder.data?.id)
-
-            window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+            if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
+                const datPayment = await paymentOrder(dataOrder.data?.id)
+                window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+            }
+            redirect(`${ORDER_URL}`)
+        } catch (error) {
+            toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
-        redirect(`${ORDER_URL}`)
     }
 
     const getOrder = useCallback(() => {
@@ -220,7 +223,7 @@ function CheckoutPage() {
                                                 key={product.id}
                                                 className="flex gap-3 items-stretch text-[12px] py-2"
                                             >
-                                                <Image src={product.product_thumbnail} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
+                                                <Image src={(product?.product_thumbnail && product?.product_thumbnail?.startsWith("http")) ? product.product_thumbnail : "/defineImage.png"} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
                                                 <div className="flex flex-col justify-between text-black text-3 leading-[19px]">
                                                     <p className=" font-[700] uppercase">
                                                         {product.product_brand?.title}
