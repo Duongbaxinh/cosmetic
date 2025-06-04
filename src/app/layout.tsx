@@ -12,6 +12,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer } from 'react-toastify';
 import "./globals.css";
 import ReviewPage from "@/components/pages/ReviewPage";
+import { DataProvider } from "@/contexts/data.context";
+import { ErrorProvider } from "@/contexts/error.context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,21 +41,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NetworkStatusProvider>
-          <ReduxProvider>
-            <AuthProvider>
-              <CartProvider>
-                <OrderProvider>
-                  <ToastContainer />
-                  {children}
-                  <InfoPage />
-                  <ChatBox />
-                  <AuthPage />
-                </OrderProvider>
-              </CartProvider>
-            </AuthProvider>
-          </ReduxProvider>
-        </NetworkStatusProvider>
+        <ErrorProvider>
+          <NetworkStatusProvider>
+            <ReduxProvider>
+              <DataProvider>
+                <AuthProvider>
+                  <CartProvider>
+                    <OrderProvider>
+                      <ToastContainer />
+                      {children}
+                      <InfoPage />
+                      <ChatBox />
+                      <AuthPage />
+                    </OrderProvider>
+                  </CartProvider>
+                </AuthProvider>
+              </DataProvider>
+            </ReduxProvider>
+          </NetworkStatusProvider>
+        </ErrorProvider>
       </body>
     </html>
   );

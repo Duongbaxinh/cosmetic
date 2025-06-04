@@ -9,6 +9,8 @@ export interface IconButtonProps {
   onClick?: () => void;
   title?: string;
   icon?: React.ReactNode;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {

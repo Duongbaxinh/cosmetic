@@ -20,6 +20,7 @@ import LoadingIcon from '../LoadingPage/LoadingIcon';
 import NotFound from '@/components/molecules/NotFound';
 import { toast } from 'react-toastify';
 import { MESS_SYSTEM } from '@/config/mess.config';
+import { handleError } from '@/utils';
 
 function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalo">("cash")
@@ -181,6 +182,9 @@ function CheckoutPage() {
                     trans_id: datPayment.data.requestId
                 })
                 console.log('data payment ', data_payment)
+                if (data_payment.error) {
+                    return handleError(data_payment.error)
+                }
                 window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
             }
             if (paymentMethod === "zalo" && dataOrder && dataOrder.data) {

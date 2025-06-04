@@ -29,7 +29,7 @@ export const productApi = createApi({
       },
       keepUnusedDataFor: 0,
     }),
-    getAllProducts: builder.query<ProductResponse, ParamsType>({
+    getAllProducts: builder.query<ProductResponse, ParamsType | void>({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/products?${queryString}`;

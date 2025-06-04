@@ -8,7 +8,6 @@ import {
 } from "@/config/api.config";
 import {
   MomoPaymentResponse,
-  OrderItemDisplayType,
   OrderResponse,
   OrderType,
   ResponseType,
@@ -44,6 +43,7 @@ export const orderProductApi = createApi({
         };
       },
       transformResponse: (response: OrderResponse) => {
+        console.log("check response order detail :: ", response);
         return response;
       },
       keepUnusedDataFor: 0,
@@ -83,7 +83,7 @@ export const orderProductApi = createApi({
       },
     }),
     createOrderDetail: builder.mutation<
-      OrderItemDisplayType,
+      OrderResponse,
       OrderDetailType | OrderDetailType[]
     >({
       query: (orderDetail: OrderDetailType | OrderDetailType[]) => ({
@@ -91,7 +91,7 @@ export const orderProductApi = createApi({
         method: "POST",
         body: orderDetail,
       }),
-      transformResponse: (response: OrderItemDisplayType) => {
+      transformResponse: (response: OrderResponse) => {
         return response;
       },
     }),

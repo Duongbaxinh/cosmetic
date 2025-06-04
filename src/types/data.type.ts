@@ -4,8 +4,6 @@ export enum ProductEnum {
   "PRODUCT_INTERNAL" = "product_internationals",
   "PRODUCT_DISCOUNT" = "product_discounts",
 }
-
-//
 export interface ImageProduct {
   id: string;
   image_url: string;
@@ -18,6 +16,7 @@ export type Category = {
   title: string;
   image: string;
   slug: string;
+  types: ProductType[];
 };
 
 export type ProductDiscount = {
@@ -176,11 +175,11 @@ export type PaymentType = {
   payment_method: "momo" | "zalo";
 };
 
-type PaymentResponse = {
+export type PaymentResponse = {
   id: string;
   order: string;
   payment_method: "momo" | "zalo";
-  status: "pending" | "completed" | "failed" | "canceled";
+  status: "pending" | "paid" | "failed";
   trans_id: string;
   created_at: string; // ISO 8601 datetime string
   updated_at: string; // ISO 8601 datetime string

@@ -4,25 +4,20 @@ import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetOrderDetailQuery } from '@/redux/slices/order.slice';
 import Image from 'next/image';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 
 function OrderDetailPage({ order_id }: { order_id: string }) {
     const { userProfile, shippingAddress } = useAuth()
     const { data: orderDetail, isLoading } = useGetOrderDetailQuery(order_id)
-    const status_color = (type: any) => {
-        return {
-            'bg-green-500 text-white': type === 'success',
-            'bg-blue-500 text-white': type === 'in_progress',
-            'bg-gray-300 text-gray-700': type === 'delivering '
-        }
-    }
     const is_order = orderDetail && orderDetail && orderDetail.order_details
     // const discount_direct = orderDetail?.order_discount ?? 0
     const discount_direct = 0
     // const discount_shipping = orderDetail?.order_discount_shipping ?? 0
     const discount_shipping = 0
-
-
+    console.log("orderDetail", orderDetail)
+    useEffect(() => {
+        alert("run at here")
+    }, [])
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
             <div className="px-0 md:px-8 lg:px-0 pb-0 md:pb-8 mr-0 md:mr-8">
@@ -98,7 +93,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                         <div className="space-y-2 text-[14px] leading-[21px] text-gray-400 border-t pt-[20px]">
                             <div className="flex justify-between ">
                                 <span className="text-gray-600">Phương thức thanh toán</span>
-                                {/* <span className="text-gray-600">{PAYMENT_METHOD[orderDetail.status]}</span> */}
+                                <span className="text-gray-600">{orderDetail.payment.payment_method}</span>
                             </div>
 
                             <div className="flex justify-between ">
@@ -127,11 +122,11 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                             </div>
                             <div className="flex justify-between border-t border-gray-300 pt-2">
                                 <span className="text-gray-800 font-semibold">Số tiền đã thanh toán</span>
-                                <Price product_price={(orderDetail.status === "delivered") ? orderDetail.total_price : 0} className='text-red-400 text-[16px]' />
+                                <Price product_price={(orderDetail.payment.status === "paid") ? orderDetail.total_price : 0} className='text-red-400 text-[16px]' />
                             </div>
                             <div className="flex justify-between border-t border-gray-300 pt-2">
-                                <span className="text-gray-800 font-semibold">Số tiền cần thanh toán</span>
-                                <Price product_price={orderDetail?.status === "delivered" ? 0 : orderDetail.total_price} className='text-red-400 text-[20px]' />
+                                <span className="text-gray-800 font-semibold">Số tiền cần thanh toán {orderDetail?.payment.status.toString()}</span>
+                                <Price product_price={orderDetail?.payment.status === "paid" ? 0 : orderDetail.total_price} className='text-red-400 text-[20px]' />
                             </div>
 
                         </div>

@@ -4,9 +4,11 @@ import React from "react";
 
 
 
-const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon, className }) => {
+const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon, className, onMouseEnter, onMouseLeave }) => {
     return (
         <button
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             onClick={onClick}
             className={`p-2 bg-white rounded-sm hover:bg-gray-200 flex items-center justify-center cursor-pointer ${className} transition `}
         >

@@ -1,5 +1,5 @@
 import { Role, ShippingAddress, UserProfileType } from "./auth.type";
-import { OrderProduct, Product, Review } from "./data.type";
+import { OrderProduct, PaymentResponse, Product, Review } from "./data.type";
 export type ProductResponse = {
   results: Product[];
   limitnumber: number;
@@ -30,10 +30,18 @@ export type ReviewResponse = {
 export type OrderResponse = {
   id: string;
   user: UserProfileType;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  status:
+    | "pending"
+    | "confirmed"
+    | "prepared"
+    | "shipping"
+    | "delivered"
+    | "cancelled"
+    | "returned";
+  total_price: number;
   shipping_address: ShippingAddress;
   order_details: OrderProduct[];
-  total_price: number;
+  payment: PaymentResponse;
   created_at: string;
   updated_at: string;
 };

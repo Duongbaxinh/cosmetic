@@ -1,13 +1,22 @@
-"use client"
+"use client";
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useGetCartQuery, useAddToCartMutation, useUpdateCartItemMutation, useRemoveFromCartMutation, useClearCartMutation } from "@/redux/slices/cart.slice";
+import {
+    useGetCartQuery,
+    useAddToCartMutation,
+    useUpdateCartItemMutation,
+    useRemoveFromCartMutation,
+    useClearCartMutation,
+    useRemoveMultiProductInCartMutation,
+} from "@/redux/slices/cart.slice";
 import { CartCheckout, CartContextType } from "@/types";
 import { useAuth } from "./auth.context";
+import { useError } from "./error.context";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLogin, setIsAuth } = useAuth()
+    const { isLogin, setIsAuth } = useAuth();
+    const { handleError } = useError();
     const [isOpen, setIsOpen] = useState(false);
     const [cart, setCart] = useState<CartCheckout | null>(null);
 
@@ -23,13 +32,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     });
 
     const [addToCartMutation] = useAddToCartMutation();
+    const [removeMultiProductInCartMutation] = useRemoveMultiProductInCartMutation();
     const [updateCartItemMutation] = useUpdateCartItemMutation();
     const [removeFromCartMutation] = useRemoveFromCartMutation();
     const [clearCartMutation] = useClearCartMutation();
 
     const toggleDrawer = () => {
-        if (!isLogin) return setIsAuth({ form: 'login', isOpen: true })
-        setIsOpen((prev) => !prev)
+        if (!isLogin) return setIsAuth({ form: 'login', isOpen: true });
+        setIsOpen((prev) => !prev);
     };
 
     useEffect(() => {
@@ -38,23 +48,61 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, [cartData]);
 
-
     const addToCart = async (cart_id: string, product_id: string, quantity: number) => {
-        console.log("check data cart ", cart_id, product_id, quantity)
-        await addToCartMutation({ cart_id, product_id, quantity });
+        try {
+            const res = await addToCartMutation({ cart_id, product_id, quantity });
+            if ("error" in res) {
+                handleError(res.error);
+            }
+        } catch (err) {
+            handleError(err);
+        }
     };
 
     const updateCartItem = async (cartDetailId: string, quantity: number) => {
-        await updateCartItemMutation({ cartDetailId, quantity });
+        try {
+            const res = await updateCartItemMutation({ cartDetailId, quantity });
+            if ("error" in res) {
+                handleError(res.error);
+            }
+        } catch (err) {
+            handleError(err);
+        }
     };
 
     const removeFromCart = async (cartDetailId: string) => {
-        await removeFromCartMutation(cartDetailId);
+        try {
+            const res = await removeFromCartMutation(cartDetailId);
+            if ("error" in res) {
+                handleError(res.error);
+            }
+        } catch (err) {
+            handleError(err);
+        }
+    };
+
+    const removeMultiProductInCart = async (cartDetailIds: string[]) => {
+        try {
+            const res = await removeMultiProductInCartMutation(cartDetailIds);
+            if ("error" in res) {
+                return handleError(res.error);
+            }
+        } catch (err) {
+            handleError(err);
+        }
     };
 
     const clearCart = async () => {
-        await clearCartMutation();
+        try {
+            const res = await clearCartMutation();
+            if ("error" in res) {
+                handleError(res.error);
+            }
+        } catch (err) {
+            handleError(err);
+        }
     };
+
     return (
         <CartContext.Provider
             value={{
@@ -65,7 +113,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 updateCartItem,
                 removeFromCart,
                 clearCart,
-                setIsOpen
+                setIsOpen,
+                removeMultiProductInCart
             }}
         >
             {children}

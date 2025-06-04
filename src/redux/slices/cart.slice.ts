@@ -58,9 +58,20 @@ export const cartApi = createApi({
       invalidatesTags: ["Cart"],
     }),
 
+    removeMultiProductInCart: builder.mutation<void, string[]>({
+      query: (productIds) => ({
+        url: `/cart-details/multiple_delete`,
+        method: "DELETE",
+        body: {
+          ids: productIds,
+        },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+
     clearCart: builder.mutation<void, void>({
       query: () => ({
-        url: "/cart",
+        url: "/carts/clean-cart",
         method: "DELETE",
       }),
       invalidatesTags: ["Cart"],
@@ -74,4 +85,5 @@ export const {
   useUpdateCartItemMutation,
   useRemoveFromCartMutation,
   useClearCartMutation,
+  useRemoveMultiProductInCartMutation,
 } = cartApi;

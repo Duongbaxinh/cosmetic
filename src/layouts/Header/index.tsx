@@ -9,13 +9,16 @@ import IconButton from '@/components/atoms/IconButton';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
 import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { PROFILE } from '@/components/config/profile';
+import BoxIntroduce from '@/components/molecules/BoxIntroduce';
 import BoxSearch from '@/components/molecules/BoxSearch';
 import Drawer from '@/components/molecules/Drawer';
 import { useAuth } from '@/contexts/auth.context';
 import { useCart } from '@/contexts/cart.context';
 import useClickOutside from '@/hooks/useClickOuside';
+import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
+import { Category } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -36,12 +39,17 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
     const router = useRouter();
     const [isOpen, setIsOpen] = useState<{ openPhone: boolean, "openComputer": boolean }>({ "openPhone": false, "openComputer": false });
     const profileRef = useRef<HTMLDivElement | null>(null);
+    const { data: categories } = useGetAllCategoryQuery()
     const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
     const dispatch = useDispatch();
 
     useClickOutside([profileRef], () => {
         setIsOpen(prev => ({ ...prev, 'openComputer': false }));
     });
+
+    const handleHoverCategory = (categories: Category) => {
+
+    }
 
     const handleLogout = () => {
         logout();
@@ -134,7 +142,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                         </div>
                     </div>
 
-                    <div className=" flex gap-2 items-center">
+                    <div className=" flex gap-2 sm:gap-6 items-center">
                         <div className="relative">
                             <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
@@ -150,8 +158,8 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                                     className="hidden sm:block absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
                                 >
                                     <Container>
-                                        {PROFILE.map(({ path, title }, index) => (
-                                            <Link key={index} href={path}>
+                                        {categories && categories.map(({ id, slug, title }, index) => (
+                                            <Link key={index} href={slug}>
                                                 <div className="py-2 px-4 hover:bg-pink-50 transition-colors duration-200">
                                                     <p className="text-[14px] text-gray-900">{title}</p>
                                                 </div>
@@ -189,27 +197,9 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                         />
                     </div>
                 </div>
-                <div className=" h-[25px] mt-4">
-                    <Carousel
-                        slidesPerView={8}
-                        customSwipeWrap="!h-[50px]"
-                        customButtonLeft="!top-[25px] left-0 md:left-[-25px] bg-pink-300 hover:bg-pink-400 text-white"
-                        customButtonRight="!top-[25px] right-0 md:right-[-20px] bg-pink-300 hover:bg-pink-400 text-white"
-                    >
-                        {isCategory && CATEGORY_CONFIG.map(({ title, url, id }, index) => (
-                            <SwiperSlide key={index} className="!w-fit">
-                                <Link href={`${url}/${id}`} className="flex items-center justify-center h-full">
-                                    <IconButton
-                                        className="whitespace-nowrap border border-gray-200 rounded-md !p-1 !text-gray-900 hover:text-pink-500  hover:bg-pink-100 transition-colors duration-200 !px-5"
-                                        title={title}
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))}
-                    </Carousel>
-                </div>
+                <BoxIntroduce />
             </div>
-        </Container>
+        </Container >
     );
 };
 

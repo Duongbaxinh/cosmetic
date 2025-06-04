@@ -2,12 +2,12 @@
 import Input, { typeInput } from '@/components/atoms/Input';
 import { MESS_SYSTEM } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
+import { useError } from '@/contexts/error.context';
 import { useSignUpMutation } from '@/redux/slices/auth.slice';
 import { AuthDataRegister } from '@/types';
-import { handleError } from '@/utils';
+
 import { authRegisterValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BsEye } from 'react-icons/bs';
@@ -22,11 +22,11 @@ const RegisterPage = () => {
     } = useForm<AuthDataRegister>({
         resolver: yupResolver(authRegisterValid),
     });
+    const { handleError } = useError()
     const { setIsAuth } = useAuth()
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [signUp, { isLoading }] = useSignUpMutation();
-    const router = useRouter();
 
     const handleRegister = async (dataRegister: AuthDataRegister) => {
         try {

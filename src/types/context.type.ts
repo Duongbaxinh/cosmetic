@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import { ShippingAddress } from "./auth.type";
-import { CartCheckout, OrderProduct } from "./data.type";
+import {
+  CartCheckout,
+  Category,
+  OrderProduct,
+  ProductBrand,
+  Promotion,
+} from "./data.type";
 
 export type CartContextType = {
   isOpen: boolean;
@@ -14,7 +20,18 @@ export type CartContextType = {
   ) => Promise<void>;
   updateCartItem: (cartDetailId: string, quantity: number) => Promise<void>;
   removeFromCart: (product_id: string) => Promise<void>;
+  removeMultiProductInCart: (productIds: string[]) => Promise<void>;
   clearCart: () => Promise<void>;
+};
+
+export type DataContextType = {
+  categories: Category[] | [];
+  brands: ProductBrand[] | [];
+  promotions: Promotion[] | [];
+};
+
+export type ErrorContextType = {
+  handleError: (error: any) => void;
 };
 
 export type ProcessOrder = {

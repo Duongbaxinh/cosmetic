@@ -5,8 +5,10 @@ import Drawer from "@/components/molecules/Drawer";
 import { MESS_CART } from "@/config/mess.config";
 
 import { useCart } from "@/contexts/cart.context";
+import { useError } from "@/contexts/error.context";
 import { useOrder } from "@/contexts/order.context";
 import { deleteCartManyProduct } from "@/services/cart.service";
+import { handleError } from "@/utils";
 import { debounce } from "lodash";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -15,7 +17,7 @@ import { BiMinus, BiPlus } from "react-icons/bi";
 import { toast } from "react-toastify";
 
 function CartPage() {
-    const { cart, updateCartItem, removeFromCart } = useCart();
+    const { cart, updateCartItem, removeFromCart, clearCart, removeMultiProductInCart } = useCart();
     const { handlePurchase, proceedToCheckout, isOpen, setIsOpen } = useOrder();
     const { isOpen: openDrawer, toggleDrawer } = useCart();
     const [localQuantities, setLocalQuantities] = useState<Record<string, number>>(
@@ -102,8 +104,13 @@ function CartPage() {
     const handleDeleteMany = async () => {
         if (itemSelected.length === 0) return alert(MESS_CART.ERROR_EMPTY_DELETE);
         const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_MANY);
+        if (confirm_delete && cart?.cart_details.length === itemSelected.length) {
+            await clearCart()
+            return toast.info("Các sản phẩm trong giỏ hàng của bạn đã bị xóa")
+        }
         if (confirm_delete && cart && cart.id) {
-            await deleteCartManyProduct(cart.id, itemSelected, true);
+            await removeMultiProductInCart(itemSelected);
+            return toast.info("sản phẩm trong giỏ hàng của bạn đã bị xóa")
         }
     };
 

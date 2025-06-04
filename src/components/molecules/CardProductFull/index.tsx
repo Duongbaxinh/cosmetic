@@ -51,7 +51,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                 <div className="w-full sm:h-[270px] h-[270px] overflow-hidden relative  rounded-t-lg ">
                     <button
                         onClick={handleAddToCart}
-                        className="bg-gradient-color whitespace-nowrap px-4 py-4 font-[700] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 group-hover/card:block hidden text-white rounded-full cursor-pointer text-sm  shadow-md">
+                        className=" transparentToGradient whitespace-nowrap px-4 py-4 font-[700] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 group-hover/card:block hidden text-white rounded-full cursor-pointer text-sm  shadow-md">
                         Thêm vào giỏ hàng</button>
                     <div className="absolute top-0 left-0 w-[200%] h-full flex transition-transform duration-500 ease-in-out group-hover/card:-translate-x-1/2">
                         {/* Image 1 */}

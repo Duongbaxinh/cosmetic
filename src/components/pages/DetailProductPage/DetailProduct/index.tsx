@@ -154,7 +154,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                     <div className="grid grid-cols-2 py-2"><p>Thương hiệu</p> <p>{product.product_brand?.title}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Xuất xứ</p> <p>{product.product_made}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Thành phần</p> <p>{product.product_ingredient}</p></div>
-                    <div className="grid grid-cols-2 py-2"> <p>Hạn sử dụng</p> <p>{product.product_exp}</p></div>
+
 
                 </div>
                 <button className='text-[13px] leading-[39px] text-blue-300 w-full cursor-pointer' onClick={() => setShowMore({ ...showMore, productInfo: false })}>Thu gọn </button>

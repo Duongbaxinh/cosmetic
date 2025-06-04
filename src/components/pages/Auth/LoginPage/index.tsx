@@ -1,11 +1,11 @@
 'use client';
 import Input, { typeInput } from '@/components/atoms/Input';
-import { MESS_AUTH, MESS_SYSTEM } from '@/config/mess.config';
+import { MESS_SYSTEM } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
+import { useError } from '@/contexts/error.context';
 import { useLoginMutation } from '@/redux/slices/auth.slice';
 import { FORGOT_PASSWORD_URL } from '@/routers';
 import { AuthDataLogin } from '@/types';
-import { handleError } from '@/utils';
 import { authLoginValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from 'next/link';
@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 const LoginPage = () => {
 
     const { isAuth, setIsAuth, fetchUserInfo } = useAuth()
+    const { handleError } = useError()
     const {
         register,
         handleSubmit,
@@ -49,7 +50,7 @@ const LoginPage = () => {
         try {
             const res = await login(dataLogin);
             if (res.error) {
-                handleError(res.error)
+                return handleError(res.error)
             } else {
                 toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
             }
