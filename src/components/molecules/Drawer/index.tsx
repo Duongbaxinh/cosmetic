@@ -42,7 +42,7 @@ const Drawer = ({ isOpen, onClose, title, children, className }: DrawerType) => 
                         <IconButton
                             onClick={onClose}
                             className="text-pink-500 hover:text-pink-700 transition-transform duration-200 hover:scale-110"
-                            icon={<CloseIcon className="w-6 h-6" />}
+                            icon={<CloseIcon className="w-6 h-6 " fill='#000000' />}
                             aria-label="Close drawer"
                         />
                     </div>
