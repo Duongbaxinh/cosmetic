@@ -41,12 +41,12 @@ export default function Popup({
                                 <p className="text-[18px] font-[700] text-text">
                                     {title}
                                 </p>
-                                <IconButton icon={<CloseIcon className="text-black" />}
+                                <IconButton icon={<CloseIcon className="text-black w-[20px] h-[20px]" fill="#000000" />}
                                     onClick={onClose} />
                             </div>
                         ) : (
                             <div className="absolute top-0 right-0">
-                                <IconButton icon={<CloseIcon className="text-black" />}
+                                <IconButton icon={<CloseIcon className="text-black w-[20px] h-[20px]" fill="#000000" />}
                                     onClick={onClose} />
                             </div>
                         )}

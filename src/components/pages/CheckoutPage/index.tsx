@@ -4,23 +4,23 @@ import Breadcrumb from '@/components/atoms/Breadcrumb';
 import IconButton from '@/components/atoms/IconButton';
 import Price from '@/components/atoms/Price';
 import CardProductFull from '@/components/molecules/CardProductFull';
+import NotFound from '@/components/molecules/NotFound';
 import GroupStart from '@/components/organisms/GroupStart';
+import { MESS_SYSTEM } from '@/config/mess.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useCreateOrderDetailMutation, useCreateOrderMutation, useCreatePaymentMutation, usePaymentOrderMutation } from '@/redux/slices/order.slice';
 import { useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { CHECKOUT_URL, DETAIL_PRODUCT_URL, ORDER_URL } from '@/routers';
 import type { OrderCheckout, Product } from '@/types';
+import { handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { BiChevronUp, BiMinus, BiPlus } from 'react-icons/bi';
+import { toast } from 'react-toastify';
 import LoadingPage from '../LoadingPage';
 import LoadingIcon from '../LoadingPage/LoadingIcon';
-import NotFound from '@/components/molecules/NotFound';
-import { toast } from 'react-toastify';
-import { MESS_SYSTEM } from '@/config/mess.config';
-import { handleError } from '@/utils';
 
 function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalo">("cash")

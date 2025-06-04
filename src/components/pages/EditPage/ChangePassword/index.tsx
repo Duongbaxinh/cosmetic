@@ -1,18 +1,15 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
-import Input, { typeInput } from "@/components/atoms/Input";
 import EyeIcon from "@/assets/icons/EyeIcon"; // nếu có
-import { BsEyeSlash } from "react-icons/bs";
-import { changePasswordSchema } from "@/validate";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setUser, useChangePasswordMutation, useChangeProfileMutation } from "@/redux/slices/auth.slice";
-import { redirect } from "next/navigation";
-import { LOGIN_URL } from "@/routers";
+import Input, { typeInput } from "@/components/atoms/Input";
 import { useAuth } from "@/contexts/auth.context";
+import { setUser, useChangePasswordMutation } from "@/redux/slices/auth.slice";
+import { RootState } from "@/redux/store";
+import { changePasswordSchema } from "@/validate";
+import { BsEyeSlash } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 
 type FormData = {
     currentPassword: string;

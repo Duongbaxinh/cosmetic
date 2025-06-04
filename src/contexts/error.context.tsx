@@ -20,7 +20,6 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
 
         const rtkError = error as RTKError;
-
         let message = defaultMessage;
 
         if (rtkError.status === "FETCH_ERROR") {
@@ -33,7 +32,13 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             else if (rtkError.status === 403) message = "Bạn không có quyền truy cập.";
             else if (rtkError.status === 404) message = "Không tìm thấy tài nguyên.";
             else if (rtkError.status === 500) message = "Lỗi máy chủ. Vui lòng thử lại sau.";
-            else if (rtkError.data?.message) message = rtkError.data.message;
+
+
+            if (rtkError.data?.detail) {
+                message = rtkError.data.detail;
+            } else if (rtkError.data?.message) {
+                message = rtkError.data.message;
+            }
         }
 
         toast.error(message);

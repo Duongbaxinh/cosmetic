@@ -10,7 +10,7 @@ const IconButton: React.FC<IconButtonProps> = ({ onClick, title, icon, className
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={onClick}
-            className={`p-2 bg-white rounded-sm hover:bg-gray-200 flex items-center justify-center cursor-pointer ${className} transition `}
+            className={`p-2 bg-white text-inherit rounded-sm hover:bg-gray-200 flex items-center justify-center cursor-pointer ${className} transition `}
         >
             <div className="flex items-center justify-center gap-1">
                 {title && <p>{title}</p>}

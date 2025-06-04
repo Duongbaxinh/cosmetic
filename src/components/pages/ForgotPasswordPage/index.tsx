@@ -42,37 +42,39 @@ function ForgotPasswordPage() {
     };
 
     return (
-        <div className=' bg-white w-full h-screen flex justify-center items-center '>
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="w-full  rounded-md flex items-center justify-center py-8 "
-            >
-                <div className="border border-gray-300 md:min-w-[400px] max-w-[350px] md:max-w-[400px] p-5 rounded-md space-y-4 shadow shadow-pink-300">
-                    <div className='space-y-4 w-full'>
-                        <p className="text-[13px] font-bold text-pink-300 pb-2">Email đăng ký tài khoản</p>
-                        <p className="text-[13px] font-bold text-pink-300 pb-2 break-words">Hãy nhập chính xác email mà bạn đã đăng ký tài khoản để chúng tôi có thể tiếp tục xử lý việc khôi phục lại mật khẩu cho bạn</p>
-                        <Input
-                            className='border border-color py-3'
-                            placeholder="Nhập email của bạn"
-                            {...register("email")}
-                        />
-                        {errors.email && (
-                            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
-                        )}
-                    </div>
+        <ContainerLayout>
+            <div className=' bg-white w-full h-screen flex justify-center items-start mt-[60px] '>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-full   flex items-center justify-center py-8 "
+                >
+                    <div className="border border-gray-300 md:min-w-[400px] max-w-[350px] md:max-w-[500px] p-5 rounded-lg space-y-4 shadow shadow-pink-300">
+                        <div className='space-y-4 w-full'>
+                            <p className="text-[13px] font-bold text-pink-300 pb-2">Email đăng ký tài khoản</p>
+                            <p className="text-[13px] font-bold text-pink-300 pb-2 break-words">Hãy nhập chính xác email mà bạn đã đăng ký tài khoản để chúng tôi có thể tiếp tục xử lý việc khôi phục lại mật khẩu cho bạn</p>
+                            <Input
+                                className='border border-color py-3'
+                                placeholder="Nhập email của bạn"
+                                {...register("email")}
+                            />
+                            {errors.email && (
+                                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                            )}
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={!isValid || !isDirty}
-                        className={`w-full p-2 text-white text-[14px] rounded-md transition ${!isValid || !isDirty
-                            ? "bg-gray-200 cursor-not-allowed"
-                            : "bg-blue-500 hover:bg-blue-600"
-                            }`}
-                    >
-                        {isLoading ? "Yêu cầu đang được gửi đi..." : "Gửi yêu cầu"}
-                    </button>
-                </div>
-            </form></div>
+                        <button
+                            type="submit"
+                            disabled={!isValid || !isDirty}
+                            className={`w-full p-2 text-white text-[14px] cursor-pointer  rounded-full transition ${!isValid || !isDirty
+                                ? "bg-gray-200 cursor-not-allowed"
+                                : "bg-gradient"
+                                }`}
+                        >
+                            {isLoading ? "Yêu cầu đang được gửi đi..." : "Gửi yêu cầu"}
+                        </button>
+                    </div>
+                </form></div>
+        </ContainerLayout>
     );
 }
 
