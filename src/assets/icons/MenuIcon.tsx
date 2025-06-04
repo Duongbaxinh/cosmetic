@@ -1,6 +1,6 @@
 import { IconProps } from "@/types";
 
-const MenuIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
+const MenuIcon = ({ className = 'w-4 h-4', fill = 'currentColor' }: IconProps) => {
     return (
         <svg
             width="24"

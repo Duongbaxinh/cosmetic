@@ -24,6 +24,9 @@ const config: Config = {
         xl: "1200px",
         "2xl": "1550px",
       },
+      boxShadow: {
+        "inner-right": "inset -8px 0 16px rgba(0, 0, 0, 0.2)",
+      },
       backgroundImage: {
         "custom-gradient":
           "linear-gradient(to bottom, transparent 0%, transparent 60%, white 100%)",

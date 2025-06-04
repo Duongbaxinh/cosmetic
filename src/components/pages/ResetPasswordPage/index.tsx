@@ -31,7 +31,7 @@ function ResetPasswordPage({ token }: { token: string }) {
             const dataForgotPassword = await resetPassword(payload).unwrap()
             if (dataForgotPassword) {
                 alert(dataForgotPassword)
-                redirect(LOGIN_URL)
+                redirect("/")
             }
         } catch (error) {
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)

@@ -203,7 +203,7 @@ function CartPage() {
                                         />
                                         <div className="flex items-start gap-3 w-full">
                                             <Image
-                                                src={productDetail.product.product_thumbnail}
+                                                src={productDetail.product?.product_thumbnail && productDetail.product.product_thumbnail.startsWith("http") ? productDetail.product.product_thumbnail : ""}
                                                 alt={productDetail.product.product_name}
                                                 width={80}
                                                 height={80}

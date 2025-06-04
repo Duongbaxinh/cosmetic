@@ -1,22 +1,18 @@
 "use client";
 import { TrashIcon } from '@/assets/icons';
-import EmailIcon from '@/assets/icons/EmailIcon';
 import LockIcon from '@/assets/icons/LockIcon';
-import PhoneIcon from '@/assets/icons/PhoneIcon';
-import ProfileIcon from '@/assets/icons/ProfileIcon';
 import InputForm from '@/components/atoms/InputForm';
-import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
 import { setUser, useChangeProfileMutation } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
-import { CHANGE_PASSWORD_URL, EDIT_EMAIL_URL, EDIT_PHONE_URL } from '@/routers';
-import { ProfileFormData } from '@/types'; import Link from 'next/link';
+import { CHANGE_PASSWORD_URL } from '@/routers';
+import { ProfileFormData } from '@/types';
+import Link from 'next/link';
 import { useEffect } from 'react';
-;
 import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+;
 
 
 function ProfilePage() {

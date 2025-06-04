@@ -71,7 +71,7 @@ function Filter({ categories, brands, isFiltered, onFilter, className, productTy
                 <div className="pb-2 text-[14px]  leading-[21px] font-[600] ">Giá sản phẩm</div>
                 {priceRanges && priceRanges.map((price) => (
                     <div key={price.key} className={`w-full flex gap-2 items-center`}>
-                        <input id={price.key} checked={isFiltered.includes(`price_${price.key}`)} type='radio' name="price" onChange={() => onFilter("price", price.key)}
+                        <input id={price.key} checked={isFiltered.includes(`price-${price.label}`)} type='radio' name="price" onChange={() => onFilter("price", price.key)}
                             className='min-w-[20px] min-h-[20px]' />
                         <label htmlFor={price.key} className=" py-2 text-[12px] font-[500] leading-[18px] cursor-pointer uppercase ">{price.label}</label>
                     </div>

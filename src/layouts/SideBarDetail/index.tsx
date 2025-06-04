@@ -1,12 +1,10 @@
 "use client";
-import { ChevronLeftIcon, ChevronRightIcon } from '@/assets/icons';
 import CloseIcon from '@/assets/icons/CloseIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
 import ProfileIcon from '@/assets/icons/ProfileIcon';
 import { SIDEBAR_DETAIL, SidebarDetailType } from '@/components/config/sidebarDetail';
 import { setUser } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -42,7 +40,7 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
                         <ProfileIcon className="w-[50px] h-[50px] rounded-full" />
                         <div>
                             <p>Tài khoản của</p>
-                            <p>{user?.email}</p>
+                            <p>{user?.username}</p>
                         </div>
                     </div>
                     <div

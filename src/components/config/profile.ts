@@ -9,8 +9,4 @@ export const PROFILE = [
     path: ORDER_URL,
     title: "Đơn hàng của tôi",
   },
-  {
-    path: "/manageuser",
-    title: "Manage Account",
-  },
 ];

@@ -48,9 +48,8 @@ function SearchPage({ text_search }: { text_search: string }) {
 
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
-        filters.price?.value && filters.price.value.length > 0 ? "price_" + filters.price?.key || null : null,
+        filters.price?.value && filters.price.value.length > 0 ? "price-" + filters.price?.key || null : null,
         filters.rate !== null ? "rate-" + filters.rate || null : null,
-        filters.sortBy !== "" ? filters.sortBy || null : null,
         ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
         ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
     ].filter(Boolean);
@@ -76,7 +75,7 @@ function SearchPage({ text_search }: { text_search: string }) {
         if (filed === "price") {
             const priceValue = priceRanges.find(item => item.key === value)
             if (priceValue) {
-                setFilter(prev => ({ ...prev, price: { key: value, value: [priceValue.min, priceValue.max] } }))
+                setFilter(prev => ({ ...prev, price: { key: priceValue.label, value: [priceValue.min, priceValue.max] } }))
             }
             return
         }
@@ -90,7 +89,7 @@ function SearchPage({ text_search }: { text_search: string }) {
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("-")
         if (key === "price") {
-            const priceValue = priceRanges.find(item => item.key === value)
+            const priceValue = priceRanges.find(item => item.label === value)
             if (priceValue) {
                 setFilter(prev => ({ ...prev, price: { key: "", value: [] } }))
             }
@@ -102,6 +101,7 @@ function SearchPage({ text_search }: { text_search: string }) {
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [productSearch])
 

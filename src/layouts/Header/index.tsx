@@ -138,7 +138,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                         <div className="relative">
                             <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
-                                    className="group border-[1.5px] border-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200"
+                                    className="group border-[1.5px] border-black text-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200"
                                     onFunction={() => setIsOpen(prev => ({ openPhone: false, openComputer: !prev.openComputer }))}
                                     title={isLogin ? userName.toString() : 'Đăng nhập'}
                                     icon={isLogin ? <UserIcon className="text-black group-hover:text-pink-300 transition-colors duration-200" /> : ""}
@@ -170,16 +170,16 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                             )}
                         </div>
                         <ItemRectangle
-                            className="!w-fit border border-gray-200 !rounded-full min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center bg-pink-50 hover:bg-pink-100 transition-colors duration-200"
+                            className="!w-fit group border-[1.5px] border-black text-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200 min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center "
                             onFunction={() => { }}
-                            icon={<HeartIcon className="text-pink-600" />}
+                            icon={<HeartIcon className="text-black group-hover:text-pink-300 transition-colors duration-200" />}
                         />
                         <ItemRectangle
                             babe
                             quantity={cartQuantity}
-                            className="!w-fit border border-gray-200 !rounded-full min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center bg-pink-50 hover:bg-pink-100 transition-colors duration-200"
+                            className="!w-fit group border-[1.5px] border-black text-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200 min-w-[35px] min-h-[35px] max-w-[35px] max-h-[35px] flex items-center justify-center "
                             onFunction={toggleDrawer}
-                            icon={<CartIcon className="text-pink-600" />}
+                            icon={<CartIcon className="text-black group-hover:text-pink-300 transition-colors duration-200" />}
                         />
                     </div>
                 </div>

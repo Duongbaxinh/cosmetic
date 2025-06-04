@@ -115,7 +115,9 @@ const DetailProduct: React.FC<DetailProductProps> = ({
 
                                     <IconButton icon={<BiPlus />} onClick={() => onIncrease()} className='w-[30px] h-full ' />
                                 </div>
-                                <button onClick={() => onAddToCart({ product_id: product.id, quantity: product_quantity || 1 })} className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] rounded-full bg-black text-white hover:bg-gray-800 cursor-pointer">
+                                <button onClick={() => onAddToCart({ product_id: product.id, quantity: product_quantity || 1 })}
+                                    className="flex flex-grow gap-2 items-center justify-center py-3 px-1 md:px-[27px] 
+                                    rounded-full  text-white bg-black hover:bg-gradient-to-tl hover:from-pink-400 hover:to-purple-400  cursor-pointer">
                                     <CartIcon className='text-white' fill='#ffffff' /> Thêm vào giỏ hàng
                                 </button>
                             </div>

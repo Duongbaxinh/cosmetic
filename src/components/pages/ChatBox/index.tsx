@@ -1,16 +1,16 @@
 "use client";
 import CloseIcon from "@/assets/icons/CloseIcon";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { fetchStream } from "./fetchStream";
 
-// Định nghĩa kiểu cho sản phẩm
+// Define product interface
 interface Product {
     productName: string;
     linkProduct: string | null;
 }
 
-// Định nghĩa kiểu cho tin nhắn
+// Define message interface
 interface Message {
     role: "user" | "ai";
     content: string | Product[];
@@ -21,14 +21,18 @@ export default function ChatBox() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState<string>("");
     const [chat, setChat] = useState<string>("");
-    const [products, setProducts] = useState<Product[]>([]);
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Xử lý dữ liệu stream
+    // Scroll to the bottom of the messages area
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // Handle streaming data
     const handleStream = async (): Promise<void> => {
         setIsStreaming(true);
         setChat("");
-        setProducts([]);
 
         try {
             await fetchStream(
@@ -37,9 +41,9 @@ export default function ChatBox() {
                     role: "user",
                     content: inputMessage,
                 },
-
                 (chunk: string) => {
                     setChat((prev) => prev + chunk);
+                    scrollToBottom();
                 }
             );
         } catch (error) {
@@ -65,30 +69,38 @@ export default function ChatBox() {
         if (!isStreaming && chat) {
             const parts = chat.split(/###+#/);
             const message = parts[0].trim();
-            let newProducts: Product[] = [];
+            let newProducts: Product[] = parts[1]
+                ? parts[1]
+                    .split("- **")
+                    .slice(1)
+                    .map((item) => {
+                        const product = item.split("**");
+                        const productLink = product[product.length - 1].trim();
+                        const regex = /\[.*?\]\((https?:\/\/[^\)]+)\)/;
+                        const match = productLink.match(regex);
+                        const link = match ? match[1] : null;
+                        return {
+                            productName: product[0],
+                            linkProduct: link,
+                        };
+                    })
+                : [];
 
-            if (parts[1]) {
-                const text = parts[1];
-                const productText = text.split("- **").slice(1);
-                newProducts = productText.map((item) => {
-                    const product = item.split("**");
-                    const productLink = product[product.length - 1].trim();
-                    const regex = /\[.*?\]\((https?:\/\/[^\)]+)\)/;
-                    const match = productLink.match(regex);
-                    const link = match ? match[1] : null;
-                    return {
-                        productName: product[0],
-                        linkProduct: link,
-                    };
-                });
-                setProducts(newProducts);
-            }
-
-            setMessages(prev => [...prev, { role: "ai", content: message }, { role: "ai", content: newProducts }])
+            setMessages((prev) => [
+                ...prev,
+                ...(message ? [{ role: "ai" as const, content: message }] : []),
+                ...(newProducts.length > 0 ? [{ role: "ai" as const, content: newProducts }] : []),
+            ]);
 
             setChat("");
+            scrollToBottom();
         }
     }, [isStreaming, chat]);
+
+    // Auto-scroll when messages change
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const handleChatToggle = (): void => {
         setIsChatOpen((prev) => !prev);
@@ -126,40 +138,37 @@ export default function ChatBox() {
                         {messages.map((message, index) => (
                             <div
                                 key={index}
-                                className={`flex items-start ${message.role === "user" ? "justify-end" : "justify-start"
-                                    } animate-slide-in`}
+                                className={`flex items-start ${message.role === "user" ? "justify-end" : "justify-start"} animate-slide-in`}
                             >
                                 {message.role === "ai" && (
                                     <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mr-2"></div>
                                 )}
                                 <div
-                                    className={`p-3 rounded-lg shadow-md max-w-[50%] sm:max-w-[70%] ${message.role === "user"
-                                        ? "bg-purple-100 text-gray-900"
-                                        : "bg-white text-gray-900"
+                                    className={`p-3 rounded-lg shadow-md max-w-[50%] sm:max-w-[70%] ${message.role === "user" ? "bg-purple-100 text-gray-900" : "bg-white text-gray-900"
                                         }`}
                                 >
                                     {typeof message.content === "string" ? (
                                         <p className="text-sm whitespace-pre-line">{message.content}</p>
                                     ) : (
-                                        <div className="space-y-3">
-                                            {message.content.map((product: Product, idx: number) => (
-                                                <Link
-                                                    href={product.linkProduct ?? "#"}
-                                                    key={idx}
-                                                    className="p-4 bg-pink-100 rounded-lg hover:bg-pink-200 transition-all duration-200 flex items-center space-x-3 transform hover:scale-105 border border-pink-300 shadow-sm"
-                                                >
-                                                    <span className="text-pink-500 text-lg">✨</span>
-                                                    <div>
-                                                        <p className="text-sm font-semibold text-gray-800 line-clamp-2">
-                                                            {product.productName}
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 mt-1">
-                                                            Nhấn để xem chi tiết sản phẩm
-                                                        </p>
-                                                    </div>
-                                                </Link>
-                                            ))}
-                                        </div>
+                                        message.content.length > 0 && (
+                                            <div className="space-y-3">
+                                                {message.content.map((product: Product, idx: number) => (
+                                                    <Link
+                                                        href={product.linkProduct ?? "#"}
+                                                        key={idx}
+                                                        className="p-4 bg-pink-100 rounded-lg hover:bg-pink-200 transition-all duration-200 flex items-center space-x-3 transform hover:scale-105 border border-pink-300 shadow-sm"
+                                                    >
+                                                        <span className="text-pink-500 text-lg">✨</span>
+                                                        <div>
+                                                            <p className="text-sm font-semibold text-gray-800 line-clamp-2">
+                                                                {product.productName}
+                                                            </p>
+                                                            <p className="text-xs text-gray-500 mt-1">Nhấn để xem chi tiết sản phẩm</p>
+                                                        </div>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        )
                                     )}
                                 </div>
                                 {message.role === "user" && (
@@ -167,15 +176,19 @@ export default function ChatBox() {
                                 )}
                             </div>
                         ))}
-                        {/* Hiển thị tin nhắn đang stream (nếu có) */}
+                        {/* Streaming message with typing effect */}
                         {isStreaming && chat && (
                             <div className="flex items-start justify-start animate-slide-in">
                                 <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mr-2"></div>
-                                <div className="p-3 rounded-lg shadow-md bg-white text-gray-900 max-w-[70%]">
+                                <div
+                                    className="p-3 rounded-lg shadow-md bg-white text-gray-900 max-w-[70%] relative overflow-hidden"
+                                    style={{ animation: "typing 1s infinite" }}
+                                >
                                     <p className="text-sm whitespace-pre-line">{chat}</p>
                                 </div>
                             </div>
                         )}
+                        <div ref={messagesEndRef} />
                     </div>
 
                     {/* Input Area */}
@@ -190,9 +203,7 @@ export default function ChatBox() {
                                     }
                                 }}
                                 value={inputMessage}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    setInputMessage(e.target.value)
-                                }
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMessage(e.target.value)}
                                 placeholder="Nhập nội dung chat"
                                 className="flex-1 p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-200"
                                 disabled={isStreaming}
@@ -204,18 +215,8 @@ export default function ChatBox() {
                                     }`}
                             >
                                 {isStreaming ? (
-                                    <svg
-                                        className="animate-spin h-5 w-5 text-white"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <circle
-                                            className="opacity-25"
-                                            cx="12"
-                                            cy="12"
-                                            r="10"
-                                            stroke="currentColor"
-                                            strokeWidth="4"
-                                        />
+                                    <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                         <path
                                             className="opacity-75"
                                             fill="currentColor"
@@ -230,6 +231,20 @@ export default function ChatBox() {
                     </div>
                 </div>
             )}
+            {/* CSS for typing animation */}
+            <style jsx>{`
+        @keyframes typing {
+          0% {
+            background-color: rgba(255, 255, 255, 0.8);
+          }
+          50% {
+            background-color: rgba(255, 255, 255, 1);
+          }
+          100% {
+            background-color: rgba(255, 255, 255, 0.8);
+          }
+        }
+      `}</style>
         </div>
     );
 }

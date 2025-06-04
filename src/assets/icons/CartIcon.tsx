@@ -1,6 +1,6 @@
 import { IconProps } from "@/types";
 
-const CartIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
+const CartIcon = ({ className = 'w-4 h-4', fill = 'currentColor' }: IconProps) => {
     return (
         <svg
             width="24"

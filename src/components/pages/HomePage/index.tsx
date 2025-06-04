@@ -305,7 +305,7 @@ const HomePage: React.FC = () => {
                             >
                                 {product_internal_display.map(
                                     (product) => (
-                                        <SwiperSlide key={product.id}>
+                                        <SwiperSlide key={product.id} className='!py-[10px]'>
                                             <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
@@ -342,7 +342,7 @@ const HomePage: React.FC = () => {
                             >
                                 {products_display.map(
                                     (product) => (
-                                        <SwiperSlide key={product.id}>
+                                        <SwiperSlide key={product.id} className='!py-[10px]'>
                                             <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
                                                     key={product.id}
@@ -419,7 +419,7 @@ const HomePage: React.FC = () => {
                 {
                     check_load && (
                         <div className="w-full flex items-center justify-center ">
-                            <button className='cursor-pointer p-2 border-[1px] border-gray-300 text-pink-400 rounded-full' onClick={handleLoadMore} >Xem Thêm</button>
+                            <button className='block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit' onClick={handleLoadMore} >Xem Thêm</button>
                         </div>
                     )
                 }

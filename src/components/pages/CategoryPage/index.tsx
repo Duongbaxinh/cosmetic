@@ -57,24 +57,6 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
 
-    const isFiltered = [
-        ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
-        filters.price?.value && filters.price.value.length > 0 ? "price_" + filters.price?.key || null : null,
-        filters.rate !== null ? "rate-" + filters.rate || null : null,
-        filters.sortBy !== "" ? filters.sortBy || null : null,
-        ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
-        ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
-    ].filter(Boolean);
-
-    const handlePagination = (type: "next" | "prev") => {
-        if (type === 'next' && currentPage < totalPage) {
-            setFilter(prev => ({ ...prev, page: (prev.page + 1) }))
-        }
-        if (type === "prev" && Math.max(1, currentPage) > 1) {
-            setFilter(prev => ({ ...prev, page: (prev.page - 1) }))
-        }
-    }
-
     const newArr = (arr: any[], element: any) => {
         if (arr.flatMap(item => item.value).includes(element.value)) {
             return arr.filter((i) => i.value !== element.value)
@@ -87,7 +69,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         if (filed === "price") {
             const priceValue = priceRanges.find(item => item.key === value)
             if (priceValue) {
-                setFilter(prev => ({ ...prev, price: { key: value, value: [priceValue.min, priceValue.max] } }))
+                setFilter(prev => ({ ...prev, price: { key: priceValue.label, value: [priceValue.min, priceValue.max] } }))
             }
             return
         }
@@ -102,7 +84,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("-")
         if (key === "price") {
-            const priceValue = priceRanges.find(item => item.key === value)
+            const priceValue = priceRanges.find(item => item.label === value)
             if (priceValue) {
                 setFilter(prev => ({ ...prev, price: { key: "", value: [] } }))
             }
@@ -115,18 +97,25 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     }
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [products])
 
     const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
     const currentPage = Math.min(filters.page, Math.max(1, products?.page ?? 1))
     const productsDisplay = products?.results ?? []
-
-
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
-    const disableStyle = "pointer-events-none opacity-40"
     const banner = category_key === "product_brand" ? brands?.find(brand => brand.slug === value)?.image : ""
+
+    const isFiltered = [
+        ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
+        filters.price?.value && filters.price.value.length > 0 ? "price-" + filters.price?.key || null : null,
+        filters.rate !== null ? "rate-" + filters.rate || null : null,
+        ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
+        ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
+    ].filter(Boolean);
+
 
     return (
         <ContainerLayout isSidebar={false}>
@@ -191,15 +180,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                     </div>
 
                 </div>
-                <div className="w-full flex justify-end px-3 py-2">
-                    {totalPage >= 2 && (
-                        <div className="flex items-center gap-1">
-                            <span>{currentPage}/{totalPage}</span>
-                            <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
-                            <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
-                        </div>
-                    )}
-                </div>
+
                 <div className="flex gap-2">
                     <div className="hidden md:block">
                         <Filter onFilter={handleFilter} productType={productTypes ?? []} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
@@ -237,9 +218,12 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                         {totalPage > 1 && (
                             <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
                                 <ReactPaginate
-                                    className='flex gap-4 items-center justify-center '
+                                    className='flex gap-4 items-center justify-center cursor-pointer '
                                     breakLabel="..."
-                                    nextLabel={<ChevronRightIcon />}
+
+                                    nextLabel={<button disabled={!isNext} className='disabled:hidden cursor-pointer'>
+                                        <ChevronRightIcon />
+                                    </button>}
                                     activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
                                     pageRangeDisplayed={products?.page}
                                     initialPage={currentPage - 1}
@@ -247,7 +231,9 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                         handleFilter("page", selectedItem.selected + 1);
                                     }}
                                     pageCount={totalPage}
-                                    previousLabel={<ChevronLeftIcon />}
+                                    previousLabel={<button disabled={!isPrevious} className='disabled:hidden cursor-pointer'>
+                                        <ChevronLeftIcon />
+                                    </button>}
                                     renderOnZeroPageCount={null}
                                 />
                             </div>

@@ -1,6 +1,6 @@
 import { IconProps } from "@/types";
 
-const HeartIcon = ({ className = 'w-4 h-4', fill = '#000000' }: IconProps) => {
+const HeartIcon = ({ className = 'w-4 h-4', fill = 'currentColor' }: IconProps) => {
     return (
         <svg
             width="24"

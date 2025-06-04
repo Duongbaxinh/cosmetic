@@ -49,15 +49,15 @@ function BoxSearch({ className }: { className?: string }) {
                 value={textSearch}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
                 placeholder="Tìm kiếm sản phẩm..."
-                className="p-2 text-gray-700 bg-gray-100 !rounded-full"
+                className="!py-2 text-gray-700 bg-gray-100 !rounded-full"
                 leadingIcon={<SearchIcon className="text-gray-500 w-[20px] h-[20px]" />}
-                tailIcon={<HiSearchCircle className="text-blue-500 w-[24px] h-[24px]" />}
                 onKeyDown={handleKeyDown}
-                onHandleTailIcon={handleMovePageSearch}
+                onHandleLeadingIcon={handleMovePageSearch}
+
             />
 
-            {products && products.length > 0 && showBox && (
-                <div className="absolute top-auto left-0 right-0 w-[250px] sm:w-full bg-white shadow-lg border border-gray-200 mt-1 rounded z-50">
+            {products && products.length > 0 && textSearch !== "" && showBox && (
+                <div className="absolute top-auto left-0 right-0 w-[250px] max-h-[350px] overflow-y-scroll sm:w-full bg-white shadow-lg border border-gray-200 mt-1 rounded z-50">
                     {products.map((item, index) => (
                         <Link
                             href={`${DETAIL_PRODUCT_URL}/${item.product_slug}`}
