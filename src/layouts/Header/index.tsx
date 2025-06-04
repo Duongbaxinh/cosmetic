@@ -158,8 +158,8 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                                     className="hidden sm:block absolute right-0 top-12 w-64 bg-white rounded-lg shadow-lg z-50 overflow-hidden"
                                 >
                                     <Container>
-                                        {categories && categories.map(({ id, slug, title }, index) => (
-                                            <Link key={index} href={slug}>
+                                        {PROFILE.map(({ path, title }, index) => (
+                                            <Link key={index} href={path}>
                                                 <div className="py-2 px-4 hover:bg-pink-50 transition-colors duration-200">
                                                     <p className="text-[14px] text-gray-900">{title}</p>
                                                 </div>
