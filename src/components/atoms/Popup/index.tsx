@@ -34,7 +34,7 @@ export default function Popup({
             <div>
                 <div
                     onClick={(e) => e.stopPropagation()}
-                    className={`min-w-[200px] bg-white flex flex-col gap-[15px] max-h-[90vh] p-[10px] rounded-md ${className}`}>
+                    className={`min-w-[200px] bg-white flex flex-col gap-[15px] max-h-[90vh] overflow-y-scroll no-scrollbar p-[10px] rounded-md ${className}`}>
                     <div className="w-full sticky top-0 bg-white">
                         {title ? (
                             <div className="w-full flex justify-between">

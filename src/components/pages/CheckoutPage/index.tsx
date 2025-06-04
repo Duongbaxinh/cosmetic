@@ -6,13 +6,13 @@ import Price from '@/components/atoms/Price';
 import CardProductFull from '@/components/molecules/CardProductFull';
 import GroupStart from '@/components/organisms/GroupStart';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { useCreateOrderDetailMutation, useCreateOrderMutation, usePaymentOrderMutation } from '@/redux/slices/order.slice';
+import { useCreateOrderDetailMutation, useCreateOrderMutation, useCreatePaymentMutation, usePaymentOrderMutation } from '@/redux/slices/order.slice';
 import { useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { CHECKOUT_URL, DETAIL_PRODUCT_URL, ORDER_URL } from '@/routers';
 import type { OrderCheckout, Product } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { BiChevronUp, BiMinus, BiPlus } from 'react-icons/bi';
 import LoadingPage from '../LoadingPage';
@@ -22,13 +22,16 @@ import { toast } from 'react-toastify';
 import { MESS_SYSTEM } from '@/config/mess.config';
 
 function CheckoutPage() {
-    const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo">("cash")
+    const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalo">("cash")
     const [orderCheckout, setOrderCheckout] = useState<OrderCheckout | null>(null)
     const [createOrder] = useCreateOrderMutation();
     const [paymentOrder] = usePaymentOrderMutation();
     const [createOrderDetail, { isLoading: loadingCreateOrder, error: errorCreateOrder }] = useCreateOrderDetailMutation();
+    const [createPayment, { isLoading: loadingCreatePayment, error: errorCreatePayment }] = useCreatePaymentMutation();
     const [show, setShow] = useState(false)
     const { data: productAddition, error, isLoading: loading } = useGetAllProductsQuery({ limitnumber: 20, page: 1, product_international: true })
+
+    const router = useRouter()
 
     const handleIncrease = (product_id: string) => {
         const orderString = sessionStorage.getItem('order');
@@ -170,11 +173,29 @@ function CheckoutPage() {
             await createOrderDetail(orderDetailProduct)
 
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
-                const datPayment = await paymentOrder(dataOrder.data?.id)
+                const datPayment = await paymentOrder(dataOrder.data?.id) as { data?: { requestId?: string; payUrl?: string } }
+                if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+                const data_payment = await createPayment({
+                    order_id: dataOrder.data.id,
+                    payment_method: "momo",
+                    trans_id: datPayment.data.requestId
+                })
+                console.log('data payment ', data_payment)
                 window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
             }
-            redirect(`${ORDER_URL}`)
+            if (paymentMethod === "zalo" && dataOrder && dataOrder.data) {
+                const datPayment = await paymentOrder(dataOrder.data?.id) as { data?: { requestId?: string; payUrl?: string } }
+                if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+                await createPayment({
+                    order_id: dataOrder.data.id,
+                    payment_method: "zalo",
+                    trans_id: datPayment.data.requestId
+                })
+                return window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+            }
+            router.push(`${ORDER_URL}`)
         } catch (error) {
+            console.log('check error payment ::: ', error)
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     }
@@ -300,7 +321,7 @@ function CheckoutPage() {
                                                 key={product.id}
                                                 className="flex gap-3 items-start text-[12px] py-2"
                                             >
-                                                <Image src={product.product_thumbnail} alt={product.product_name} width={80} height={80} className='shadow rounded-lg' />
+                                                <Image src={product.product_thumbnail && product.product_thumbnail.startsWith('http') ? product.product_thumbnail : '/defineImage.png'} alt={product.product_name} width={80} height={80} className='shadow rounded-lg' />
                                                 <div className="flex flex-col  gap-2 text-black text-3 leading-[19px]">
                                                     <p className=" line-clamp-2">
                                                         {product.product_name}

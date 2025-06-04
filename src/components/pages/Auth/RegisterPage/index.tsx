@@ -4,6 +4,7 @@ import { MESS_SYSTEM } from '@/config/mess.config';
 import { useAuth } from '@/contexts/auth.context';
 import { useSignUpMutation } from '@/redux/slices/auth.slice';
 import { AuthDataRegister } from '@/types';
+import { handleError } from '@/utils';
 import { authRegisterValid } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
@@ -29,7 +30,10 @@ const RegisterPage = () => {
 
     const handleRegister = async (dataRegister: AuthDataRegister) => {
         try {
-            await signUp(dataRegister);
+            const registerData = await signUp(dataRegister);
+            if (registerData.error) {
+                return handleError(registerData.error);
+            }
             setIsAuth({ form: 'login', isOpen: true });
         } catch (error) {
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
@@ -46,7 +50,7 @@ const RegisterPage = () => {
 
     return (
 
-        <div className="bg-white w-[280px] h-fit sm:w-[500px] sm:h-[500px] my-0 mx-auto px-0 sm:px-[30px] md:px-[60px] py-3 md:py-6">
+        <div className="bg-white w-[280px] h-fit sm:w-[500px]  my-0 mx-auto px-0 sm:px-[30px] md:px-[60px] py-3 md:py-6">
             <div className="w-full bg-white flex flex-col justify-center">
                 <h1 className=" text-xl sm:text-2xl font-bold  mb-2 uppercase text-center">Tạo tài khoản Beauty</h1>
                 <p className=" text-[14px] leading-[17px] font-[500] mb-6 text-center">Tham gia với chúng tôi và tận hưởng những lợi ích độc quyền!</p>
@@ -57,35 +61,35 @@ const RegisterPage = () => {
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập tài khoản người dùng"
                                 {...register('username')}
-                                styleError='max-w-[260px] sm:max-w-[190px]'
+                                styleError=''
                                 error={!!errors.username}
                                 message={errors.username?.message}
                             />
                         </div>
 
-                        <div className="mb-4 col-span-2 sm:col-span-1">
+                        <div className="mb-4 col-span-2 ">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập email của bạn"
                                 {...register('email')}
-                                styleError='max-w-[260px] sm:max-w-[190px]'
+                                styleError=''
                                 error={!!errors.email}
                                 message={errors.email?.message}
                             />
                         </div>
 
-                        <div className="mb-4 col-span-2 sm:col-span-1">
+                        <div className="mb-4 col-span-2 ">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập số điện thoại"
                                 {...register('phone')}
-                                styleError='max-w-[260px] sm:max-w-[190px]'
+                                styleError=''
                                 error={!!errors.phone}
                                 message={errors.phone?.message}
                             />
                         </div>
 
-                        <div className="mb-4 col-span-2 sm:col-span-1">
+                        <div className="mb-4 col-span-2 ">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Nhập mật khẩu"
@@ -94,13 +98,13 @@ const RegisterPage = () => {
                                 tailIcon={showPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowPassword(!showPassword)}
                                 error={!!errors.password}
-                                styleError='max-w-[260px] sm:max-w-[190px] !top-[42px]'
+                                styleError=' !top-[42px]'
                                 message={errors.password?.message}
 
                             />
                         </div>
 
-                        <div className="mb-4 col-span-2 sm:col-span-1">
+                        <div className="mb-4 col-span-2 ">
                             <Input
                                 className=' !px-1 !py-2 sm:px-3 sm:py-4 border border-color'
                                 placeholder="Xác nhận mật khẩu"
@@ -109,7 +113,7 @@ const RegisterPage = () => {
                                 tailIcon={showConfirmPassword ? <HiEyeOff className='text-[15px] sm:text-[20px]' /> : <BsEye className='text-[15px] sm:text-[20px]' />}
                                 onHandleTailIcon={() => setShowConfirmPassword(!showConfirmPassword)}
                                 error={!!errors.confirmPassword}
-                                styleError='max-w-[260px] sm:max-w-[190px] !top-[42px]'
+                                styleError=' !top-[42px]'
                                 message={errors.confirmPassword?.message}
                             />
                         </div>

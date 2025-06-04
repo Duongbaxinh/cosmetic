@@ -1,9 +1,10 @@
-import { OrderDetailType } from "./../../types/data.type";
+import { OrderDetailType, PaymentType } from "./../../types/data.type";
 import {
   BASE_API,
   ORDER_API,
   ORDER_DETAIL_API,
   ORDER_PAYMENT_API,
+  PAYMENT_API,
 } from "@/config/api.config";
 import {
   MomoPaymentResponse,
@@ -46,6 +47,16 @@ export const orderProductApi = createApi({
         return response;
       },
       keepUnusedDataFor: 0,
+    }),
+    createPayment: builder.mutation<PaymentResponse, PaymentType>({
+      query: (payload) => ({
+        url: PAYMENT_API,
+        method: "POST",
+        body: payload,
+      }),
+      transformResponse: (response: PaymentResponse) => {
+        return response;
+      },
     }),
     createOrder: builder.mutation<OrderType, string>({
       query: (shippingAddressId) => ({
@@ -104,4 +115,5 @@ export const {
   useCreateOrderDetailMutation,
   usePaymentOrderMutation,
   useCancelOrderMutation,
+  useCreatePaymentMutation,
 } = orderProductApi;

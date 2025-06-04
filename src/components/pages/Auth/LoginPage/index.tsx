@@ -48,7 +48,11 @@ const LoginPage = () => {
     const handleLogin = async (dataLogin: AuthDataLogin) => {
         try {
             const res = await login(dataLogin);
-            if (error) return handleError(error);
+            if (res.error) {
+                handleError(res.error)
+            } else {
+                toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+            }
             if (res.data) {
                 console.log("check login ", res.data)
                 setIsLogin(true);
@@ -83,7 +87,7 @@ const LoginPage = () => {
                                 type={typeInput.TEXT}
                                 placeholder="Nhập email của bạn"
                                 error={!!errors.username}
-                                styleError='!top-[40px] sm:!top-[54px] max-w-[260px] sm:max-w-[480px]'
+
                                 message={errors.username?.message}
                                 ref={usernameRef}
                                 onChange={onUsernameChange}
@@ -99,7 +103,7 @@ const LoginPage = () => {
                                 type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
                                 placeholder="Nhập mật khẩu của bạn"
                                 error={!!errors.password}
-                                styleError='!top-[44px] sm:!top-[60px] max-w-[260px] sm:max-w-[480px]'
+
                                 message={errors.password?.message}
                                 ref={passwordRef}
                                 onChange={onPasswordChange}

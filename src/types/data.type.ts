@@ -170,6 +170,22 @@ export type OrderItemDisplayType = {
   updated_at: string;
 };
 
+export type PaymentType = {
+  order_id: string;
+  trans_id: string;
+  payment_method: "momo" | "zalo";
+};
+
+type PaymentResponse = {
+  id: string;
+  order: string;
+  payment_method: "momo" | "zalo";
+  status: "pending" | "completed" | "failed" | "canceled";
+  trans_id: string;
+  created_at: string; // ISO 8601 datetime string
+  updated_at: string; // ISO 8601 datetime string
+};
+
 export type MomoPaymentResponse = {
   partnerCode: string;
   orderId: string;

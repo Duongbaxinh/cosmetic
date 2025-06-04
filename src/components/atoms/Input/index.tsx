@@ -90,48 +90,50 @@ const Input = forwardRef(({
     };
     return (
         <>
-            <div
-                className={`relative flex justify-start items-center ${variantType[variant]} ${error ? "border-red-400" : "border-green"} relative  w-full ${className}`}
-                onClick={(e) => e.stopPropagation()}>
-                {leadingIcon && (
-                    <div
-                        className="mx-1  cursor-pointer text-red-500"
-                        onClick={onHandleLeadingIcon}>
-                        {leadingIcon}
-                    </div>
-                )}
+            <div className="">
+                <div
+                    className={`relative flex justify-start items-center ${variantType[variant]} ${error ? "border-red-400" : "border-green"} relative  w-full ${className}`}
+                    onClick={(e) => e.stopPropagation()}>
+                    {leadingIcon && (
+                        <div
+                            className="mx-1  cursor-pointer text-red-500"
+                            onClick={onHandleLeadingIcon}>
+                            {leadingIcon}
+                        </div>
+                    )}
 
-                <input
-                    ref={ref}
-                    className={`border-0  outline-none w-full h-full p-0 m-0 text-[13px] leading-[18px] text-text truncate !bg-transparent  ${classInput} `}
-                    placeholder={`${placeholder}`}
-                    value={value}
-                    onChange={onChange}
-                    type={`${type ? type : "text"}`}
-                    onFocus={onHandleFocus}
-                    onBlur={onBlur}
-                    disabled={disabled}
-                    onKeyDown={onKeyDown}
-                    defaultValue={defaultValue}
-                    {...rest}
-                />
-                {tailIcon && (
-                    <div
-                        ref={refSearch}
-                        className="mx-1  cursor-pointer text-red-500"
-                        onClick={onHandleTailIcon}>
-                        {tailIcon}
-                    </div>
-                )}
-                {tailIconSecond && (
-                    <div
-                        ref={refSearch}
-                        className="mx-1  cursor-pointer text-red-500"
-                        onClick={onHandleTailIconSecond}>
-                        {tailIconSecond}
-                    </div>
-                )}
-                <p className={` absolute ${!error ? "hidden " : ""} text-red-500 top-[34px] left-0  text-[12px]  whitespace-nowrap italic truncate  ${styleError ? styleError : ''}`}>
+                    <input
+                        ref={ref}
+                        className={`border-0  outline-none w-full h-full p-0 m-0 text-[13px] leading-[18px] text-text truncate !bg-transparent  ${classInput} `}
+                        placeholder={`${placeholder}`}
+                        value={value}
+                        onChange={onChange}
+                        type={`${type ? type : "text"}`}
+                        onFocus={onHandleFocus}
+                        onBlur={onBlur}
+                        disabled={disabled}
+                        onKeyDown={onKeyDown}
+                        defaultValue={defaultValue}
+                        {...rest}
+                    />
+                    {tailIcon && (
+                        <div
+                            ref={refSearch}
+                            className="mx-1  cursor-pointer text-red-500"
+                            onClick={onHandleTailIcon}>
+                            {tailIcon}
+                        </div>
+                    )}
+                    {tailIconSecond && (
+                        <div
+                            ref={refSearch}
+                            className="mx-1  cursor-pointer text-red-500"
+                            onClick={onHandleTailIconSecond}>
+                            {tailIconSecond}
+                        </div>
+                    )}
+                </div>
+                <p className={`  ${!error ? "hidden " : ""} text-red-500 top-[34px] left-0  text-[12px]   italic   ${styleError ? styleError : ''}`}>
                     {message}
                 </p>
             </div>

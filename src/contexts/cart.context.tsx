@@ -40,6 +40,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 
     const addToCart = async (cart_id: string, product_id: string, quantity: number) => {
+        console.log("check data cart ", cart_id, product_id, quantity)
         await addToCartMutation({ cart_id, product_id, quantity });
     };
 
