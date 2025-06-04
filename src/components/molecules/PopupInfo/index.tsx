@@ -166,9 +166,7 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
                     <Input
                         placeholder="Nhập số nhà, tên đường"
                         type={typeInput.TEXT}
-                        {...register("address", {
-                            required: "Vui lòng nhập địa chỉ cụ thể",
-                        })}
+                        {...register("address")}
                         error={!!errors.address}
                         message={errors.address?.message}
                     />

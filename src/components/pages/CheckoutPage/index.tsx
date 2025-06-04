@@ -224,7 +224,7 @@ function CheckoutPage() {
     const shipping = orderCheckout && orderCheckout?.order_products.length > 0 ? orderCheckout?.order_shipping ?? 0 : 0;
     const shippingDiscount = orderCheckout?.order_discount_shipping ?? 0;
     const discount = orderCheckout?.order_discount ?? 0
-    const finalPrice = (totalPrice ?? 0) - discount - shippingDiscount - 15000;
+    const finalPrice = (totalPrice ?? 0) - discount - shippingDiscount + 15000;
 
     return (
         <ContainerLayout isPrivate={true} isFooter={false}  >

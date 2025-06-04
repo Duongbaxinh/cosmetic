@@ -12,6 +12,7 @@ export type CardProductFullProps = Pick<
   className?: string;
   product_brand: ProductBrand;
   product_discount?: ProductDiscount;
+  product_thumbnail_2?: string;
 };
 export interface ListTemplateProps {
   children: React.ReactNode;

@@ -144,6 +144,7 @@ const HomePage: React.FC = () => {
                                                     key={product.id}
                                                     id={product.id}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -188,7 +189,7 @@ const HomePage: React.FC = () => {
                                     {brands && brands.map(
                                         (brand) => (
                                             <SwiperSlide key={brand.id}>
-                                                <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} className='block w-full h-full'>
+                                                <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
                                                     <Image src={brand.image} alt={brand.title} width={217} height={106} className='rounded-md' />
                                                 </Link>
                                             </SwiperSlide>
@@ -236,6 +237,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -279,7 +281,7 @@ const HomePage: React.FC = () => {
                             brands && brands.map(
                                 (brand: Brand) => (
                                     <SwiperSlide key={brand.id}>
-                                        <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className=' relative block w-full h-full'>
+                                        <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className=' relative block w-full h-full hover:-top-1 transition-all duration-100'>
                                             <Image src={brand.image} alt={brand.title} height={201} width={422} className='rounded-md w-full h-full' />
                                         </Link>
                                     </SwiperSlide>
@@ -310,6 +312,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -346,6 +349,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -397,6 +401,7 @@ const HomePage: React.FC = () => {
                                             id={product.id}
                                             product_discount={calculateDiscount(product)}
                                             product_thumbnail={product.product_thumbnail}
+                                            product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
                                             product_name={product.product_name}
                                             product_price={product.product_price}
                                             product_rate={product.product_rate}

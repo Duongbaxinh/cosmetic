@@ -30,7 +30,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: HeaderProps) => {
-    const { isLogin, logout, setIsAuth } = useAuth();
+    const { isLogin, logout, setIsAuth, userProfile } = useAuth();
     const { cart } = useCart()
     const { isOpen: openCart, toggleDrawer } = useCart();
     const router = useRouter();
@@ -59,10 +59,11 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
         }
     }, [dispatch]);
 
-    const cartQuantity = cart?.cart_details.reduce((a, b) => {
-        return a + b.quantity
-    }, 0)
-
+    const cartQuantity = cart?.cart_details.length ?? 0
+    // const cartQuantity = cart?.cart_details.reduce((a, b) => {
+    //     return a + b.quantity
+    // }, 0)
+    const userName = userProfile ? userProfile.username : ""
     return (
         <Container className={`bg-pink-50 ${classHeader}`}>
             <Drawer
@@ -137,9 +138,10 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                         <div className="relative">
                             <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
-                                    className="border border-gray-200 !rounded-full bg-gradient-to-r from-pink-300 to-purple-400 text-white hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500 transition-all duration-200"
+                                    className="group border-[1.5px] border-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200"
                                     onFunction={() => setIsOpen(prev => ({ openPhone: false, openComputer: !prev.openComputer }))}
-                                    title={isLogin ? 'Tài khoản' : 'Đăng nhập'}
+                                    title={isLogin ? userName.toString() : 'Đăng nhập'}
+                                    icon={isLogin ? <UserIcon className="text-black group-hover:text-pink-300 transition-colors duration-200" /> : ""}
                                 />
                             </button>
                             {isOpen.openComputer && isLogin && (

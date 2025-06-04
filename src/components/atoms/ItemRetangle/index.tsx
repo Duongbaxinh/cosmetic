@@ -24,7 +24,7 @@ const ItemRectangle: React.FC<ItemRectangleProps> = ({
                 {icon && <div className="relative">{icon}
                     {babe && quantity && quantity > 0 ? <div className="w-[15px] h-[15px] absolute -top-2 -right-2 rounded-full bg-pink-500 text-[10px] text-white text-center">{quantity}</div> : null}
                 </div>}
-                {title && (<span className="text-sm font-medium whitespace-nowrap">{title}</span>)}
+                {title && (<span className="text-sm text-inherit font-medium whitespace-nowrap">{title}</span>)}
             </div>
         </div>
     );

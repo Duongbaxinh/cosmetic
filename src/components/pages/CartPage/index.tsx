@@ -110,6 +110,9 @@ function CartPage() {
     const handleIncrease = (id: string) => {
         const current =
             localQuantities[id] ?? cart?.cart_details.find((p) => p.id === id)?.quantity ?? 1;
+        if (Number(current + 1) > 50) {
+            return toast.info("Vui lòng liên hệ trực tiếp qua hotline để mua hàng với số lượng lớn")
+        }
         setLocalQuantities((prev) => ({ ...prev, [id]: current + 1 }));
     };
 
@@ -126,7 +129,10 @@ function CartPage() {
     };
 
     const handleChangeQuantity = (id: string, value: string) => {
-        const numericValue = Number(value);
+        if (Number(value) > 50) {
+            toast.info("Vui lòng liên hệ trực tiếp qua hotline để mua hàng với số lượng lớn")
+        }
+        const numericValue = Math.min(50, Number(value));
         if (/^\d*$/.test(value) && numericValue >= 0) {
             setLocalQuantities((prev) => ({ ...prev, [id]: numericValue }));
         }
@@ -229,11 +235,7 @@ function CartPage() {
                                                     />
                                                 </div>
                                                 <Price
-                                                    product_price={
-                                                        localQuantities[productDetail.id]
-                                                            ? productDetail.product.product_price * localQuantities[productDetail.id]
-                                                            : productDetail.product.product_price
-                                                    }
+                                                    product_price={productDetail.product.product_price}
                                                 />
                                             </div>
                                         </div>

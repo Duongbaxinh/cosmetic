@@ -43,6 +43,9 @@ function DetailProductPage({ id }: { id: string | number }) {
     }, [dispatch]);
 
     const handleIncrease = () => {
+        if (Number(quantity + 1) > 50) {
+            return toast.info("Vui lòng liên hệ trực tiếp qua hotline để mua hàng với số lượng lớn")
+        }
         setQuantity((prev) => prev + 1);
     };
 
@@ -51,7 +54,10 @@ function DetailProductPage({ id }: { id: string | number }) {
     };
 
     const handleChangeQuantity = (number: string) => {
-        setQuantity(() => Number(number));
+        if (Number(number) > 50) {
+            toast.info("Vui lòng liên hệ trực tiếp qua hotline để mua hàng với số lượng lớn")
+        }
+        setQuantity(() => Math.min(50, Number(number)));
     };
 
     const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
