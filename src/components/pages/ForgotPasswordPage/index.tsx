@@ -50,8 +50,8 @@ function ForgotPasswordPage() {
                 >
                     <div className="border border-gray-300 md:min-w-[400px] max-w-[350px] md:max-w-[500px] p-5 rounded-lg space-y-4 shadow shadow-pink-300">
                         <div className='space-y-4 w-full'>
-                            <p className="text-[13px] font-bold text-pink-300 pb-2">Email đăng ký tài khoản</p>
-                            <p className="text-[13px] font-bold text-pink-300 pb-2 break-words">Hãy nhập chính xác email mà bạn đã đăng ký tài khoản để chúng tôi có thể tiếp tục xử lý việc khôi phục lại mật khẩu cho bạn</p>
+                            <p className="text-[13px] font-bold text-black pb-2">Email đăng ký tài khoản</p>
+                            <p className="text-[13px] font-bold text-black pb-2 break-words">Hãy nhập chính xác email mà bạn đã đăng ký tài khoản để chúng tôi có thể tiếp tục xử lý việc khôi phục lại mật khẩu cho bạn</p>
                             <Input
                                 className='border border-color py-3'
                                 placeholder="Nhập email của bạn"

@@ -29,6 +29,7 @@ import { useNetworkStatus } from '@/contexts/network.context';
 import { redirect } from 'next/navigation';
 import { CATEGORY_URL, DETAIL_PRODUCT_URL, INTERNATIONAL_PRODUCT_URL, NEW_PRODUCT_URL, PROMOTION_URL, TOP_PRODUCT_URL } from '@/routers';
 import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
+import { BANNERS } from '@/components/config/categories.config';
 
 
 
@@ -71,9 +72,7 @@ const HomePage: React.FC = () => {
     const handleLoadMore = async () => {
         try {
             if (!check_load) return
-            const newLimit = products ? (products.count - products.results.length) : 0
-            const newFilter = { ...filter, page: filter.page + 1, limitnumber: Math.min(filter.limitnumber, newLimit) };
-            setFilter(newFilter)
+            setFilter((prev) => ({ ...prev, limitnumber: prev.limitnumber + 10 }))
         } catch (error) {
             handleError(error)
         }
@@ -102,7 +101,7 @@ const HomePage: React.FC = () => {
                 {/* CATEGORY */}
                 <div className="grid grid-cols-6 grid-rows-2 gap-2  w-full rounded-md min-h-[150px] sm:min-h-[306px] ">
                     <div className="col-span-6 md:col-span-4 row-span-2 h-full">
-                        <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} clickable enableAutoPlay>
+                        <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} loop clickable enableAutoPlay>
                             {promotions && promotions.map(({ id, slug, thumbnail }) => (
                                 <SwiperSlide key={id}>
                                     <Link href={`${PROMOTION_URL}/${slug}`} className='w-full h-full relative'>
@@ -118,12 +117,12 @@ const HomePage: React.FC = () => {
 
                         </Carousel>
                     </div>
-                    <Link href={`${PROMOTION_URL}/anessa`} className="hidden md:block col-span-2 row-span-1 relative">
-                        <Image src={"/images/banner.webp"} className=' object-fill rounded-md w-full h-full' alt="" width={369} height={147} />
-                    </Link>
-                    <Link href={`${PROMOTION_URL}/anessa`} className=" hidden md:block col-span-2 row-span-1 relative">
-                        <Image src={"/images/banner.webp"} className=' object-fill rounded-md w-full h-full' alt="" width={369} height={147} />
-                    </Link>
+                    {BANNERS.map((banner) => (
+                        <Link href={`${PROMOTION_URL}/${banner.slug}`} className="hidden md:block col-span-2 row-span-1 relative">
+                            <Image src={banner.image} className=' object-fill rounded-md w-full h-full' alt="" width={369} height={147} />
+                        </Link>
+                    ))}
+
                 </div>
 
 
@@ -375,16 +374,16 @@ const HomePage: React.FC = () => {
                     ) :
                         (<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-3">
                             {/* Banner */}
-                            <div className=" col-span-2  md:col-span-2  flex items-center justify-center">
-                                <Carousel customSwipeWrap='!p-0' slidesPerView={1} clickable>
-                                    {categories.map(({ id, product_thumbnail }) => (
+                            <div className=" col-span-2  lg:col-span-4  flex items-center justify-center">
+                                <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} loop clickable enableAutoPlay>
+                                    {promotions && promotions.map(({ id, slug, thumbnail }) => (
                                         <SwiperSlide key={id}>
-                                            <Link href={`${CATEGORY_URL}/product_brand/${id}`} className='w-full h-full relative'>
+                                            <Link href={`${PROMOTION_URL}/${slug}`} className='w-full h-full relative'>
                                                 <Image
-                                                    src={product_thumbnail}
+                                                    src={thumbnail}
                                                     alt="carousel-image"
-                                                    className=" h-[200px] md:h-[410px] w-full  object-cover"
-                                                    width={557} height={410}
+                                                    className="h-full w-full object-cover"
+                                                    width={702} height={301}
                                                 />
                                             </Link>
                                         </SwiperSlide>
@@ -419,7 +418,19 @@ const HomePage: React.FC = () => {
                 {
                     check_load && (
                         <div className="w-full flex items-center justify-center ">
-                            <button className='block py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit' onClick={handleLoadMore} >Xem Thêm</button>
+                            <button className='flex items-center py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit'
+                                onClick={handleLoadMore} >
+                                {loading && (
+                                    <svg className="animate-spin h-5 w-5 text-pink-400" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"
+                                        />
+                                    </svg>
+                                )}
+                                Xem Thêm</button>
                         </div>
                     )
                 }

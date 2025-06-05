@@ -49,7 +49,7 @@ function Carousel({ className, customSwipeWrap, customButtonRight,
                     direction={direction ? direction : "horizontal"}
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={spaceBetween || 20}
-                    autoplay={enableAutoPlay ? { delay: 3000, disableOnInteraction: false } : false}
+                    autoplay={enableAutoPlay ? { delay: 2000, disableOnInteraction: false } : false}
                     slidesPerGroupSkip={slidesPerView || 1}
                     pagination={clickable ? { clickable: true } : false}
                     loop={loop ? true : false}

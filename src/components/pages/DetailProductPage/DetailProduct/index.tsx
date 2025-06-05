@@ -142,7 +142,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin vận chuyển</h2>
                 <div className="flex justify-between items-center gap-2.5 text-[14px] leading-[21px] font-light">
                     <p>Giao đến: {shippingAddress && shippingAddress.length > 0 ? (shippingAddress[0].address) : MESS_DELIVERY.ADDRESS_MESS}</p>
-                    {shippingAddress && shippingAddress[0] && shippingAddress[0].address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)}
+                    {/* {shippingAddress && shippingAddress[0] && shippingAddress[0].address && (<button className="text-blue-300 cursor-pointer">Đổi</button>)} */}
                 </div>
             </div >
             <div className="relative p-2 space-y-2  bg-white rounded-md ">

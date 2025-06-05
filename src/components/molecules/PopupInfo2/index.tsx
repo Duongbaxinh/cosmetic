@@ -34,9 +34,8 @@ export type FormValues = {
     address: string;
 };
 
-function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
+function PopupInfo2({ isOpen, onClose, callBack }: PopupInfoType) {
     const { shippingAddress } = useAuth()
-    const { proceedToCheckout, orderProducts } = useOrder();
     const router = useRouter();
 
     const methods = useForm<FormValues>();
@@ -117,9 +116,11 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
         };
         const dataCreateShippingAddress = await createShippingAddress(dataShipping);
         if (dataCreateShippingAddress.data) {
+            if (callBack) {
+                callBack(dataCreateShippingAddress.data)
+            }
             onClose()
             dispatch(setShippingAddress([...(shippingAddress || []), dataCreateShippingAddress.data]))
-            proceedToCheckout({ shippingAddressNew: dataCreateShippingAddress.data, product: orderProducts });
         } else {
             toast.error("Lỗi khi tạo địa chỉ giao hàng. Vui lòng thử lại sau.");
         }
@@ -194,4 +195,4 @@ function PopupInfo({ isOpen, onClose, callBack }: PopupInfoType) {
     );
 }
 
-export default PopupInfo;
+export default PopupInfo2;

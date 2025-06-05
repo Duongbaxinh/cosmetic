@@ -78,3 +78,8 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
     id: "promotion",
   },
 ];
+
+export const BANNERS = [
+  { image: "/images/promotion.webp", slug: "giam-30" },
+  { image: "/images/banner.webp", slug: "giam-40" },
+];

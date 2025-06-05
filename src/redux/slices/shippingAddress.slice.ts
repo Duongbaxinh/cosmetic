@@ -16,10 +16,13 @@ const baseQueryWithToken = fetchBaseQuery({
 export const shippingAddressApi = createApi({
   reducerPath: "shippingAddressApi",
   baseQuery: customFetchBaseQuery,
+  tagTypes: ["shipping"],
   endpoints: (builder) => ({
     getAddress: builder.query<ShippingAddress[], void>({
       query: () => SHIPPING_ADDRESS_API,
+      providesTags: ["shipping"],
     }),
+
     changeShippingAddress: builder.mutation({
       query: ({
         shippingId,
@@ -39,6 +42,7 @@ export const shippingAddressApi = createApi({
         method: "POST",
         body: shippingAddressData,
       }),
+      invalidatesTags: ["shipping"],
     }),
   }),
 });

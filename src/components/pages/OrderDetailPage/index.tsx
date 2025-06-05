@@ -23,15 +23,15 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
             <div className="px-0 md:px-8 lg:px-0 pb-0 md:pb-8 mr-0 md:mr-8">
                 <h1 className=' py-5  text-[20px] leading-6 font-light'>Địa chỉ nhận hàng</h1>
                 <div className='flex flex-col bg-white sm:flex-row rounded-md'>
-                    <div className=" p-3 min-w-[280px] flex flex-col gap-2  text-[12px]  text-gray-300  border-r-1 border-gray-300 ">
-                        <p className='text-[14px] leading-[22px] text-gray-400'>{userProfile?.username} </p>
-                        <p>{userProfile?.phone}</p>
-                        <p>{is_order && orderDetail?.shipping_address ? orderDetail.shipping_address.address : ''}</p>
+                    <div className=" p-3 w-full flex flex-col gap-2  text-[12px]  text-gray-300  ">
+                        <p className='text-[14px] leading-[22px] text-gray-400'><b>Người nhận: </b>{userProfile?.username} </p>
+                        <p><b>Số điện thoại: </b> {userProfile?.phone}</p>
+                        <p><b>Địa chỉ giao hàng: </b>{is_order && orderDetail?.shipping_address ? orderDetail.shipping_address.address : ''}</p>
                     </div>
-                    <div className="w-full p-3  " >
+                    {/* <div className="w-full p-3  " >
                         <div className="px-8 w-full">
                             <div className="border-l-2 border-gray-300 pl-4 relative">
-                                {/* {orderDetail?.order_tracking.map((item, idx) => (
+                                {orderDetail?.order_tracking.map((item, idx) => (
                                     <div key={idx} className="mb-6 relative">
 
                                         <span className={clsx('w-6 h-6 rounded-full absolute -left-[30px] flex items-center justify-center', status_color(item.type))}>
@@ -62,10 +62,10 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                                             </a>
                                         )}
                                     </div>
-                                ))} */}
+                                ))}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* PRODUCT */}
@@ -93,7 +93,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                         <div className="space-y-2 text-[14px] leading-[21px] text-gray-400 border-t pt-[20px]">
                             <div className="flex justify-between ">
                                 <span className="text-gray-600">Phương thức thanh toán</span>
-                                <span className="text-gray-600">{orderDetail.payment.payment_method}</span>
+                                <span className="text-gray-600">{orderDetail.payment?.payment_method || "Thanh toán khi nhận hàng"}</span>
                             </div>
 
                             <div className="flex justify-between ">
@@ -122,11 +122,11 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                             </div>
                             <div className="flex justify-between border-t border-gray-300 pt-2">
                                 <span className="text-gray-800 font-semibold">Số tiền đã thanh toán</span>
-                                <Price product_price={(orderDetail.payment.status === "paid") ? orderDetail.total_price : 0} className='text-red-400 text-[16px]' />
+                                <Price product_price={(orderDetail.payment?.status === "paid") ? orderDetail.total_price : 0} className='text-red-400 text-[16px]' />
                             </div>
                             <div className="flex justify-between border-t border-gray-300 pt-2">
-                                <span className="text-gray-800 font-semibold">Số tiền cần thanh toán {orderDetail?.payment.status.toString()}</span>
-                                <Price product_price={orderDetail?.payment.status === "paid" ? 0 : orderDetail.total_price} className='text-red-400 text-[20px]' />
+                                <span className="text-gray-800 font-semibold">Số tiền cần thanh toán </span>
+                                <Price product_price={orderDetail?.payment?.status === "paid" ? 0 : orderDetail.total_price} className='text-red-400 text-[20px]' />
                             </div>
 
                         </div>

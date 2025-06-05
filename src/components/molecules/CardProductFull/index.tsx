@@ -40,9 +40,9 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
             className={`p-2 group/card sm:p-0 w-full h-full bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2 hover:shadow-lg transition-shadow duration-200 ${className}`}
         >
             <div className="relative flex flex-col justify-start gap-2 pb-6">
-                {/* Discount badge */}
+
                 {totalDiscount > 0 && (
-                    <div className="absolute top-2 left-2 text-white min-w-[50px] min-h-[50px] z-50 flex items-center justify-center bg-black rounded-full">
+                    <div className="absolute top-2 left-2 text-white min-w-[50px] min-h-[50px] z-10 flex items-center justify-center bg-black rounded-full">
                         {priceDiscount > 0 && `${totalDiscount}%`}
                     </div>
                 )}

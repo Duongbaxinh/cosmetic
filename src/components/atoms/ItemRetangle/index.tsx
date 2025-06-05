@@ -17,7 +17,7 @@ const ItemRectangle: React.FC<ItemRectangleProps> = ({
         <div
             onMouseEnter={onmousedown}
             onClick={onFunction}
-            className={`w-full py-[7px] px-4 flex items-center cursor-pointer transition-colors hover:bg-gray-300 rounded-sm ${className} `}
+            className={`w-full flex items-center justify-center py-[7px] px-4 cursor-pointer transition-colors hover:bg-gray-300 rounded-sm ${className} `}
         >
 
             <div className="flex items-center gap-1">

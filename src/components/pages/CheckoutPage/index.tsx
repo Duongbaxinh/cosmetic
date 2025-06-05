@@ -11,7 +11,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import { useCreateOrderDetailMutation, useCreateOrderMutation, useCreatePaymentMutation, usePaymentOrderMutation } from '@/redux/slices/order.slice';
 import { useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { CHECKOUT_URL, DETAIL_PRODUCT_URL, ORDER_URL } from '@/routers';
-import type { OrderCheckout, Product } from '@/types';
+import { ShippingAddress, type OrderCheckout, type Product } from '@/types';
 import { handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,8 +21,12 @@ import { BiChevronUp, BiMinus, BiPlus } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import LoadingPage from '../LoadingPage';
 import LoadingIcon from '../LoadingPage/LoadingIcon';
+import { useAuth } from '@/contexts/auth.context';
+import useSaveLocalStorage from '@/hooks/useLocalstorage';
+import PopupShippingAddress from '@/components/organisms/PopupShippingAddress';
 
 function CheckoutPage() {
+    const { shippingAddress } = useAuth()
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalo">("cash")
     const [orderCheckout, setOrderCheckout] = useState<OrderCheckout | null>(null)
     const [createOrder] = useCreateOrderMutation();
@@ -30,6 +34,8 @@ function CheckoutPage() {
     const [createOrderDetail, { isLoading: loadingCreateOrder, error: errorCreateOrder }] = useCreateOrderDetailMutation();
     const [createPayment, { isLoading: loadingCreatePayment, error: errorCreatePayment }] = useCreatePaymentMutation();
     const [show, setShow] = useState(false)
+    const [isChangeShipping, setIsChangeShipping] = useState<boolean>(false)
+    const [shippingOrder, setShippingOrder] = useSaveLocalStorage("shippingOrder", null)
     const { data: productAddition, error, isLoading: loading } = useGetAllProductsQuery({ limitnumber: 20, page: 1, product_international: true })
 
     const router = useRouter()
@@ -136,6 +142,7 @@ function CheckoutPage() {
             }
         }
     }
+
     const handleRemoveProduct = (product_id: string) => {
         const orderString = sessionStorage.getItem('order');
         if (orderString) {
@@ -188,6 +195,7 @@ function CheckoutPage() {
                 window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
             }
             if (paymentMethod === "zalo" && dataOrder && dataOrder.data) {
+                alert("run at zalo")
                 const datPayment = await paymentOrder(dataOrder.data?.id) as { data?: { requestId?: string; payUrl?: string } }
                 if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 await createPayment({
@@ -212,7 +220,15 @@ function CheckoutPage() {
         }
     }, [])
 
+    const handleChangeAddressShipping = (shipping: ShippingAddress) => {
+
+        if (!shipping) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+        setShippingOrder(shipping)
+    }
     useEffect(() => {
+        if (shippingAddress && shippingAddress.length > 0) {
+            setShippingOrder(shippingAddress[0])
+        }
         getOrder()
     }, [])
 
@@ -230,9 +246,11 @@ function CheckoutPage() {
     const discount = orderCheckout?.order_discount ?? 0
     const finalPrice = (totalPrice ?? 0) - discount - shippingDiscount + 15000;
 
+
     return (
         <ContainerLayout isPrivate={true} isFooter={false}  >
             <div className="flex  w-full">
+                <PopupShippingAddress isOpen={isChangeShipping} setIsOpen={setIsChangeShipping} onChangeAddress={handleChangeAddressShipping} />
                 <div className="w-full">
                     <div className="pb-3">
                         <Breadcrumb items={[{ label: "Trang Chủ", href: "/" }, { label: "Thanh Toán", href: "#" }]} />
@@ -317,6 +335,12 @@ function CheckoutPage() {
                                         boxShadow: '#3969b340 0px 0px 10px 0px',
                                     }}>
                                     <h2 className={`${!show ? "opacity-0 h-0" : "opacity-100 h-auto"} lg:opacity-100 lg:h-auto text-[14px] font-bold text-center transition-all duration-300 ease-in-out`}>Đơn hàng</h2>
+
+                                    <div className="flex gap-3 items-start  text-[12px] w-full border-b-[1px] pb-2 border-color ">
+                                        <b className='whitespace-nowrap' >Giao tới:</b>
+                                        <p>{shippingOrder?.address || "Bạn muốn đơn hàng giao tới địa chỉ nào?"}</p>
+                                        <button onClick={() => setIsChangeShipping(true)}>Đổi</button>
+                                    </div>
                                     <div
                                         className={`${!show ? "opacity-0 max-h-0" : "opacity-100 max-h-[250px]"} lg:opacity-100 lg:max-h-[230px] overflow-auto transition-all duration-300 ease-in-out`}
                                     >
@@ -391,7 +415,7 @@ function CheckoutPage() {
                                                         className="mr-2 disabled:opacity-[0.5] disabled:cursor-auto"
                                                     />
                                                     <div className="flex items-center gap-2 text-[12px]">
-                                                        <Image src={"/cash.jpg"} alt="Receipt Payment" width={20} height={20} className="h-6" />
+                                                        <Image src={"/images/cash.jpg"} alt="Receipt Payment" width={20} height={20} className=" rounded-full object-cover" />
                                                         <p>Thanh toán khi nhận hàng</p>
                                                     </div>
                                                 </label>
@@ -405,8 +429,22 @@ function CheckoutPage() {
                                                         className="mr-2 disabled:opacity-[0.5] disabled:cursor-auto"
                                                     />
                                                     <div className="flex items-center gap-2 text-[12px]">
-                                                        <Image src={"/images/momo.png"} alt="PayPal Payment" className="h-6" width={20} height={20} />
+                                                        <Image src={"/images/momo.png"} alt="PayPal Payment" width={20} height={20} className=" rounded-full object-cover" />
                                                         <p>Thanh toán bằng MoMo</p>
+                                                    </div>
+                                                </label>
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        disabled={!isOrderAble}
+                                                        type="radio"
+                                                        value="zalo"
+                                                        checked={paymentMethod === 'zalo'}
+                                                        onChange={() => setPaymentMethod("zalo")}
+                                                        className="mr-2 disabled:opacity-[0.5] disabled:cursor-auto"
+                                                    />
+                                                    <div className="flex items-center gap-2 text-[12px]">
+                                                        <Image src={"/images/zalo.png"} alt="PayPal Payment" width={20} height={20} className="rounded-full object-cover" />
+                                                        <p>Thanh toán bằng ZaloPay</p>
                                                     </div>
                                                 </label>
                                             </div>

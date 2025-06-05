@@ -3,10 +3,8 @@ import Input from '@/components/atoms/Input';
 import { MESS_SYSTEM } from '@/config/mess.config';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useResetPasswordMutation } from '@/redux/slices/auth.slice';
-import { LOGIN_URL } from '@/routers';
 import { resetPasswordSchema } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { redirect } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -54,8 +52,8 @@ function ResetPasswordPage({ token }: { token: string }) {
                 >
                     <div className="border border-gray-300 max-w-[350px] md:min-w-[400px] md:max-w-[500px] p-3 rounded-lg space-y-4">
                         <div>
-                            <p className="text-[13px] font-bold text-pink-300 pb-2">Nhập mật khẩu mới</p>
-                            <p className="text-[13px] font-bold text-pink-300 pb-2">Hãy nhập mật khẩu mới và nhấn xác nhân mật khẩu để tiếp tục hành trình khám phá vẻ đẹp với chúng tôi</p>
+                            <p className="text-[13px] font-bold text-black pb-2">Nhập mật khẩu mới</p>
+                            <p className="text-[13px] font-bold text-black pb-2">Hãy nhập mật khẩu mới và nhấn xác nhân mật khẩu để tiếp tục hành trình khám phá vẻ đẹp với chúng tôi</p>
                             <div className="mb-3">
                                 <Input
                                     className='border border-color py-3'

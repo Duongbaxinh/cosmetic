@@ -13,7 +13,7 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     function handleRTKError(error: unknown): string {
         const defaultMessage = "Đã có lỗi xảy ra. Vui lòng thử lại.";
-
+        console.log("check kkkk", error)
         if (!error || typeof error !== "object") {
             toast.error(defaultMessage);
             return defaultMessage;

@@ -146,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                         <div className="relative">
                             <button className='hidden sm:block' onClick={() => { !isLogin ? openLogin() : () => { } }}>
                                 <ItemRectangle
-                                    className="group border-[1.5px] border-black text-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200"
+                                    className="group min-w-[115px] border-[1.5px] border-black text-black !rounded-full hover:border-pink-300 hover:bg-transparent  hover:text-pink-300 transition-all duration-200"
                                     onFunction={() => setIsOpen(prev => ({ openPhone: false, openComputer: !prev.openComputer }))}
                                     title={isLogin ? userName.toString() : 'Đăng nhập'}
                                     icon={isLogin ? <UserIcon className="text-black group-hover:text-pink-300 transition-colors duration-200" /> : ""}
