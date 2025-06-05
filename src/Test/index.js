@@ -48,91 +48,73 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
+// Import the JSON file (Node.js style, use dynamic import for ES modules if needed)
+var productDataArray = require("./data7.json"); // Adjust path to your JSON file
 var createProductWithImages = function (productData) { return __awaiter(void 0, void 0, void 0, function () {
-    var dataFilter, createProductResponse, error_1;
+    var products, dataFilter, createProductResponse, _loop_1, i, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                dataFilter = productData.map(function (product) {
-                    var product_images = product.product_images, productBody = __rest(product, ["product_images"]);
+                _a.trys.push([0, 7, , 8]);
+                products = Array.isArray(productData) ? productData : [productData];
+                dataFilter = products.map(function (product) {
+                    var images = product.images, productBody = __rest(product, ["images"]);
                     return productBody;
                 });
                 return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/products", dataFilter, {
                         headers: {
-                            Authorization: "Bearer Pvso7TXTm0hL77yNtxL0n7fK27xI5k",
+                            Authorization: "Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V",
                         },
                     })];
             case 1:
                 createProductResponse = _a.sent();
-                if (createProductResponse.data) {
-                    // const imagePayload = product_images.map((url, index) => ({
-                    //   product_id: productData.product_name,
-                    //   image_url: url,
-                    //   alt_text: productData.product_name,
-                    // }));
-                    // await axios.post(
-                    //   "https://joyboybe-production.up.railway.app/product-images",
-                    //   imagePayload,
-                    //   {
-                    //     headers: {
-                    //       Authorization: `Bearer AKVlALtnZ1jWtgXubBTT6NOJgfueB7`,
-                    //     },
-                    //   }
-                    // );
-                    console.log("Tạo sản phẩm và ảnh thành công");
-                }
-                return [3 /*break*/, 3];
+                if (!createProductResponse.data) return [3 /*break*/, 6];
+                _loop_1 = function (i) {
+                    var product, imagePayload;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                product = products[i];
+                                if (!(product.images && product.images.length > 0)) return [3 /*break*/, 2];
+                                imagePayload = product.images.map(function (url) { return ({
+                                    product_id: product.product_name, // Note: This assumes product_name is unique; consider using a proper product ID
+                                    image_url: url,
+                                    alt_text: product.product_name,
+                                }); });
+                                return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/product-images", imagePayload, {
+                                        headers: {
+                                            Authorization: "Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V",
+                                        },
+                                    })];
+                            case 1:
+                                _b.sent();
+                                _b.label = 2;
+                            case 2: return [2 /*return*/];
+                        }
+                    });
+                };
+                i = 0;
+                _a.label = 2;
             case 2:
+                if (!(i < products.length)) return [3 /*break*/, 5];
+                return [5 /*yield**/, _loop_1(i)];
+            case 3:
+                _a.sent();
+                _a.label = 4;
+            case 4:
+                i++;
+                return [3 /*break*/, 2];
+            case 5:
+                console.log("Tạo sản phẩm và ảnh thành công");
+                _a.label = 6;
+            case 6: return [3 /*break*/, 8];
+            case 7:
                 error_1 = _a.sent();
                 console.error("Lỗi khi tạo sản phẩm hoặc ảnh:", error_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                throw error_1;
+            case 8: return [2 /*return*/];
         }
     });
 }); };
-var rawProducts = [
-    {
-        product_brand: "THE WHOO",
-        product_description: "Quis natus modi qui ",
-        product_discount: false,
-        product_discount_end: "2017-05-08",
-        product_discount_percent: 43,
-        product_discount_start: "2003-12-19",
-        product_expiration_date: "1977-01-28",
-        product_images: [
-            "blob:http://localhost:3000/bc267292-b216-479e-809c-45432d2ab24e",
-        ],
-        product_ingredient: "Labore dolor cillum ",
-        product_international: false,
-        product_made: "Unde exercitationem ",
-        product_name: "Shafira Cervantes",
-        product_price: 5680000,
-        product_promotion_id: "Giảm 40%",
-        product_stock_quantity: 83,
-        product_thumbnail: "https://res.cloudinary.com/dwu92ycra/image/upload/v1748920473/JOYBOY/u8gydvcegxymve3v2waj.webp",
-        product_type: "Tẩy tế bào chết cơ thể",
-        images: [],
-    },
-    {
-        product_brand: "OBBAGI",
-        product_description: "Fuga Totam qui odit",
-        product_discount: false,
-        product_discount_end: "",
-        product_discount_percent: 0,
-        product_discount_start: "",
-        product_expiration_date: "1982-05-13",
-        product_images: [],
-        product_ingredient: "Eos alias incididunt",
-        product_international: true,
-        product_made: "Duis ipsum esse ut",
-        product_name: "Liberty Velez",
-        product_price: 20000,
-        product_promotion_id: "Giảm 50%",
-        product_stock_quantity: 576,
-        product_thumbnail: "https://res.cloudinary.com/dwu92ycra/image/upload/v1748920473/JOYBOY/u8gydvcegxymve3v2waj.webp",
-        product_type: "Son Thỏi",
-        images: [],
-    },
-];
-createProductWithImages(rawProducts);
+// Call the function with the imported JSON data
+createProductWithImages(productDataArray);
