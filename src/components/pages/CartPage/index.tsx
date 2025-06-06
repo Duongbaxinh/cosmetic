@@ -157,9 +157,10 @@ function CartPage() {
     const totalPrice = useMemo(() => {
         if (!cart || !cart.cart_details) return 0;
         return cart.cart_details.reduce((sum, productDetail) => {
+            const { finalPrice } = priceDiscountProductCart(productDetail.product)
             if (!itemSelected.includes(productDetail.id)) return sum;
             const qty = localQuantities[productDetail.id] ?? productDetail.quantity;
-            return sum + productDetail.product.product_price * qty;
+            return sum + finalPrice * qty;
         }, 0);
     }, [cart, localQuantities, itemSelected]);
 
