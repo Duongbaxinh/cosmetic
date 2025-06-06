@@ -80,7 +80,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             } else if (product) {
                 products = [product];
             }
-
+            const orderDiscount = products.reduce((acc, item) => acc + (item?.product_discount ? item.product_discount : 0), 0)
             const totalPrice = products.reduce((acc, item) => acc + item.product_price * item.quantity, 0);
 
             if (!shippingAddressNew && shippingAddress.length === 0) {
@@ -90,8 +90,8 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             const orderTemporary = {
                 order_quantity: products.reduce((acc, item) => acc + item.quantity, 0),
                 order_total_price: totalPrice,
-                order_discount: 0,
-                order_final_price: totalPrice,
+                order_discount: orderDiscount,
+                order_final_price: totalPrice - orderDiscount,
                 order_shipping: 15000,
                 order_shippingAddress: shippingAddressNew ?? shippingAddress[0],
                 order_expected_delivery_time: "2025-04-13T19:00:00Z",

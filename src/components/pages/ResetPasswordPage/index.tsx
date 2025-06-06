@@ -5,7 +5,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import { useResetPasswordMutation } from '@/redux/slices/auth.slice';
 import { resetPasswordSchema } from '@/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 

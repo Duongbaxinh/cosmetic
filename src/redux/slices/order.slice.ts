@@ -95,11 +95,14 @@ export const orderProductApi = createApi({
         return response;
       },
     }),
-    paymentOrder: builder.mutation<MomoPaymentResponse, string>({
-      query: (order_id: string) => ({
-        url: ORDER_PAYMENT_API,
+    paymentOrder: builder.mutation<
+      MomoPaymentResponse,
+      { orderId: string; paymentMethod: "momo" | "zalo" }
+    >({
+      query: (orderData) => ({
+        url: `${ORDER_PAYMENT_API}/${orderData.paymentMethod}`,
         method: "POST",
-        body: { order_id: order_id },
+        body: { order_id: orderData.orderId },
       }),
       transformResponse: (response: MomoPaymentResponse) => {
         return response;

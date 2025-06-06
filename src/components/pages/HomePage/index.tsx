@@ -143,7 +143,7 @@ const HomePage: React.FC = () => {
                                                     key={product.id}
                                                     id={product.id}
                                                     product_thumbnail={product.product_thumbnail}
-                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -236,7 +236,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
-                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -311,7 +311,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
-                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -348,7 +348,7 @@ const HomePage: React.FC = () => {
                                                     id={product.id}
                                                     product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
-                                                    product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
@@ -400,7 +400,7 @@ const HomePage: React.FC = () => {
                                             id={product.id}
                                             product_discount={calculateDiscount(product)}
                                             product_thumbnail={product.product_thumbnail}
-                                            product_thumbnail_2={product.product_images ? product.product_images[0]?.image_url : ""}
+                                            product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                             product_name={product.product_name}
                                             product_price={product.product_price}
                                             product_rate={product.product_rate}

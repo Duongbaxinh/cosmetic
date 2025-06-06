@@ -27,6 +27,8 @@ interface DetailProductProps {
     onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
     product_quantity: number;
     cost_tentative: number;
+    product_discount_percent?: number;
+    product_discount?: number;
     onIncrease: () => void;
     onDecrease: () => void;
     onChangeQuantity: (value: string) => void;
@@ -42,6 +44,8 @@ const DetailProduct: React.FC<DetailProductProps> = ({
     breadcrumbDetailProduct,
     product_quantity,
     cost_tentative,
+    product_discount,
+    product_discount_percent,
     onIncrease,
     onBlur,
     onDecrease,
@@ -49,12 +53,12 @@ const DetailProduct: React.FC<DetailProductProps> = ({
     onPurchase,
     onAddToCart
 }) => {
-    const { userProfile } = useAuth()
+
     const [showMore, setShowMore] = useState({
         productDescription: false,
         productInfo: false,
     });
-    const productDiscount = product.product_promotion?.discount_percent ? product.product_price * (product.product_promotion.discount_percent / 100) : 0
+    const isDiscount = product_discount && product_discount > 0 && product_discount_percent && product_discount_percent > 0;
     return (
         <div className="flex flex-col gap-2.5 w-full max-w-full  rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
@@ -72,25 +76,25 @@ const DetailProduct: React.FC<DetailProductProps> = ({
 
                     <div className="flex justify-start items-center gap-2 pr-0 md:pr-24">
                         <div className="flex items-center gap-2.5">
-                            <GroupStart starActive={Math.round(Number(product.product_rate))} className='w-[100px]' />
+                            <GroupStart starActive={Math.round(Number(product.product_rate))} customStar='w-[18px]' className='w-[100px]' />
                             <p className='text-[14px]  font-[500]'>({product.product_rate})</p>
                             <p className="text-[12px] "> <b>xuất xứ</b> {`${product.product_made}`}</p>
                         </div>
                         <p className="text-[12px] leading-[24px] "> <b>Đã bán</b> {` (${product.product_sold})`}</p>
                     </div>
                     <div className="flex items-center gap-5">
-                        {productDiscount > 0 && (
+                        {isDiscount && (
                             <Price
                                 className="text-pink-600 justify-center font-medium text-[20px]"
-                                product_price={productDiscount}
+                                product_price={product.product_price - product_discount}
                             />
                         )}
                         <Price
-                            className={`!text-[14px] justify-center  ${productDiscount ? "line-through text-gray-400 font-600 " : 'text-pink-300 font-bold'}`}
+                            className={`!text-[14px] justify-center  ${isDiscount ? "line-through text-gray-400 font-600 " : 'text-pink-300 font-bold'}`}
                             product_price={product.product_price}
                         />
-                        {productDiscount > 0 && (
-                            <Tag value={product.product_promotion?.discount_percent?.toString() ?? ''} />
+                        {isDiscount && (
+                            <Tag value={product_discount_percent?.toString() ?? ''} />
                         )}
                         {/* {(product.product_discount) && (<Chip title={product.dis} />)} */}
                         {/* <p className='line-through text-[14px] text-gray-400'>{Number(product.product_price).toLocaleString("vi-VN")}<sup>đ</sup></p> */}

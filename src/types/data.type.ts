@@ -114,6 +114,7 @@ export type OrderProduct = {
   product_brand: string;
   product_type: string;
   product_thumbnail: string;
+  product_discount?: number;
   quantity: number;
   created_at?: string;
   updated_at?: string;
@@ -198,9 +199,19 @@ export type MomoPaymentResponse = {
   qrCodeUrl: string;
 };
 
+// Cart
+export type ProductCartDetail = {
+  id: string;
+  product_name: string;
+  product_price: number;
+  product_thumbnail: string;
+  product_discount_percent: number;
+  product_type: ProductType;
+  product_brand: ProductBrand;
+};
 export type CartDetail = {
   id: string;
-  product: Product;
+  product: ProductCartDetail;
   quantity: number;
   created_at: string;
   updated_at: string;

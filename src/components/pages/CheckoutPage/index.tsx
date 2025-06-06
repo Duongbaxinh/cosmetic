@@ -181,7 +181,7 @@ function CheckoutPage() {
             await createOrderDetail(orderDetailProduct)
 
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
-                const datPayment = await paymentOrder(dataOrder.data?.id) as { data?: { requestId?: string; payUrl?: string } }
+                const datPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
                 if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 const data_payment = await createPayment({
                     order_id: dataOrder.data.id,
@@ -196,7 +196,7 @@ function CheckoutPage() {
             }
             if (paymentMethod === "zalo" && dataOrder && dataOrder.data) {
                 alert("run at zalo")
-                const datPayment = await paymentOrder(dataOrder.data?.id) as { data?: { requestId?: string; payUrl?: string } }
+                const datPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: 'zalo' }) as { data?: { requestId?: string; payUrl?: string } }
                 if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 await createPayment({
                     order_id: dataOrder.data.id,

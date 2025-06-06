@@ -1,13 +1,12 @@
 "use client";
 import GroupStart from '@/components/organisms/GroupStart';
-import { CardProductFullProps } from '@/types';
-import React from 'react';
-import Price from '../../atoms/Price';
-import Image from 'next/image';
-import Tag from '@/components/atoms/Tag';
-import { useCart } from '@/contexts/cart.context';
 import { MESS_SYSTEM } from '@/config/mess.config';
+import { useCart } from '@/contexts/cart.context';
+import { CardProductFullProps } from '@/types';
+import Image from 'next/image';
+import React from 'react';
 import { toast } from 'react-toastify';
+import Price from '../../atoms/Price';
 
 const CardProductFull: React.FC<CardProductFullProps> = ({
     product_name,
@@ -101,7 +100,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                     <Price
                         className={`!text-[14px] justify-center ${priceDiscount
                             ? "line-through text-gray-400 font-thin"
-                            : "text-pink-300 font-bold"
+                            : "text-pink-600 font-bold"
                             }`}
                         product_price={product_price}
                     />
@@ -111,6 +110,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                 <div className="flex space-x-1 justify-center items-center w-full h-[30px]">
                     <GroupStart
                         starActive={Math.round(product_rate)}
+                        customStar='w-[15px]'
                         className="text-yellow-400 w-[100px] max-h-[20px]"
                     />
                     <p className="text-[12px] text-gray-500">({product_rate})</p>

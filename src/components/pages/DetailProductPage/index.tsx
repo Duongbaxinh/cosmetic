@@ -9,7 +9,7 @@ import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
 import { OrderProduct, ShippingAddress } from '@/types';
 import { createParams } from '@/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LoadingPage from '../LoadingPage';
@@ -33,7 +33,6 @@ function DetailProductPage({ id }: { id: string | number }) {
 
     const dispatch = useDispatch();
     const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
-    const cost_tentative = useMemo(() => (product ? quantity * product.product_price : 0), [quantity, product]);
 
     useEffect(() => {
         const shippingData = localStorage.getItem("shippingAddress");
@@ -41,6 +40,20 @@ function DetailProductPage({ id }: { id: string | number }) {
             dispatch(setShippingAddress(JSON.parse(shippingData)));
         }
     }, [dispatch]);
+
+
+    if (loadingProduct)
+        return <LoadingPage className="w-screen h-screen bg-pink-50" />;
+    if (!product)
+        return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center w-screen h-screen" />;
+
+
+    const productDiscountDirect = product.product_discount ? product.product_discount_percent : 0
+    const productDiscountPromotion = product.product_promotion?.discount_percent ? product.product_promotion.discount_percent : 0
+    const productDiscountConclude = productDiscountPromotion > 0 ? productDiscountPromotion : productDiscountDirect
+    const productDiscountPrice = (product.product_price * productDiscountConclude / 100)
+    const finalPrice = product.product_price - productDiscountPrice
+    const cost_tentative = product ? quantity * finalPrice : 0
 
     const handleIncrease = () => {
         if (Number(quantity + 1) > 50) {
@@ -72,11 +85,12 @@ function DetailProductPage({ id }: { id: string | number }) {
         const orderProduct: OrderProduct = {
             id: product.id,
             product_name: product.product_name,
-            product_price: product.product_price,
+            product_price: finalPrice,
             product_thumbnail: product.product_thumbnail,
             product_type: product.product_type?.slug,
             product_brand: product.product_brand?.slug,
             quantity: quantity,
+            product_discount: 0
         };
         return handlePurchase(orderProduct);
     };
@@ -90,15 +104,6 @@ function DetailProductPage({ id }: { id: string | number }) {
         toast.success("Đã thêm vào giỏ hàng thành công")
 
     };
-
-    const handleClosePopup = (field: "openLogin" | "openContact") => {
-        setIsOpen((prev) => ({ ...prev, [field]: false }));
-    };
-
-    if (loadingProduct)
-        return <LoadingPage className="w-screen h-screen bg-pink-50" />;
-    if (!product)
-        return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center w-screen h-screen" />;
 
     const breadcrumbDetailProduct = [
         { label: "Trang Chủ", href: "/" },
@@ -120,6 +125,8 @@ function DetailProductPage({ id }: { id: string | number }) {
                     product_price={product.product_price}
                     product_quantity={quantity}
                     cost_tentative={cost_tentative}
+                    product_discount={productDiscountPrice}
+                    product_discount_percent={productDiscountConclude}
                     onIncrease={handleIncrease}
                     onBlur={handleOnBlur}
                     onDecrease={handleDecrease}

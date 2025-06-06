@@ -5,10 +5,9 @@ import Drawer from "@/components/molecules/Drawer";
 import { MESS_CART } from "@/config/mess.config";
 
 import { useCart } from "@/contexts/cart.context";
-import { useError } from "@/contexts/error.context";
 import { useOrder } from "@/contexts/order.context";
-import { deleteCartManyProduct } from "@/services/cart.service";
-import { handleError } from "@/utils";
+import { OrderProduct, ProductCartDetail } from "@/types";
+import { calculateProductDiscounts, priceDiscountProductCart } from "@/utils";
 import { debounce } from "lodash";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -57,17 +56,18 @@ function CartPage() {
         if (!cart || cart?.cart_details.length <= 0) return;
         const productCarts = cart.cart_details
             .map((productDetail) => {
+                const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product)
                 if (itemSelected.includes(productDetail.id)) {
                     return {
                         id: productDetail.product.id,
                         product_name: productDetail.product.product_name,
-                        product_price: productDetail.product.product_price,
+                        product_price: finalPrice,
                         product_thumbnail: productDetail.product.product_thumbnail,
                         product_type: productDetail.product.product_type?.slug,
                         product_brand: productDetail.product.product_brand?.slug,
                         quantity: localQuantities[productDetail.id] ?? productDetail.quantity,
-
-                    };
+                        product_discount: 0
+                    } as OrderProduct;
                 }
             })
             .filter((product) => product !== undefined);
@@ -152,19 +152,16 @@ function CartPage() {
         }
     };
 
+
+
     const totalPrice = useMemo(() => {
         if (!cart || !cart.cart_details) return 0;
-
         return cart.cart_details.reduce((sum, productDetail) => {
             if (!itemSelected.includes(productDetail.id)) return sum;
             const qty = localQuantities[productDetail.id] ?? productDetail.quantity;
             return sum + productDetail.product.product_price * qty;
         }, 0);
     }, [cart, localQuantities, itemSelected]);
-
-    const handleClosePopup = (field: "openLogin" | "openContact") => {
-        setIsOpen((prev) => ({ ...prev, [field]: false }));
-    };
 
 
     const product_quantity = cart && cart.cart_details ? cart.cart_details.length : 0;
@@ -198,61 +195,64 @@ function CartPage() {
                             </div>
 
                             <div className="pt-5">
-                                {cart?.cart_details.map((productDetail) => (
-                                    <div
-                                        key={productDetail.id}
-                                        className="flex gap-3 items-start text-[12px] py-2 px-4"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            checked={itemSelected.includes(productDetail.id)}
-                                            onChange={(e) => handleSelectItem(e.target.checked, productDetail.id)}
-                                        />
-                                        <div className="flex items-start gap-3 w-full">
-                                            <Image
-                                                src={productDetail.product?.product_thumbnail && productDetail.product.product_thumbnail.startsWith("http") ? productDetail.product.product_thumbnail : ""}
-                                                alt={productDetail.product.product_name}
-                                                width={80}
-                                                height={80}
-                                                className="shadow rounded-lg"
+                                {cart?.cart_details.map((productDetail) => {
+
+                                    return (
+                                        <div
+                                            key={productDetail.id}
+                                            className="flex gap-3 items-start text-[12px] py-2 px-4"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={itemSelected.includes(productDetail.id)}
+                                                onChange={(e) => handleSelectItem(e.target.checked, productDetail.id)}
                                             />
-                                            <div className="flex flex-col gap-2 text-black text-3 leading-[19px]">
-                                                <p className="line-clamp-2">{productDetail.product.product_name}</p>
-                                                <div className="flex items-center gap-1 border-[2px] border-gray-200 rounded-full overflow-hidden w-[60px]">
-                                                    <IconButton
-                                                        icon={<BiMinus />}
-                                                        onClick={() => handleDecrease(productDetail.id)}
-                                                        className="w-[30px] h-full !px-0 !py-[2px]"
-                                                    />
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            (localQuantities[productDetail.id] === 0
-                                                                ? ""
-                                                                : localQuantities[productDetail.id]) ?? productDetail.quantity
-                                                        }
-                                                        onBlur={(e) => handleOnBlur(productDetail.id, e)}
-                                                        onChange={(e) => handleChangeQuantity(productDetail.id, e.target.value)}
-                                                        className="bg-white w-[20px] h-full rounded-sm text-black text-center"
-                                                    />
-                                                    <IconButton
-                                                        icon={<BiPlus />}
-                                                        onClick={() => handleIncrease(productDetail.id)}
-                                                        className="w-[30px] h-full !px-0 !py-[2px]"
+                                            <div className="flex items-start gap-3 w-full">
+                                                <Image
+                                                    src={productDetail.product?.product_thumbnail && productDetail.product.product_thumbnail.startsWith("http") ? productDetail.product.product_thumbnail : ""}
+                                                    alt={productDetail.product.product_name}
+                                                    width={80}
+                                                    height={80}
+                                                    className="shadow rounded-lg"
+                                                />
+                                                <div className="flex flex-col gap-2 text-black text-3 leading-[19px]">
+                                                    <p className="line-clamp-2">{productDetail.product.product_name}</p>
+                                                    <div className="flex items-center gap-1 border-[2px] border-gray-200 rounded-full overflow-hidden w-[60px]">
+                                                        <IconButton
+                                                            icon={<BiMinus />}
+                                                            onClick={() => handleDecrease(productDetail.id)}
+                                                            className="w-[30px] h-full !px-0 !py-[2px]"
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            value={
+                                                                (localQuantities[productDetail.id] === 0
+                                                                    ? ""
+                                                                    : localQuantities[productDetail.id]) ?? productDetail.quantity
+                                                            }
+                                                            onBlur={(e) => handleOnBlur(productDetail.id, e)}
+                                                            onChange={(e) => handleChangeQuantity(productDetail.id, e.target.value)}
+                                                            className="bg-white w-[20px] h-full rounded-sm text-black text-center"
+                                                        />
+                                                        <IconButton
+                                                            icon={<BiPlus />}
+                                                            onClick={() => handleIncrease(productDetail.id)}
+                                                            className="w-[30px] h-full !px-0 !py-[2px]"
+                                                        />
+                                                    </div>
+                                                    <Price
+                                                        product_price={priceDiscountProductCart(productDetail.product).finalPrice}
                                                     />
                                                 </div>
-                                                <Price
-                                                    product_price={productDetail.product.product_price}
-                                                />
                                             </div>
+                                            <IconButton
+                                                className="!bg-gray-300"
+                                                onClick={() => handleDeleteOne(productDetail.id)}
+                                                icon={<BiMinus />}
+                                            />
                                         </div>
-                                        <IconButton
-                                            className="!bg-gray-300"
-                                            onClick={() => handleDeleteOne(productDetail.id)}
-                                            icon={<BiMinus />}
-                                        />
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                         </div>
 

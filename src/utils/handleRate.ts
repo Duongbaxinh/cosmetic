@@ -1,4 +1,9 @@
-import { Product, ProductDiscount, ReviewItem } from "@/types";
+import {
+  Product,
+  ProductCartDetail,
+  ProductDiscount,
+  ReviewItem,
+} from "@/types";
 
 interface RatingCount {
   stars: number;
@@ -41,5 +46,42 @@ export const calculateDiscount = (product: Product): ProductDiscount => {
     discountDirect,
     discountPromotion,
     discountTitle: product.product_promotion?.title ?? "",
+  };
+};
+
+export function calculateProductDiscounts(productDetail: Product) {
+  const productDiscountDirect = productDetail.product_discount_percent;
+
+  const productPromotionDiscount = productDetail.product_promotion
+    ? productDetail.product_promotion.discount_percent
+    : 0;
+
+  const productDiscountConclude =
+    productPromotionDiscount > 0
+      ? productPromotionDiscount
+      : productDiscountDirect;
+
+  const productDiscountPrice =
+    productDetail.product_price -
+    (productDetail.product_price * productDiscountConclude) / 100;
+
+  return {
+    productDiscountDirect,
+    productPromotionDiscount,
+    productDiscountConclude,
+    productDiscountPrice,
+  };
+}
+
+export const priceDiscountProductCart = (product: ProductCartDetail) => {
+  const priceDiscount =
+    product.product_price * product.product_discount_percent &&
+    product.product_discount_percent > 0
+      ? product.product_discount_percent / 100
+      : 0;
+  const finalPrice = product.product_price - priceDiscount;
+  return {
+    priceDiscount,
+    finalPrice,
   };
 };

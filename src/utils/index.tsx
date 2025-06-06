@@ -11,3 +11,4 @@ export const getNameBrand = (arr: Brand[], id: string) => {
 export const getTypeCategory = (categories: Category[], categorySlug: string): ProductType[] => {
     return categories.find(cate => cate.slug === categorySlug)?.types || []
 }
+
