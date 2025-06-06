@@ -196,7 +196,7 @@ function CartPage() {
 
                             <div className="pt-5">
                                 {cart?.cart_details.map((productDetail) => {
-
+                                    const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product)
                                     return (
                                         <div
                                             key={productDetail.id}
@@ -241,7 +241,7 @@ function CartPage() {
                                                         />
                                                     </div>
                                                     <Price
-                                                        product_price={priceDiscountProductCart(productDetail.product).finalPrice}
+                                                        product_price={finalPrice}
                                                     />
                                                 </div>
                                             </div>

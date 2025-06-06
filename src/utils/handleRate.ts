@@ -74,11 +74,11 @@ export function calculateProductDiscounts(productDetail: Product) {
 }
 
 export const priceDiscountProductCart = (product: ProductCartDetail) => {
-  const priceDiscount =
-    product.product_price * product.product_discount_percent &&
-    product.product_discount_percent > 0
-      ? product.product_discount_percent / 100
+  const disCountPercent =
+    product.product_discount_percent && product.product_discount_percent > 0
+      ? product.product_discount_percent
       : 0;
+  const priceDiscount = product.product_price * (disCountPercent / 100);
   const finalPrice = product.product_price - priceDiscount;
   return {
     priceDiscount,
