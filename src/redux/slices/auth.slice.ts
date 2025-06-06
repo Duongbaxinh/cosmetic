@@ -121,6 +121,26 @@ export const authApi = createApi({
         return response;
       },
     }),
+    sendOTP: builder.mutation<string, string>({
+      query: (email) => ({
+        url: "/users/send-otp",
+        method: "POST",
+        body: { email: email },
+      }),
+      transformResponse: (response: string) => {
+        return response;
+      },
+    }),
+    sendOTP2: builder.mutation<string, { otp: string; email: string }>({
+      query: ({ otp, email }) => ({
+        url: "/users/verify-otp",
+        method: "POST",
+        body: { email: email, otp: otp },
+      }),
+      transformResponse: (response: string) => {
+        return response;
+      },
+    }),
     changeProfile: builder.mutation({
       query: (credentials: ProfileFormData) => ({
         url: "auth/profile/update",
@@ -139,6 +159,8 @@ export const {
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useSendOTPMutation,
+  useSendOTP2Mutation,
 } = authApi;
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
