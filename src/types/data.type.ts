@@ -32,12 +32,29 @@ export type ProductType = {
   category: Category;
 };
 
+export type ProductTypeResponse = {
+  results: ProductType[];
+  limitnumber: number;
+  page: number;
+  page_size: number;
+  number_page: number;
+  count: number;
+};
+
 export type ProductBrand = {
   id: string;
   title: string;
   slug: string;
   image: string;
   specific: boolean;
+};
+export type ProductBrandTypeResponse = {
+  results: ProductBrand[];
+  limitnumber: number;
+  page: number;
+  page_size: number;
+  number_page: number;
+  count: number;
 };
 
 export type ProductPromotion = {

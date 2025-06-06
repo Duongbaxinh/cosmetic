@@ -5,6 +5,8 @@ import {
   Category,
   OrderProduct,
   ProductBrand,
+  ProductBrandTypeResponse,
+  ProductTypeResponse,
   Promotion,
 } from "./data.type";
 
@@ -24,10 +26,28 @@ export type CartContextType = {
   clearCart: () => Promise<void>;
 };
 
+export type FilterParamItem = {
+  limitnumber: number;
+  page: number;
+};
+
+export type ParamFilter = {
+  brand: FilterParamItem;
+  type: FilterParamItem;
+};
+export const initParam: ParamFilter = {
+  brand: { limitnumber: 5, page: 1 },
+  type: { limitnumber: 5, page: 1 },
+};
+
 export type DataContextType = {
   categories: Category[] | [];
-  brands: ProductBrand[] | [];
+  brands: ProductBrandTypeResponse | undefined;
+  productTypes: ProductTypeResponse | undefined;
   promotions: Promotion[] | [];
+  params: ParamFilter;
+  allBrand: ProductBrand[] | undefined;
+  setParams: React.Dispatch<ParamFilter>;
 };
 
 export type ErrorContextType = {

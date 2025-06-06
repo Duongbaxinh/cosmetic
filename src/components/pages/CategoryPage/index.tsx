@@ -11,14 +11,13 @@ import CardProductFull from '@/components/molecules/CardProductFull';
 import Drawer from '@/components/molecules/Drawer';
 import NotFound from '@/components/molecules/NotFound';
 import { priceRanges } from '@/config/data.config';
+import { useData } from '@/contexts/data.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
-import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
-import { useGetAllTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
-import { FilterProductType } from '@/types';
+import { FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
 import { cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Image from 'next/image';
@@ -48,14 +47,30 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         order: 'asc',
         sortBy: ''
     }
+    const { brands, productTypes, params, setParams, promotions } = useData()
     const [filters, setFilter] = useState<FilterProductType>(initFilter)
     const [showFilter, setShowFilter] = useState<boolean>(false)
-
+    const [brandData, setBrandData] = useState<ProductBrand[]>([])
+    const [typeData, setTypeData] = useState<ProductType[]>([])
     const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery({ ...cleanFilter(filters), [category_key]: value })
     const { data: categories, isLoading, error } = useGetAllCategoryQuery()
-    const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes } = useGetAllTypeQuery()
-    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setFilter(prev => ({ ...prev, page: currentPage }))
+    }, [products])
+
+    useEffect(() => {
+
+        if (brands && brands.results) {
+            setBrandData(brands.results)
+            console.log('check data bran ', brands)
+        }
+        if (productTypes && productTypes.results) {
+            setTypeData(productTypes.results)
+            console.log('check data type ', productTypes)
+        }
+    }, [brands, productTypes])
 
     const newArr = (arr: any[], element: any) => {
         if (arr.flatMap(item => item.value).includes(element.value)) {
@@ -96,17 +111,29 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
 
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setFilter(prev => ({ ...prev, page: currentPage }))
-    }, [products])
+    const handleLoadMoreBrandAndType = (key: keyof ParamFilter) => {
+        setParams({
+            ...params,
+            [key]: {
+                ...params[key],
+                limitnumber: params[key].limitnumber + 5
+            }
+        });
+    }
+
+    const isStopLoadMoreType = productTypes?.count === params.type.limitnumber
+    const isStopLoadMoreBrand = brands?.count === params.brand.limitnumber
 
     const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
     const currentPage = Math.min(filters.page, Math.max(1, products?.page ?? 1))
     const productsDisplay = products?.results ?? []
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
-    const banner = category_key === "product_brand" ? brands?.find(brand => brand.slug === value)?.image : ""
+
+    const banner = category_key === "product_brand" ? brandData?.find(brand => brand.slug === value)?.image : ""
+
+    const promotion = category_key === "product_promotion" ? promotions.find(pro => pro.slug === value) : null
+
 
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
@@ -121,44 +148,64 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         <ContainerLayout isSidebar={false}>
             <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
                 <div className=" w-full px-3">
-                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} productType={productTypes ?? []} isFiltered={isFiltered} />
+                    <Filter isStopLoadMoreBrand={isStopLoadMoreBrand}
+                        isStopLoadMoreType={isStopLoadMoreType}
+                        onFilter={handleFilter}
+                        categories={categories ?? []}
+                        brands={brandData ?? []}
+                        productType={typeData ?? []}
+                        onLoadMoreBrandAndType={handleLoadMoreBrandAndType}
+                        isFiltered={isFiltered} />
                 </div>
             </Drawer>
             <div className="w-full h-full py-5 space-y-5">
-                {banner ? (
+                {promotion ? (
                     <Image
-                        src={banner ?? ""}
+                        src={promotion.thumbnail ?? ""}
                         alt="carousel-image"
                         className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
                         width={500}
                         height={350}
                     />
-                ) : (
-                    <Carousel slidesPerView={1} clickable className='!h-fit'>
-                        {brands && brands.map(({ id, slug, image }) => (
-                            <SwiperSlide key={id}>
-                                <Link href={`/category/product_brand/${slug}`}>
-                                    <Image
-                                        src={image}
-                                        alt="carousel-image"
-                                        className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
-                                        width={500}
-                                        height={350}
-                                    />
-                                </Link>
-                            </SwiperSlide>
-                        ))}
+                ) :
+                    (<>
+                        {
+                            banner ? (
+                                <Image
+                                    src={banner ?? ""}
+                                    alt="carousel-image"
+                                    className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
+                                    width={500}
+                                    height={350}
+                                />
+                            ) : (
+                                <Carousel slidesPerView={1} clickable className='!h-fit'>
+                                    {brandData.length > 0 && brandData.map(({ id, slug, image }) => (
+                                        <SwiperSlide key={id}>
+                                            <Link href={`/category/product_brand/${slug}`}>
+                                                <Image
+                                                    src={image}
+                                                    alt="carousel-image"
+                                                    className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
+                                                    width={500}
+                                                    height={350}
+                                                />
+                                            </Link>
+                                        </SwiperSlide>
+                                    ))}
 
-                    </Carousel>
-                )}
+                                </Carousel>
+                            )}</>)}
+
                 <Breadcrumb items={[{ label: "Trang chủ", href: "/" }, { label: category_key, href: "#" }]} />
+                {promotion && (<h1 className='text-[25px] font-[700] w-full text-center '>{promotion.title}</h1>)}
                 <h1 className='text[25px] font-[700] leading-[25px] uppercase'>{labelCategory[category_key as keyof typeof labelCategory]}</h1>
                 <div className="flex items-center justify-between">
                     <div className="flex gap-3 flex-grow items-center">
                         <div className="block md:hidden cursor-pointer" onClick={() => setShowFilter(!showFilter)}>  <FilterIcon /></div>
 
                         <h1 className='text[18px] font-[700] leading-[28px] uppercase'>Bộ lọc</h1>
-                        <div className="flex gap-2 max-w-[500px] overflow-auto no-scrollbar ">
+                        <div className="flex gap-2 max-w-[500px] overflow-auto scrollbar ">
                             {isFiltered.map((item) => (
                                 <Chip title={(item?.split("-")[1] ?? "").toString() ?? ""} trailing={
                                     <div onClick={() => handleRemoveFilter(item as string)}><CloseIcon /></div>
@@ -183,7 +230,15 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
 
                 <div className="flex gap-2">
                     <div className="hidden md:block">
-                        <Filter onFilter={handleFilter} productType={productTypes ?? []} categories={categories ?? []} brands={brands ?? []} isFiltered={isFiltered} />
+                        <Filter isStopLoadMoreBrand={isStopLoadMoreBrand}
+                            isStopLoadMoreType={isStopLoadMoreType}
+                            onFilter={handleFilter}
+                            categories={categories ?? []}
+                            brands={brandData ?? []}
+                            productType={typeData ?? []}
+                            isFiltered={isFiltered}
+                            onLoadMoreBrandAndType={handleLoadMoreBrandAndType}
+                        />
                     </div>
                     <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
                         {loadingProduct ? (

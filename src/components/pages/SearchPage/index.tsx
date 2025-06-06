@@ -8,7 +8,9 @@ import IconButton from '@/components/atoms/IconButton';
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
 import Drawer from '@/components/molecules/Drawer';
+import NotFound from '@/components/molecules/NotFound';
 import { priceRanges } from '@/config/data.config';
+import { useData } from '@/contexts/data.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
@@ -16,7 +18,7 @@ import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
 import { useGetAllTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
-import { FilterProductType } from '@/types';
+import { FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
 import { cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Link from 'next/link';
@@ -35,16 +37,23 @@ const initFilter: FilterProductType = {
     sortBy: ''
 }
 function SearchPage({ text_search }: { text_search: string }) {
+    const { brands, productTypes, setParams, params } = useData()
+    const [brandData, setBrandData] = useState<ProductBrand[]>([])
+    const [typeData, setTypeData] = useState<ProductType[]>([])
     const [filters, setFilter] = useState<FilterProductType>(initFilter)
     const [showFilter, setShowFilter] = useState<boolean>(false)
     const { data: productSearch, isLoading: loadingSearch, error: errorProductSearch } = useGetProductFilterQuery({ ...cleanFilter(filters), textSearch: text_search })
     const { data: categories, isLoading, error } = useGetAllCategoryQuery()
-    const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes } = useGetAllTypeQuery()
-    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery()
 
-    const totalPage = productSearch ? Math.ceil(productSearch.count / productSearch.limitnumber) : 1
-    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.page ?? 1))
-    const productsDisplay = productSearch?.results ?? []
+
+    useEffect(() => {
+        if (brands && brands.results) {
+            setBrandData(brands.results)
+        }
+        if (productTypes && productTypes.results) {
+            setTypeData(productTypes.results)
+        }
+    }, [brands, productTypes])
 
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
@@ -105,6 +114,22 @@ function SearchPage({ text_search }: { text_search: string }) {
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [productSearch])
 
+    const handleLoadMoreBrandAndType = (key: keyof ParamFilter) => {
+        setParams({
+            ...params,
+            [key]: {
+                ...params[key],
+                limitnumber: params[key].limitnumber + 5
+            }
+        });
+    }
+
+    const isStopLoadMoreType = productTypes?.count === params.type.limitnumber
+    const isStopLoadMoreBrand = brands?.count === params.brand.limitnumber
+
+    const totalPage = productSearch ? Math.ceil(productSearch.count / filters.limitnumber) : 1
+    const currentPage = Math.min(filters.page, Math.max(1, productSearch?.page ?? 1))
+    const productsDisplay = productSearch?.results ?? []
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
     const disableStyle = "pointer-events-none opacity-40"
@@ -112,7 +137,14 @@ function SearchPage({ text_search }: { text_search: string }) {
         <ContainerLayout isSidebar={false}>
             <Drawer title='Bộ lọc' isOpen={showFilter} onClose={() => setShowFilter(false)} className='!w-fit'>
                 <div className=" w-full px-3">
-                    <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} productType={productTypes ?? []} isFiltered={isFiltered} />
+                    <Filter isStopLoadMoreBrand={isStopLoadMoreBrand}
+                        isStopLoadMoreType={isStopLoadMoreType}
+                        onFilter={handleFilter}
+                        categories={categories ?? []}
+                        brands={brandData ?? []}
+                        productType={typeData ?? []}
+                        onLoadMoreBrandAndType={handleLoadMoreBrandAndType}
+                        isFiltered={isFiltered} />
                 </div>
             </Drawer>
             <div className="pb-3">
@@ -149,20 +181,17 @@ function SearchPage({ text_search }: { text_search: string }) {
             <div className="w-full h-full py-2">
                 <div className="flex gap-2">
                     <div className="hidden md:block">
-                        <Filter onFilter={handleFilter} categories={categories ?? []} brands={brands ?? []} productType={productTypes ?? []} isFiltered={isFiltered} />
+                        <Filter isStopLoadMoreBrand={isStopLoadMoreBrand}
+                            isStopLoadMoreType={isStopLoadMoreType}
+                            onFilter={handleFilter}
+                            categories={categories ?? []}
+                            brands={brandData ?? []}
+                            productType={typeData ?? []}
+                            onLoadMoreBrandAndType={handleLoadMoreBrandAndType}
+                            isFiltered={isFiltered} />
                     </div>
                     {productsDisplay.length > 0 ? (
                         <div className="w-full bg-white min-h-[100vh] py-3 rounded-md">
-                            <div className="w-full flex justify-between px-3 py-2">
-
-                                {totalPage >= 2 && (
-                                    <div className="flex items-center gap-1">
-                                        <span>{currentPage}/{totalPage}</span>
-                                        <IconButton onClick={() => handlePagination("prev")} className={`bg-white shadow-md ${!isPrevious && disableStyle}`} icon={<ChevronLeftIcon />} />
-                                        <IconButton onClick={() => handlePagination("next")} className={`bg-white shadow-md ${!isNext && disableStyle}`} icon={<ChevronRightIcon />} />
-                                    </div>
-                                )}
-                            </div>
 
                             {loadingSearch ? (
                                 <ProductSkeleton length={20} />
@@ -206,7 +235,7 @@ function SearchPage({ text_search }: { text_search: string }) {
                             )}
                         </div>
                     ) : (
-                        <div className=" flex w-full h-full min-h-screen items-center justify-center">Rong</div>
+                        <NotFound content='Hiện tại sản phẩm mà bạn đang tìm kiếm không có trong danh sách sản phẩm của chúng tôi' />
                     )}
 
                 </div>

@@ -20,10 +20,6 @@ export interface RegisterResponse {
   updated_at: string; // ISO date string
 }
 
-export type ReviewResponse = {
-  reviews: Review;
-};
-
 // export type OrderResponse = {
 //   orders: OrderCheckout[];
 // };

@@ -1,5 +1,6 @@
 import { BASE_API } from "@/config/api.config";
-import { ProductType } from "@/types";
+import { ProductType, ProductTypeResponse } from "@/types";
+import { toQueryString } from "@/utils";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const productTypeApi = createApi({
@@ -7,8 +8,8 @@ export const productTypeApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_API }),
   tagTypes: ["productType"],
   endpoints: (builder) => ({
-    getAllType: builder.query<ProductType[], void>({
-      query: () => `/types`,
+    getAllType: builder.query<ProductTypeResponse, any>({
+      query: (param) => `/types?${toQueryString(param)}`,
       providesTags: ["productType"],
     }),
   }),

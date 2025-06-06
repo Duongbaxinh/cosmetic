@@ -22,7 +22,7 @@ interface DetailProductProps {
     similarProduct?: Product[];
     shippingAddress?: ShippingAddress[],
     similarProductLoading?: boolean
-    numberReview: number;
+    // numberReview: number;
     product_price: number;
     onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
     product_quantity: number;

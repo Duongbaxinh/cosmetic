@@ -90,7 +90,7 @@ const Input = forwardRef(({
     };
     return (
         <>
-            <div className="">
+            <div className="w-full">
                 <div
                     className={`relative flex justify-start items-center ${variantType[variant]} ${error ? "border-red-400" : "border-green"} relative  w-full ${className}`}
                     onClick={(e) => e.stopPropagation()}>

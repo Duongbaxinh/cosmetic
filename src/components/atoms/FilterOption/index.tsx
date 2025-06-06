@@ -58,11 +58,11 @@ function FilterOption({
                         {title}
                     </div>
                 </div>
-                <div
+                {/* <div
                     className={`cursor-pointer ${customIcon} ${openOption ? "animate-rotate" : "animate-rotateContrary"
                         }`}>
                     <ChevronDownIcon />
-                </div>
+                </div> */}
             </div>
 
             <div

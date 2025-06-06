@@ -23,7 +23,7 @@ function BoxIntroduce() {
     const [hoveredCategory, setHoveredCategory] = useState<CategoryConfig | null>(null);
     const [isDropdownHovered, setIsDropdownHovered] = useState<boolean>(false);
 
-    const { categories, promotions, brands } = useData();
+    const { categories, promotions, allBrand: brands } = useData();
 
     // Check scroll position to toggle button visibility
     const checkScrollPosition = () => {
@@ -145,7 +145,7 @@ function BoxIntroduce() {
                             {hoveredCategory && hoveredCategory.id === "promotion" && promotions.map((promotion) => (
                                 <Link href={`${PROMOTION_URL}/${promotion.slug}`} key={promotion.slug}>{promotion.title}</Link>
                             ))}
-                            {hoveredCategory && hoveredCategory.id === "brand" && brands.map((brand) => (
+                            {hoveredCategory && hoveredCategory.id === "brand" && brands && brands.map((brand) => (
                                 <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} key={brand.slug}>{brand.title}</Link>
                             ))}
                         </div>

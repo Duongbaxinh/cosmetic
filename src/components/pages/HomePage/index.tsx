@@ -5,7 +5,7 @@ import { MESS_SYSTEM } from '@/config/mess.config';
 import { categories } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
-import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
+import { useGetAllBrandQuery, useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
@@ -50,6 +50,38 @@ const breakpoints = {
         slidesPerView: 4,
     },
 }
+
+const breakpointsPerview = {
+    300: 2,
+    640: 2,
+    768: 3,
+    1024: 4,
+    1280: 4,
+}
+const breakpointBrandGroup = {
+    300: 2,
+    640: 2,
+    768: 4,
+    1024: 5,
+    1280: 5,
+}
+const breakpointsBrandPerView = {
+    300: {
+        slidesPerView: 2,
+    },
+    640: {
+        slidesPerView: 2,
+    },
+    768: {
+        slidesPerView: 4,
+    },
+    1024: {
+        slidesPerView: 5,
+    },
+    1280: {
+        slidesPerView: 5,
+    },
+}
 const HomePage: React.FC = () => {
     const { accessToken, userProfile, shippingAddress } = useAuth()
     const { valueOf } = useNetworkStatus()
@@ -64,7 +96,7 @@ const HomePage: React.FC = () => {
     const { data, error, isLoading: loading, error: errorProduct } = useGetAllProductsQuery(filter)
     const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
     const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
-    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetBrandsQuery() as { data: ProductBrand[] | undefined, isLoading: boolean, error: any };
+    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetAllBrandQuery() as { data: ProductBrand[] | undefined, isLoading: boolean, error: any };
     const { data: promotions, isLoading: isLoadingPromotion, error: errorPromotion } = useGetAllPromotionQuery()
     const dispatch = useDispatch()
     const check_load = products ? (products.count - products.results.length) > 0 : false
@@ -104,7 +136,7 @@ const HomePage: React.FC = () => {
                         <Carousel customSwipeWrap='!p-0 !h-full !max-h-full' slidesPerView={1} loop clickable enableAutoPlay>
                             {promotions && promotions.map(({ id, slug, thumbnail }) => (
                                 <SwiperSlide key={id}>
-                                    <Link href={`${PROMOTION_URL}/${slug}`} className='w-full h-full relative'>
+                                    <Link href={`${CATEGORY_URL}/product_promotion/${slug}`} className='w-full h-full relative'>
                                         <Image
                                             src={thumbnail}
                                             alt="carousel-image"
@@ -134,6 +166,7 @@ const HomePage: React.FC = () => {
                         <div className='space-y-3'>
                             <Carousel
                                 breakpoints={breakpoints}
+                                slidesPerGroupBreakpoints={breakpointsPerview}
                             >
                                 {products_display.map(
                                     (product) => (
@@ -165,23 +198,8 @@ const HomePage: React.FC = () => {
                 <div className="w-full p-3">
                     {!errorBrand ? (
                         <Carousel customSwipeWrap='!p-3'
-                            breakpoints={{
-                                300: {
-                                    slidesPerView: 3,
-                                },
-                                640: {
-                                    slidesPerView: 3,
-                                },
-                                768: {
-                                    slidesPerView: 4,
-                                },
-                                1024: {
-                                    slidesPerView: 5,
-                                },
-                                1280: {
-                                    slidesPerView: 5,
-                                },
-                            }}
+                            breakpoints={breakpointsBrandPerView}
+                            slidesPerGroupBreakpoints={breakpointBrandGroup}
                         >
                             {!loadingBrand ? (
                                 <>
@@ -221,6 +239,7 @@ const HomePage: React.FC = () => {
                                 <Carousel
                                     spaceBetween={10}
                                     breakpoints={breakpoints}
+                                    slidesPerGroupBreakpoints={breakpointsPerview}
                                     customSwipeWrap=' !h-[275px] sm:!h-[400px]'
                                 >
                                     {flashSale.products.map((product) => (
@@ -301,6 +320,7 @@ const HomePage: React.FC = () => {
                         <div className='space-y-3'>
                             <Carousel
                                 breakpoints={breakpoints}
+                                slidesPerGroupBreakpoints={breakpointsPerview}
                             >
                                 {product_internal_display.map(
                                     (product) => (
@@ -337,6 +357,7 @@ const HomePage: React.FC = () => {
                     ) : (
                         <div className='space-y-3'>
                             <Carousel
+                                slidesPerGroupBreakpoints={breakpointsPerview}
                                 breakpoints={breakpoints}
                             >
                                 {products_display.map(
@@ -382,7 +403,7 @@ const HomePage: React.FC = () => {
                                                 <Image
                                                     src={thumbnail}
                                                     alt="carousel-image"
-                                                    className="h-full w-full object-cover"
+                                                    className="h-full max-h-[250px] w-full object-cover"
                                                     width={702} height={301}
                                                 />
                                             </Link>

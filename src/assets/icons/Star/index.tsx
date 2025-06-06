@@ -3,7 +3,7 @@ interface StarIconProps {
     fill?: string;
 }
 
-const StarIcon = ({ className = 'w-4 h-4', fill = '#ffc400' }: StarIconProps) => {
+const StarIcon = ({ className = 'w-4 h-4', fill = 'currentColor' }: StarIconProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,25 +1,44 @@
 'use client'
 
 import AttachmentIcon from '@/assets/icons/AttachmentIcon';
-import FilterIcon from '@/assets/icons/FilterIcon';
+import CloseIcon from '@/assets/icons/CloseIcon';
+import StarIcon from '@/assets/icons/Star';
+import IconButton from '@/components/atoms/IconButton';
 import Input from '@/components/atoms/Input';
 import Popup from '@/components/atoms/Popup';
 import GroupStart from '@/components/organisms/GroupStart';
+import { useError } from '@/contexts/error.context';
+import { useReviewProductMutation, useSaveImageReviewMutation } from '@/redux/slices/review.slice';
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
 
 export type ReviewPageType = {
     isReview: boolean,
-    setIsReview: Dispatch<SetStateAction<boolean>>
+    setIsReview: Dispatch<SetStateAction<boolean>>,
+    productId: string
 }
+const messageReview: Record<number, { text: string; color: string; icon: string }> = {
+    1: { text: "Rất không hài lòng", color: "text-red-500", icon: "😡" },
+    2: { text: "Không hài lòng", color: "text-orange-500", icon: "😕" },
+    3: { text: "Tạm ổn", color: "text-yellow-500", icon: "😐" },
+    4: { text: "Hài lòng", color: "text-lime-500", icon: "😊" },
+    5: { text: "Tuyệt vời", color: "text-green-500", icon: "😍" },
+};
 
-function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
+
+function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
+    const { handleError } = useError()
     const [numberStar, setNumberStar] = useState<number>(0);
+    const [startHover, setStarHover] = useState<number | null>(0)
     const [imageUrls, setImageUrls] = useState<string[]>([]);
     const [content, setContent] = useState('');
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const [reviewProduct] = useReviewProductMutation()
+    const [saveImageReview] = useSaveImageReviewMutation()
 
     const onDrop = async (acceptedFiles: File[]) => {
         setUploading(true);
@@ -65,6 +84,13 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
         setContent(e.target.value);
     };
 
+    const closeReview = () => {
+        setIsReview(false);
+        setImageUrls([]);
+        setContent('');
+        setNumberStar(0);
+    }
+
     const handleSubmit = async () => {
         if (!content && numberStar === 0) {
             toast.error("Vui lòng nhập nội dung đánh giá của bạn")
@@ -73,37 +99,71 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
         setUploading(true);
         setError(null);
         try {
-            console.log('Submitting review:', { content, numberStar, imageUrls });
-            setIsReview(false);
-            setImageUrls([]);
-            setContent('');
-            setNumberStar(0);
+            console.log("check data", content, productId, numberStar)
+            const dataReview = await reviewProduct({ content: content, product_id: productId, rate: numberStar + 1 }).unwrap()
+            toast.success("Cảm ơn bạn đã đánh giá sản phẩm")
+            if (imageUrls.length > 0 && dataReview && dataReview.id) {
+                const payload = imageUrls.map((img) => (
+                    {
+                        review_id: dataReview.id,
+                        image: img
+                    }
+                ))
+                await saveImageReview(payload).unwrap()
+            }
+            closeReview()
         } catch (err) {
-            setError('Đã xảy ra lỗi khi gửi đánh giá.');
-            console.error(err);
+            console.log("check error ", err)
+            handleError(err)
         } finally {
             setUploading(false);
         }
     };
 
+    const handleRemoveImage = (url: string) => {
+        setImageUrls(prev => prev.filter(item => item !== url))
+    }
     return (
         <Popup isOpen={isReview} onClose={() => setIsReview(false)}>
-            <div className="w-full my-0 mx-auto sm:w-[350px] md:w-[500px] h-fit">
+            <div className="w-full my-0 mx-auto sm:w-[350px] md:w-[500px] h-fit pb-6 px-2">
                 <h1 className='text-[18px] font-[700] leading-[24px] pb-3'>Mức độ hài lòng của bạn</h1>
-                <div className="relative h-[50px]">
-                    <GroupStart
-                        starActive={numberStar}
-                        className='absolute top-0 left-0'
-                        customStar='w-[30px] h-[30px]'
-                    />
-                    <GroupStart
-                        starActive={numberStar}
-                        className='absolute top-0 left-0 opacity-0'
-                        customStar='w-[30px] h-[30px]'
-                        onHover={setNumberStar}
-
-                    />
+                <div className="w-full grid grid-cols-2 gap-3">
+                    <div className="flex gap-1 pb-3">
+                        {Array(5)
+                            .fill(0)
+                            .map((_, index) => {
+                                const starValue = index + 1;
+                                const isActive = starValue <= (startHover || numberStar);
+                                const colorClass = isActive
+                                    ? messageReview[startHover || numberStar]?.color ?? "text-yellow-400"
+                                    : "text-amber-100";
+                                return (
+                                    <div
+                                        key={index}
+                                        onMouseEnter={() => setStarHover(starValue)}
+                                        onMouseLeave={() => setStarHover(null)}
+                                        onClick={() => setNumberStar(starValue)}
+                                        className="cursor-pointer"
+                                    >
+                                        <StarIcon className={`w-[30px] h-[30px] ${colorClass}`} />
+                                    </div>
+                                );
+                            })}
+                    </div>
+                    <div className="flex w-full justify-center items-center gap-2 text-[20px] font-medium">
+                        {(() => {
+                            const current = startHover || numberStar;
+                            if (!current || !messageReview[current]) return null;
+                            const { text, color, icon } = messageReview[current];
+                            return (
+                                <span className={`${color}`}>
+                                    {icon} {text}
+                                </span>
+                            );
+                        })()}
+                    </div>
                 </div>
+
                 <div className="w-full flex flex-col justify-end items-end">
                     <Input
                         value={content}
@@ -123,9 +183,12 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
                     />
                 </div>
                 {imageUrls.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div className="mt-2 flex flex-wrap gap-2 ">
                         {imageUrls.map((url, index) => (
-                            <img key={index} src={url} alt={`Uploaded ${index}`} className="w-16 h-16 object-cover rounded" />
+                            <div className="relative">
+                                <Image key={index} src={url} alt={`Uploaded ${index}`} className="w-16 h-16 object-cover rounded" width={50} height={50} />
+                                <IconButton className='absolute top-0 right-0 w-[15px] h-[15px] border-0' onClick={() => handleRemoveImage(url)} icon={<CloseIcon className='w-[10px] h-[10px]' />} />
+                            </div>
                         ))}
                     </div>
                 )}
@@ -138,7 +201,7 @@ function ReviewPage({ isReview, setIsReview }: ReviewPageType) {
                     {uploading ? 'Đang gửi...' : 'Gửi đánh giá của bạn'}
                 </button>
             </div>
-        </Popup>
+        </Popup >
     );
 }
 

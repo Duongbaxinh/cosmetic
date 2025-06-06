@@ -29,7 +29,7 @@ function DetailProductPage({ id }: { id: string | number }) {
     const { data: product, isLoading: loadingProduct, error: errorProduct } = useGetProductByIdQuery(id);
     const params = createParams({ product_type: product?.product_type ?? "" });
     const { data: products, isLoading: loading, error } = useGetAllProductsQuery(params);
-    const { data: reviewProduct, error: errorReview, isLoading: reviewLoading } = useGetReviewProductByIdQuery(id);
+    // const { data: reviewProduct, error: errorReview, isLoading: reviewLoading } = useGetReviewProductByIdQuery(id);
 
     const dispatch = useDispatch();
     const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
@@ -121,7 +121,7 @@ function DetailProductPage({ id }: { id: string | number }) {
                     product={product}
                     similarProduct={similarProduct}
                     similarProductLoading={loading}
-                    numberReview={reviewProduct?.total_reviews ?? 0}
+                    // numberReview={reviewProduct?.total_reviews ?? 0}
                     product_price={product.product_price}
                     product_quantity={quantity}
                     cost_tentative={cost_tentative}
@@ -136,7 +136,7 @@ function DetailProductPage({ id }: { id: string | number }) {
 
                 />
             </div>
-            <div className="w-full bg-white rounded-lg shadow-sm mt-4 border border-gray-200">
+            {/* <div className="w-full bg-white rounded-lg shadow-sm mt-4 border border-gray-200">
                 {reviewProduct && reviewProduct.reviews.length > 0 ? (
                     <ReviewProduct review={reviewProduct} />
                 ) : (
@@ -147,7 +147,7 @@ function DetailProductPage({ id }: { id: string | number }) {
                         />
                     </div>
                 )}
-            </div>
+            </div> */}
         </ContainerLayout>
     );
 }

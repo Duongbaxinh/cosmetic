@@ -23,6 +23,7 @@ function OrderPage() {
     const [textSearch, setTextSearch] = useState<string>("");
     const { data, isLoading: loading, error } = useGetAllOrderQuery({ status: status });
     const [isReview, setIsReview] = useState(false)
+    const [productReview, setProductReview] = useState<string>("")
     const [cancelOrder] = useCancelOrderMutation();
     const handleChangeStatus = (new_status: string) => {
         setStatus(new_status);
@@ -42,9 +43,14 @@ function OrderPage() {
             toast.error("Hủy đơn hàng không thành công. Vui lòng thử lại sau.");
         }
     };
+
+    const handleReviewProduct = (isReview: boolean, productId: string) => {
+        setIsReview(true)
+        setProductReview(productId)
+    }
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
-            <ReviewPage isReview={isReview} setIsReview={setIsReview} />
+            <ReviewPage isReview={isReview} setIsReview={setIsReview} productId={productReview} />
             <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
@@ -109,8 +115,8 @@ function OrderPage() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {order.status === "delivered" && (
-                                                                    <button onClick={() => setIsReview(true)} >Đánh giá sản phẩm</button>
+                                                                {order.status !== "delivered" && (
+                                                                    <button onClick={() => handleReviewProduct(true, product.id)} >Đánh giá sản phẩm</button>
                                                                 )}
                                                             </div>
 
