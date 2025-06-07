@@ -27,7 +27,7 @@ import PopupShippingAddress from '@/components/organisms/PopupShippingAddress';
 
 function CheckoutPage() {
     const { shippingAddress } = useAuth()
-    const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalo">("cash")
+    const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalopay">("cash")
     const [orderCheckout, setOrderCheckout] = useState<OrderCheckout | null>(null)
     const [createOrder] = useCreateOrderMutation();
     const [paymentOrder] = usePaymentOrderMutation();
@@ -181,29 +181,30 @@ function CheckoutPage() {
             await createOrderDetail(orderDetailProduct)
 
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
-                const datPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
-                if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+                const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
+                if (!dataPayment || !dataPayment.data || !dataPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 const data_payment = await createPayment({
                     order_id: dataOrder.data.id,
                     payment_method: "momo",
-                    trans_id: datPayment.data.requestId
+                    trans_id: dataPayment.data.requestId
                 })
                 console.log('data payment ', data_payment)
                 if (data_payment.error) {
                     return handleError(data_payment.error)
                 }
-                window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+                window.open(dataPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
             }
-            if (paymentMethod === "zalo" && dataOrder && dataOrder.data) {
-                alert("run at zalo")
-                const datPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: 'zalo' }) as { data?: { requestId?: string; payUrl?: string } }
-                if (!datPayment || !datPayment.data || !datPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
+            if (paymentMethod === "zalopay" && dataOrder && dataOrder.data) {
+                alert("run at zalopay")
+                const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: 'zalopay' }) as { data?: { trans_id?: string; url?: string } }
+                console.log("check data payment", dataPayment)
+                if (!dataPayment || !dataPayment.data || !dataPayment.data.trans_id) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 await createPayment({
                     order_id: dataOrder.data.id,
-                    payment_method: "zalo",
-                    trans_id: datPayment.data.requestId
+                    payment_method: "zalopay",
+                    trans_id: dataPayment.data.trans_id
                 })
-                return window.open(datPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+                return window.open(dataPayment.data?.url ?? CHECKOUT_URL, '_blank')
             }
             router.push(`${ORDER_URL}`)
         } catch (error) {
@@ -437,13 +438,13 @@ function CheckoutPage() {
                                                     <input
                                                         disabled={!isOrderAble}
                                                         type="radio"
-                                                        value="zalo"
-                                                        checked={paymentMethod === 'zalo'}
-                                                        onChange={() => setPaymentMethod("zalo")}
+                                                        value="zalopay"
+                                                        checked={paymentMethod === 'zalopay'}
+                                                        onChange={() => setPaymentMethod("zalopay")}
                                                         className="mr-2 disabled:opacity-[0.5] disabled:cursor-auto"
                                                     />
                                                     <div className="flex items-center gap-2 text-[12px]">
-                                                        <Image src={"/images/zalo.png"} alt="PayPal Payment" width={20} height={20} className="rounded-full object-cover" />
+                                                        <Image src={"/images/zalopay.png"} alt="PayPal Payment" width={20} height={20} className="rounded-full object-cover" />
                                                         <p>Thanh toán bằng ZaloPay</p>
                                                     </div>
                                                 </label>

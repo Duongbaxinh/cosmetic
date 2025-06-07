@@ -3,11 +3,15 @@ import CloseIcon from '@/assets/icons/CloseIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
 import ProfileIcon from '@/assets/icons/ProfileIcon';
 import { SIDEBAR_DETAIL, SidebarDetailType } from '@/components/config/sidebarDetail';
+import { URL_SHOP, URL_SHOP_MANAGE } from '@/consts';
+import { useAuth } from '@/contexts/auth.context';
 import { setUser } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
+import { authentication } from '@/utils/authentication';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { FaShopify } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface SideDetailProps {
@@ -15,6 +19,7 @@ interface SideDetailProps {
 }
 
 const SideBarDetail: React.FC<SideDetailProps> = () => {
+    const scope = "vendor:basic_access customer:basic_access"
     const [showFull, setShowFull] = React.useState<boolean>(false);
     const path_name = usePathname();
     const user = useSelector((state: RootState) => state.user.user);
@@ -73,6 +78,25 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
                             </div>
                         </Link>
                     ))}
+                    {scope === "vendor:basic_access customer:basic_access" && authentication(scope, "vendor:basic_access") && (
+                        <Link
+                            href={URL_SHOP}
+                            className={`block px-2 py-2 md:px-4 ${path_name === URL_SHOP ? "bg-pink-300 text-white" : ""
+                                } hover:bg-pink-300 hover:text-white rounded-sm w-full flex ${showFull ? "justify-start" : "justify-center"
+                                } md:justify-start transition-all duration-300`}
+                        >
+                            <div className="flex items-center gap-1 sm:gap-6">
+                                <FaShopify />
+                                <p
+                                    className={`${showFull ? "block" : "hidden"
+                                        } md:block text-[13px] font-light leading-[15px] transition-opacity duration-300 ${showFull ? "opacity-100" : "opacity-0 md:opacity-100"
+                                        }`}
+                                >
+                                    Quản lý gian hàng
+                                </p>
+                            </div>
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>

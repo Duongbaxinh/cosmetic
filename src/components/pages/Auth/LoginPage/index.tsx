@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 
 const LoginPage = () => {
 
-    const { isAuth, setIsAuth, fetchUserInfo } = useAuth()
+    const { setIsAuth, } = useAuth()
     const { handleError } = useError()
     const {
         register,
@@ -42,7 +42,7 @@ const LoginPage = () => {
         name: usernameName,
     } = register('username');
     const [showPassword, setShowPassword] = useState(false);
-    const { setIsLogin, setAccessToken, setRefetchToken } = useAuth();
+    const { setIsLogin, setAccessToken, setRefetchToken, setScope } = useAuth();
     const [login, { isLoading, error }] = useLoginMutation();
     const router = useRouter();
 
@@ -57,6 +57,7 @@ const LoginPage = () => {
             if (res.data) {
                 console.log("check login ", res.data)
                 setIsLogin(true);
+                setScope(res.data.scope)
                 setAccessToken(res.data.access_token);
                 setRefetchToken(res.data.refresh_token);
                 setIsAuth({ form: 'login', isOpen: false });

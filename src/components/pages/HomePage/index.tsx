@@ -1,21 +1,22 @@
 'use client'
 import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CountdownTimer from '@/components/organisms/CountdownTimer';
-import { MESS_SYSTEM } from '@/config/mess.config';
-import { categories } from '@/fakes';
 import ContainerLayout from '@/layouts/ContainerLayout';
-import { setUser, useGetUserQuery } from '@/redux/slices/auth.slice';
-import { useGetAllBrandQuery, useGetBrandsQuery } from '@/redux/slices/brand.slice';
+import { useGetAllBrandQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
-import { setShippingAddress, useGetAddressQuery } from '@/redux/slices/shippingAddress.slice';
 
+import { BANNERS } from '@/components/config/categories.config';
+import { useAuth } from '@/contexts/auth.context';
+import { useNetworkStatus } from '@/contexts/network.context';
+import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
+import { CATEGORY_URL, DETAIL_PRODUCT_URL, INTERNATIONAL_PRODUCT_URL, NEW_PRODUCT_URL, PROMOTION_URL, TOP_PRODUCT_URL } from '@/routers';
 import { Brand, ProductBrand, ProductResponse, Promotion } from '@/types';
 import { calculateDiscount, createParams, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -24,12 +25,6 @@ import { SwiperSlide } from 'swiper/react';
 import Carousel from '../../atoms/Carousel';
 import CardProductFull from '../../molecules/CardProductFull';
 import LoadingPage from '../LoadingPage';
-import { useAuth } from '@/contexts/auth.context';
-import { useNetworkStatus } from '@/contexts/network.context';
-import { redirect } from 'next/navigation';
-import { CATEGORY_URL, DETAIL_PRODUCT_URL, INTERNATIONAL_PRODUCT_URL, NEW_PRODUCT_URL, PROMOTION_URL, TOP_PRODUCT_URL } from '@/routers';
-import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
-import { BANNERS } from '@/components/config/categories.config';
 
 
 
@@ -223,7 +218,7 @@ const HomePage: React.FC = () => {
 
                 {/*  */}
                 {flashSale && promotions && (
-                    <div className="w-full max-w-[1138px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
+                    <div className="w-full max-w-[1440px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
                         <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end">
                             <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
                             <div >

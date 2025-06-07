@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 interface AuthContextType {
     accessToken: string,
     setAccessToken: (token: string) => void
+    scope: string,
+    setScope: (scope: string) => void
     setRefetchToken: (token: string) => void
     refreshToken: (user: any) => void,
     setIsLogin: (isLogin: boolean) => void,
@@ -28,6 +30,7 @@ const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [accessToken, setAccessToken] = useSaveLocalStorage('accessToken', null)
     const [refreshToken, setRefetchToken] = useSaveLocalStorage('refreshToken', null)
+    const [scope, setScope] = useSaveLocalStorage("scope", null)
     const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
     const [isAuth, setIsAuth] = useState<{ form: "login" | "register", isOpen: boolean } | null>(null);
 
@@ -68,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.location.reload();
     };
     return (
-        <AuthContext.Provider value={{ logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken, isAuth, setIsAuth, userProfile, shippingAddress, fetchUserInfo, fetchShipping }}>
+        <AuthContext.Provider value={{ logout, isLogin, accessToken, setAccessToken, setIsLogin, refreshToken, setRefetchToken, isAuth, setIsAuth, userProfile, shippingAddress, fetchUserInfo, fetchShipping, scope, setScope }}>
             {children}
         </AuthContext.Provider>
     )

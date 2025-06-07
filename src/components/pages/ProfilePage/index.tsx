@@ -28,7 +28,7 @@ function ProfilePage() {
         },
     });
     const [changeProfile, { isLoading, error }] = useChangeProfileMutation();
-    const { register, handleSubmit } = methods;
+    const { handleSubmit } = methods;
     const user = useSelector((state: RootState) => state.user.user);
     const dispatch = useDispatch()
 

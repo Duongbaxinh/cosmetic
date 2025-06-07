@@ -97,7 +97,7 @@ export const orderProductApi = createApi({
     }),
     paymentOrder: builder.mutation<
       MomoPaymentResponse,
-      { orderId: string; paymentMethod: "momo" | "zalo" }
+      { orderId: string; paymentMethod: "momo" | "zalopay" }
     >({
       query: (orderData) => ({
         url: `${ORDER_PAYMENT_API}/${orderData.paymentMethod}`,

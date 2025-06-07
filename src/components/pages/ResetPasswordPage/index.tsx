@@ -32,7 +32,6 @@ function ResetPasswordPage({ token }: { token: string }) {
             }
             const dataForgotPassword = await resetPassword(payload).unwrap()
             if (dataForgotPassword) {
-                console.log("check555 ", dataForgotPassword)
                 alert(dataForgotPassword)
                 router.push("/")
             }
@@ -44,13 +43,13 @@ function ResetPasswordPage({ token }: { token: string }) {
 
     return (
         <ContainerLayout>
-            <div className=' bg-white w-full h-screen flex justify-center items-center'>
+            <div className=' bg-white w-full h-screen flex justify-center items-start mt-[60px]'>
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-full  rounded-md flex items-center justify-center py-8"
                 >
-                    <div className="border border-gray-300 max-w-[350px] md:min-w-[400px] md:max-w-[500px] p-3 rounded-lg space-y-4">
+                    <div className="border border-gray-300 md:min-w-[400px] max-w-[350px] md:max-w-[500px] p-5 rounded-lg space-y-4 shadow shadow-pink-300">
                         <div>
                             <p className="text-[13px] font-bold text-black pb-2">Nhập mật khẩu mới</p>
                             <p className="text-[13px] font-bold text-black pb-2">Hãy nhập mật khẩu mới và nhấn xác nhân mật khẩu để tiếp tục hành trình khám phá vẻ đẹp với chúng tôi</p>
@@ -67,7 +66,7 @@ function ResetPasswordPage({ token }: { token: string }) {
                             <div className="">
                                 <Input
                                     className='border border-color py-3'
-                                    placeholder="Nhập mật khẩu mới"
+                                    placeholder="Nhập lại mật khẩu"
                                     {...register("confirmPassword")}
                                 />
                                 {errors.confirmPassword && (

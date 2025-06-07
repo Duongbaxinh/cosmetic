@@ -190,7 +190,7 @@ export type OrderItemDisplayType = {
 export type PaymentType = {
   order_id: string;
   trans_id: string;
-  payment_method: "momo" | "zalo";
+  payment_method: "momo" | "zalopay";
 };
 
 export type PaymentResponse = {
