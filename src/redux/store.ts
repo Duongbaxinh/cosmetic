@@ -17,6 +17,7 @@ import { productTypeApi } from "./slices/typeproduct.slice";
 import { promotionApi } from "./slices/promotion.slice";
 import { manageProductApi } from "./slices/manage/manageproduct.api";
 import { managePromotionApi } from "./slices/manage/managepromotion.api";
+import { orderManageApi } from "./slices/manage/manageorder.api";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     address: shippingAddressReducer,
     [manageProductApi.reducerPath]: manageProductApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
+    [orderManageApi.reducerPath]: orderManageApi.reducer,
     [promotionApi.reducerPath]: promotionApi.reducer,
     [managePromotionApi.reducerPath]: managePromotionApi.reducer,
     [productTypeApi.reducerPath]: productTypeApi.reducer,
@@ -39,6 +41,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       productApi.middleware,
+      orderManageApi.middleware,
       manageProductApi.middleware,
       promotionApi.middleware,
       managePromotionApi.middleware,

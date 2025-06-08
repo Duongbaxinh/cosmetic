@@ -3,8 +3,8 @@ import { customFetchBaseQuery } from "@/redux/customeBaseQuery";
 import { OrderResponse } from "@/types";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-export const orderApi = createApi({
-  reducerPath: "orderApi",
+export const orderManageApi = createApi({
+  reducerPath: "orderManageApi",
   baseQuery: customFetchBaseQuery,
   tagTypes: ["order"],
   endpoints: (builder) => ({
@@ -29,4 +29,4 @@ export const orderApi = createApi({
 });
 
 export const { useGetOrdersManageQuery, useUpdateStatusOrderManageMutation } =
-  orderApi;
+  orderManageApi;

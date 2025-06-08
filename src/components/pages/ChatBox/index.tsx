@@ -5,8 +5,8 @@ import Link from "next/link";
 import { fetchStream } from "./fetchStream";
 import { BASE_API } from "@/config/api.config";
 import { useAuth } from "@/contexts/auth.context";
+import { parseContent } from "@/utils/handleStreamData";
 
-// Define product interface
 interface Product {
     productName: string;
     linkProduct: string | null;
@@ -83,6 +83,44 @@ export default function ChatBox() {
             handleStream();
         }
     };
+
+    useEffect(() => {
+        const fetchChat = async () => {
+            if (accessToken) {
+                try {
+                    const response = await fetch(`${BASE_API}/chatbot`, {
+                        headers: {
+                            "Authorization": `Bearer ${accessToken}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    if (data) {
+                        const mappedMessages: Message[] = data
+                            .sort((a: { created_at: string | number | Date; }, b: { created_at: string | number | Date; }) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                            .flatMap((msg: { role: string; content: string; }) => {
+                                if (msg.role === "user") {
+                                    return [{ role: "user" as const, content: msg.content }];
+                                } else {
+                                    return parseContent(msg.content);
+                                }
+                            });
+
+                        setMessages(mappedMessages);
+                    }
+                    console.log("Fetched chat data:", data);
+                } catch (error) {
+                    console.error("Error fetching chat data:", error);
+                }
+            }
+        };
+
+        fetchChat();
+    }, []);
 
     useEffect(() => {
         if (!isStreaming && chat) {

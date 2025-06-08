@@ -3,9 +3,9 @@ import React from 'react';
 const Header = () => {
     return (
         <header className="bg-white shadow-md ">
-            <div className="flex justify-between items-center py-[10px]">
+            <div className="flex justify-between items-center p-[10px] ">
                 <div className="flex items-center">
-                    <span className="text-gray-600 mr-2">K</span>
+
                     <input
                         type="text"
                         placeholder="Search for results..."
@@ -13,10 +13,6 @@ const Header = () => {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <button className="text-gray-600 hover:text-gray-800 relative">
-                        <span role="img" aria-label="bell">🔔</span>
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">4</span>
-                    </button>
                     <div className="flex items-center space-x-2">
                         <img
                             src="https://via.placeholder.com/30"

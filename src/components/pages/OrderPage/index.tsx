@@ -45,6 +45,7 @@ function OrderPage() {
     };
 
     const handleReviewProduct = (isReview: boolean, productId: string) => {
+        alert(productId)
         setIsReview(true)
         setProductReview(productId)
     }
@@ -115,8 +116,9 @@ function OrderPage() {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {order.status !== "delivered" && (
-                                                                    <button onClick={() => handleReviewProduct(true, product?.product_id ?? "")} >Đánh giá sản phẩm</button>
+                                                                <p>{(product?.reviewed ?? false).toString()}</p>
+                                                                {order.status !== "delivered" && !product.reviewed && (
+                                                                    <button onClick={() => handleReviewProduct(true, product?.product?.id ?? "")} >Đánh giá sản phẩm</button>
                                                                 )}
                                                             </div>
 

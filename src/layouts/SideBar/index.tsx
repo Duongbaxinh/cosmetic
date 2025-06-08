@@ -4,7 +4,7 @@ import { SIDEBAR_ITEMS } from '@/components/config/sidebarItem';
 import Link from 'next/link';
 import React from 'react';
 interface SideBarProps {
-    // Define any other props if needed
+
 }
 
 const SideBar: React.FC<SideBarProps> = () => {
@@ -17,7 +17,7 @@ const SideBar: React.FC<SideBarProps> = () => {
                     {SIDEBAR_ITEMS.map(({ path, title, icon }, index) => (
                         <Link key={index} href={path}>
                             <ItemRectangle
-                                className='truncate  '
+                                className='truncate'
                                 icon={<img src={icon} alt={title} className="max-w-8 max-h-8" />}
                                 title={title}
                             />

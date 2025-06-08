@@ -8,3 +8,4 @@ export * from "./slice.type";
 export * from "./context.type";
 export * from "./response.type";
 export * from "./review.type";
+export * from "./product.type";

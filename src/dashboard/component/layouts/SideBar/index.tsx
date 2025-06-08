@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
+import { FaBorderAll } from "react-icons/fa";
+import { AiFillProduct } from "react-icons/ai";
+import { BiSolidDiscount } from "react-icons/bi";
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -8,9 +10,9 @@ const Sidebar = () => {
     };
 
     const menuItems = [
-        { icon: '🎉', label: 'Promotion' },
-        { icon: '📦', label: 'Product' },
-        { icon: '📋', label: 'Order' },
+        { icon: <BiSolidDiscount />, label: 'Chương trình giảm giá' },
+        { icon: <AiFillProduct />, label: 'Quản lý sản phẩm' },
+        { icon: <FaBorderAll />, label: 'Quản lý đơn hàng' },
     ];
 
     useEffect(() => {
@@ -18,12 +20,12 @@ const Sidebar = () => {
     }, [isCollapsed]);
 
     return (
-        <div className={`sticky top-0 left-0 h-screen bg-gray-800 text-white flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-52 min-w-[200px]'}`}>
+        <div className={`sticky top-0 left-0 h-screen bg-gray-800 text-white flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-[350px]'}`}>
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
                 <h2
                     className={`text-xl font-bold overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}
                 >
-                    Vexel
+                    HATU
                 </h2>
                 <button
                     onClick={toggleSidebar}
@@ -37,7 +39,7 @@ const Sidebar = () => {
                     <a
                         key={index}
                         href="#"
-                        className={`flex items-center p-2 text-gray-300 hover:bg-gray-700 rounded transition-all duration-300 ${isCollapsed ? 'justify-center' : ''}`}
+                        className={`flex  items-center py-4 px-2 text-gray-300 hover:bg-gray-700 rounded transition-all duration-300 ${isCollapsed ? 'justify-center' : ''}`}
                     >
                         <span className="flex-shrink-0">{item.icon}</span>
                         <span

@@ -179,8 +179,8 @@ function CheckoutPage() {
                 product_id: product.id,
                 quantity: product.quantity,
             }))
-            await createOrderDetail(orderDetailProduct)
-
+            const orderCreated = await createOrderDetail(orderDetailProduct)
+            console.log("chekkkkk", orderCreated)
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
                 if (!dataPayment || !dataPayment.data || !dataPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
@@ -206,6 +206,7 @@ function CheckoutPage() {
                 })
                 return router.replace(dataPayment.data?.url ?? CHECKOUT_URL)
             }
+
             router.push(`${ORDER_URL}`)
         } catch (error) {
             console.log("error", error)

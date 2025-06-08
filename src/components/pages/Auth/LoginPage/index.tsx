@@ -50,8 +50,6 @@ const LoginPage = () => {
             const res = await login(dataLogin);
             if (res.error) {
                 return handleError(res.error)
-            } else {
-                toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
             }
             if (res.data) {
                 setIsLogin(true);
@@ -61,6 +59,7 @@ const LoginPage = () => {
                 setIsAuth({ form: 'login', isOpen: false });
             }
         } catch (error) {
+            console.log("chek error login", error)
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     };

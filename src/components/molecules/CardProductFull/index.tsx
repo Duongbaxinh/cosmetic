@@ -29,6 +29,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
             const response = await addToCart(cart?.id, id, 1)
             toast.success("Đã thêm vào giỏ hàng thành công")
         } catch (error) {
+            console.log("test error :::: ", error)
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     }

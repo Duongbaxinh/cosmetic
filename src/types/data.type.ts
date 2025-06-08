@@ -1,17 +1,5 @@
 import { ShippingAddress, UserProfileType, UserType } from "./auth.type";
 
-export enum ProductEnum {
-  "PRODUCT_INTERNAL" = "product_internationals",
-  "PRODUCT_DISCOUNT" = "product_discounts",
-}
-export interface ImageProduct {
-  id?: string;
-  product_id?: string;
-  image_url: string;
-  alt_text: string;
-  is_primary?: boolean;
-}
-
 export type Category = {
   id: string;
   title: string;
@@ -173,7 +161,8 @@ export type OrderStorage = {
 
 export type OrderProduct = {
   id: string;
-  product_id?: string;
+  product?: Product;
+  reviewed?: boolean;
   product_name: string;
   product_price: number;
   product_brand: string;

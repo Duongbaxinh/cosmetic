@@ -12,6 +12,7 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
 
     function handleRTKError(error: unknown): string {
+        console.log("chekkkkk rrr", error)
         const defaultMessage = "Đã có lỗi xảy ra. Vui lòng thử lại.";
 
         if (!error || typeof error !== "object") {

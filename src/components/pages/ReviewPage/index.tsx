@@ -92,6 +92,7 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
     }
 
     const handleSubmit = async () => {
+        console.log("chkkkkkk ", numberStar, content, productId)
         if (!content && numberStar === 0) {
             toast.error("Vui lòng nhập nội dung đánh giá của bạn")
             return;
