@@ -4,6 +4,8 @@ import InfoPage from "@/components/pages/Auth/InfoPage";
 import ChatBox from "@/components/pages/ChatBox";
 import { AuthProvider } from "@/contexts/auth.context";
 import { CartProvider } from "@/contexts/cart.context";
+import { DataProvider } from "@/contexts/data.context";
+import { ErrorProvider } from "@/contexts/error.context";
 import { NetworkStatusProvider } from "@/contexts/network.context";
 import { OrderProvider } from "@/contexts/order.context";
 import ReduxProvider from "@/redux/ReduxProvider";
@@ -11,9 +13,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer } from 'react-toastify';
 import "./globals.css";
-import ReviewPage from "@/components/pages/ReviewPage";
-import { DataProvider } from "@/contexts/data.context";
-import { ErrorProvider } from "@/contexts/error.context";
+import { DataManageProvider } from "@/contexts/data.manage.context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,19 +44,21 @@ export default function RootLayout({
         <ErrorProvider>
           <NetworkStatusProvider>
             <ReduxProvider>
-              <DataProvider>
-                <AuthProvider>
-                  <CartProvider>
-                    <OrderProvider>
-                      <ToastContainer />
-                      {children}
-                      <InfoPage />
-                      <ChatBox />
-                      <AuthPage />
-                    </OrderProvider>
-                  </CartProvider>
-                </AuthProvider>
-              </DataProvider>
+              <AuthProvider>
+                <DataProvider>
+                  <DataManageProvider>
+                    <CartProvider>
+                      <OrderProvider>
+                        <ToastContainer position="top-left" />
+                        {children}
+                        <InfoPage />
+                        <ChatBox />
+                        <AuthPage />
+                      </OrderProvider>
+                    </CartProvider>
+                  </DataManageProvider>
+                </DataProvider>
+              </AuthProvider>
             </ReduxProvider>
           </NetworkStatusProvider>
         </ErrorProvider>

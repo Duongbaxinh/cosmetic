@@ -8,11 +8,15 @@ export const productTypeApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_API }),
   tagTypes: ["productType"],
   endpoints: (builder) => ({
-    getAllType: builder.query<ProductTypeResponse, any>({
+    getType: builder.query<ProductTypeResponse, any>({
       query: (param) => `/types?${toQueryString(param)}`,
+      providesTags: ["productType"],
+    }),
+    getAllType: builder.query<ProductType[], void>({
+      query: () => `/types`,
       providesTags: ["productType"],
     }),
   }),
 });
 
-export const { useGetAllTypeQuery } = productTypeApi;
+export const { useGetTypeQuery, useGetAllTypeQuery } = productTypeApi;

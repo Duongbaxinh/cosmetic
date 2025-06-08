@@ -3,6 +3,8 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
 import { setUser } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
+import { URL_SHOP_MANAGE } from '@/routers';
+import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -42,7 +44,7 @@ function ManageShopePage() {
                                 </div>
 
                             </div>
-
+                            <Link href={URL_SHOP_MANAGE}>Quản lý gian hàng</Link>
 
                         </div>
                     </div>

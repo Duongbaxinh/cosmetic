@@ -55,7 +55,7 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
                     body: formData,
                 });
                 const data = await response.json();
-                console.log("check data review ", data)
+
                 if (response.ok) {
                     return data.secure_url;
                 }
@@ -64,7 +64,7 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
 
             const urls = await Promise.all(uploadPromises);
             setImageUrls((prev) => [...prev, ...urls]);
-            console.log('Uploaded URLs:', urls);
+
         } catch (err) {
             setError('Tải ảnh thất bại.');
             console.error(err);
@@ -99,8 +99,8 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
         setUploading(true);
         setError(null);
         try {
-            console.log("check data", content, productId, numberStar)
-            const dataReview = await reviewProduct({ content: content, product_id: productId, rate: numberStar + 1 }).unwrap()
+            console.log("check info :::: ", content, productId, numberStar)
+            const dataReview = await reviewProduct({ content: content, product_id: productId, rate: numberStar }).unwrap()
             toast.success("Cảm ơn bạn đã đánh giá sản phẩm")
             if (imageUrls.length > 0 && dataReview && dataReview.id) {
                 const payload = imageUrls.map((img) => (
@@ -113,7 +113,7 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
             }
             closeReview()
         } catch (err) {
-            console.log("check error ", err)
+            console.log("check error::: ", err)
             handleError(err)
         } finally {
             setUploading(false);

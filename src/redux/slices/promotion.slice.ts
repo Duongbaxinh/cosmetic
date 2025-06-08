@@ -1,5 +1,5 @@
 import { BASE_API, PROMOTION_API } from "@/config/api.config";
-import { Promotion } from "@/types";
+import { Promotion, PromotionFormType } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const promotionApi = createApi({

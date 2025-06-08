@@ -39,8 +39,6 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
     const router = useRouter();
     const [isOpen, setIsOpen] = useState<{ openPhone: boolean, "openComputer": boolean }>({ "openPhone": false, "openComputer": false });
     const profileRef = useRef<HTMLDivElement | null>(null);
-    const { data: categories } = useGetAllCategoryQuery()
-    const shippingAddress = useSelector((state: RootState) => state.address.shippingAddress);
     const dispatch = useDispatch();
 
     useClickOutside([profileRef], () => {

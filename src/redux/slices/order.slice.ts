@@ -25,7 +25,7 @@ export const orderProductApi = createApi({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/orders?${queryString}`;
-        console.log("check url status order:::", url);
+
         return {
           url: url,
         };
@@ -43,7 +43,6 @@ export const orderProductApi = createApi({
         };
       },
       transformResponse: (response: OrderResponse) => {
-        console.log("check response order detail :: ", response);
         return response;
       },
       keepUnusedDataFor: 0,

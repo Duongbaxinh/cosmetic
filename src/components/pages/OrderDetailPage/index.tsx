@@ -14,7 +14,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
     const discount_direct = 0
     // const discount_shipping = orderDetail?.order_discount_shipping ?? 0
     const discount_shipping = 0
-    console.log("orderDetail", orderDetail)
+
     useEffect(() => {
         alert("run at here")
     }, [])

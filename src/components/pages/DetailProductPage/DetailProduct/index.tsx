@@ -58,7 +58,9 @@ const DetailProduct: React.FC<DetailProductProps> = ({
         productDescription: false,
         productInfo: false,
     });
-    const isDiscount = product_discount && product_discount > 0 && product_discount_percent && product_discount_percent > 0;
+    const isDiscount = Number(product_discount) > 0 && Number(product_discount_percent) > 0;
+
+
     return (
         <div className="flex flex-col gap-2.5 w-full max-w-full  rounded-md  order-2 lg:order-1 ">
             {/* Product Info */}
@@ -86,7 +88,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                         {isDiscount && (
                             <Price
                                 className="text-pink-600 justify-center font-medium text-[20px]"
-                                product_price={product.product_price - product_discount}
+                                product_price={product.product_price - (product_discount ?? 0)}
                             />
                         )}
                         <Price

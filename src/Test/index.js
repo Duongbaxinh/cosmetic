@@ -48,27 +48,29 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
+var lodash_1 = require("lodash");
 // Import the JSON file (Node.js style, use dynamic import for ES modules if needed)
-var productDataArray = require("./data7.json"); // Adjust path to your JSON file
+var productDataArray = require("./data3.json"); // Adjust path to your JSON file
 var createProductWithImages = function (productData) { return __awaiter(void 0, void 0, void 0, function () {
-    var products, dataFilter, createProductResponse, _loop_1, i, error_1;
+    var products, dataFilter, createProductResponse, productData_1, _loop_1, i, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 7, , 8]);
+                _a.trys.push([0, 6, , 7]);
                 products = Array.isArray(productData) ? productData : [productData];
                 dataFilter = products.map(function (product) {
                     var images = product.images, productBody = __rest(product, ["images"]);
                     return productBody;
                 });
-                return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/products", dataFilter, {
+                return [4 /*yield*/, axios_1.default.post("https://joyboy-be.up.railway.app/products", dataFilter, {
                         headers: {
-                            Authorization: "Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V",
+                            Authorization: "Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt",
                         },
                     })];
             case 1:
                 createProductResponse = _a.sent();
-                if (!createProductResponse.data) return [3 /*break*/, 6];
+                if (!(createProductResponse.data && (0, lodash_1.isArray)(createProductResponse.data))) return [3 /*break*/, 5];
+                productData_1 = createProductResponse.data;
                 _loop_1 = function (i) {
                     var product, imagePayload;
                     return __generator(this, function (_b) {
@@ -77,13 +79,13 @@ var createProductWithImages = function (productData) { return __awaiter(void 0, 
                                 product = products[i];
                                 if (!(product.images && product.images.length > 0)) return [3 /*break*/, 2];
                                 imagePayload = product.images.map(function (url) { return ({
-                                    product_id: product.product_name, // Note: This assumes product_name is unique; consider using a proper product ID
+                                    product_id: productData_1[i].product_slug,
                                     image_url: url,
                                     alt_text: product.product_name,
                                 }); });
-                                return [4 /*yield*/, axios_1.default.post("https://joyboybe-production.up.railway.app/product-images", imagePayload, {
+                                return [4 /*yield*/, axios_1.default.post("https://joyboy-be.up.railway.app/product-images", imagePayload, {
                                         headers: {
-                                            Authorization: "Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V",
+                                            Authorization: "Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt",
                                         },
                                     })];
                             case 1:
@@ -104,15 +106,12 @@ var createProductWithImages = function (productData) { return __awaiter(void 0, 
             case 4:
                 i++;
                 return [3 /*break*/, 2];
-            case 5:
-                console.log("Tạo sản phẩm và ảnh thành công");
-                _a.label = 6;
-            case 6: return [3 /*break*/, 8];
-            case 7:
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 error_1 = _a.sent();
                 console.error("Lỗi khi tạo sản phẩm hoặc ảnh:", error_1);
                 throw error_1;
-            case 8: return [2 /*return*/];
+            case 7: return [2 /*return*/];
         }
     });
 }); };

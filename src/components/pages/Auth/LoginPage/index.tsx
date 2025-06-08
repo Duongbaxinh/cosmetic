@@ -18,7 +18,6 @@ import { toast } from 'react-toastify';
 
 const LoginPage = () => {
 
-    const { setIsAuth, } = useAuth()
     const { handleError } = useError()
     const {
         register,
@@ -42,7 +41,7 @@ const LoginPage = () => {
         name: usernameName,
     } = register('username');
     const [showPassword, setShowPassword] = useState(false);
-    const { setIsLogin, setAccessToken, setRefetchToken, setScope } = useAuth();
+    const { setIsLogin, setAccessToken, setRefetchToken, setScope, setIsAuth, } = useAuth();
     const [login, { isLoading, error }] = useLoginMutation();
     const router = useRouter();
 
@@ -55,7 +54,6 @@ const LoginPage = () => {
                 toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
             }
             if (res.data) {
-                console.log("check login ", res.data)
                 setIsLogin(true);
                 setScope(res.data.scope)
                 setAccessToken(res.data.access_token);

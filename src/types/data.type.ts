@@ -5,10 +5,11 @@ export enum ProductEnum {
   "PRODUCT_DISCOUNT" = "product_discounts",
 }
 export interface ImageProduct {
-  id: string;
+  id?: string;
+  product_id?: string;
   image_url: string;
   alt_text: string;
-  is_primary: boolean;
+  is_primary?: boolean;
 }
 
 export type Category = {
@@ -29,7 +30,7 @@ export type ProductType = {
   id: string;
   title: string;
   slug: string;
-  category: Category;
+  category: Category | null;
 };
 
 export type ProductTypeResponse = {
@@ -74,16 +75,16 @@ export type Product = {
   product_thumbnail: string;
   product_price: number;
   product_rate: number;
-  product_type: ProductType;
+  product_type: ProductType | null;
   product_discount: boolean;
   product_discount_percent: number;
   product_made: string;
   product_brand: ProductBrand;
   product_images: ImageProduct[];
   product_special?: string[];
-  product_exp?: string;
-  product_discount_start: string;
-  product_discount_end: string;
+  product_exp?: string | null;
+  product_discount_start: string | null;
+  product_discount_end: string | null;
   product_promotion: ProductPromotion;
   product_stock_quantity: number;
   is_active: boolean;
@@ -91,6 +92,52 @@ export type Product = {
   created_at: string;
   updated_at: string;
 };
+export type ProductFormData = {
+  product_name: string;
+  product_price: number;
+  product_thumbnail: string;
+  product_type_id: string;
+  product_made: string;
+  product_discount: boolean;
+  product_discount_percent: number;
+  product_discount_start: string | null;
+  product_discount_end: string | null;
+  product_promotion_id: string;
+  product_international: boolean;
+  product_description: string;
+  product_ingredient: string;
+  product_stock_quantity: number;
+  product_expiration_date: string;
+  product_slug?: string;
+};
+
+// export type OrderFormData = {
+//   id: string;
+//   user: { id: string; name: string; email: string };
+//   phone: string;
+//   status: statusOrderType;
+//   shipping_address: {
+//     id: string;
+//     address_line1: string;
+//     address_line2?: string;
+//     city: string;
+//     country: string;
+//     postal_code: string;
+//   };
+//   order_details: {
+//     id: string;
+//     product_name: string;
+//     product_price: number;
+//     product_brand: string;
+//     product_type: string;
+//     product_thumbnail: string;
+//     quantity: number;
+//   }[];
+//   total_price: number;
+//   created_at: string;
+//   updated_at: string;
+// };
+
 //
 
 // CHECKOUT ORDER
@@ -126,6 +173,7 @@ export type OrderStorage = {
 
 export type OrderProduct = {
   id: string;
+  product_id?: string;
   product_name: string;
   product_price: number;
   product_brand: string;
@@ -284,13 +332,24 @@ export type Review = {
 // PROMOTION
 export interface Promotion {
   id: string;
+  vendor: any;
   title: string;
   slug: string;
   thumbnail: string;
   discount_percent: number;
-  start_date: string | null;
-  end_date: string | null;
+  start_date: string;
+  end_date: string;
   products: Product[];
+  is_active: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface PromotionFormType {
+  title: string;
+  thumbnail?: string;
+  discount_percent: number;
+  start_date: string;
+  end_date: string;
+  product_ids: string[];
 }

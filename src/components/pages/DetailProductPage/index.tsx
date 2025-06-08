@@ -87,14 +87,13 @@ function DetailProductPage({ id }: { id: string | number }) {
             product_name: product.product_name,
             product_price: finalPrice,
             product_thumbnail: product.product_thumbnail,
-            product_type: product.product_type?.slug,
+            product_type: product.product_type?.slug ?? "",
             product_brand: product.product_brand?.slug,
             quantity: quantity,
             product_discount: 0
         };
         return handlePurchase(orderProduct);
     };
-
 
 
     const handleAddToCart = async ({ product_id, quantity }: { product_id: string; quantity: number }) => {
@@ -107,8 +106,8 @@ function DetailProductPage({ id }: { id: string | number }) {
 
     const breadcrumbDetailProduct = [
         { label: "Trang Chủ", href: "/" },
-        { label: product.product_type?.title, href: "#" },
-        { label: product.product_name, href: "#" },
+        { label: product.product_type?.title ?? "", href: "#" },
+        { label: product.product_name ?? "", href: "#" },
     ];
     const similarProduct = products?.results.filter((item) => item.id !== product.id) || [];
     return (

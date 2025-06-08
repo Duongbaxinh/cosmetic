@@ -16,7 +16,7 @@ import Filter from '@/layouts/Filter';
 import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
-import { useGetAllTypeQuery } from '@/redux/slices/typeproduct.slice';
+import { useGetTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
 import { FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
 import { cleanFilter } from '@/utils';

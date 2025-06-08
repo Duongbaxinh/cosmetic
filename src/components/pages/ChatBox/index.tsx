@@ -3,6 +3,8 @@ import CloseIcon from "@/assets/icons/CloseIcon";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { fetchStream } from "./fetchStream";
+import { BASE_API } from "@/config/api.config";
+import { useAuth } from "@/contexts/auth.context";
 
 // Define product interface
 interface Product {
@@ -22,7 +24,9 @@ export default function ChatBox() {
     const [inputMessage, setInputMessage] = useState<string>("");
     const [chat, setChat] = useState<string>("");
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
+    const { accessToken } = useAuth()
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
 
     // Scroll to the bottom of the messages area
     const scrollToBottom = () => {
@@ -35,17 +39,32 @@ export default function ChatBox() {
         setChat("");
 
         try {
-            await fetchStream(
-                "https://joyboybe-production.up.railway.app/chatbot/guest",
-                {
-                    role: "user",
-                    content: inputMessage,
-                },
-                (chunk: string) => {
-                    setChat((prev) => prev + chunk);
-                    scrollToBottom();
-                }
-            );
+            if (accessToken) {
+                await fetchStream(
+                    `${BASE_API}/chatbot/guest`,
+                    {
+                        role: "user",
+                        content: inputMessage,
+                    },
+                    (chunk: string) => {
+                        setChat((prev) => prev + chunk);
+                        scrollToBottom();
+                    }
+                );
+            } else {
+                await fetchStream(
+                    `${BASE_API}/chatbot`,
+                    {
+                        role: "user",
+                        content: inputMessage,
+                    },
+                    (chunk: string) => {
+                        setChat((prev) => prev + chunk);
+                        scrollToBottom();
+                    },
+                    { token: accessToken }
+                );
+            }
         } catch (error) {
             console.error("Error during streaming:", error);
             setMessages((prev) => [

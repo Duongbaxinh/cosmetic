@@ -4,7 +4,6 @@ import {
   AuthDataRegister,
   ChangePasswordPayload,
   ForgotPasswordPayload,
-  ProfileFormData,
   ResetPasswordPayload,
   UserProfileType,
 } from "./../../types/auth.type";
@@ -65,7 +64,6 @@ export const authApi = createApi({
         body: credentials,
       }),
       transformResponse: (response: any) => {
-        console.log("check response ", response);
         return response;
       },
     }),
@@ -142,7 +140,7 @@ export const authApi = createApi({
       },
     }),
     changeProfile: builder.mutation({
-      query: (credentials: ProfileFormData) => ({
+      query: (credentials: any) => ({
         url: "auth/profile/update",
         method: "PUT",
         body: credentials,

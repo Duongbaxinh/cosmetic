@@ -60,7 +60,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             }
             return proceedToCheckout({ product });
         } catch (err) {
-            console.log("check error cart ", err)
+
             handleError(err);
         }
     };
@@ -116,7 +116,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 router.push(`${CHECKOUT_URL}`);
             }
         } catch (err) {
-            console.log("check error ddd", err)
+
             handleError(err);
         }
     };

@@ -1,13 +1,14 @@
 import axios from "axios";
+import { isArray } from "lodash";
 
 // Import the JSON file (Node.js style, use dynamic import for ES modules if needed)
-const productDataArray = require("./data7.json"); // Adjust path to your JSON file
+const productDataArray = require("./data3.json"); // Adjust path to your JSON file
 
 interface ProductFormData {
   product_name: string;
+  product_slug?: string;
   product_price: number;
   product_type_id?: string;
-  product_brand_id?: string;
   product_made: string;
   product_discount: boolean;
   product_discount_percent: number;
@@ -38,39 +39,39 @@ const createProductWithImages = async (
 
     // Create products
     const createProductResponse = await axios.post(
-      `https://joyboybe-production.up.railway.app/products`,
+      `https://joyboy-be.up.railway.app/products`,
       dataFilter,
       {
         headers: {
-          Authorization: `Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V`,
+          Authorization: `Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt`,
         },
       }
     );
 
-    if (createProductResponse.data) {
+    if (createProductResponse.data && isArray(createProductResponse.data)) {
+      const productData =
+        createProductResponse.data as unknown as ProductFormData[];
       // Handle image uploads for each product
       for (let i = 0; i < products.length; i++) {
         const product = products[i];
         if (product.images && product.images.length > 0) {
           const imagePayload = product.images.map((url) => ({
-            product_id: product.product_name, // Note: This assumes product_name is unique; consider using a proper product ID
+            product_id: productData[i].product_slug,
             image_url: url,
             alt_text: product.product_name,
           }));
 
           await axios.post(
-            "https://joyboybe-production.up.railway.app/product-images",
+            "https://joyboy-be.up.railway.app/product-images",
             imagePayload,
             {
               headers: {
-                Authorization: `Bearer P4NZIl3VXwH2bz6XsPMMCn83DjAv5V`,
+                Authorization: `Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt`,
               },
             }
           );
         }
       }
-
-      console.log("Tạo sản phẩm và ảnh thành công");
     }
   } catch (error) {
     console.error("Lỗi khi tạo sản phẩm hoặc ảnh:", error);

@@ -36,7 +36,7 @@ function ResetPasswordPage({ token }: { token: string }) {
                 router.push("/")
             }
         } catch (error) {
-            console.log("error :::  ", error)
+
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     };

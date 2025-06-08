@@ -9,6 +9,8 @@ import {
   ProductTypeResponse,
   Promotion,
 } from "./data.type";
+import { ProductResponse } from "./response.type";
+import { FilterProductType } from "./page.type";
 
 export type CartContextType = {
   isOpen: boolean;
@@ -29,6 +31,7 @@ export type CartContextType = {
 export type FilterParamItem = {
   limitnumber: number;
   page: number;
+  vendor?: string;
 };
 
 export type ParamFilter = {
@@ -45,9 +48,13 @@ export type DataContextType = {
   brands: ProductBrandTypeResponse | undefined;
   productTypes: ProductTypeResponse | undefined;
   promotions: Promotion[] | [];
+  products: ProductResponse | undefined;
   params: ParamFilter;
+  refetch: any;
   allBrand: ProductBrand[] | undefined;
   setParams: React.Dispatch<ParamFilter>;
+  filters: FilterProductType;
+  setFilters: React.Dispatch<SetStateAction<FilterProductType>>;
 };
 
 export type ErrorContextType = {

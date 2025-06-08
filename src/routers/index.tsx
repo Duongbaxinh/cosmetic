@@ -28,3 +28,16 @@ export const NOTICE_URL = "/customer/account/notice"
 export const PRODUCT_REVIEW_URL = "/customer/account/product_review"
 export const UPDATE_PROFILE_URL = "/auth/update-profile"
 export const UPDATE_PASSWORD_URL = "/auth/update-password"
+
+// Product 
+export const CREATE_PRODUCT_URL = "/manage/product/category/createproduct";
+
+export const UPDATE_PRODUCT_URL = "/manage/product/category/updateproduct";
+
+export const CREATE_PROMOTION_URL = "/manage/promotion/create-promotion";
+
+export const PROMOTION_MANAGE_URL = "/manage/promotion/create-promotion"
+export const UPDATE_PROMOTION_URL = "/manage/promotion"
+
+export const URL_SHOP_MANAGE = "/manage/product/category";
+export const URL_SHOP = "/customer/account/manageshop";

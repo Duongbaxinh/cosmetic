@@ -116,7 +116,7 @@ function OrderPage() {
                                                                     </div>
                                                                 </div>
                                                                 {order.status !== "delivered" && (
-                                                                    <button onClick={() => handleReviewProduct(true, product.id)} >Đánh giá sản phẩm</button>
+                                                                    <button onClick={() => handleReviewProduct(true, product?.product_id ?? "")} >Đánh giá sản phẩm</button>
                                                                 )}
                                                             </div>
 

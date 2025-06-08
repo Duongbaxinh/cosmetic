@@ -64,11 +64,11 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
 
         if (brands && brands.results) {
             setBrandData(brands.results)
-            console.log('check data bran ', brands)
+
         }
         if (productTypes && productTypes.results) {
             setTypeData(productTypes.results)
-            console.log('check data type ', productTypes)
+
         }
     }, [brands, productTypes])
 

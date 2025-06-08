@@ -3,7 +3,7 @@ import CloseIcon from '@/assets/icons/CloseIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
 import ProfileIcon from '@/assets/icons/ProfileIcon';
 import { SIDEBAR_DETAIL, SidebarDetailType } from '@/components/config/sidebarDetail';
-import { URL_SHOP, URL_SHOP_MANAGE } from '@/consts';
+import { URL_SHOP, URL_SHOP_MANAGE } from '@/routers';
 import { useAuth } from '@/contexts/auth.context';
 import { setUser } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';

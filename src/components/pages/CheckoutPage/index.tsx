@@ -121,9 +121,10 @@ function CheckoutPage() {
                     id: product.id,
                     product_price: product.product_price,
                     product_thumbnail: product.product_thumbnail,
-                    product_type: product.product_type?.slug,
+                    product_type: product.product_type?.slug ?? "",
                     product_brand: product.product_brand?.slug,
-                    quantity: 1
+                    quantity: 1,
+
                 }
                 orderProduct.push(newProduct)
             }
@@ -188,27 +189,26 @@ function CheckoutPage() {
                     payment_method: "momo",
                     trans_id: dataPayment.data.requestId
                 })
-                console.log('data payment ', data_payment)
+
                 if (data_payment.error) {
                     return handleError(data_payment.error)
                 }
-                window.open(dataPayment.data?.payUrl ?? CHECKOUT_URL, '_blank')
+                return router.replace(dataPayment.data?.payUrl ?? CHECKOUT_URL)
             }
             if (paymentMethod === "zalopay" && dataOrder && dataOrder.data) {
-                alert("run at zalopay")
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: 'zalopay' }) as { data?: { trans_id?: string; url?: string } }
-                console.log("check data payment", dataPayment)
+
                 if (!dataPayment || !dataPayment.data || !dataPayment.data.trans_id) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
                 await createPayment({
                     order_id: dataOrder.data.id,
                     payment_method: "zalopay",
                     trans_id: dataPayment.data.trans_id
                 })
-                return window.open(dataPayment.data?.url ?? CHECKOUT_URL, '_blank')
+                return router.replace(dataPayment.data?.url ?? CHECKOUT_URL)
             }
             router.push(`${ORDER_URL}`)
         } catch (error) {
-            console.log('check error payment ::: ', error)
+            console.log("error", error)
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     }
@@ -323,7 +323,7 @@ function CheckoutPage() {
                                         )}
                                 </div>
                             </div>
-                            <div className="fixed bottom-0 left-0 lg:sticky lg:top-2 max-w-full lg:max-w-[372px] lg:h-[491px] w-full  space-y-3">
+                            <div className="fixed bottom-0 left-0 lg:sticky lg:top-2 max-w-full lg:max-w-[372px] lg:h-[491px] w-full lg:max-h-[95vh] lg:overflow-y-scroll scrollbar space-y-3">
                                 {/* CHECKOUT */}
                                 {!show && <div className="block md:hidden absolute -top-[15%] left-[50%] transform -translate-x-1/2 transition-opacity duration-300 ease-in-out">
                                     <IconButton onClick={() => setShow(true)} icon={<BiChevronUp />} />
@@ -343,7 +343,7 @@ function CheckoutPage() {
                                         <button onClick={() => setIsChangeShipping(true)}>Đổi</button>
                                     </div>
                                     <div
-                                        className={`${!show ? "opacity-0 max-h-0" : "opacity-100 max-h-[250px]"} lg:opacity-100 lg:max-h-[230px] overflow-auto transition-all duration-300 ease-in-out`}
+                                        className={`${!show ? "opacity-0 max-h-0" : "opacity-100 max-h-[250px]"} lg:opacity-100 lg:max-h-[230px] overflow-auto transition-all scrollbar duration-300 ease-in-out`}
                                     >
                                         {orderCheckout?.order_products.map((product) => (
                                             <div

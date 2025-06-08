@@ -46,11 +46,13 @@ export type Props = {
     text_search: string;
     promotion: string;
     type_edit: keyof TypeEdit;
+    product_slug: string;
     value: string;
     token: string;
   }>;
   searchParams: Promise<{
     token: string;
+    promotionId: string;
   }>;
 };
 
