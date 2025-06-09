@@ -11,9 +11,9 @@ const Sidebar = () => {
     };
 
     const menuItems = [
-        { icon: <BiSolidDiscount />, label: 'Chương trình giảm giá' },
-        { icon: <AiFillProduct />, label: 'Quản lý sản phẩm' },
-        { icon: <FaBorderAll />, label: 'Quản lý đơn hàng' },
+        { icon: <BiSolidDiscount />, label: 'Chương trình giảm giá', link: '/manage/promotion' },
+        { icon: <AiFillProduct />, label: 'Quản lý sản phẩm', link: "/manage/product" },
+        { icon: <FaBorderAll />, label: 'Quản lý đơn hàng', link: "/manage/order" },
     ];
 
     useEffect(() => {
@@ -37,9 +37,9 @@ const Sidebar = () => {
             </div>
             <nav className="mt-4 px-2">
                 {menuItems.map((item, index) => (
-                    <a
+                    <Link
                         key={index}
-                        href="#"
+                        href={item.link}
                         className={`flex  items-center py-4 px-2 text-gray-300 hover:bg-gray-700 rounded transition-all duration-300 ${isCollapsed ? 'justify-center' : ''}`}
                     >
                         <span className="flex-shrink-0">{item.icon}</span>
@@ -48,7 +48,7 @@ const Sidebar = () => {
                         >
                             {item.label}
                         </span>
-                    </a>
+                    </Link>
                 ))}
             </nav>
         </div>
