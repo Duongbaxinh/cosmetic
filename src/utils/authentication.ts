@@ -9,9 +9,10 @@
 //   return false;
 // };
 
-export const authorization = (role: string) => {
-  const scopeString = JSON.parse(localStorage.getItem("scope") || "");
-  const scopeList = scopeString.split(" ");
-  const authList = role.split(" ");
-  return authList.some((auth) => scopeList.includes(auth));
+export const authorization = (role: string, scopeString: string) => {
+  if (role && scopeString) {
+    const scopeList = scopeString.split(" ");
+    const authList = role.split(" ");
+    return authList.some((auth) => scopeList.includes(auth));
+  }
 };

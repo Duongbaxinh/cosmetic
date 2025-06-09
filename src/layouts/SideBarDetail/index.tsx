@@ -80,7 +80,7 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
                             </div>
                         </Link>
                     ))}
-                    {authorization(Permissions.sell) && (
+                    {authorization(Permissions.sell, scope) && (
                         <Link
                             href={URL_SHOP_MANAGE}
                             className={`block px-2 py-2 md:px-4 ${path_name === URL_SHOP_MANAGE ? "bg-pink-300 text-white" : ""

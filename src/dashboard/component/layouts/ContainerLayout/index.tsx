@@ -30,9 +30,10 @@ export function ContainerLayout({
     const [privateProcess, setPrivateProcess] = useState<boolean>(false);
     useEffect(() => {
         const checkAuth = () => {
+            const scopeString = JSON.parse(localStorage.getItem("scope") || "");
             if (isPrivate && authentication) {
                 const token = localStorage.getItem("accessToken");
-                const hasAnyPermission = authorization(Permissions.sell);
+                const hasAnyPermission = authorization(Permissions.sell, scopeString);
                 if (!token || !hasAnyPermission) {
                     router.push('/');
                     return;

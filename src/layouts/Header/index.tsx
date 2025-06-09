@@ -3,11 +3,8 @@ import { HeartIcon, UserIcon } from '@/assets/icons';
 import CartIcon from '@/assets/icons/CartIcon';
 import LoginIcon from '@/assets/icons/LoginIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
-import Carousel from '@/components/atoms/Carousel';
 import Container from '@/components/atoms/Container';
-import IconButton from '@/components/atoms/IconButton';
 import ItemRectangle from '@/components/atoms/ItemRetangle';
-import { CATEGORY_CONFIG } from '@/components/config/categories.config';
 import { PROFILE } from '@/components/config/profile';
 import BoxIntroduce from '@/components/molecules/BoxIntroduce';
 import BoxSearch from '@/components/molecules/BoxSearch';
@@ -15,16 +12,13 @@ import Drawer from '@/components/molecules/Drawer';
 import { useAuth } from '@/contexts/auth.context';
 import { useCart } from '@/contexts/cart.context';
 import useClickOutside from '@/hooks/useClickOuside';
-import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
-import { RootState } from '@/redux/store';
 import { Category } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SwiperSlide } from 'swiper/react';
+import { useDispatch } from 'react-redux';
 
 // Type definition for component props
 interface HeaderProps {
@@ -45,10 +39,6 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
         setIsOpen(prev => ({ ...prev, 'openComputer': false }));
     });
 
-    const handleHoverCategory = (categories: Category) => {
-
-    }
-
     const handleLogout = () => {
         logout();
         router.push("/");
@@ -66,9 +56,6 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
     }, [dispatch]);
 
     const cartQuantity = cart?.cart_details.length ?? 0
-    // const cartQuantity = cart?.cart_details.reduce((a, b) => {
-    //     return a + b.quantity
-    // }, 0)
     const userName = userProfile ? userProfile.username : ""
     return (
         <Container className={`bg-pink-50 ${classHeader}`}>

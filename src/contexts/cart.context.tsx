@@ -15,7 +15,7 @@ import { useError } from "./error.context";
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isLogin, setIsAuth } = useAuth();
+    const { isLogin, setIsAuth, accessToken: authentication } = useAuth();
     const { handleError } = useError();
     const [isOpen, setIsOpen] = useState(false);
     const [cart, setCart] = useState<CartCheckoutType | null>(null);
@@ -38,7 +38,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [clearCartMutation] = useClearCartMutation();
 
     const toggleDrawer = () => {
-        if (!isLogin) return setIsAuth({ form: 'login', isOpen: true });
+        if (!authentication) return setIsAuth({ form: 'login', isOpen: true });
         setIsOpen((prev) => !prev);
     };
 

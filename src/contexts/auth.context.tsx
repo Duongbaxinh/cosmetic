@@ -2,7 +2,7 @@
 import useSaveLocalStorage from "@/hooks/useLocalstorage";
 import { clearUser, setUser, useGetUserQuery } from "@/redux/slices/auth.slice";
 import { clearShippingAddress, setShippingAddress, useGetAddressQuery } from "@/redux/slices/shippingAddress.slice";
-import { AuthContextType, ShippingAddress, UserProfileType, UserType } from "@/types";
+import { AuthContextType } from "@/types";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
