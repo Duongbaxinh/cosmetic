@@ -41,8 +41,6 @@ export type OrderStorage = {
 
 export type OrderProduct = {
   id: string;
-  product?: Product;
-  reviewed?: boolean;
   product_name: string;
   product_price: number;
   product_brand: string;
@@ -88,6 +86,15 @@ export type OrderType = {
   order_details: OrderProduct[];
   created_at: string;
   updated_at: string;
+};
+
+export type OrderProductDetail = {
+  id: string;
+  product: Product;
+  reviewed?: boolean;
+  quantity: number;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type OrderDetailType = {

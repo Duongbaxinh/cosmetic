@@ -1,5 +1,5 @@
 import { Role, ShippingAddress, UserProfileType } from "./auth.type";
-import { OrderProduct } from "./data.type";
+import { OrderProduct, OrderProductDetail } from "./data.type";
 import { PaymentResponse } from "./payment.type";
 import { Product } from "./product.type";
 export type ProductResponse = {
@@ -38,7 +38,7 @@ export type OrderResponse = {
     | "returned";
   total_price: number;
   shipping_address: ShippingAddress;
-  order_details: OrderProduct[];
+  order_details: OrderProductDetail[];
   payment: PaymentResponse;
   created_at: string;
   updated_at: string;

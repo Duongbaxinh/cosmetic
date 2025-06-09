@@ -146,7 +146,7 @@ function BoxIntroduce() {
                                 <Link href={`${PROMOTION_URL}/${promotion.slug}`} key={promotion.slug}>{promotion.title}</Link>
                             ))}
                             {hoveredCategory && hoveredCategory.id === "brand" && brands && brands.map((brand) => (
-                                <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} key={brand.slug}>{brand.title}</Link>
+                                <Link href={`${CATEGORY_URL}/product_vendor/${brand.slug}`} key={brand.slug}>{brand.name}</Link>
                             ))}
                         </div>
                         <div className='flex items-center gap-2 overflow-x-scroll no-scrollbar'>

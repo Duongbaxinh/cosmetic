@@ -91,6 +91,7 @@ export const orderProductApi = createApi({
         method: "POST",
         body: orderDetail,
       }),
+      invalidatesTags: ["order"],
       transformResponse: (response: OrderResponse) => {
         return response;
       },

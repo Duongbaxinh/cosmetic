@@ -84,7 +84,7 @@ function DetailItem({ product, setIsDetail, setDetailItem }: {
                     <div className="w-full col-span-4 gap-10 text-text space-y-3">
                         <h1 className=" text-[20px] font-[700] leading-[26px]"> {product.product_name}</h1>
                         <div className="grid grid-cols-2">
-                            <p>Thương hiệu: </p>  <p className="text-[14px]  leading-5 "> {`${product.product_brand?.title}`}</p>
+                            <p>Thương hiệu: </p>  <p className="text-[14px]  leading-5 "> {`${product.product_vendor.name}`}</p>
                             {/* <p>Danh mục sản phẩm: </p> <p className="text-[14px]  leading-5 "> {`${product.product_type?.}`}</p> */}
                             <p>Loại sản phẩm: </p><p className="text-[14px]  leading-5 "> {`${product.product_type?.title}`}</p>
                             <p>Xuất xứ: </p><p className=" text-[14px]  leading-[26px]">  {`${product.product_made}`}</p>

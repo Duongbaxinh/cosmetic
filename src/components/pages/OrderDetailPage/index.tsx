@@ -71,21 +71,21 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                 {/* PRODUCT */}
                 {is_order && (
                     <div className=" bg-white p-4 space-y-[20px] mt-[30px] rounded-md">
-                        {orderDetail?.order_details.map((product, index) => (
-                            <div key={product.id} className={`flex gap-3 pt-4 ${index !== 0 && "border-t border-gray-300"}`}>
+                        {orderDetail?.order_details.map((productDetail, index) => (
+                            <div key={productDetail.id} className={`flex gap-3 pt-4 ${index !== 0 && "border-t border-gray-300"}`}>
                                 <Image
-                                    src={product.product_thumbnail}
-                                    alt={product.product_name}
+                                    src={productDetail.product.product_thumbnail}
+                                    alt={productDetail.product.product_name}
                                     width={100}
                                     height={100}
                                     className="object-cover w-[100px] h-[100px] rounded-md shadow"
                                 />
                                 <div className="flex-1">
-                                    <div className="text-sm text-gray-800 line-clamp-2">{product.product_name}</div>
-                                    <div className="text-xs text-gray-500">SL: x{product.quantity}</div>
+                                    <div className="text-sm text-gray-800 line-clamp-2">{productDetail.product.product_name}</div>
+                                    <div className="text-xs text-gray-500">SL: x{productDetail.quantity}</div>
                                     <div className="text-xs mt-1">
                                         {/* <Price product_price={product.product_price_cost} className='!font-light  text-gray-400 line-through' /> */}
-                                        <Price product_price={product.product_price} className='!font-light text-red-400' />
+                                        <Price product_price={productDetail.product.product_price} className='!font-light text-red-400' />
                                     </div>
                                 </div>
                             </div>

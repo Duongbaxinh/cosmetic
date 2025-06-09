@@ -63,9 +63,9 @@ function Filter({ categories, brands, isFiltered, onFilter, className, productTy
                     <div className="max-h-[250px] overflow-auto scrollbar pl-1 ">
                         {brands && brands.map((brand) => (
                             <div key={brand.id} className={`w-full flex gap-2 items-center group`}>
-                                <input id={brand.id} checked={isFiltered.includes(`product_brand-${brand.title}`)} type='checkbox' onChange={() => onFilter("product_brand", { title: brand.title, value: brand.slug })}
+                                <input id={brand.id} checked={isFiltered.includes(`product_brand-${brand.name}`)} type='checkbox' onChange={() => onFilter("product_brand", { title: brand.name, value: brand.slug })}
                                     className='min-w-[20px] min-h-[20px] group-hover:scale-[1.1]' />
-                                <label htmlFor={brand.id} className=" py-2 text-[12px] font-[500] leading-[18px] cursor-pointer uppercase ">{brand.title}</label>
+                                <label htmlFor={brand.id} className=" py-2 text-[12px] font-[500] leading-[18px] cursor-pointer uppercase ">{brand.name}</label>
                             </div>
                         ))}
                         {!isStopLoadMoreBrand && (<button className='text-pink-700 text-[12px]' onClick={() => { onLoadMoreBrandAndType ? onLoadMoreBrandAndType('brand') : null }}>Xem thêm</button>)}

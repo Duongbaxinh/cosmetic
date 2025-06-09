@@ -5,7 +5,7 @@ export * from "./createParam"
 export * from "./handleRate"
 
 export const getNameBrand = (arr: BrandType[], id: string) => {
-    return arr.find(item => item.id === id)?.title
+    return arr.find(item => item.id === id)?.name
 }
 
 export const getTypeCategory = (categories: Category[], categorySlug: string): TypeProductType[] => {

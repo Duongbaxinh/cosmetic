@@ -13,10 +13,10 @@ export const brandApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_API }),
   endpoints: (builder) => ({
     getBrands: builder.query<BrandTypeResponse, FilterParamItem | void>({
-      query: (params) => `/brands?${toQueryString(params)}`,
+      query: (params) => `/vendors?${toQueryString(params)}`,
     }),
     getAllBrand: builder.query<BrandType[], FilterParamItem | void>({
-      query: (params) => `/brands`,
+      query: (params) => `/vendors`,
     }),
   }),
 });

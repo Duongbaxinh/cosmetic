@@ -116,7 +116,6 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                 router.push(`${CHECKOUT_URL}`);
             }
         } catch (err) {
-
             handleError(err);
         }
     };

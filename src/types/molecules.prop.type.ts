@@ -11,7 +11,7 @@ export type CardProductFullProps = Pick<
   | "product_description"
 > & {
   className?: string;
-  product_brand: BrandType;
+  product_brand: string;
   product_discount?: ProductDiscountType;
   product_thumbnail_2?: string;
 };

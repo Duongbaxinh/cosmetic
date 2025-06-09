@@ -52,16 +52,21 @@ function CartPage() {
 
     // Đặt hàng 
     const handlePlaceOrder = async () => {
+        let cartDetailIds: string[] = []
         if (!cart || cart?.cart_details.length <= 0) return;
         const productCarts = cart.cart_details
             .map((productDetail) => {
                 if (itemSelected.includes(productDetail.id)) {
+                    cartDetailIds.push(productDetail.id)
                     const quantity = localQuantities[productDetail.id] ?? productDetail.quantity
                     // Chuyển từ cart detail sang order product
                     return mapToOrderProduct(productDetail.product, quantity)
                 }
             })
             .filter((product) => product !== undefined);
+
+        // Lưu những cart detail id để xóa sau khi đơn hàng được tạo thành công
+        sessionStorage.setItem("cartDetailIds", JSON.stringify(cartDetailIds))
 
         if (productCarts.length <= 0)
             return toast.error("Vui lòng chọn sản phẩm bạn muốn mua");

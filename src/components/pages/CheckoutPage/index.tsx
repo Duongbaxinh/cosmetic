@@ -25,9 +25,11 @@ import { useAuth } from '@/contexts/auth.context';
 import useSaveLocalStorage from '@/hooks/useLocalstorage';
 import PopupShippingAddress from '@/components/organisms/PopupShippingAddress';
 import { mapOrderProductsToOrderDetails } from '@/utils/mapper/mapOrderProductsToOrderDetails';
+import { useCart } from '@/contexts/cart.context';
 
 function CheckoutPage() {
     const { shippingAddress } = useAuth()
+    const { removeMultiProductInCart } = useCart()
     const [paymentMethod, setPaymentMethod] = useState<"cash" | "momo" | "zalopay">("cash")
     const [orderCheckout, setOrderCheckout] = useState<OrderCheckout | null>(null)
     const [createOrder] = useCreateOrderMutation();
@@ -123,7 +125,7 @@ function CheckoutPage() {
                     product_price: product.product_price,
                     product_thumbnail: product.product_thumbnail,
                     product_type: product.product_type?.slug ?? "",
-                    product_brand: product.product_brand?.slug,
+                    product_brand: product.product_vendor.name,
                     quantity: 1,
 
                 }
@@ -184,8 +186,18 @@ function CheckoutPage() {
             );
 
             // Tạo order detail
-            await createOrderDetail(orderDetailProduct)
+            const orderDetailRes = await createOrderDetail(orderDetailProduct)
+            console.log("b1 ::", orderDetailRes)
+            if ("error" in orderDetailRes) {
+                return handleError(orderDetailRes.error)
+            }
 
+            const cartDetailIds = JSON.parse(sessionStorage.getItem("cartDetailIds") || "[]")
+            // Xóa các sản phẩm trong giỏ hàng nếu có
+            if (cartDetailIds.length > 0) {
+                await removeMultiProductInCart(cartDetailIds)
+                sessionStorage.setItem("cartDetailIds", JSON.stringify([]))
+            }
             // Xử lý thanh toán với MoMo
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
@@ -280,7 +292,7 @@ function CheckoutPage() {
                                                 <Image src={(product?.product_thumbnail && product?.product_thumbnail?.startsWith("http")) ? product.product_thumbnail : "/defineImage.png"} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
                                                 <div className="flex flex-col justify-between text-black text-3 leading-[19px]">
                                                     <p className=" font-[700] uppercase">
-                                                        {product.product_brand?.title}
+                                                        {product.product_vendor.name}
                                                     </p>
                                                     <p className=" line-clamp-2">
                                                         {product.product_name}
@@ -321,7 +333,7 @@ function CheckoutPage() {
                                                                 product_name={product.product_name}
                                                                 product_price={product.product_price}
                                                                 product_rate={product.product_rate}
-                                                                product_brand={product.product_brand}
+                                                                product_brand={product.product_vendor.name}
                                                                 product_description={product.product_description}
                                                             />
                                                         </Link>
@@ -454,7 +466,7 @@ function CheckoutPage() {
                                                         className="mr-2 disabled:opacity-[0.5] disabled:cursor-auto"
                                                     />
                                                     <div className="flex items-center gap-2 text-[12px]">
-                                                        <Image src={"/images/zalopay.png"} alt="PayPal Payment" width={20} height={20} className="rounded-full object-cover" />
+                                                        <Image src={"/images/zalo.png"} alt="PayPal Payment" width={20} height={20} className="rounded-full object-cover" />
                                                         <p>Thanh toán bằng ZaloPay</p>
                                                     </div>
                                                 </label>

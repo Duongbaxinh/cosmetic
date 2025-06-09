@@ -120,7 +120,7 @@ const HomePage: React.FC = () => {
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                 />
                                             </Link>
@@ -146,8 +146,8 @@ const HomePage: React.FC = () => {
                                     {brands && brands.map(
                                         (brand) => (
                                             <SwiperSlide key={brand.id}>
-                                                <Link href={`${CATEGORY_URL}/product_brand/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
-                                                    <Image src={brand.image} alt={brand.title} width={217} height={106} className='rounded-md' />
+                                                <Link href={`${CATEGORY_URL}/product_vendor/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
+                                                    <Image src={brand.logo} alt={brand.name} width={217} height={106} className='rounded-md' />
                                                 </Link>
                                             </SwiperSlide>
                                         )
@@ -199,7 +199,7 @@ const HomePage: React.FC = () => {
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                 />
                                             </Link>
@@ -212,7 +212,6 @@ const HomePage: React.FC = () => {
 
                 )}
 
-                {/* Thương hiệu nổi bật */}
                 <div className="w-full p-3">
                     <Carousel
                         customSwipeWrap='!p-3'
@@ -239,8 +238,8 @@ const HomePage: React.FC = () => {
                             brands && brands.map(
                                 (brand: BrandType) => (
                                     <SwiperSlide key={brand.id}>
-                                        <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className=' relative block w-full h-full hover:-top-1 transition-all duration-100'>
-                                            <Image src={brand.image} alt={brand.title} height={201} width={422} className='rounded-md w-full h-full' />
+                                        <Link href={`${CATEGORY_URL}/product_vendor/${brand.id}`} className=' relative block w-full h-full hover:-top-1 transition-all duration-100'>
+                                            <Image src={brand.logo} alt={brand.name} height={201} width={422} className='rounded-md w-full h-full' />
                                         </Link>
                                     </SwiperSlide>
                                 )
@@ -275,7 +274,7 @@ const HomePage: React.FC = () => {
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                 />
                                             </Link>
@@ -313,7 +312,7 @@ const HomePage: React.FC = () => {
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                 />
                                             </Link>
@@ -365,7 +364,7 @@ const HomePage: React.FC = () => {
                                             product_name={product.product_name}
                                             product_price={product.product_price}
                                             product_rate={product.product_rate}
-                                            product_brand={product.product_brand}
+                                            product_brand={product.product_vendor.name}
                                             product_description={product.product_description}
                                         />
                                     </Link>

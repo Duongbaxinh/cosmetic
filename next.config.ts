@@ -2,7 +2,11 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   images: {
-    domains: ["res.cloudinary.com", "image.hsv-tech.io"],
+    domains: [
+      "res.cloudinary.com",
+      "image.hsv-tech.io",
+      "media-cdn-v2.laodong.vn",
+    ],
   },
   webpack(config) {
     // Add SVGR loader for SVG files

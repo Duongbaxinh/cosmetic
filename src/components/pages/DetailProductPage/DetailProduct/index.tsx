@@ -157,7 +157,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                 </div>
                 <h2 className="text-[16px] font-bold leading-[24px]">Thông tin chi tiết</h2>
                 <div className={`text-[14px] text-gray-400 leading-[21px] ${showMore.productInfo ? "" : "line-clamp-[15]"}`}>
-                    <div className="grid grid-cols-2 py-2"><p>Thương hiệu</p> <p>{product.product_brand?.title}</p></div>
+                    <div className="grid grid-cols-2 py-2"><p>Thương hiệu</p> <p>{product.product_vendor.name}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Xuất xứ</p> <p>{product.product_made}</p></div>
                     <div className="grid grid-cols-2 py-2"><p>Thành phần</p> <p>{product.product_ingredient}</p></div>
 
@@ -195,7 +195,7 @@ const DetailProduct: React.FC<DetailProductProps> = ({
                                                 similarProduct && similarProduct.length > 0 && similarProduct.slice(index * 6, index * 6 + 6).map((product, index) => (
                                                     <Link key={index} href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} >
                                                         <CardProductSimilar
-                                                            product_brand={product.product_brand}
+                                                            product_brand={product.product_vendor.name}
                                                             product_description={product.product_description}
                                                             product_rate={product.product_rate}
                                                             key={product.id}

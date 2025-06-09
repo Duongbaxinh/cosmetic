@@ -139,7 +139,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
 
-    const banner = category_key === "product_brand" ? brandData?.find(brand => brand.slug === value)?.image : ""
+    const banner = category_key === "product_vendor" ? brandData?.find(brand => brand.slug === value)?.logo : ""
 
     const promotion = category_key === "product_promotion" ? promotions.find(pro => pro.slug === value) : null
 
@@ -189,11 +189,11 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                 />
                             ) : (
                                 <Carousel slidesPerView={1} clickable className='!h-fit'>
-                                    {brandData.length > 0 && brandData.map(({ id, slug, image }) => (
+                                    {brandData.length > 0 && brandData.map(({ id, slug, logo }) => (
                                         <SwiperSlide key={id}>
                                             <Link href={`/category/product_brand/${slug}`}>
                                                 <Image
-                                                    src={image}
+                                                    src={logo}
                                                     alt="carousel-image"
                                                     className="h-full  max-h-[350px] w-full object-cover rounded-2xl"
                                                     width={500}
@@ -259,7 +259,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                         <div key={product.id} className=" flex items-center justify-center w-full h-full ">
                                             <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block shadow w-full h-full '>
                                                 <CardProductFull
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                     key={product.id}
                                                     className='min-h-[330px]'

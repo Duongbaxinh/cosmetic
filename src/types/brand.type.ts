@@ -1,9 +1,9 @@
 export type BrandType = {
   id: string;
-  title: string;
+  name: string;
   slug: string;
-  image: string;
-  specific: boolean;
+  description: string;
+  logo: string;
 };
 export type BrandTypeResponse = {
   results: BrandType[];

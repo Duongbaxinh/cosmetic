@@ -73,13 +73,13 @@ const OrderDetailModal = ({ order }: OrderDetailModalProps) => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {order.order_details.map((product) => (
-                                        <tr key={product.id}>
-                                            <td className="px-4 py-2 whitespace-nowrap">{product.product_name}</td>
-                                            <td className="px-4 py-2 whitespace-nowrap"><Image src={product.product_thumbnail && product.product_thumbnail.startsWith("http") ? product.product_thumbnail : "/images/denineImage.png"}
+                                    {order.order_details.map((orderDetail) => (
+                                        <tr key={orderDetail.id}>
+                                            <td className="px-4 py-2 whitespace-nowrap">{orderDetail.product.product_name}</td>
+                                            <td className="px-4 py-2 whitespace-nowrap"><Image src={orderDetail.product.product_thumbnail && orderDetail.product.product_thumbnail.startsWith("http") ? orderDetail.product.product_thumbnail : "/images/denineImage.png"}
                                                 alt="" width={40} height={40} /></td>
-                                            <td className="px-4 py-2 whitespace-nowrap">{product.product_price.toLocaleString()} VNĐ</td>
-                                            <td className="px-4 py-2 whitespace-nowrap">{product.quantity}</td>
+                                            <td className="px-4 py-2 whitespace-nowrap">{orderDetail.product.product_price.toLocaleString()} VNĐ</td>
+                                            <td className="px-4 py-2 whitespace-nowrap">{orderDetail.quantity}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -89,7 +89,7 @@ const OrderDetailModal = ({ order }: OrderDetailModalProps) => {
                     {/* Totals and Dates */}
                     <div>
                         <p className="text-sm font-medium text-gray-700">
-                            Tổng giá: <span className="font-normal">{order.order_details.reduce((sum, p) => sum + p.product_price * p.quantity, 0).toLocaleString()} VNĐ</span>
+                            Tổng giá: <span className="font-normal">{order.order_details.reduce((sum, orderDetail) => sum + orderDetail.product.product_price * orderDetail.quantity, 0).toLocaleString()} VNĐ</span>
                         </p>
                     </div>
                     <div className="flex flex-col items-end">

@@ -193,7 +193,7 @@ function SearchPage({ text_search }: { text_search: string }) {
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
-                                                    product_brand={product.product_brand}
+                                                    product_brand={product.product_vendor.name}
                                                     product_description={product.product_description}
                                                     product_thumbnail={product.product_thumbnail}
                                                     product_name={product.product_name}

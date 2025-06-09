@@ -66,11 +66,14 @@ const ProductTable: React.FC<TableProps> = ({
         if (key === 'product_price') {
             return (<Price product_price={product[key]} />)
         }
-        if (key === "product_brand" || key === "product_promotion" || key === "product_type") {
+        if (key === "product_promotion" || key === "product_type") {
             return (<p>{product[key]?.title ?? "-"}</p>)
         }
         if (key === "product_images") {
             return
+        }
+        if (key === "product_brand") {
+            return (<p>{product[key]?.name ?? "-"}</p>)
         }
         if (key === "product_vendor") {
             return (<p>{product[key].name ?? "-"}</p>)
