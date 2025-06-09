@@ -1,4 +1,3 @@
-import { OrderDetailType, PaymentType } from "./../../types/data.type";
 import {
   BASE_API,
   ORDER_API,
@@ -8,8 +7,10 @@ import {
 } from "@/config/api.config";
 import {
   MomoPaymentResponse,
+  OrderDetailType,
   OrderResponse,
   OrderType,
+  PaymentType,
   ResponseType,
 } from "@/types";
 import { toQueryString } from "@/utils";
@@ -25,7 +26,6 @@ export const orderProductApi = createApi({
       query: (params: any) => {
         const queryString = toQueryString(params);
         const url = `/orders?${queryString}`;
-
         return {
           url: url,
         };

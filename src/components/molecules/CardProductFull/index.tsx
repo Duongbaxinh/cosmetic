@@ -82,7 +82,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
 
                 </div>
 
-                {/* Brand + Name */}
+                {/* BrandType + Name */}
                 <p className="text-[14px] font-[600] text-center text-gray-900">
                     {product_brand?.title ?? "ASENA"}
                 </p>

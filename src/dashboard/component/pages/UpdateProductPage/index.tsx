@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { IoCloseCircle } from "react-icons/io5";
 import { useGetProductByIdQuery } from "@/redux/slices/product.slice"; // Thêm useDeleteProductImageMutation
-import { ImageProduct, ProductFormData } from "@/types";
+import { ProductImageType, ProductFormData } from "@/types";
 import { ContainerLayout } from "@/dashboard/component/layouts/ContainerLayout";
 import ProductForm from "@/dashboard/component/molecules/ProductForm";
 import ImageUploader from "@/dashboard/component/molecules/ImageUploader";
@@ -41,7 +41,7 @@ export default function UpdateProductPage({ productSlug }: UpdateProductPageProp
             reset(mappedValues);
 
             setPreviewImage(product.product_thumbnail || null);
-            setUploadedImages(product.product_images?.map((img: ImageProduct) => img.image_url) || []);
+            setUploadedImages(product.product_images?.map((img: ProductImageType) => img.image_url) || []);
         }
     }, [product, reset]);
 
@@ -75,7 +75,7 @@ export default function UpdateProductPage({ productSlug }: UpdateProductPageProp
             }) as ProductFormData;
 
             // Chỉ gửi các hình ảnh mới (newImages) tới API createImageProduct
-            const imageData: ImageProduct[] = newImages.map((image) => ({
+            const imageData: ProductImageType[] = newImages.map((image) => ({
                 product_id: productData.product_name,
                 image_url: image,
                 alt_text: productData.product_name,

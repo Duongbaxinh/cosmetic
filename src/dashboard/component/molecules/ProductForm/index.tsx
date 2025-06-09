@@ -57,26 +57,6 @@ export default function ProductForm({ control, register, errors, index, prefix =
                 )}
             </div>
 
-            {/* Thương hiệu */}
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Thương hiệu</label>
-                <select
-                    {...register(getFieldName("product_brand_id"), { required: "Thương hiệu là bắt buộc" })}
-                    className="mt-1 p-2 w-full border border-purple-300 rounded"
-                    disabled={loadingBrand}
-                >
-                    <option value="">Chọn thương hiệu</option>
-                    {brands?.map((brand) => (
-                        <option key={brand.id} value={brand.title}>
-                            {brand.title}
-                        </option>
-                    ))}
-                </select>
-                {errors?.product_brand_id && (
-                    <p className="text-red-500 text-sm mt-1">{errors.product_brand_id.message}</p>
-                )}
-            </div>
-
             {/* Loại sản phẩm */}
             <div>
                 <label className="block text-sm font-medium text-gray-700">Loại sản phẩm</label>

@@ -28,3 +28,16 @@ export const productLabels = [
   { key: "product_rate", label: "Đánh giá" },
   { key: "product_ingredient", label: "Thành phần" },
 ];
+
+export const initFilterProduct: FilterProductType = {
+  limitnumber: 10,
+  page: 1,
+  product_brand: [],
+  product_category: [],
+  product_type: [],
+  price: { key: "", value: [] },
+  rate: null,
+  sortPrice: "",
+  order: "asc",
+  sortBy: "",
+};

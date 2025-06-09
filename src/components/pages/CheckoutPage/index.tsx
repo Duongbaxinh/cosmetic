@@ -11,7 +11,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import { useCreateOrderDetailMutation, useCreateOrderMutation, useCreatePaymentMutation, usePaymentOrderMutation } from '@/redux/slices/order.slice';
 import { useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { CHECKOUT_URL, DETAIL_PRODUCT_URL, ORDER_URL } from '@/routers';
-import { ShippingAddress, type OrderCheckout, type Product } from '@/types';
+import { PaymentType, ShippingAddress, type OrderCheckout, type Product } from '@/types';
 import { handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,6 +24,7 @@ import LoadingIcon from '../LoadingPage/LoadingIcon';
 import { useAuth } from '@/contexts/auth.context';
 import useSaveLocalStorage from '@/hooks/useLocalstorage';
 import PopupShippingAddress from '@/components/organisms/PopupShippingAddress';
+import { mapOrderProductsToOrderDetails } from '@/utils/mapper/mapOrderProductsToOrderDetails';
 
 function CheckoutPage() {
     const { shippingAddress } = useAuth()
@@ -32,7 +33,7 @@ function CheckoutPage() {
     const [createOrder] = useCreateOrderMutation();
     const [paymentOrder] = usePaymentOrderMutation();
     const [createOrderDetail, { isLoading: loadingCreateOrder, error: errorCreateOrder }] = useCreateOrderDetailMutation();
-    const [createPayment, { isLoading: loadingCreatePayment, error: errorCreatePayment }] = useCreatePaymentMutation();
+    const [createPayment] = useCreatePaymentMutation();
     const [show, setShow] = useState(false)
     const [isChangeShipping, setIsChangeShipping] = useState<boolean>(false)
     const [shippingOrder, setShippingOrder] = useSaveLocalStorage("shippingOrder", null)
@@ -145,6 +146,7 @@ function CheckoutPage() {
     }
 
     const handleRemoveProduct = (product_id: string) => {
+        // Lấy order tạm ở sessionStorage với name order
         const orderString = sessionStorage.getItem('order');
         if (orderString) {
             let orderProduct = orderCheckout?.order_products ?? []
@@ -152,7 +154,6 @@ function CheckoutPage() {
             if (checkProductInOrder) {
                 orderProduct = orderProduct.filter(item => item.id !== product_id)
             }
-
             if (orderCheckout) {
                 setOrderCheckout({
                     ...orderCheckout,
@@ -169,44 +170,52 @@ function CheckoutPage() {
         }
     }
 
+    // Xử lý đặt hàng
     const handleConfirmOrder = async () => {
         try {
             if (!orderCheckout) return;
+            // Tạo đơn hàng
             const dataOrder = await createOrder(orderCheckout.order_shippingAddress.id)
 
-            const orderDetailProduct = orderCheckout.order_products.map((product) => ({
-                order_id: dataOrder.data?.id ?? "",
-                product_id: product.id,
-                quantity: product.quantity,
-            }))
-            const orderCreated = await createOrderDetail(orderDetailProduct)
-            console.log("chekkkkk", orderCreated)
+            // Map dữ liệu sang dạng đơn hàng payload
+            const orderDetailProduct = mapOrderProductsToOrderDetails(
+                orderCheckout.order_products,
+                dataOrder.data?.id ?? ""
+            );
+
+            // Tạo order detail
+            await createOrderDetail(orderDetailProduct)
+
+            // Xử lý thanh toán với MoMo
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
                 if (!dataPayment || !dataPayment.data || !dataPayment.data.requestId) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
-                const data_payment = await createPayment({
+                const payloadMoMo: PaymentType = {
                     order_id: dataOrder.data.id,
                     payment_method: "momo",
-                    trans_id: dataPayment.data.requestId
-                })
-
+                    trans_id: dataPayment.data.requestId,
+                }
+                const data_payment = await createPayment(payloadMoMo)
                 if (data_payment.error) {
                     return handleError(data_payment.error)
                 }
                 return router.replace(dataPayment.data?.payUrl ?? CHECKOUT_URL)
             }
+
+            // Xử lý thanh toán với ZaloPay
             if (paymentMethod === "zalopay" && dataOrder && dataOrder.data) {
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: 'zalopay' }) as { data?: { trans_id?: string; url?: string } }
 
                 if (!dataPayment || !dataPayment.data || !dataPayment.data.trans_id) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
-                await createPayment({
+                const payloadZaloPay: PaymentType = {
                     order_id: dataOrder.data.id,
                     payment_method: "zalopay",
-                    trans_id: dataPayment.data.trans_id
-                })
+                    trans_id: dataPayment.data.trans_id,
+                }
+                await createPayment(payloadZaloPay)
                 return router.replace(dataPayment.data?.url ?? CHECKOUT_URL)
             }
-
+            // Nếu thanh toán COD thì chuyển đến trang đơn hàng
             router.push(`${ORDER_URL}`)
         } catch (error) {
             console.log("error", error)

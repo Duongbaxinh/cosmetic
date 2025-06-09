@@ -1,22 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
-import { ShippingAddress } from "./auth.type";
-import {
-  CartCheckout,
-  Category,
-  OrderProduct,
-  ProductBrand,
-  ProductBrandTypeResponse,
-  ProductTypeResponse,
-  Promotion,
-} from "./data.type";
+import { ShippingAddress, UserProfileType } from "./auth.type";
+import { Category, OrderProduct, Promotion } from "./data.type";
 import { ProductResponse } from "./response.type";
 import { FilterProductType } from "./page.type";
+import { CartCheckoutType } from "./cart.type";
+import { BrandType, BrandTypeResponse } from "./brand.type";
+import { ProductTypeResponse } from "./product.type";
 
 export type CartContextType = {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   toggleDrawer: () => void;
-  cart: CartCheckout | null;
+  cart: CartCheckoutType | null;
   addToCart: (
     cart_id: string,
     product_id: string,
@@ -45,13 +40,13 @@ export const initParam: ParamFilter = {
 
 export type DataContextType = {
   categories: Category[] | [];
-  brands: ProductBrandTypeResponse | undefined;
+  brands: BrandTypeResponse | undefined;
   productTypes: ProductTypeResponse | undefined;
   promotions: Promotion[] | [];
   products: ProductResponse | undefined;
   params: ParamFilter;
   refetch: any;
-  allBrand: ProductBrand[] | undefined;
+  allBrand: BrandType[] | undefined;
   setParams: React.Dispatch<ParamFilter>;
   filters: FilterProductType;
   setFilters: React.Dispatch<SetStateAction<FilterProductType>>;
@@ -74,4 +69,22 @@ export type OrderContextType = {
   setIsOpen: Dispatch<
     SetStateAction<{ openLogin: boolean; openContact: boolean }>
   >;
+};
+
+export type AuthContextType = {
+  accessToken: string;
+  setAccessToken: (token: string) => void;
+  scope: string;
+  setScope: (scope: string) => void;
+  setRefetchToken: (token: string) => void;
+  refreshToken: (user: any) => void;
+  setIsLogin: (isLogin: boolean) => void;
+  isLogin: boolean;
+  fetchUserInfo: () => Promise<any>;
+  fetchShipping: () => Promise<any>;
+  userProfile: UserProfileType | undefined;
+  shippingAddress: ShippingAddress[] | undefined;
+  logout: () => void;
+  isAuth: { form: "login" | "register"; isOpen: boolean } | null;
+  setIsAuth: (form: { form: "login" | "register"; isOpen: boolean }) => void;
 };

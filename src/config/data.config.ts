@@ -20,3 +20,11 @@ export const priceRanges = [
   },
   { key: "over_2m", label: "Trên 2.000.000₫", min: 2000000, max: "max" },
 ];
+
+export const labelCategory = {
+  top_sales: "Sản phẩm bán chạy",
+  product_discount: "Sản phẩm giảm giá",
+  product_international: "Hàng ngoại giá tốt",
+  new_products: "Sản phẩm mới",
+  product_brand: "Thương hiệu nổi bật",
+};

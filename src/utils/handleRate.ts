@@ -1,8 +1,8 @@
 import {
   Product,
   ProductCartDetail,
-  ProductDiscount,
-  ReviewItem,
+  ProductDiscountType,
+  ReviewItemType,
 } from "@/types";
 
 interface RatingCount {
@@ -11,7 +11,7 @@ interface RatingCount {
   percentage: string;
 }
 
-export const calculateRating = (reviews: ReviewItem[]): RatingCount[] => {
+export const calculateRating = (reviews: ReviewItemType[]): RatingCount[] => {
   const counts = Array(5).fill(0);
   reviews.forEach((review) => {
     if (review.rating >= 1 && review.rating <= 5) {
@@ -30,7 +30,7 @@ export const calculateRating = (reviews: ReviewItem[]): RatingCount[] => {
   }));
 };
 
-export const calculateDiscount = (product: Product): ProductDiscount => {
+export const calculateDiscount = (product: Product): ProductDiscountType => {
   const discountPromotion =
     product &&
     product.product_promotion &&

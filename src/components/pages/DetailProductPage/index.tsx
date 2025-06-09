@@ -4,18 +4,16 @@ import { useCart } from '@/contexts/cart.context';
 import { useOrder } from '@/contexts/order.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetAllProductsQuery, useGetProductByIdQuery } from '@/redux/slices/product.slice';
-import { useGetReviewProductByIdQuery } from '@/redux/slices/review.slice';
 import { setShippingAddress } from '@/redux/slices/shippingAddress.slice';
 import { RootState } from '@/redux/store';
-import { OrderProduct, ShippingAddress } from '@/types';
+import { OrderProduct } from '@/types';
 import { createParams } from '@/utils';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LoadingPage from '../LoadingPage';
 import DetailProduct from './DetailProduct';
 import OverviewProduct from './OverviewProduct';
-import ReviewProduct from './ReviewProduct';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -23,7 +21,7 @@ export type PopupContactType = {
 };
 
 function DetailProductPage({ id }: { id: string | number }) {
-    const { handlePurchase, proceedToCheckout, isOpen, setIsOpen } = useOrder();
+    const { handlePurchase } = useOrder();
     const { cart, addToCart } = useCart();
     const [quantity, setQuantity] = useState<number>(1);
     const { data: product, isLoading: loadingProduct, error: errorProduct } = useGetProductByIdQuery(id);
@@ -42,11 +40,9 @@ function DetailProductPage({ id }: { id: string | number }) {
     }, [dispatch]);
 
 
-    if (loadingProduct)
-        return <LoadingPage className="w-screen h-screen bg-pink-50" />;
-    if (!product)
-        return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center w-screen h-screen" />;
+    if (loadingProduct) return <LoadingPage className="w-screen h-screen bg-pink-50" />;
 
+    if (!product) return <NotFound content="Không tìm thấy sản phẩm" className="!justify-center w-screen h-screen" />;
 
     const productDiscountDirect = product.product_discount ? product.product_discount_percent : 0
     const productDiscountPromotion = product.product_promotion?.discount_percent ? product.product_promotion.discount_percent : 0
@@ -80,6 +76,13 @@ function DetailProductPage({ id }: { id: string | number }) {
         }
     };
 
+    const handleAddToCart = async ({ product_id, quantity }: { product_id: string; quantity: number }) => {
+        if (!cart || !cart?.id) return;
+        await addToCart(cart?.id, product_id, quantity);
+        toast.success("Đã thêm vào giỏ hàng thành công")
+
+    };
+
     const handlePurchaseProcess = () => {
         if (!product) return;
         const orderProduct: OrderProduct = {
@@ -93,15 +96,6 @@ function DetailProductPage({ id }: { id: string | number }) {
             product_discount: 0
         };
         return handlePurchase(orderProduct);
-    };
-
-
-    const handleAddToCart = async ({ product_id, quantity }: { product_id: string; quantity: number }) => {
-
-        if (!cart || !cart?.id) return;
-        await addToCart(cart?.id, product_id, quantity);
-        toast.success("Đã thêm vào giỏ hàng thành công")
-
     };
 
     const breadcrumbDetailProduct = [
@@ -120,7 +114,6 @@ function DetailProductPage({ id }: { id: string | number }) {
                     product={product}
                     similarProduct={similarProduct}
                     similarProductLoading={loading}
-                    // numberReview={reviewProduct?.total_reviews ?? 0}
                     product_price={product.product_price}
                     product_quantity={quantity}
                     cost_tentative={cost_tentative}

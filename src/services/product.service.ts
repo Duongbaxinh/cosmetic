@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { getData } from "../api";
 import { Branch } from "../fakes/brand";
-import { ProductEnum, ProductResponse } from "../types";
-
-import { handleError } from "@/utils";
 
 interface ParamsType {
   limit?: number;

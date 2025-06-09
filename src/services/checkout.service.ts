@@ -1,6 +1,6 @@
 import { handleError } from "@/utils";
 import { postData } from "../api";
-import { CartCheckout } from "../types";
+import { CartCheckoutType } from "../types";
 
 interface ParamsType {
   limit?: number;
@@ -12,7 +12,7 @@ export const handleCheckout = async (payload: any, authenticated = false) => {
   try {
     const url = `/cart`;
     const response = await postData(url, payload, authenticated);
-    return response as CartCheckout;
+    return response as CartCheckoutType;
   } catch (error) {
     handleError(error);
   }

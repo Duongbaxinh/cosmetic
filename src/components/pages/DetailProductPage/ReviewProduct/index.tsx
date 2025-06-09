@@ -1,11 +1,11 @@
 "use client"
 import ExpandableText from '@/components/atoms/ExpandableText';
-import { Review } from '@/types';
+import { ReviewType } from '@/types';
 import { calculateRating } from '@/utils';
 import Image from 'next/image';
 
 
-function ReviewProduct({ review }: { review: Review }) {
+function ReviewProduct({ review }: { review: ReviewType }) {
 
     const renderStars = (rating: number) => {
         const filledStars = Math.floor(rating);
@@ -81,7 +81,7 @@ function ReviewProduct({ review }: { review: Review }) {
                                     width={80}
                                     height={80}
                                     key={index}
-                                    alt={`Review image ${index + 1}`}
+                                    alt={`ReviewType image ${index + 1}`}
                                     src={image}
                                 />
                             ))}
@@ -118,18 +118,18 @@ function ReviewProduct({ review }: { review: Review }) {
                                     <img
                                         key={imgIndex}
                                         src={image}
-                                        alt={`Review ${imgIndex + 1}`}
+                                        alt={`ReviewType ${imgIndex + 1}`}
                                         className="w-12 h-12 rounded"
                                     />
                                 ))}
                             </div>
                             {/* Phản hồi từ JoyBoy Care */}
-                            {review.joyBoy_care_response && (
+                            {/* {review.joyBoy_care_response && (
                                 <div className="mt-2 p-2 bg-blue-50 rounded-md">
                                     <p className="text-blue-600 font-medium text-[16px]">Joyboy Care</p>
                                     <p className="text-gray-700 text-[13px]">{review.joyBoy_care_response.message}</p>
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                     </div>

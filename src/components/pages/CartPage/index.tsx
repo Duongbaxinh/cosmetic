@@ -3,29 +3,26 @@ import IconButton from "@/components/atoms/IconButton";
 import Price from "@/components/atoms/Price";
 import Drawer from "@/components/molecules/Drawer";
 import { MESS_CART } from "@/config/mess.config";
-
 import { useCart } from "@/contexts/cart.context";
 import { useOrder } from "@/contexts/order.context";
-import { OrderProduct, ProductCartDetail } from "@/types";
-import { calculateProductDiscounts, priceDiscountProductCart } from "@/utils";
+import { priceDiscountProductCart } from "@/utils";
+import { mapToOrderProduct } from "@/utils/mapper/convertToOrderProduct";
 import { debounce } from "lodash";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BiMinus, BiPlus } from "react-icons/bi";
 import { toast } from "react-toastify";
 
 function CartPage() {
     const { cart, updateCartItem, removeFromCart, clearCart, removeMultiProductInCart } = useCart();
-    const { handlePurchase, proceedToCheckout, isOpen, setIsOpen } = useOrder();
+    const { handlePurchase } = useOrder();
     const { isOpen: openDrawer, toggleDrawer } = useCart();
     const [localQuantities, setLocalQuantities] = useState<Record<string, number>>(
         {}
     );
     const [itemSelected, setItemSelected] = useState<string[]>([]);
-    const router = useRouter();
 
-    // Debounce function to update cart item quantity
+    // Debounce chức năng cập nhật số lượng sản phẩm trong giỏ hàng
     const debounceChangeQuantity = useCallback(
         debounce(async (cartDetailId: string, newQuantity: number) => {
             if (newQuantity < 1) return;
@@ -34,7 +31,7 @@ function CartPage() {
         []
     );
 
-    // Initialize localQuantities when cart changes
+    // Lưu số lượng sản phẩm trong giỏ hàng ở localstorage
     useEffect(() => {
         if (!cart || cart.cart_details.length <= 0) return;
         const initialQuantities: Record<string, number> = {};
@@ -44,6 +41,7 @@ function CartPage() {
         setLocalQuantities(initialQuantities);
     }, []);
 
+    // gọi hàm cập nhật số lượng mỗi
     useEffect(() => {
         Object.entries(localQuantities).forEach(([cartDetailId, quantity]) => {
             if (quantity >= 1) {
@@ -52,30 +50,25 @@ function CartPage() {
         });
     }, [localQuantities, debounceChangeQuantity]);
 
+    // Đặt hàng 
     const handlePlaceOrder = async () => {
         if (!cart || cart?.cart_details.length <= 0) return;
         const productCarts = cart.cart_details
             .map((productDetail) => {
-                const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product)
                 if (itemSelected.includes(productDetail.id)) {
-                    return {
-                        id: productDetail.product.id,
-                        product_name: productDetail.product.product_name,
-                        product_price: finalPrice,
-                        product_thumbnail: productDetail.product.product_thumbnail,
-                        product_type: productDetail.product.product_type?.slug,
-                        product_brand: productDetail.product.product_brand?.slug,
-                        quantity: localQuantities[productDetail.id] ?? productDetail.quantity,
-                        product_discount: 0
-                    } as OrderProduct;
+                    const quantity = localQuantities[productDetail.id] ?? productDetail.quantity
+                    // Chuyển từ cart detail sang order product
+                    return mapToOrderProduct(productDetail.product, quantity)
                 }
             })
             .filter((product) => product !== undefined);
+
         if (productCarts.length <= 0)
             return toast.error("Vui lòng chọn sản phẩm bạn muốn mua");
         return handlePurchase(productCarts);
     };
 
+    // Chọn tất cả các sản phẩm trong giỏ hàng
     const handleSelectAll = (checked: boolean) => {
         if (!cart || cart.cart_details.length <= 0) return;
         if (checked) {
@@ -86,6 +79,7 @@ function CartPage() {
         }
     };
 
+    // Chọn từng sản phẩm trong giỏ hàng
     const handleSelectItem = (checked: boolean, id: string) => {
         if (checked && !itemSelected.includes(id)) {
             setItemSelected((prev) => [...prev, id]);
@@ -94,6 +88,7 @@ function CartPage() {
         }
     };
 
+    // Xóa từng sản phẩm trong giỏ hàng
     const handleDeleteOne = async (cartDetailId: string) => {
         const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_ONE);
         if (confirm_delete && cart && cart.id) {
@@ -101,6 +96,7 @@ function CartPage() {
         }
     };
 
+    // Xóa nhiều sản phẩm cùng lúc
     const handleDeleteMany = async () => {
         if (itemSelected.length === 0) return alert(MESS_CART.ERROR_EMPTY_DELETE);
         const confirm_delete = window.confirm(MESS_CART.CONFIRM_DELETE_MANY);
@@ -152,8 +148,7 @@ function CartPage() {
         }
     };
 
-
-
+    // Tính tổng giá tiền
     const totalPrice = useMemo(() => {
         if (!cart || !cart.cart_details) return 0;
         return cart.cart_details.reduce((sum, productDetail) => {
@@ -163,7 +158,6 @@ function CartPage() {
             return sum + finalPrice * qty;
         }, 0);
     }, [cart, localQuantities, itemSelected]);
-
 
     const product_quantity = cart && cart.cart_details ? cart.cart_details.length : 0;
     const isAll = cart && cart.cart_details.length === itemSelected.length;
@@ -197,7 +191,7 @@ function CartPage() {
 
                             <div className="pt-5">
                                 {cart?.cart_details.map((productDetail) => {
-                                    const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product)
+                                    const { finalPrice } = priceDiscountProductCart(productDetail.product)
                                     return (
                                         <div
                                             key={productDetail.id}

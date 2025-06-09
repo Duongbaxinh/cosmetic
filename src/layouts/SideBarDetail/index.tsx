@@ -3,11 +3,12 @@ import CloseIcon from '@/assets/icons/CloseIcon';
 import MenuIcon from '@/assets/icons/MenuIcon';
 import ProfileIcon from '@/assets/icons/ProfileIcon';
 import { SIDEBAR_DETAIL, SidebarDetailType } from '@/components/config/sidebarDetail';
-import { URL_SHOP, URL_SHOP_MANAGE } from '@/routers';
+import { Permissions } from '@/config/auth.config';
 import { useAuth } from '@/contexts/auth.context';
 import { setUser } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
-import { authentication } from '@/utils/authentication';
+import { URL_SHOP_MANAGE } from '@/routers';
+import { authorization } from '@/utils/authentication';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -19,7 +20,8 @@ interface SideDetailProps {
 }
 
 const SideBarDetail: React.FC<SideDetailProps> = () => {
-    const scope = "vendor:basic_access customer:basic_access"
+    const { scope } = useAuth()
+
     const [showFull, setShowFull] = React.useState<boolean>(false);
     const path_name = usePathname();
     const user = useSelector((state: RootState) => state.user.user);
@@ -78,10 +80,10 @@ const SideBarDetail: React.FC<SideDetailProps> = () => {
                             </div>
                         </Link>
                     ))}
-                    {scope === "vendor:basic_access customer:basic_access" && authentication(scope, "vendor:basic_access") && (
+                    {authorization(Permissions.sell) && (
                         <Link
-                            href={URL_SHOP}
-                            className={`block px-2 py-2 md:px-4 ${path_name === URL_SHOP ? "bg-pink-300 text-white" : ""
+                            href={URL_SHOP_MANAGE}
+                            className={`block px-2 py-2 md:px-4 ${path_name === URL_SHOP_MANAGE ? "bg-pink-300 text-white" : ""
                                 } hover:bg-pink-300 hover:text-white rounded-sm w-full flex ${showFull ? "justify-start" : "justify-center"
                                 } md:justify-start transition-all duration-300`}
                         >

@@ -1,5 +1,7 @@
 import { Role, ShippingAddress, UserProfileType } from "./auth.type";
-import { OrderProduct, PaymentResponse, Product, Review } from "./data.type";
+import { OrderProduct } from "./data.type";
+import { PaymentResponse } from "./payment.type";
+import { Product } from "./product.type";
 export type ProductResponse = {
   results: Product[];
   limitnumber: number;

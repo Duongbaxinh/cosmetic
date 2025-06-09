@@ -6,17 +6,16 @@ import { useGetAllBrandQuery } from '@/redux/slices/brand.slice';
 import { useGetAllProductsDiscountQuery, useGetAllProductsInternalQuery, useGetAllProductsQuery } from '@/redux/slices/product.slice';
 
 import { BANNERS } from '@/components/config/categories.config';
-import { useAuth } from '@/contexts/auth.context';
+import { breakpointBrandGroup, breakpoints, breakpointsBrandPerView, breakpointsPerview } from '@/consts';
 import { useNetworkStatus } from '@/contexts/network.context';
 import { useGetAllPromotionQuery } from '@/redux/slices/promotion.slice';
 import { CATEGORY_URL, DETAIL_PRODUCT_URL, INTERNATIONAL_PRODUCT_URL, NEW_PRODUCT_URL, PROMOTION_URL, TOP_PRODUCT_URL } from '@/routers';
-import { Brand, ProductBrand, ProductResponse, Promotion } from '@/types';
+import { BrandType, ProductResponse, Promotion } from '@/types';
 import { calculateDiscount, createParams, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -27,73 +26,20 @@ import CardProductFull from '../../molecules/CardProductFull';
 import LoadingPage from '../LoadingPage';
 
 
-
-const breakpoints = {
-    300: {
-        slidesPerView: 2,
-    },
-    640: {
-        slidesPerView: 2,
-    },
-    768: {
-        slidesPerView: 3,
-    },
-    1024: {
-        slidesPerView: 4,
-    },
-    1280: {
-        slidesPerView: 4,
-    },
-}
-
-const breakpointsPerview = {
-    300: 2,
-    640: 2,
-    768: 3,
-    1024: 4,
-    1280: 4,
-}
-const breakpointBrandGroup = {
-    300: 2,
-    640: 2,
-    768: 4,
-    1024: 5,
-    1280: 5,
-}
-const breakpointsBrandPerView = {
-    300: {
-        slidesPerView: 2,
-    },
-    640: {
-        slidesPerView: 2,
-    },
-    768: {
-        slidesPerView: 4,
-    },
-    1024: {
-        slidesPerView: 5,
-    },
-    1280: {
-        slidesPerView: 5,
-    },
-}
 const HomePage: React.FC = () => {
-    const { accessToken, userProfile, shippingAddress } = useAuth()
     const { valueOf } = useNetworkStatus()
-
     if (!valueOf) return redirect("/not-found")
 
     const [filter, setFilter] = useState<Record<string, number>>({ page: 1, limitnumber: 10, });
-    const filterParams = useMemo(() => createParams(filter), [filter]);
     const [products, setProducts] = useState<ProductResponse | null>(null)
     const internationalParams = useMemo(() => createParams({ product_international: true }), []);
     const discountParams = useMemo(() => createParams({ product_discount: true }), []);
-    const { data, error, isLoading: loading, error: errorProduct } = useGetAllProductsQuery(filter)
-    const { data: productsDiscount, error: errDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
-    const { data: productsInternal, error: errInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
-    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetAllBrandQuery() as { data: ProductBrand[] | undefined, isLoading: boolean, error: any };
-    const { data: promotions, isLoading: isLoadingPromotion, error: errorPromotion } = useGetAllPromotionQuery()
-    const dispatch = useDispatch()
+    const { data, isLoading: loading } = useGetAllProductsQuery(filter)
+    const { data: productsDiscount, isLoading: loadingDiscount } = useGetAllProductsDiscountQuery(discountParams)
+    const { data: productsInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
+    const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetAllBrandQuery() as { data: BrandType[] | undefined, isLoading: boolean, error: any };
+    const { data: promotions, isLoading: isLoadingPromotion } = useGetAllPromotionQuery()
+
     const check_load = products ? (products.count - products.results.length) > 0 : false
 
     const handleLoadMore = async () => {
@@ -119,7 +65,6 @@ const HomePage: React.FC = () => {
 
 
     const product_internal_display = productsInternal?.results ?? []
-    const product_discounts_display = productsDiscount?.results ?? []
     const products_display = products?.results ?? []
     const flashSale: Promotion | null = promotions ? promotions[promotions?.length - 1] : null
     return (
@@ -292,7 +237,7 @@ const HomePage: React.FC = () => {
                     >
                         {!loadingBrand ? (
                             brands && brands.map(
-                                (brand: Brand) => (
+                                (brand: BrandType) => (
                                     <SwiperSlide key={brand.id}>
                                         <Link href={`${CATEGORY_URL}/product_brand/${brand.id}`} className=' relative block w-full h-full hover:-top-1 transition-all duration-100'>
                                             <Image src={brand.image} alt={brand.title} height={201} width={422} className='rounded-md w-full h-full' />

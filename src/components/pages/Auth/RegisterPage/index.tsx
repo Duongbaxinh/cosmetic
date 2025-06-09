@@ -18,8 +18,7 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         formState: { errors },
-        trigger,
-        getValues, // Add getValues to access form data
+        trigger
     } = useForm<AuthDataRegister>({
         resolver: yupResolver(authRegisterValid),
         mode: 'onChange',
@@ -35,7 +34,6 @@ const RegisterPage = () => {
     const [sendOTP2] = useSendOTP2Mutation();
     const [step, setStep] = useState<'email' | 'otp' | 'register'>('email');
 
-    // Memoize onChange handler to prevent re-creation on every render
     const handleEmailChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             setEmailSend(e.target.value);

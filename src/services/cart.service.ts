@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { deleteAll, deleteData, deleteMany, getData, postData } from "../api";
-import { CartCheckout } from "../types";
+import { CartCheckoutType } from "../types";
 import { handleError } from "@/utils";
 
 export const useGetProductCart = (authenticated = false) => {
-  const [cart, setCart] = useState<CartCheckout | null>(null);
+  const [cart, setCart] = useState<CartCheckoutType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
 
@@ -14,10 +14,10 @@ export const useGetProductCart = (authenticated = false) => {
         setLoading(true);
         const url = `/cart`;
         const response = await getData(url, authenticated);
-        setCart(response as CartCheckout);
+        setCart(response as CartCheckoutType);
 
         setLoading(false);
-        return response as CartCheckout;
+        return response as CartCheckoutType;
       } catch (error) {
         setError(error);
       } finally {
@@ -38,7 +38,7 @@ export const deleteCartProduct = async (
   try {
     const url = `/cart/${cart_id}/delete/${id}`;
     const response = await deleteData(url, authenticated);
-    return response as CartCheckout;
+    return response as CartCheckoutType;
   } catch (error) {
     handleError(error);
   }
@@ -52,7 +52,7 @@ export const deleteCartManyProduct = async (
   try {
     const url = `/cart/delete/${cart_id}`;
     const response = await deleteMany(url, payload, authenticated);
-    return response as CartCheckout;
+    return response as CartCheckoutType;
   } catch (error) {
     handleError(error);
   }
@@ -65,7 +65,7 @@ export const deleteCartProductAll = async (
   try {
     const url = `/cart/delete/all/${cart_id}`;
     const response = await deleteAll(url, authenticated);
-    return response as CartCheckout;
+    return response as CartCheckoutType;
   } catch (error) {
     handleError(error);
   }

@@ -8,7 +8,7 @@ import {
     useClearCartMutation,
     useRemoveMultiProductInCartMutation,
 } from "@/redux/slices/cart.slice";
-import { CartCheckout, CartContextType } from "@/types";
+import { CartCheckoutType, CartContextType } from "@/types";
 import { useAuth } from "./auth.context";
 import { useError } from "./error.context";
 
@@ -18,7 +18,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { isLogin, setIsAuth } = useAuth();
     const { handleError } = useError();
     const [isOpen, setIsOpen] = useState(false);
-    const [cart, setCart] = useState<CartCheckout | null>(null);
+    const [cart, setCart] = useState<CartCheckoutType | null>(null);
 
     const accessToken = typeof window !== "undefined"
         ? (() => {

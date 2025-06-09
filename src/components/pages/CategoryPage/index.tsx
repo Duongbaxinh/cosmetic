@@ -10,14 +10,14 @@ import { ProductSkeleton } from '@/components/atoms/ProductSkeleton';
 import CardProductFull from '@/components/molecules/CardProductFull';
 import Drawer from '@/components/molecules/Drawer';
 import NotFound from '@/components/molecules/NotFound';
-import { priceRanges } from '@/config/data.config';
+import { labelCategory, priceRanges } from '@/config/data.config';
 import { useData } from '@/contexts/data.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
-import { FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
+import { FilterProductType, ParamFilter, BrandType, TypeProductType } from '@/types';
 import { cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Image from 'next/image';
@@ -26,13 +26,7 @@ import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { SwiperSlide } from 'swiper/react';
 
-const labelCategory = {
-    top_sales: "Sản phẩm bán chạy",
-    product_discount: "Sản phẩm giảm giá",
-    product_international: "Hàng ngoại giá tốt",
-    new_products: "Sản phẩm mới",
-    product_brand: "Thương hiệu nổi bật"
-}
+
 
 function CategoryPage({ category_key, value }: { category_key: string, value: string }) {
     const initFilter: FilterProductType = {
@@ -50,28 +44,29 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
     const { brands, productTypes, params, setParams, promotions } = useData()
     const [filters, setFilter] = useState<FilterProductType>(initFilter)
     const [showFilter, setShowFilter] = useState<boolean>(false)
-    const [brandData, setBrandData] = useState<ProductBrand[]>([])
-    const [typeData, setTypeData] = useState<ProductType[]>([])
+    const [brandData, setBrandData] = useState<BrandType[]>([])
+    const [typeData, setTypeData] = useState<TypeProductType[]>([])
     const { data: products, isLoading: loadingProduct, error: errorProduct } = useGetProductFilterQuery({ ...cleanFilter(filters), [category_key]: value })
     const { data: categories, isLoading, error } = useGetAllCategoryQuery()
 
+
+    // Cuộn về trang ban đầu sau mỗi lần filter product
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setFilter(prev => ({ ...prev, page: currentPage }))
     }, [products])
 
+    // Lấy brand và product type từ phía backend
     useEffect(() => {
-
         if (brands && brands.results) {
             setBrandData(brands.results)
-
         }
         if (productTypes && productTypes.results) {
             setTypeData(productTypes.results)
-
         }
     }, [brands, productTypes])
 
+    // Xử lý nếu thuộc tính filter đã có trong state filters thì sẽ loại bỏ ra và ngược lại
     const newArr = (arr: any[], element: any) => {
         if (arr.flatMap(item => item.value).includes(element.value)) {
             return arr.filter((i) => i.value !== element.value)
@@ -80,6 +75,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         }
     }
 
+    // Xử lý lọc sản phẩm 
     const handleFilter = (filed: keyof FilterProductType, value: any) => {
         if (filed === "price") {
             const priceValue = priceRanges.find(item => item.key === value)
@@ -88,14 +84,19 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
             }
             return
         }
+        // Nếu thuộc tính lọc là một mảng thì sẽ gọi hàm newArr để kiểm tra thuộc tính đã có trong mảng hay chưa
         const newData = isArray(filters[filed]) ? newArr(filters[filed], value) : value
+
+        // Cập nhật lại biến state filters 
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
 
+    // Xóa các thuộc tính lọc sản phẩm
     const handleResetFilter = () => {
         setFilter(initFilter)
     }
 
+    // Xóa các thuộc tính lọc không muốn
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("-")
         if (key === "price") {
@@ -105,12 +106,13 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
             }
             return
         }
+        // filed sẽ có kiểu dữ liệu ứng với các trường trong FilterProductType
         let filed = key as keyof FilterProductType
         const newData = isArray(filters[filed]) ? filters[filed].flatMap(item => item.title).includes(value) ? filters[filed].filter((i) => i.title !== value) : filters[filed] : null
-        const check = isArray(filters[filed]) && filters[filed].flatMap(item => item.title).includes(value)
         setFilter(prev => ({ ...prev, [filed]: newData }))
     }
 
+    // Xem thêm nhiều brand và type của sản phẩm
     const handleLoadMoreBrandAndType = (key: keyof ParamFilter) => {
         setParams({
             ...params,
@@ -121,12 +123,19 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         });
     }
 
+    // Kiểm tra xem đã load hết type và brand hay chưa nếu rồi thì vẫn hiển thị nút 'Xem thêm' còn không thì ẩn
     const isStopLoadMoreType = productTypes?.count === params.type.limitnumber
     const isStopLoadMoreBrand = brands?.count === params.brand.limitnumber
 
+    // Tính tổng số trang theo giới hạn một trang sẽ hiển thị bao nhiêu sản phẩm
     const totalPage = products ? Math.ceil(products.count / filters.limitnumber) : 1
+
+    // Trang hiện tại đang hiển thị sản phẩm
     const currentPage = Math.min(filters.page, Math.max(1, products?.page ?? 1))
+
+    // Lấy danh sách sản phẩm trong dữ liệu trả về để hiển thị ra màn hình
     const productsDisplay = products?.results ?? []
+
     const isPrevious = currentPage > 1
     const isNext = currentPage < totalPage
 
@@ -134,7 +143,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
 
     const promotion = category_key === "product_promotion" ? promotions.find(pro => pro.slug === value) : null
 
-
+    // Tạo ra một mảng những thuộc tính được chọn để lọc sản phẩm
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
         filters.price?.value && filters.price.value.length > 0 ? "price-" + filters.price?.key || null : null,

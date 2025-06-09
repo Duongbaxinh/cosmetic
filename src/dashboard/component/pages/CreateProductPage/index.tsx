@@ -7,7 +7,7 @@ import { useGetAllBrandQuery } from "@/redux/slices/brand.slice";
 import { useCreateProductImagesMutation, useCreateProductMutation } from "@/redux/slices/manage/manageproduct.api";
 import { useGetAllPromotionQuery } from "@/redux/slices/promotion.slice";
 import { useGetAllTypeQuery, useGetTypeQuery } from "@/redux/slices/typeproduct.slice";
-import { ImageProduct, ProductFormData } from "@/types";
+import { ProductImageType, ProductFormData } from "@/types";
 import { convertEmptyStringToNull } from "@/utils/converStringEmptyToNull";
 import { handleImagesChange, handleThumbnailChange, uploadFile } from "@/utils/uploadFile";
 import Image from "next/image";
@@ -65,7 +65,7 @@ export default function CreateProductPage() {
 
             const datCreateResponse = await createProduct(dataProduct).unwrap();
             if (isArray(datCreateResponse)) {
-                const dataProductImage: ImageProduct[][] = datCreateResponse.map((product, index) => {
+                const dataProductImage: ProductImageType[][] = datCreateResponse.map((product, index) => {
                     const images = uploadedImages[index] || [];
                     return images.map(image => ({
                         product_id: product.product_slug,

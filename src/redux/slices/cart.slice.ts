@@ -1,5 +1,5 @@
 import { BASE_API, CART_API, PROFILE_API } from "@/config/api.config";
-import { CartCheckout } from "@/types";
+import { CartCheckoutType } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { customFetchBaseQuery } from "../customeBaseQuery";
 import { handleError } from "@/utils";
@@ -10,7 +10,7 @@ export const cartApi = createApi({
   baseQuery: customFetchBaseQuery,
   tagTypes: ["Cart"],
   endpoints: (builder) => ({
-    getCart: builder.query<CartCheckout, void>({
+    getCart: builder.query<CartCheckoutType, void>({
       queryFn: async (arg, api, extraOptions) => {
         const result = await customFetchBaseQuery(CART_API, api, extraOptions);
         if (result.error) {
@@ -19,8 +19,8 @@ export const cartApi = createApi({
 
         return {
           data: isArray(result.data)
-            ? (result.data[0] as CartCheckout)
-            : (result.data as CartCheckout),
+            ? (result.data[0] as CartCheckoutType)
+            : (result.data as CartCheckoutType),
         };
       },
       providesTags: ["Cart"],

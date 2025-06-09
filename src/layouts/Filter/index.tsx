@@ -1,12 +1,12 @@
 import FilterOption from '@/components/atoms/FilterOption';
 import { priceRanges } from '@/config/data.config';
-import { Category, FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
+import { Category, FilterProductType, ParamFilter, BrandType, TypeProductType } from '@/types';
 
 
 export type FilterType = {
     categories?: Category[]
-    brands?: ProductBrand[],
-    productType?: ProductType[]
+    brands?: BrandType[],
+    productType?: TypeProductType[]
     isFiltered: any[],
     onFilter: (filed: keyof FilterProductType, value: any) => void,
     className?: string

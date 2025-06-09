@@ -9,3 +9,6 @@ export * from "./context.type";
 export * from "./response.type";
 export * from "./review.type";
 export * from "./product.type";
+export * from "./brand.type";
+export * from "./cart.type";
+export * from "./payment.type";

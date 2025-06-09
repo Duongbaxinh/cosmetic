@@ -1,4 +1,5 @@
-import { Product, ProductBrand, ProductDiscount } from "./data.type";
+import { BrandType } from "./brand.type";
+import { Product, ProductDiscountType } from "./product.type";
 
 export type CardProductFullProps = Pick<
   Product,
@@ -10,8 +11,8 @@ export type CardProductFullProps = Pick<
   | "product_description"
 > & {
   className?: string;
-  product_brand: ProductBrand;
-  product_discount?: ProductDiscount;
+  product_brand: BrandType;
+  product_discount?: ProductDiscountType;
   product_thumbnail_2?: string;
 };
 export interface ListTemplateProps {

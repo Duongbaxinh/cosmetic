@@ -6,7 +6,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import Footer from '../Footer';
 import Header from '../Header';
 import SideBarDetail from '../SideBarDetail';
-import './index.css'; // Import CSS file
+import './index.css';
 
 interface ContainerLayoutProps {
     children: ReactNode;

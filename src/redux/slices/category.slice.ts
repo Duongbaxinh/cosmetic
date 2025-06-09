@@ -1,5 +1,5 @@
 import { BASE_API } from "@/config/api.config";
-import { Category, CategoryFilter, ProductType } from "@/types";
+import { Category, CategoryFilter, TypeProductType } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface ParamsType {
   limit?: number;

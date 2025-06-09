@@ -1,5 +1,5 @@
 import { getData, postData, putData } from "@/api";
-import { OrderCheckout, OrderDetail, TrackingItem } from "@/types";
+import { OrderCheckout, TrackingItem } from "@/types";
 import { handleError } from "@/utils";
 import { useEffect, useState } from "react";
 
@@ -58,39 +58,6 @@ export const useOrderCheckout = (order_id: string, authenticated: boolean) => {
     fetchData();
   }, []);
   return { order, loading, error, setOrder };
-};
-
-export const useGetProductOrder = (
-  order_id: string,
-  authenticated: boolean
-) => {
-  const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // const url = `/order_checkout/${order_id}`;
-        const url_order = `/order_checkout`;
-        const url_tracking = `/order_trackings`;
-        const response_order = await getData(url_order, authenticated);
-        const order_trackings = await getData(url_tracking, authenticated);
-        setOrderDetail({
-          order: response_order as OrderCheckout,
-          order_tracking: order_trackings as TrackingItem[],
-        });
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-  return { orderDetail, loading, error, setOrderDetail };
 };
 
 export const useGetOrder = (status: string, authenticated: boolean) => {

@@ -10,40 +10,30 @@ import CardProductFull from '@/components/molecules/CardProductFull';
 import Drawer from '@/components/molecules/Drawer';
 import NotFound from '@/components/molecules/NotFound';
 import { priceRanges } from '@/config/data.config';
+import { initFilterProduct } from '@/consts/data';
 import { useData } from '@/contexts/data.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import Filter from '@/layouts/Filter';
-import { useGetBrandsQuery } from '@/redux/slices/brand.slice';
 import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
-import { useGetTypeQuery } from '@/redux/slices/typeproduct.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
-import { FilterProductType, ParamFilter, ProductBrand, ProductType } from '@/types';
+import { BrandType, FilterProductType, ParamFilter, TypeProductType } from '@/types';
 import { cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-const initFilter: FilterProductType = {
-    limitnumber: 10,
-    page: 1,
-    product_brand: [],
-    product_category: [],
-    product_type: [],
-    price: { key: "", value: [] },
-    rate: null,
-    sortPrice: "",
-    order: 'asc',
-    sortBy: ''
-}
+
 function SearchPage({ text_search }: { text_search: string }) {
     const { brands, productTypes, setParams, params } = useData()
-    const [brandData, setBrandData] = useState<ProductBrand[]>([])
-    const [typeData, setTypeData] = useState<ProductType[]>([])
-    const [filters, setFilter] = useState<FilterProductType>(initFilter)
+    const [brandData, setBrandData] = useState<BrandType[]>([])
+    const [typeData, setTypeData] = useState<TypeProductType[]>([])
+    const [filters, setFilter] = useState<FilterProductType>(initFilterProduct)
     const [showFilter, setShowFilter] = useState<boolean>(false)
-    const { data: productSearch, isLoading: loadingSearch, error: errorProductSearch } = useGetProductFilterQuery({ ...cleanFilter(filters), textSearch: text_search })
-    const { data: categories, isLoading, error } = useGetAllCategoryQuery()
+
+    // Lấy dữ liệu sản phẩm và category
+    const { data: productSearch, isLoading: loadingSearch } = useGetProductFilterQuery({ ...cleanFilter(filters), textSearch: text_search })
+    const { data: categories } = useGetAllCategoryQuery()
 
 
     useEffect(() => {
@@ -93,7 +83,7 @@ function SearchPage({ text_search }: { text_search: string }) {
     }
 
     const handleResetFilter = () => {
-        setFilter(initFilter)
+        setFilter(initFilterProduct)
     }
     const handleRemoveFilter = (str: string) => {
         const [key, value] = str.split("-")
@@ -215,20 +205,25 @@ function SearchPage({ text_search }: { text_search: string }) {
                                     ))}
                                     {/* Banner */}
                                 </div>)}
-                            {totalPage >= 2 && (
+                            {totalPage > 1 && (
                                 <div className="flex justify-center items-center gap-2 mt-4 pt-[30px]">
                                     <ReactPaginate
-                                        className='flex gap-4 items-center justify-center '
+                                        className='flex gap-4 items-center justify-center cursor-pointer '
                                         breakLabel="..."
-                                        nextLabel={<ChevronRightIcon />}
+
+                                        nextLabel={<button disabled={!isNext} className='disabled:hidden cursor-pointer'>
+                                            <ChevronRightIcon />
+                                        </button>}
                                         activeClassName='bg-gray-300 min-w-[30px] max-w-[30px] min-h-[30px] max-h-[30px] flex items-center justify-center rounded-sm'
-                                        pageRangeDisplayed={4}
+                                        pageRangeDisplayed={productSearch?.page}
                                         initialPage={currentPage - 1}
                                         onPageChange={(selectedItem) => {
                                             handleFilter("page", selectedItem.selected + 1);
                                         }}
                                         pageCount={totalPage}
-                                        previousLabel={<ChevronLeftIcon />}
+                                        previousLabel={<button disabled={!isPrevious} className='disabled:hidden cursor-pointer'>
+                                            <ChevronLeftIcon />
+                                        </button>}
                                         renderOnZeroPageCount={null}
                                     />
                                 </div>

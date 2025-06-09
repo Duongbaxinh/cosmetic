@@ -1,134 +1,14 @@
 import { ShippingAddress, UserProfileType, UserType } from "./auth.type";
+import { BrandType } from "./brand.type";
+import { Product, TypeProductType } from "./product.type";
 
 export type Category = {
   id: string;
   title: string;
   image: string;
   slug: string;
-  types: ProductType[];
+  types: TypeProductType[];
 };
-
-export type ProductDiscount = {
-  discountDirect: number;
-  discountPromotion: number;
-  discountTitle: string;
-};
-
-export type ProductType = {
-  id: string;
-  title: string;
-  slug: string;
-  category: Category | null;
-};
-
-export type ProductTypeResponse = {
-  results: ProductType[];
-  limitnumber: number;
-  page: number;
-  page_size: number;
-  number_page: number;
-  count: number;
-};
-
-export type ProductBrand = {
-  id: string;
-  title: string;
-  slug: string;
-  image: string;
-  specific: boolean;
-};
-export type ProductBrandTypeResponse = {
-  results: ProductBrand[];
-  limitnumber: number;
-  page: number;
-  page_size: number;
-  number_page: number;
-  count: number;
-};
-
-export type ProductPromotion = {
-  id: string;
-  title: string;
-  discount_percent: number;
-};
-
-export type Product = {
-  id: string;
-  product_name: string;
-  product_slug: string;
-  product_description?: string;
-  product_ingredient: string;
-  product_sold: number;
-  product_international: boolean;
-  product_thumbnail: string;
-  product_price: number;
-  product_rate: number;
-  product_type: ProductType | null;
-  product_discount: boolean;
-  product_discount_percent: number;
-  product_made: string;
-  product_brand: ProductBrand;
-  product_images: ImageProduct[];
-  product_special?: string[];
-  product_exp?: string | null;
-  product_discount_start: string | null;
-  product_discount_end: string | null;
-  product_promotion: ProductPromotion;
-  product_stock_quantity: number;
-  is_active: boolean;
-  product_expiration_date: null | string;
-  created_at: string;
-  updated_at: string;
-};
-export type ProductFormData = {
-  product_name: string;
-  product_price: number;
-  product_thumbnail: string;
-  product_type_id: string;
-  product_made: string;
-  product_discount: boolean;
-  product_discount_percent: number;
-  product_discount_start: string | null;
-  product_discount_end: string | null;
-  product_promotion_id: string;
-  product_international: boolean;
-  product_description: string;
-  product_ingredient: string;
-  product_stock_quantity: number;
-  product_expiration_date: string;
-  product_slug?: string;
-};
-
-// export type OrderFormData = {
-//   id: string;
-//   user: { id: string; name: string; email: string };
-//   phone: string;
-//   status: statusOrderType;
-//   shipping_address: {
-//     id: string;
-//     address_line1: string;
-//     address_line2?: string;
-//     city: string;
-//     country: string;
-//     postal_code: string;
-//   };
-//   order_details: {
-//     id: string;
-//     product_name: string;
-//     product_price: number;
-//     product_brand: string;
-//     product_type: string;
-//     product_thumbnail: string;
-//     quantity: number;
-//   }[];
-//   total_price: number;
-//   created_at: string;
-//   updated_at: string;
-// };
-
-//
-
-// CHECKOUT ORDER
 
 export type OrderUser = {
   user_id: number;
@@ -215,90 +95,9 @@ export type OrderDetailType = {
   order_id: string;
   quantity: number;
 };
-export type OrderItemDisplayType = {
-  id: string;
-  product_name: string;
-  product_price: number;
-  quantity: number;
-  created_at: string;
-  updated_at: string;
-};
-
-export type PaymentType = {
-  order_id: string;
-  trans_id: string;
-  payment_method: "momo" | "zalopay";
-};
-
-export type PaymentResponse = {
-  id: string;
-  order: string;
-  payment_method: "momo" | "zalo";
-  status: "pending" | "paid" | "failed";
-  trans_id: string;
-  created_at: string; // ISO 8601 datetime string
-  updated_at: string; // ISO 8601 datetime string
-};
-
-export type MomoPaymentResponse = {
-  partnerCode: string;
-  orderId: string;
-  requestId: string;
-  amount: number;
-  responseTime: number;
-  message: string;
-  resultCode: number;
-  payUrl: string;
-  deeplink: string;
-  qrCodeUrl: string;
-};
-
-// Cart
-export type ProductCartDetail = {
-  id: string;
-  product_name: string;
-  product_price: number;
-  product_thumbnail: string;
-  product_discount_percent: number;
-  product_type: ProductType;
-  product_brand: ProductBrand;
-};
-export type CartDetail = {
-  id: string;
-  product: ProductCartDetail;
-  quantity: number;
-  created_at: string;
-  updated_at: string;
-};
-
-export type CartCheckout = {
-  id: string;
-  user: UserType;
-  cart_details: CartDetail[];
-  created_at: string;
-  updated_at: string;
-};
-export type TrackingItem = {
-  time: string;
-  status?: string;
-  detail: string;
-  image?: string;
-  type: "success" | "in_progress" | "delivering ";
-};
-
-export type OrderDetail = {
-  order: OrderCheckout;
-  order_tracking: TrackingItem[];
-};
-
-export type Brand = {
-  id: string;
-  image: string;
-  title: string;
-};
 
 // REVIEW PRODUCT
-export interface ReviewItem {
+export interface ReviewItemType {
   user_name: string;
   rating: number;
   rating_text: string;
@@ -307,15 +106,10 @@ export interface ReviewItem {
   images: string[];
 }
 
-export type JoyBoyCareResponse = {
-  message: string;
-  time_ago: string;
-};
-export type Review = {
+export type ReviewType = {
   overall_rating: number;
   total_reviews: number;
-  reviews: ReviewItem[];
-  joyBoy_care_response: JoyBoyCareResponse;
+  reviews: ReviewItemType[];
 };
 
 // PROMOTION

@@ -40,10 +40,10 @@ const LoginPage = () => {
         onBlur: onUsernameBlur,
         name: usernameName,
     } = register('username');
+
     const [showPassword, setShowPassword] = useState(false);
     const { setIsLogin, setAccessToken, setRefetchToken, setScope, setIsAuth, } = useAuth();
     const [login, { isLoading, error }] = useLoginMutation();
-    const router = useRouter();
 
     const handleLogin = async (dataLogin: AuthDataLogin) => {
         try {
@@ -59,7 +59,6 @@ const LoginPage = () => {
                 setIsAuth({ form: 'login', isOpen: false });
             }
         } catch (error) {
-            console.log("chek error login", error)
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     };
@@ -74,7 +73,6 @@ const LoginPage = () => {
     return (
 
         <div className="bg-white h-fit w-[280px] sm:w-[500px] sm:h-[500px] my-0 mx-auto px-[10px] sm:px-[30px] md:px-[90px] py-3 md:py-6 ">
-
             <div className="flex justify-center ">
                 <div className="w-full bg-white  flex flex-col justify-center">
                     <h1 className="text-2xl font-bold  mb-2 uppercase text-center">Đăng nhập</h1>
@@ -86,13 +84,11 @@ const LoginPage = () => {
                                 type={typeInput.TEXT}
                                 placeholder="Nhập email của bạn"
                                 error={!!errors.username}
-
                                 message={errors.username?.message}
                                 ref={usernameRef}
                                 onChange={onUsernameChange}
                                 onBlur={onUsernameBlur}
                                 name={usernameName}
-
                             />
                         </div>
 
@@ -102,7 +98,6 @@ const LoginPage = () => {
                                 type={showPassword ? typeInput.TEXT : typeInput.PASSWORD}
                                 placeholder="Nhập mật khẩu của bạn"
                                 error={!!errors.password}
-
                                 message={errors.password?.message}
                                 ref={passwordRef}
                                 onChange={onPasswordChange}

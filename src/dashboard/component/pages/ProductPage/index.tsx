@@ -3,7 +3,7 @@ import Container from "@/components/atoms/Container";
 import FilterOption from "@/components/atoms/FilterOption";
 import IconButton from "@/components/atoms/IconButton";
 
-import { FilterProductType, ParamFilter, Product, ProductBrand, ProductType } from "@/types";
+import { FilterProductType, ParamFilter, Product, BrandType, TypeProductType } from "@/types";
 
 import { priceRanges } from "@/config/data.config";
 import { productLabels } from "@/consts/data";
@@ -32,8 +32,8 @@ function ProductPage() {
     const router = useRouter()
     const { products, filters, setFilters, productTypes, brands, params, setParams } = useDataManage()
 
-    const [brandData, setBrandData] = useState<ProductBrand[]>([])
-    const [typeData, setTypeData] = useState<ProductType[]>([])
+    const [brandData, setBrandData] = useState<BrandType[]>([])
+    const [typeData, setTypeData] = useState<TypeProductType[]>([])
     const [productSelected, setProductSelected] = useState<ProductSelected[]>([])
     const [isDetail, setIsDetail] = useState<boolean>(false)
     // const [deleteProduct, { isLoading: isDeleteProduct, error: errorDeleteProduct }] = useDeleteProductMutation()
