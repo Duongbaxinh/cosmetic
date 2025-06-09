@@ -7,6 +7,7 @@ import Image from 'next/image';
 import React from 'react';
 import { toast } from 'react-toastify';
 import Price from '../../atoms/Price';
+import { useAuth } from '@/contexts/auth.context';
 
 const CardProductFull: React.FC<CardProductFullProps> = ({
     product_name,
@@ -21,8 +22,12 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
     product_description,
 }) => {
     const { cart, addToCart } = useCart()
+    const { setIsAuth, accessToken } = useAuth()
     const handleAddToCart = async (e: any) => {
         try {
+            if (!accessToken) {
+                return setIsAuth({ form: 'login', isOpen: true });
+            }
             e.stopPropagation();
             e.preventDefault();
             if (!cart || !cart.id || !id) return toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
@@ -33,17 +38,17 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
             toast.error(MESS_SYSTEM.UNKNOWN_ERROR)
         }
     }
-    const totalDiscount = product_discount ? (product_discount.discountDirect + product_discount.discountPromotion) : 0
-    const priceDiscount = product_discount ? product_price * (totalDiscount / 100) : 0
+    const discountConclude = (product_discount?.discountPromotion && product_discount.discountPromotion > 0) ? product_discount.discountPromotion : (product_discount?.discountDirect ?? 0)
+    const priceDiscount = product_discount ? product_price * (discountConclude / 100) : 0
     return (
         <div
             className={`p-2 group/card sm:p-0 w-full h-full bg-white cursor-pointer rounded-lg overflow-hidden flex flex-col gap-2 hover:shadow-lg transition-shadow duration-200 ${className}`}
         >
             <div className="relative flex flex-col justify-start gap-2 pb-6">
 
-                {totalDiscount > 0 && (
+                {discountConclude > 0 && (
                     <div className="absolute top-2 left-2 text-white min-w-[50px] min-h-[50px] z-10 flex items-center justify-center bg-black rounded-full">
-                        {priceDiscount > 0 && `${totalDiscount}%`}
+                        {priceDiscount > 0 && `${discountConclude}%`}
                     </div>
                 )}
 

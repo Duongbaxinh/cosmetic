@@ -16,6 +16,7 @@ export const initProduct: ProductFormData = {
   product_ingredient: "",
   product_stock_quantity: 0,
   product_expiration_date: "",
+  product_images: [],
 };
 export const initFilter: FilterProductType = {
   limitnumber: 10,

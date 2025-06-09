@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import LoadingPage from '../LoadingPage';
 import DetailProduct from './DetailProduct';
 import OverviewProduct from './OverviewProduct';
+import { useAuth } from '@/contexts/auth.context';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -23,10 +24,12 @@ export type PopupContactType = {
 function DetailProductPage({ id }: { id: string | number }) {
     const { handlePurchase } = useOrder();
     const { cart, addToCart } = useCart();
+    const { setIsAuth, accessToken } = useAuth()
     const [quantity, setQuantity] = useState<number>(1);
     const { data: product, isLoading: loadingProduct, error: errorProduct } = useGetProductByIdQuery(id);
     const params = createParams({ product_type: product?.product_type ?? "" });
     const { data: products, isLoading: loading, error } = useGetAllProductsQuery(params);
+
     // const { data: reviewProduct, error: errorReview, isLoading: reviewLoading } = useGetReviewProductByIdQuery(id);
 
     const dispatch = useDispatch();
@@ -77,6 +80,9 @@ function DetailProductPage({ id }: { id: string | number }) {
     };
 
     const handleAddToCart = async ({ product_id, quantity }: { product_id: string; quantity: number }) => {
+        if (!accessToken) {
+            setIsAuth({ form: 'login', isOpen: true });
+        }
         if (!cart || !cart?.id) return;
         await addToCart(cart?.id, product_id, quantity);
         toast.success("Đã thêm vào giỏ hàng thành công")

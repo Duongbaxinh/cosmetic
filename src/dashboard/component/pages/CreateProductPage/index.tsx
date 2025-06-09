@@ -2,14 +2,15 @@
 "use client";
 
 import { MESS_ERROR, MESS_SUCCESSFUL } from "@/config/mess.config";
+import { useError } from "@/contexts/error.context";
 import { initProduct } from "@/dashboard/consts";
-import { useGetAllBrandQuery } from "@/redux/slices/brand.slice";
-import { useCreateProductImagesMutation, useCreateProductMutation } from "@/redux/slices/manage/manageproduct.api";
+import { useCreateProductMutation } from "@/redux/slices/manage/manageproduct.api";
 import { useGetAllPromotionQuery } from "@/redux/slices/promotion.slice";
-import { useGetAllTypeQuery, useGetTypeQuery } from "@/redux/slices/typeproduct.slice";
-import { ProductImageType, ProductFormData } from "@/types";
+import { useGetAllTypeQuery } from "@/redux/slices/typeproduct.slice";
+import { PRODUCT_MANAGE_URL } from "@/routers";
+import { ProductFormData } from "@/types";
 import { convertEmptyStringToNull } from "@/utils/converStringEmptyToNull";
-import { handleImagesChange, handleThumbnailChange, uploadFile } from "@/utils/uploadFile";
+import { handleImagesChange, handleThumbnailChange } from "@/utils/uploadFile";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,8 +19,7 @@ import { IoCloseCircle } from "react-icons/io5";
 import { TbPhotoExclamation } from "react-icons/tb";
 import { toast } from "react-toastify";
 import { ContainerLayout } from "../../layouts/ContainerLayout";
-import { useError } from "@/contexts/error.context";
-import { isArray } from "lodash";
+import { useDataManage } from "@/contexts/data.manage.context";
 
 
 
@@ -41,7 +41,7 @@ export default function CreateProductPage() {
         control,
         name: "products",
     });
-
+    const { refetch } = useDataManage()
     // State Management
     const [previewImages, setPreviewImages] = useState<(string | null)[]>([]);
     const [uploadedImages, setUploadedImages] = useState<string[][]>([[]]);
@@ -49,38 +49,25 @@ export default function CreateProductPage() {
 
     const router = useRouter()
 
-    const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes } = useGetAllTypeQuery();
-    const { data: promotions, isLoading: loadingPromotion, error: errorPromotion } = useGetAllPromotionQuery();
-    const [createProduct, { isLoading: loadingCreateProduct, error }] = useCreateProductMutation()
-    const [createProductImage, { isLoading: loadingCreateProductImage, error: errorCreateProductImage }] = useCreateProductImagesMutation()
+    const { data: productTypes } = useGetAllTypeQuery();
+    const { data: promotions } = useGetAllPromotionQuery();
+    const [createProduct] = useCreateProductMutation()
     // Form Submission Handler
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
             const dataProduct: ProductFormData[] = data.products.map((product, index) => {
+                const images = uploadedImages[index].map(img => ({ image_url: img }))
                 return convertEmptyStringToNull({
                     ...product,
-                    product_thumbnail: previewImages[index] ? previewImages[index] : ""
+                    product_thumbnail: previewImages[index] ? previewImages[index] : "",
+                    product_images: images || []
                 })
             })
 
-            const datCreateResponse = await createProduct(dataProduct).unwrap();
-            if (isArray(datCreateResponse)) {
-                const dataProductImage: ProductImageType[][] = datCreateResponse.map((product, index) => {
-                    const images = uploadedImages[index] || [];
-                    return images.map(image => ({
-                        product_id: product.product_slug,
-                        image_url: image,
-                        alt_text: product.product_name,
-                    }));
-                });
-                await Promise.all(
-                    dataProductImage.map((productImageList) => {
-                        return createProductImage(productImageList).unwrap();
-                    })
-                );
-                toast.success(MESS_SUCCESSFUL.ADD_PRODUCT_PROCESS)
-            }
-
+            await createProduct(dataProduct).unwrap();
+            await refetch()
+            toast.success(MESS_SUCCESSFUL.ADD_PRODUCT_PROCESS)
+            router.push(PRODUCT_MANAGE_URL)
         } catch (error) {
             console.log(error)
             handleError(error)

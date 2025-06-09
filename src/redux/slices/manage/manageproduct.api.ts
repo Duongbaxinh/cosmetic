@@ -1,16 +1,11 @@
 import { customFetchBaseQuery } from "@/redux/customeBaseQuery";
-import { ProductImageType, Product, ProductFormData } from "@/types";
+import { Product, ProductFormData } from "@/types";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-interface ParamsType {
-  limit?: number;
-  page?: number;
-  [key: string]: any;
-}
 export const manageProductApi = createApi({
   reducerPath: "manageProductApi",
   baseQuery: customFetchBaseQuery,
-  tagTypes: ["IProduct"],
+  tagTypes: ["Product"],
   endpoints: (builder) => ({
     createProduct: builder.mutation<Product | Product[], ProductFormData[]>({
       query: (product) => ({
@@ -18,7 +13,7 @@ export const manageProductApi = createApi({
         method: "POST",
         body: product,
       }),
-      invalidatesTags: ["IProduct"],
+      invalidatesTags: ["Product"],
     }),
     updateProduct: builder.mutation<Product, ProductFormData>({
       query: (product) => ({
@@ -26,49 +21,27 @@ export const manageProductApi = createApi({
         method: "PUT",
         body: product,
       }),
-      invalidatesTags: ["IProduct"],
+      invalidatesTags: ["Product"],
     }),
-    createProductImages: builder.mutation<ProductImageType, ProductImageType[]>(
-      {
-        query: (product) => ({
-          url: "/product-images",
-          method: "POST",
-          body: product,
-        }),
-        invalidatesTags: ["IProduct"],
-      }
-    ),
     deleteProductImage: builder.mutation<void, { imageId: string }>({
       query: ({ imageId }) => ({
         url: `/product-images/${imageId}`,
         method: "DELETE",
       }),
     }),
-    updateProductImages: builder.mutation<ProductImageType, ProductImageType[]>(
-      {
-        query: (product) => ({
-          url: "/product-images",
-          method: "PUT",
-          body: product,
-        }),
-        invalidatesTags: ["IProduct"],
-      }
-    ),
     deleteProduct: builder.mutation<void, string>({
       query: (slug) => ({
         url: `/products/${slug}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["IProduct"],
+      invalidatesTags: ["Product"],
     }),
   }),
 });
 
 export const {
   useCreateProductMutation,
-  useCreateProductImagesMutation,
   useDeleteProductMutation,
-  useUpdateProductImagesMutation,
   useUpdateProductMutation,
   useDeleteProductImageMutation,
 } = manageProductApi;

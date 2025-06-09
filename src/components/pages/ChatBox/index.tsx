@@ -24,7 +24,7 @@ export default function ChatBox() {
     const [inputMessage, setInputMessage] = useState<string>("");
     const [chat, setChat] = useState<string>("");
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
-    const { accessToken } = useAuth()
+    const { accessToken, setIsAuth } = useAuth()
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
 
@@ -39,32 +39,19 @@ export default function ChatBox() {
         setChat("");
 
         try {
-            if (!accessToken) {
-                await fetchStream(
-                    `${BASE_API}/chatbot/guest`,
-                    {
-                        role: "user",
-                        content: inputMessage,
-                    },
-                    (chunk: string) => {
-                        setChat((prev) => prev + chunk);
-                        scrollToBottom();
-                    }
-                );
-            } else {
-                await fetchStream(
-                    `${BASE_API}/chatbot`,
-                    {
-                        role: "user",
-                        content: inputMessage,
-                    },
-                    (chunk: string) => {
-                        setChat((prev) => prev + chunk);
-                        scrollToBottom();
-                    },
-                    { token: accessToken }
-                );
-            }
+            if (!accessToken) { return setIsAuth({ form: 'login', isOpen: true }); }
+            await fetchStream(
+                `${BASE_API}/chatbot`,
+                {
+                    role: "user",
+                    content: inputMessage,
+                },
+                (chunk: string) => {
+                    setChat((prev) => prev + chunk);
+                    scrollToBottom();
+                },
+                { token: accessToken }
+            );
         } catch (error) {
             console.error("Error during streaming:", error);
             setMessages((prev) => [
@@ -160,6 +147,7 @@ export default function ChatBox() {
     }, [messages]);
 
     const handleChatToggle = (): void => {
+        if (!accessToken) { return setIsAuth({ form: 'login', isOpen: true }); }
         setIsChatOpen((prev) => !prev);
     };
 

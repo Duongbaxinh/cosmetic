@@ -84,6 +84,10 @@ export type ProductFormData = {
   product_stock_quantity: number;
   product_expiration_date: string;
   product_slug?: string;
+  product_images: {
+    image_url: string;
+    is_primary?: boolean;
+  }[];
 };
 
 export type ProductCartDetail = {
@@ -92,6 +96,11 @@ export type ProductCartDetail = {
   product_price: number;
   product_thumbnail: string;
   product_discount_percent: number;
+  product_discount_promotion: {
+    id: string;
+    title: string;
+    discount_percent: number;
+  };
   product_type: TypeProductType;
   product_brand: BrandType;
   product_vendor: ProductVendor;

@@ -1,21 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
 import { convertEmptyStringToNull } from "@/utils/converStringEmptyToNull";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
 
+import { ContainerLayout } from "@/dashboard/component/layouts/ContainerLayout";
+import ImageUploader from "@/dashboard/component/molecules/ImageUploader";
+import ProductForm from "@/dashboard/component/molecules/ProductForm";
+import { useDeleteProductImageMutation, useUpdateProductMutation } from "@/redux/slices/manage/manageproduct.api";
+import { useGetProductByIdQuery } from "@/redux/slices/product.slice";
+import { PRODUCT_MANAGE_URL } from "@/routers";
+import { ProductFormData, ProductImageType } from "@/types";
+import { mapProductToFormValues } from "@/utils/productFormMapper";
 import Image from "next/image";
 import { IoCloseCircle } from "react-icons/io5";
-import { useGetProductByIdQuery } from "@/redux/slices/product.slice"; // Thêm useDeleteProductImageMutation
-import { ProductImageType, ProductFormData } from "@/types";
-import { ContainerLayout } from "@/dashboard/component/layouts/ContainerLayout";
-import ProductForm from "@/dashboard/component/molecules/ProductForm";
-import ImageUploader from "@/dashboard/component/molecules/ImageUploader";
-import { mapProductToFormValues } from "@/utils/productFormMapper";
-import { useCreateProductImagesMutation, useDeleteProductImageMutation, useUpdateProductMutation } from "@/redux/slices/manage/manageproduct.api";
-import { URL_SHOP_MANAGE } from "@/routers";
+import { useDataManage } from "@/contexts/data.manage.context";
 
 interface UpdateProductPageProps {
     productSlug: string;
@@ -23,9 +24,9 @@ interface UpdateProductPageProps {
 
 export default function UpdateProductPage({ productSlug }: UpdateProductPageProps) {
     const router = useRouter();
+    const { refetch } = useDataManage()
     const { data: product, isLoading, error: productError } = useGetProductByIdQuery(productSlug);
     const [updateProduct, { isLoading: isUpdatingProduct }] = useUpdateProductMutation();
-    const [createImageProduct, { isLoading: isUpdatingImages }] = useCreateProductImagesMutation();
     const [deleteProductImage, { isLoading: isDeletingImage }] = useDeleteProductImageMutation(); // Thêm mutation để xóa
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -67,26 +68,20 @@ export default function UpdateProductPage({ productSlug }: UpdateProductPageProp
             toast.error("Không tìm thấy sản phẩm để cập nhật!");
             return;
         }
-
+        const imageData = newImages.map((image) => ({
+            image_url: image
+        }));
         try {
             const productData = convertEmptyStringToNull({
                 ...data,
                 product_thumbnail: previewImage || data.product_thumbnail,
+                product_images: imageData
             }) as ProductFormData;
 
-            // Chỉ gửi các hình ảnh mới (newImages) tới API createImageProduct
-            const imageData: ProductImageType[] = newImages.map((image) => ({
-                product_id: productData.product_name,
-                image_url: image,
-                alt_text: productData.product_name,
-            }));
-
             await updateProduct({ ...productData, product_slug: product.product_slug }).unwrap();
-            if (imageData.length > 0) {
-                await createImageProduct(imageData).unwrap();
-            }
+            await refetch()
             toast.success("Cập nhật sản phẩm thành công!");
-            router.push(URL_SHOP_MANAGE);
+            router.push(PRODUCT_MANAGE_URL);
         } catch (error: any) {
             toast.error(error?.data?.message || "Lỗi khi cập nhật sản phẩm");
         }
@@ -147,11 +142,11 @@ export default function UpdateProductPage({ productSlug }: UpdateProductPageProp
                     </div>
                     <button
                         type="submit"
-                        disabled={isUpdatingProduct || isUpdatingImages || isDeletingImage}
-                        className={`mt-4 w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 ${isUpdatingProduct || isUpdatingImages || isDeletingImage ? "opacity-50 cursor-not-allowed" : ""
+                        disabled={isUpdatingProduct || isDeletingImage}
+                        className={`mt-4 w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 ${isUpdatingProduct || isDeletingImage ? "opacity-50 cursor-not-allowed" : ""
                             }`}
                     >
-                        {isUpdatingProduct || isUpdatingImages || isDeletingImage ? "Đang cập nhật..." : "Cập nhật sản phẩm"}
+                        {isUpdatingProduct || isDeletingImage ? "Đang cập nhật..." : "Cập nhật sản phẩm"}
                     </button>
                 </form>
             </div>

@@ -37,6 +37,8 @@ export const UPDATE_PRODUCT_URL = "/manage/product/category/updateproduct";
 export const CREATE_PROMOTION_URL = "/manage/promotion/create-promotion";
 
 export const PROMOTION_MANAGE_URL = "/manage/promotion/create-promotion"
+export const PRODUCT_MANAGE_URL = "/manage/product/category"
+export const ORDER_MANAGE_URL = "/manage/order"
 export const UPDATE_PROMOTION_URL = "/manage/promotion"
 
 export const URL_SHOP_MANAGE = "/manage/product/category";
