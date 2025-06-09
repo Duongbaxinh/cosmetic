@@ -90,7 +90,7 @@ const ProductTable: React.FC<TableProps> = ({
                 <thead
                     className={`bg-purple-100 ${!isDetail ? " sticky top-0" : ""} px-3 left-0 z-10`}>
                     <tr className="px-3" >
-                        <th className="px-4 py-2 text-left text-xs font-medium text-purple-800 uppercase tracking-wider ">
+                        <th className="px-4 py-0 text-left text-xs font-medium text-purple-800 uppercase tracking-wider ">
                             <input
                                 checked={productSelected?.length === body.length}
                                 type="checkbox"

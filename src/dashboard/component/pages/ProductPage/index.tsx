@@ -128,8 +128,6 @@ function ProductPage() {
 
     return (
         <ContainerLayout isPrivate={true} authentication="admin:all_manage vendor:basic_access" >
-
-
             <div className="grid grid-cols-5 gap-x-4 ">
                 {/* <div className="col-span-1 ">
                     <h2 className="h-20 flex items-center text-2xl font-bold text-text">

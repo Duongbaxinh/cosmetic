@@ -12,7 +12,7 @@ const Sidebar = () => {
 
     const menuItems = [
         { icon: <BiSolidDiscount />, label: 'Chương trình giảm giá', link: '/manage/promotion' },
-        { icon: <AiFillProduct />, label: 'Quản lý sản phẩm', link: "/manage/product" },
+        { icon: <AiFillProduct />, label: 'Quản lý sản phẩm', link: "/manage/product/category" },
         { icon: <FaBorderAll />, label: 'Quản lý đơn hàng', link: "/manage/order" },
     ];
 
