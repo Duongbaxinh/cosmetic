@@ -1,11 +1,8 @@
 "use client";
-import Container from "@/components/atoms/Container";
-import FilterOption from "@/components/atoms/FilterOption";
 import IconButton from "@/components/atoms/IconButton";
 
-import { FilterProductType, ParamFilter, Product, BrandType, TypeProductType } from "@/types";
+import { BrandType, FilterProductType, ParamFilter, Product, TypeProductType } from "@/types";
 
-import { priceRanges } from "@/config/data.config";
 import { productLabels } from "@/consts/data";
 import { useDataManage } from "@/contexts/data.manage.context";
 import { CREATE_PRODUCT_URL, CREATE_PROMOTION_URL } from "@/routers";

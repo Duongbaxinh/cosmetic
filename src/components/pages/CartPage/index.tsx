@@ -259,7 +259,7 @@ function CartPage() {
                                 </div>
                             </div>
                             <button
-                                className="mt-4 w-full text-white py-2 rounded-lg bg-gradient"
+                                className="mt-4 w-full text-white py-2 rounded-lg bg-gradient "
                                 onClick={() => handlePlaceOrder()}
                             >
                                 Mua Hàng

@@ -56,7 +56,7 @@ function OrderPage() {
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
                     <p className="text-[19px] font-[700] text-gray-900">Đơn hàng của tôi</p>
-                    <div className="bg-white h-[42px] overflow-auto no-scrollbar flex items-center text-[14px] leading-4 text-gray-500 shadow rounded-lg"
+                    <div className="bg-white  min-h-[42px] overflow-auto no-scrollbar flex items-center text-[14px] leading-4 text-gray-500 shadow rounded-lg"
                     >
                         {ORDER_TABS.map((tab: OrderTabItem, index) => (
                             <div
@@ -79,7 +79,7 @@ function OrderPage() {
                         placeholder="Tìm đơn hàng theo mã đơn hàng, tên sản phẩm"
                         className="w-full bg-white h-[35px] border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-200"
                     />
-                    <div className="w-full flex flex-col gap-4 max-h-[80vh] overflow-auto">
+                    <div className="w-full flex flex-col gap-4 max-h-[80vh] overflow-auto scrollbar">
                         {loading ? (
                             <LoadingPage className="w-full min-h-[450px]" />
                         ) : (

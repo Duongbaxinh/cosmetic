@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaBorderAll } from "react-icons/fa";
 import { AiFillProduct } from "react-icons/ai";
 import { BiSolidDiscount } from "react-icons/bi";
+import Link from 'next/link';
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -22,11 +23,11 @@ const Sidebar = () => {
     return (
         <div className={`sticky top-0 left-0 h-screen bg-gray-800 text-white flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-[350px]'}`}>
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
-                <h2
+                <Link href="/"
                     className={`text-xl font-bold overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}
                 >
                     HATU
-                </h2>
+                </Link>
                 <button
                     onClick={toggleSidebar}
                     className="flex-shrink-0 focus:outline-none hover:bg-gray-700 p-1 rounded transition-colors duration-200"

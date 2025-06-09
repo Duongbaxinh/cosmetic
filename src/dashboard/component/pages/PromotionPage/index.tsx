@@ -26,68 +26,6 @@ interface DiscountProgram {
     updated_at: string;
 }
 
-// Mock API data based on the new structure
-const mockPrograms: DiscountProgram[] = [
-    {
-        id: "cbab3a0b-01a2-43ac-b13d-f16290c0e752",
-        vendor: null,
-        title: "Giảm 30%",
-        slug: "giam-30",
-        thumbnail: "https://res.cloudinary.com/dwu92ycra/image/upload/v1748770622/JOYBOY/c10cf785-2185-4e9d-ad52-b0733db22020_qvxpey_qzwlw9.png",
-        discount_percent: 30,
-        start_date: "2025-05-01T00:00:00Z",
-        end_date: "2025-05-31T23:59:59Z",
-        products: [
-            {
-                id: "4ec0eb64-2faa-4b6f-a5c8-aaffae6787f9",
-                product_name: "Tinh Chất Dr.Belmeur Dưỡng Săn Chắc Da",
-                product_slug: "tinh-chat-drbelmeur",
-                product_price: 650000,
-                product_thumbnail: "https://res.cloudinary.com/dwu92ycra/image/upload/v1748770622/JOYBOY/c10cf785-2185-4e9d-ad52-b0733db22020_qvxpey_qzwlw9.png",
-                product_type: {
-                    id: "9d4208f2-694f-4bef-ba43-38eaf91fe2b9",
-                    title: "Serum",
-                    slug: "serum",
-                    category: null
-                },
-                product_images: [],
-                product_brand: {
-                    id: "",
-                    image: "",
-                    slug: ""
-                    ,
-                    specific: false,
-                    title: ""
-                },
-                product_made: "South Korea",
-                product_discount: false,
-                product_discount_percent: 0,
-                product_discount_start: null,
-                product_discount_end: null,
-                product_promotion: {
-                    id: "cbab3a0b-01a2-43ac-b13d-f16290c0e752",
-                    title: "Giảm 30%",
-                    discount_percent: 30
-                },
-                product_sold: 160,
-                product_international: true,
-                product_rate: 5.0,
-                product_ingredient: "Probiotics, Peptides",
-                product_stock_quantity: 70,
-                is_active: true,
-                product_expiration_date: null,
-                created_at: "2025-06-05T08:07:12.047453Z",
-                updated_at: "2025-06-05T08:07:12.047724Z"
-            }
-        ],
-        is_active: false,
-        created_at: "2025-06-02T06:54:31.019050Z",
-        updated_at: "2025-06-02T06:54:31.020603Z"
-    }
-];
-
-
-
 
 export default function PromotionPage() {
     const [selectedProgram, setSelectedProgram] = useState<string | null>(null);

@@ -28,6 +28,9 @@ body {
   background-color: white;
 }
 
+button {
+  cursor: pointer;
+}
 /* Hide scrollbar on WebKit (Chrome, Edge, Safari) */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

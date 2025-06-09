@@ -56,7 +56,7 @@ function DetailItem({ product, setIsDetail, setDetailItem }: {
     }
     if (!product) return <h1>Loading</h1>;
     return (
-        <div className="relative px-2 py-2 w-full max-w-[1080px]  lg:h-full   border border-blue-300 overflow-hidden rounded-md ">
+        <div className="relative px-2 py-2 w-full  lg:h-full   border border-blue-300 overflow-hidden rounded-md ">
             <IconButton className="absolute right-0 top-0 !bg-transparent hover:!bg-transparent text-black" icon={<IoCloseCircle className="text-black w-[20px] " />} onClick={setClose} />
             <div className="w-full space-y-5 h-fit mb-[60px] ">
                 <div className="grid grid-cols-8 gap-4 w-full  ">

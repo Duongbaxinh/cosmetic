@@ -39,7 +39,7 @@ export default function ChatBox() {
         setChat("");
 
         try {
-            if (accessToken) {
+            if (!accessToken) {
                 await fetchStream(
                     `${BASE_API}/chatbot/guest`,
                     {

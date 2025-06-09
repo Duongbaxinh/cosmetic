@@ -72,6 +72,9 @@ const ProductTable: React.FC<TableProps> = ({
         if (key === "product_images") {
             return
         }
+        if (key === "product_vendor") {
+            return (<p>{product[key].name ?? "-"}</p>)
+        }
         return (<p>{product[key] ?? "-"}</p>)
     }
     const isItemDetailSelected = (productId: number | string) => {

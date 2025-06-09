@@ -39,6 +39,7 @@ export type ProductPromotion = {
 
 export type Product = {
   id: string;
+  product_vendor: ProductVendor;
   product_name: string;
   product_slug: string;
   product_description?: string;
@@ -93,4 +94,19 @@ export type ProductCartDetail = {
   product_discount_percent: number;
   product_type: TypeProductType;
   product_brand: BrandType;
+  product_vendor: ProductVendor;
+};
+
+type ProductVendor = {
+  id: string;
+  user: string;
+  name: string;
+  slug: string;
+  description: string;
+  logo: string;
+  phone: string;
+  address: string;
+  is_active: boolean;
+  created_at: string; // ISO 8601 datetime string
+  updated_at: string; // ISO 8601 datetime string
 };
