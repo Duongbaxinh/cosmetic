@@ -1,5 +1,4 @@
-import { ShippingAddress, UserProfileType, UserType } from "./auth.type";
-import { BrandType } from "./brand.type";
+import { ShippingAddress, UserProfileType } from "./auth.type";
 import { Product, TypeProductType } from "./product.type";
 
 export type Category = {

@@ -12,3 +12,4 @@ export * from "./product.type";
 export * from "./brand.type";
 export * from "./cart.type";
 export * from "./payment.type";
+export * from "./processorder.type";

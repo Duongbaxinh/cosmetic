@@ -345,10 +345,10 @@ function CheckoutPage() {
                                         )}
                                 </div>
                             </div>
-                            <div className="fixed bottom-0 left-0 lg:sticky lg:top-2 max-w-full lg:max-w-[372px] lg:h-[491px] w-full lg:max-h-[95vh] lg:overflow-y-scroll scrollbar space-y-3">
+                            <div className="fixed bottom-0 left-0 lg:sticky lg:top-2 max-w-full lg:max-w-[372px]  w-full  lg:max-h-[95vh] lg:overflow-y-scroll no-scrollbar space-y-3">
                                 {/* CHECKOUT */}
-                                {!show && <div className="block md:hidden absolute -top-[15%] left-[50%] transform -translate-x-1/2 transition-opacity duration-300 ease-in-out">
-                                    <IconButton onClick={() => setShow(true)} icon={<BiChevronUp />} />
+                                {!show && <div className="block md:hidden absolute -top-[10%] left-[50%] transform -translate-x-1/2 transition-opacity  duration-300 ease-in-out">
+                                    <IconButton className='!bg-pink-300 !rounded-full' onClick={() => setShow(true)} icon={<BiChevronUp />} />
                                 </div>}
                                 {show && <div className="absolute top-[10px] right-[10px] transition-opacity duration-300 ease-in-out">
                                     <IconButton onClick={() => setShow(false)} icon={<CloseIcon />} />

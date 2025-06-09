@@ -8,7 +8,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
 import { useCancelOrderMutation, useGetAllOrderQuery } from '@/redux/slices/order.slice';
 import { PURCHASE_URL } from '@/routers';
-import { OrderDetailType, OrderProduct, OrderResponse, OrderTabItem, OrderType } from '@/types';
+import { OrderResponse, OrderTabItem, OrderType } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';

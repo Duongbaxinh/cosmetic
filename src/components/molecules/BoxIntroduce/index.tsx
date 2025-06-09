@@ -98,7 +98,7 @@ function BoxIntroduce() {
             {showRightButton && (
                 <button
                     onClick={() => handleScroll('right')}
-                    className="absolute -right-5 top-0 rounded-full h-full bg-pink-300 p-2 z-50 hover:bg-pink-200 transition-colors"
+                    className="absolute right-0 sm:-right-5 top-0 rounded-full h-full bg-pink-300 p-2 z-50 hover:bg-pink-200 transition-colors"
                 >
                     <FaChevronRight className="text-white" />
                 </button>

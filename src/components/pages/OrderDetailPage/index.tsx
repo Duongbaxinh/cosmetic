@@ -1,5 +1,7 @@
 "use client"
 import Price from '@/components/atoms/Price';
+import ProcessHeader from '@/components/organisms/ProcessHeader';
+import { processFlowData } from '@/consts/data';
 import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetOrderDetailQuery } from '@/redux/slices/order.slice';
@@ -28,6 +30,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                         <p><b>Số điện thoại: </b> {userProfile?.phone}</p>
                         <p><b>Địa chỉ giao hàng: </b>{is_order && orderDetail?.shipping_address ? orderDetail.shipping_address.address : ''}</p>
                     </div>
+
                     {/* <div className="w-full p-3  " >
                         <div className="px-8 w-full">
                             <div className="border-l-2 border-gray-300 pl-4 relative">
@@ -67,7 +70,9 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                         </div>
                     </div> */}
                 </div>
-
+                <div className="mt-6">
+                    <ProcessHeader flowData={processFlowData} status={orderDetail?.status || ''} />
+                </div>
                 {/* PRODUCT */}
                 {is_order && (
                     <div className=" bg-white p-4 space-y-[20px] mt-[30px] rounded-md">

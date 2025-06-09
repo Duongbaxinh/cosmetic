@@ -1,4 +1,4 @@
-import { FilterProductType } from "@/types";
+import { FilterProductType, ProcessFlowProps } from "@/types";
 
 export const initFilter: FilterProductType = {
   limitnumber: 10,
@@ -41,3 +41,65 @@ export const initFilterProduct: FilterProductType = {
   order: "asc",
   sortBy: "",
 };
+
+import {
+  FaShoppingCart,
+  FaBoxOpen,
+  FaTruck,
+  FaHome,
+  FaCheckCircle,
+  FaBan,
+  FaUndo,
+} from "react-icons/fa";
+export const processFlowData: ProcessFlowProps[] = [
+  {
+    id: 1,
+    label: "Chờ thanh toán",
+    icon: FaShoppingCart,
+    line: true,
+    status: "pending",
+  },
+  {
+    id: 2,
+    label: "Đã thanh toán",
+    icon: FaBoxOpen,
+    line: true,
+    status: "confirmed",
+  },
+  {
+    id: 3,
+    label: "Đang vận chuyển",
+    icon: FaTruck,
+    line: true,
+    status: "shipping", // In transit
+  },
+  {
+    id: 4,
+    label: "Đã giao",
+    icon: FaHome,
+    line: true,
+    status: "delivered", // Successfully delivered
+  },
+  {
+    id: 5,
+    label: "Đã nhận hàng",
+    icon: FaCheckCircle,
+    line: true,
+    status: "completed",
+  },
+
+  {
+    id: 6,
+    label: "Đã hủy",
+    icon: FaBan,
+    line: true,
+    status: "cancelled", // Order cancelled
+  },
+  {
+    id: 7,
+    label: "Trả hàng",
+    icon: FaUndo,
+    line: false,
+    status: "returned", // Item returned
+  },
+];

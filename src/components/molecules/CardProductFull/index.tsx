@@ -48,7 +48,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                 )}
 
 
-                <div className="w-full sm:h-[270px] h-[270px] overflow-hidden relative  rounded-t-lg ">
+                <div className="w-full sm:h-[270px] h-[160px] overflow-hidden relative  rounded-t-lg ">
                     <button
                         onClick={handleAddToCart}
                         className=" transparentToGradient whitespace-nowrap px-4 py-4 font-[700] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 group-hover/card:block hidden text-white rounded-full cursor-pointer text-sm  shadow-md">
