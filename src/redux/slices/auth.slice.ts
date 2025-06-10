@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AuthDataLogin,
+  AuthDataLogout,
   AuthDataRegister,
   ChangePasswordPayload,
   ForgotPasswordPayload,
   ResetPasswordPayload,
+  ShopRegisterForm,
   UserProfileType,
 } from "./../../types/auth.type";
 import { RegisterResponse } from "@/types";
@@ -15,6 +17,7 @@ import {
   LOGIN_API,
   PROFILE_API,
   REGISTER_API,
+  REGISTER_SHOPE,
   RESET_PASSWORD_API,
 } from "@/config/api.config";
 import { handleError } from "@/utils";
@@ -57,6 +60,17 @@ export const authApi = createApi({
         };
       },
     }),
+
+    logout: builder.mutation({
+      query: (credentials: AuthDataLogout) => ({
+        url: LOGIN_API,
+        method: "POST",
+        body: credentials,
+      }),
+      transformResponse: (response: any) => {
+        return response;
+      },
+    }),
     login: builder.mutation({
       query: (credentials: AuthDataLogin) => ({
         url: LOGIN_API,
@@ -75,6 +89,26 @@ export const authApi = createApi({
       }),
       transformResponse: (response: RegisterResponse) => {
         return response;
+      },
+    }),
+    signUpShope: builder.mutation<string, ShopRegisterForm>({
+      async queryFn(registerPayload, api, extraOptions) {
+        const result = await baseQueryWithToken(
+          {
+            url: REGISTER_SHOPE,
+            method: "POST",
+            body: registerPayload,
+          },
+          api,
+          extraOptions
+        );
+
+        if (result.error) {
+          handleError(result.error);
+          return { error: result.error };
+        }
+        const message = (result.data as { message: string }).message;
+        return { data: message };
       },
     }),
     changePassword: builder.mutation<string, ChangePasswordPayload>({
@@ -159,6 +193,8 @@ export const {
   useResetPasswordMutation,
   useSendOTPMutation,
   useSendOTP2Mutation,
+  useLogoutMutation,
+  useSignUpShopeMutation,
 } = authApi;
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";

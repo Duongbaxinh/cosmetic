@@ -144,13 +144,17 @@ const HomePage: React.FC = () => {
                             {!loadingBrand ? (
                                 <>
                                     {brands && brands.map(
-                                        (brand) => (
-                                            <SwiperSlide key={brand.id}>
-                                                <Link href={`${CATEGORY_URL}/product_vendor/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
-                                                    <Image src={brand.logo} alt={brand.name} width={217} height={106} className='rounded-md' />
-                                                </Link>
-                                            </SwiperSlide>
-                                        )
+                                        (brand) => {
+                                            if (brand.isActive) {
+                                                return (
+                                                    <SwiperSlide key={brand.id}>
+                                                        <Link href={`${CATEGORY_URL}/product_vendor/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
+                                                            <Image src={brand.logo} alt={brand.name} width={217} height={106} className='rounded-md' />
+                                                        </Link>
+                                                    </SwiperSlide>
+                                                )
+                                            }
+                                        }
                                     )}</>
                             ) : (
                                 <LoadingPage className='w-full h-[200px]' />

@@ -1,10 +1,7 @@
-import axios from "axios";
-import { isArray } from "lodash";
+// Import the JSON file (Node.js CommonJS style)
+const productDataArray = require("./formatted_product_data.json"); // Adjust the path if needed
 
-// Import the JSON file (Node.js style, use dynamic import for ES modules if needed)
-const productDataArray = require("./data3.json"); // Adjust path to your JSON file
-
-interface ProductFormData {
+type ProductFormData = {
   product_name: string;
   product_slug?: string;
   product_price: number;
@@ -21,60 +18,70 @@ interface ProductFormData {
   product_ingredient: string;
   product_international: boolean;
   product_thumbnail: string;
-  images?: string[];
-}
+  product_images?: string[];
+};
+
+type ProductFormData2 = {
+  product_name: string;
+  product_price: number;
+  product_thumbnail: string;
+  product_type_id: string;
+  product_made: string;
+  product_discount: boolean;
+  product_discount_percent: number;
+  product_discount_start: string | null;
+  product_discount_end: string | null;
+  product_promotion_id: string;
+  product_international: boolean;
+  product_description: string;
+  product_ingredient: string;
+  product_stock_quantity: number;
+  product_expiration_date: string;
+  product_slug?: string;
+  product_images: {
+    image_url: string;
+    is_primary?: boolean;
+  }[];
+};
 
 const createProductWithImages = async (
   productData: ProductFormData | ProductFormData[]
-) => {
+): Promise<void> => {
   try {
-    // Normalize input to always handle an array
     const products = Array.isArray(productData) ? productData : [productData];
 
-    // Filter out images from product data for product creation
-    const dataFilter = products.map((product) => {
-      const { images, ...productBody } = product;
-      return productBody;
+    const dataCreate: ProductFormData2[] = products.map((product) => {
+      const { product_images, ...productBody } = product;
+      const images =
+        product_images?.map((img) => ({
+          image_url: img,
+          is_primary: true,
+        })) || [];
+      console.log("check ", images);
+      return {
+        ...productBody,
+        product_images: images,
+      } as ProductFormData2;
+    });
+    console.log("check ", dataCreate);
+
+    const response = await fetch("https://joyboy-be.up.railway.app/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ly91l2hDT6fabtsL9VrG60BYueofnU`,
+      },
+      body: JSON.stringify(dataCreate),
     });
 
-    // Create products
-    const createProductResponse = await axios.post(
-      `https://joyboy-be.up.railway.app/products`,
-      dataFilter,
-      {
-        headers: {
-          Authorization: `Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt`,
-        },
-      }
-    );
-
-    if (createProductResponse.data && isArray(createProductResponse.data)) {
-      const productData =
-        createProductResponse.data as unknown as ProductFormData[];
-      // Handle image uploads for each product
-      for (let i = 0; i < products.length; i++) {
-        const product = products[i];
-        if (product.images && product.images.length > 0) {
-          const imagePayload = product.images.map((url) => ({
-            product_id: productData[i].product_slug,
-            image_url: url,
-            alt_text: product.product_name,
-          }));
-
-          await axios.post(
-            "https://joyboy-be.up.railway.app/product-images",
-            imagePayload,
-            {
-              headers: {
-                Authorization: `Bearer b71jT9ip8y5NLBHcYLqXBaMyA8m1Wt`,
-              },
-            }
-          );
-        }
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const result = await response.json();
+    console.log("✅ Product creation result:", result);
   } catch (error) {
-    console.error("Lỗi khi tạo sản phẩm hoặc ảnh:", error);
+    console.error("❌ Error creating product or images:", error);
     throw error;
   }
 };

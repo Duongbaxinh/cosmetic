@@ -24,6 +24,11 @@ export type AuthDataLogin = {
   password: string;
 };
 
+export type AuthDataLogout = {
+  refresh_token: string;
+  access_token: string;
+};
+
 export type AuthDataRegister = {
   username: string;
   password: string;
@@ -32,6 +37,14 @@ export type AuthDataRegister = {
   confirmPassword: string;
 };
 
+export type ShopRegisterForm = {
+  name: string;
+  slug: string;
+  description: string;
+  logo: string;
+  phone: string;
+  address: string;
+};
 export interface Role {
   id: string;
   name: string;

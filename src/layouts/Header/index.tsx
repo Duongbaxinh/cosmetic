@@ -41,6 +41,7 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
 
     const handleLogout = () => {
         logout();
+
         router.push("/");
     };
 

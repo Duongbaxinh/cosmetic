@@ -64,6 +64,7 @@ const RegisterPage = () => {
 
     const handleSendOTP = async () => {
         try {
+            // alert(`${emailSend} --- ${otp}`)
             const payload = await sendOTP2({ email: emailSend, otp }).unwrap();
             if (payload) {
                 setStep('register');
@@ -72,7 +73,8 @@ const RegisterPage = () => {
                 toast.error('Mã OTP không hợp lệ');
             }
         } catch (error) {
-            toast.error(MESS_SYSTEM.UNKNOWN_ERROR);
+            console.log("check 00000", error)
+            handleError(error)
         }
     };
 

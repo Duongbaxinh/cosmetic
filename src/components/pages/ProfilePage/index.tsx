@@ -2,13 +2,14 @@
 import { TrashIcon } from '@/assets/icons';
 import LockIcon from '@/assets/icons/LockIcon';
 import InputForm from '@/components/atoms/InputForm';
+import PopupShopRequest from '@/components/molecules/PopUpShopRequest';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
 import { setUser, useChangeProfileMutation } from '@/redux/slices/auth.slice';
 import { RootState } from '@/redux/store';
 import { CHANGE_PASSWORD_URL } from '@/routers';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 ;
@@ -26,9 +27,12 @@ function ProfilePage() {
     //         nationality: 'Chọn quốc tịch',
     //     },
     // });
+
+    const [isOpenShop, setIsOpenShop] = useState<boolean>(false)
     const [changeProfile, { isLoading, error }] = useChangeProfileMutation();
     const user = useSelector((state: RootState) => state.user.user);
     const dispatch = useDispatch()
+
 
     const onSubmit = async (data: any) => {
         await changeProfile(data).unwrap();
@@ -52,6 +56,7 @@ function ProfilePage() {
                     <div className="flex ">
                         <div className="bg-white p-2 md:p-6 rounded-lg shadow-md flex w-full ">
                             {/* Left Section */}
+                            <PopupShopRequest isOpen={isOpenShop} onClose={() => setIsOpenShop(false)} />
                             <div className="w-full ">
                                 <h2 className="text-lg font-[700]  mb-4">Tài khoản</h2>
 
@@ -101,9 +106,9 @@ function ProfilePage() {
                                 <div className="flex items-center justify-between w-full mb-4">
                                     <div className="flex gap-2 items-center">
                                         <TrashIcon />
-                                        <span>Yêu cầu xóa tài khoản</span>
+                                        <span>Tạo cửa hàng</span>
                                     </div>
-                                    <button className="text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm w-[100px]">Yêu cầu</button>
+                                    <button onClick={() => setIsOpenShop(true)} className="text-blue-500 border-[1px] border-blue-500 px-2 py-1 rounded-sm w-[100px]">Yêu cầu</button>
                                 </div>
                                 {/* Save Button */}
                                 <button

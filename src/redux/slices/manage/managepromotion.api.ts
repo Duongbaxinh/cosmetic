@@ -1,4 +1,8 @@
-import { BASE_API, PROMOTION_API } from "@/config/api.config";
+import {
+  BASE_API,
+  CREATE_PROMOTION_API,
+  PROMOTION_API,
+} from "@/config/api.config";
 import { customFetchBaseQuery } from "@/redux/customeBaseQuery";
 import { Promotion, PromotionFormType } from "@/types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -12,7 +16,7 @@ export const managePromotionApi = createApi({
     }),
     createPromotion: builder.mutation<Promotion[], PromotionFormType>({
       query: (payloadPromotion) => ({
-        url: PROMOTION_API,
+        url: CREATE_PROMOTION_API,
         method: "POST",
         body: payloadPromotion,
       }),

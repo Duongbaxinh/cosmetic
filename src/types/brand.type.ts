@@ -4,6 +4,7 @@ export type BrandType = {
   slug: string;
   description: string;
   logo: string;
+  isActive: boolean;
 };
 export type BrandTypeResponse = {
   results: BrandType[];

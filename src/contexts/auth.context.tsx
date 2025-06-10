@@ -1,6 +1,6 @@
 "use client"
 import useSaveLocalStorage from "@/hooks/useLocalstorage";
-import { clearUser, setUser, useGetUserQuery } from "@/redux/slices/auth.slice";
+import { clearUser, setUser, useGetUserQuery, useLogoutMutation } from "@/redux/slices/auth.slice";
 import { clearShippingAddress, setShippingAddress, useGetAddressQuery } from "@/redux/slices/shippingAddress.slice";
 import { AuthContextType } from "@/types";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLogin, setIsLogin] = useSaveLocalStorage("isLogin", false);
     const [isAuth, setIsAuth] = useState<{ form: "login" | "register", isOpen: boolean } | null>(null);
 
+    const [logoutRequest] = useLogoutMutation()
+
     // lấy thông tin người dùng khi họ đã đăng nhập
     const { data: userProfile, refetch: fetchUserInfo } = useGetUserQuery(undefined, {
         skip: !accessToken,
@@ -24,6 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data: shippingAddress, refetch: fetchShipping } = useGetAddressQuery(undefined, {
         skip: !accessToken,
     });
+
 
     const dispatch = useDispatch();
     const router = useRouter()
@@ -47,10 +50,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }, [userProfile, shippingAddress]);
 
-    const logout = () => {
+    const logout = async () => {
+        if (!accessToken && refreshToken) return
+        await logoutRequest({
+            access_token: accessToken,
+            refresh_token: refreshToken
+        })
         dispatch(clearUser());
         dispatch(clearShippingAddress());
         localStorage.clear()
+
         localStorage.setItem("isLogin", JSON.stringify(false))
         router.push('/')
         window.location.reload();
