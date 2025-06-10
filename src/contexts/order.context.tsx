@@ -90,7 +90,7 @@ export const OrderProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             const orderTemporary = {
                 order_quantity: products.reduce((acc, item) => acc + item.quantity, 0),
                 order_total_price: totalPrice,
-                order_discount: orderDiscount,
+                order_discount: 0,
                 order_final_price: totalPrice - orderDiscount,
                 order_shipping: 15000,
                 order_shippingAddress: shippingAddressNew ?? shippingAddress[0],

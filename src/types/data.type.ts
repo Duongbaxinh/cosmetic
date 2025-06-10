@@ -90,7 +90,7 @@ export type OrderType = {
 export type OrderProductDetail = {
   id: string;
   product: Product;
-  reviewed?: boolean;
+  review_order_detail?: boolean;
   quantity: number;
   created_at?: string;
   updated_at?: string;
@@ -113,9 +113,12 @@ export interface ReviewItemType {
 }
 
 export type ReviewType = {
-  overall_rating: number;
-  total_reviews: number;
-  reviews: ReviewItemType[];
+  rate: number;
+  user: UserProfileType;
+  content: string;
+  image_reviews: { image: string }[];
+  created_at: string;
+  updated_at: string;
 };
 
 // PROMOTION

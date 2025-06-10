@@ -3,6 +3,7 @@ import {
   ProductCartDetail,
   ProductDiscountType,
   ReviewItemType,
+  ReviewType,
 } from "@/types";
 
 interface RatingCount {
@@ -11,11 +12,11 @@ interface RatingCount {
   percentage: string;
 }
 
-export const calculateRating = (reviews: ReviewItemType[]): RatingCount[] => {
+export const calculateRating = (reviews: ReviewType[]): RatingCount[] => {
   const counts = Array(5).fill(0);
   reviews.forEach((review) => {
-    if (review.rating >= 1 && review.rating <= 5) {
-      counts[5 - review.rating]++;
+    if (review.rate >= 1 && review.rate <= 5) {
+      counts[5 - review.rate]++;
     }
   });
 
@@ -41,10 +42,12 @@ export const calculateDiscount = (product: Product): ProductDiscountType => {
     product && product.product_discount && product.product_discount_percent
       ? product.product_discount_percent
       : 0;
-
+  const discountConclude =
+    discountPromotion > 0 ? discountPromotion : discountDirect;
   return {
     discountDirect,
     discountPromotion,
+    discountConclude,
     discountTitle: product.product_promotion?.title ?? "",
   };
 };
@@ -75,9 +78,8 @@ export function calculateProductDiscounts(productDetail: Product) {
 
 export const priceDiscountProductCart = (product: ProductCartDetail) => {
   const disCountPercent =
-    product.product_discount_promotion &&
-    product.product_discount_promotion.discount_percent > 0
-      ? product.product_discount_promotion.discount_percent
+    product.product_promotion && product.product_promotion.discount_percent > 0
+      ? product.product_promotion.discount_percent
       : product.product_discount_percent && product.product_discount_percent > 0
       ? product.product_discount_percent
       : 0;

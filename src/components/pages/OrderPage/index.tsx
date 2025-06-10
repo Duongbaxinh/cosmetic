@@ -8,7 +8,7 @@ import ContainerLayout from '@/layouts/ContainerLayout';
 import SideBarDetail from '@/layouts/SideBarDetail';
 import { useCancelOrderMutation, useGetAllOrderQuery } from '@/redux/slices/order.slice';
 import { PURCHASE_URL } from '@/routers';
-import { OrderResponse, OrderTabItem, OrderType } from '@/types';
+import { OrderDetailType, OrderProductDetail, OrderResponse, OrderTabItem, OrderType } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ function OrderPage() {
     const [textSearch, setTextSearch] = useState<string>("");
     const { data, isLoading: loading, error } = useGetAllOrderQuery({ status: status });
     const [isReview, setIsReview] = useState(false)
-    const [productReview, setProductReview] = useState<string>("")
+    const [productReview, setProductReview] = useState<OrderProductDetail | null>(null)
     const [cancelOrder] = useCancelOrderMutation();
     const handleChangeStatus = (new_status: string) => {
         setStatus(new_status);
@@ -57,14 +57,14 @@ function OrderPage() {
         proceedToCheckout({ product: products })
     }
 
-    const handleReviewProduct = (isReview: boolean, productId: string) => {
-        alert(productId)
+    const handleReviewProduct = (isReview: boolean, orderDetail: OrderProductDetail) => {
+
         setIsReview(true)
-        setProductReview(productId)
+        setProductReview(orderDetail)
     }
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
-            <ReviewPage isReview={isReview} setIsReview={setIsReview} productId={productReview} />
+            <ReviewPage isReview={isReview} setIsReview={setIsReview} productReview={productReview} />
             <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
@@ -132,9 +132,9 @@ function OrderPage() {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <p>{(orderDetail?.reviewed ?? false).toString()}</p>
-                                                                        {order.status !== "delivered" && !orderDetail.reviewed && (
-                                                                            <button onClick={() => handleReviewProduct(true, product?.id ?? "")} >Đánh giá sản phẩm</button>
+                                                                        <p>{(orderDetail?.review_order_detail ?? false).toString()}</p>
+                                                                        {order.status !== "delivered" && !orderDetail.review_order_detail && (
+                                                                            <button onClick={() => handleReviewProduct(true, orderDetail ?? "")} >Đánh giá sản phẩm</button>
                                                                         )}
                                                                     </div>
 

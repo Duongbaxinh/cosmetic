@@ -18,7 +18,7 @@ import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
 import { FilterProductType, ParamFilter, BrandType, TypeProductType } from '@/types';
-import { cleanFilter } from '@/utils';
+import { calculateDiscount, cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -259,15 +259,16 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                                         <div key={product.id} className=" flex items-center justify-center w-full h-full ">
                                             <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block shadow w-full h-full '>
                                                 <CardProductFull
-                                                    product_brand={product.product_vendor.name}
-                                                    product_description={product.product_description}
                                                     key={product.id}
-                                                    className='min-h-[330px]'
                                                     id={product.id}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
+                                                    product_brand={product.product_vendor.name}
+                                                    product_description={product.product_description}
                                                 />
                                             </Link>
                                         </div>

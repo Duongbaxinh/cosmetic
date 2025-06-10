@@ -196,7 +196,7 @@ function CartPage() {
 
                             <div className="pt-5">
                                 {cart?.cart_details.map((productDetail) => {
-                                    const { finalPrice } = priceDiscountProductCart(productDetail.product)
+                                    const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product)
                                     return (
                                         <div
                                             key={productDetail.id}
@@ -240,9 +240,17 @@ function CartPage() {
                                                             className="w-[30px] h-full !px-0 !py-[2px]"
                                                         />
                                                     </div>
-                                                    <Price
-                                                        product_price={finalPrice}
-                                                    />
+                                                    <div className="flex items-center gap-2">
+                                                        <Price
+                                                            product_price={finalPrice}
+                                                        />
+                                                        {priceDiscount > 0 && (
+                                                            <Price
+                                                                className="text-gray-400 font-medium  line-through"
+                                                                product_price={productDetail.product.product_price}
+                                                            />
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <IconButton

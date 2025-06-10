@@ -18,7 +18,7 @@ import { useGetAllCategoryQuery } from '@/redux/slices/category.slice';
 import { useGetProductFilterQuery } from '@/redux/slices/product.slice';
 import { DETAIL_PRODUCT_URL } from '@/routers';
 import { BrandType, FilterProductType, ParamFilter, TypeProductType } from '@/types';
-import { cleanFilter } from '@/utils';
+import { calculateDiscount, cleanFilter } from '@/utils';
 import { isArray } from 'lodash';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -193,12 +193,14 @@ function SearchPage({ text_search }: { text_search: string }) {
                                                 <CardProductFull
                                                     key={product.id}
                                                     id={product.id}
-                                                    product_brand={product.product_vendor.name}
-                                                    product_description={product.product_description}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
+                                                    product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}
                                                     product_price={product.product_price}
                                                     product_rate={product.product_rate}
+                                                    product_brand={product.product_vendor.name}
+                                                    product_description={product.product_description}
                                                 />
                                             </Link>
                                         </div>

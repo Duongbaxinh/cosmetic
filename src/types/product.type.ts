@@ -1,5 +1,5 @@
 import { BrandType } from "./brand.type";
-import { Category } from "./data.type";
+import { Category, ReviewType } from "./data.type";
 
 export interface ProductImageType {
   id?: string;
@@ -12,6 +12,7 @@ export interface ProductImageType {
 export type ProductDiscountType = {
   discountDirect: number;
   discountPromotion: number;
+  discountConclude: number;
   discountTitle: string;
 };
 
@@ -65,6 +66,7 @@ export type Product = {
   product_expiration_date: null | string;
   created_at: string;
   updated_at: string;
+  reviews: ReviewType[];
 };
 
 export type ProductFormData = {
@@ -96,7 +98,7 @@ export type ProductCartDetail = {
   product_price: number;
   product_thumbnail: string;
   product_discount_percent: number;
-  product_discount_promotion: {
+  product_promotion: {
     id: string;
     title: string;
     discount_percent: number;

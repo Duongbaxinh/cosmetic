@@ -12,7 +12,7 @@ import { useCreateOrderDetailMutation, useCreateOrderMutation, useCreatePaymentM
 import { useGetAllProductsQuery } from '@/redux/slices/product.slice';
 import { CHECKOUT_URL, DETAIL_PRODUCT_URL, ORDER_URL } from '@/routers';
 import { PaymentType, ShippingAddress, type OrderCheckout, type Product } from '@/types';
-import { handleError } from '@/utils';
+import { calculateDiscount, handleError } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -198,6 +198,8 @@ function CheckoutPage() {
                 await removeMultiProductInCart(cartDetailIds)
                 sessionStorage.setItem("cartDetailIds", JSON.stringify([]))
             }
+            // Xóa temporary order
+            sessionStorage.removeItem("order")
             // Xử lý thanh toán với MoMo
             if (paymentMethod === "momo" && dataOrder && dataOrder.data) {
                 const dataPayment = await paymentOrder({ orderId: dataOrder.data?.id, paymentMethod: "momo" }) as { data?: { requestId?: string; payUrl?: string } }
@@ -283,38 +285,52 @@ function CheckoutPage() {
                             <div className="space-y-4 w-full flex-grow">
                                 <div className="flex-grow rounded-lg h-fit border border-color py-[21px] px-[23px]">
                                     <h1 className='text-[14px] font-[700] leading-[26px]'>Mua Thêm tại đây</h1>
-                                    {productAddition && productAddition.results.length > 0 && productAddition.results.map((product) => (
-                                        <div className="flex items-center justify-between">
-                                            <div
-                                                key={product.id}
-                                                className="flex gap-3 items-stretch text-[12px] py-2"
-                                            >
-                                                <Image src={(product?.product_thumbnail && product?.product_thumbnail?.startsWith("http")) ? product.product_thumbnail : "/defineImage.png"} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
-                                                <div className="flex flex-col justify-between text-black text-3 leading-[19px]">
-                                                    <p className=" font-[700] uppercase">
-                                                        {product.product_vendor.name}
-                                                    </p>
-                                                    <p className=" line-clamp-2">
-                                                        {product.product_name}
-                                                    </p>
+                                    {productAddition && productAddition.results.length > 0 && productAddition.results.map((product) => {
+                                        const { discountConclude } = calculateDiscount(product)
+                                        const discountPrice = product.product_price * (discountConclude / 100)
+                                        return (
+                                            <div className="flex items-center justify-between">
+                                                <div
+                                                    key={product.id}
+                                                    className="flex gap-3 items-stretch text-[12px] py-2"
+                                                >
+                                                    <Image src={(product?.product_thumbnail && product?.product_thumbnail?.startsWith("http")) ? product.product_thumbnail : "/defineImage.png"} alt={product.product_name} width={110} height={110} className='shadow rounded-lg' />
+                                                    <div className="flex flex-col justify-between text-black text-3 leading-[19px]">
+                                                        <p className=" font-[700] uppercase">
+                                                            {product.product_vendor.name}
+                                                        </p>
+                                                        <p className=" line-clamp-2">
+                                                            {product.product_name}
+                                                        </p>
 
-                                                    <div className="flex space-x-1">
-                                                        <GroupStart
-                                                            starActive={Math.round(product.product_rate)}
-                                                            className="text-yellow-400 w-[100px] max-h-[20px]" // Gold for star ratings
-                                                        />
-                                                        <p>({product.product_rate})</p>
+                                                        <div className="flex space-x-1">
+                                                            <GroupStart
+                                                                starActive={Math.round(product.product_rate)}
+                                                                className="text-yellow-400 w-[100px] max-h-[20px]" // Gold for star ratings
+                                                            />
+                                                            <p>({product.product_rate})</p>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <Price
+                                                                product_price={product.product_price - discountPrice}
+                                                            />
+                                                            {discountPrice > 0 && (
+                                                                <Price
+                                                                    className="text-gray-400 font-medium  line-through"
+                                                                    product_price={product.product_price}
+                                                                />
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <Price
-                                                        product_price={product.product_price}
-                                                    />
                                                 </div>
+                                                <button className='py-[9px] px-[21px] font-[700] text-[14px] border border-color rounded-full hover:text-red-200'
+                                                    onClick={() => handleAddProduct(product)}
+                                                >Thêm</button>
                                             </div>
-                                            <button className='py-[9px] px-[21px] font-[700] text-[14px] border border-color rounded-full hover:text-red-200'
-                                                onClick={() => handleAddProduct(product)}
-                                            >Thêm</button>
-                                        </div>
-                                    ))}
+                                        )
+                                    }
+
+                                    )}
                                 </div>
                                 <div className="flex-grow rounded-lg h-fit border border-color py-[21px] px-[23px]">
                                     <h1 className='text-[14px] font-[700] leading-[26px] pb-4'>Thương Hiệu</h1>
@@ -329,7 +345,9 @@ function CheckoutPage() {
                                                             <CardProductFull
                                                                 key={product.id}
                                                                 id={product.id}
+                                                                product_discount={calculateDiscount(product)}
                                                                 product_thumbnail={product.product_thumbnail}
+                                                                product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                                 product_name={product.product_name}
                                                                 product_price={product.product_price}
                                                                 product_rate={product.product_rate}
@@ -385,6 +403,9 @@ function CheckoutPage() {
                                                     <Price
                                                         product_price={product.product_price}
                                                     />
+                                                    {/* <Price
+                                                        product_price={product.product_discount ?? 0}
+                                                    /> */}
                                                 </div>
                                                 <IconButton className='!bg-gray-300' onClick={() => handleRemoveProduct(product.id)} icon={<BiMinus />} />
                                             </div>

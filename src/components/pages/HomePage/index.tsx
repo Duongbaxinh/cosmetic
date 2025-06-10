@@ -113,8 +113,8 @@ const HomePage: React.FC = () => {
                                         <SwiperSlide key={product.id}>
                                             <Link href={`${DETAIL_PRODUCT_URL}/${product.product_slug}`} className='block w-full h-full'>
                                                 <CardProductFull
-                                                    key={product.id}
                                                     id={product.id}
+                                                    product_discount={calculateDiscount(product)}
                                                     product_thumbnail={product.product_thumbnail}
                                                     product_thumbnail_2={product.product_images ? product.product_images[1]?.image_url : ""}
                                                     product_name={product.product_name}

@@ -15,6 +15,7 @@ import LoadingPage from '../LoadingPage';
 import DetailProduct from './DetailProduct';
 import OverviewProduct from './OverviewProduct';
 import { useAuth } from '@/contexts/auth.context';
+import ReviewProduct from './ReviewProduct';
 
 export type PopupContactType = {
     openLogin: boolean;
@@ -134,9 +135,9 @@ function DetailProductPage({ id }: { id: string | number }) {
 
                 />
             </div>
-            {/* <div className="w-full bg-white rounded-lg shadow-sm mt-4 border border-gray-200">
-                {reviewProduct && reviewProduct.reviews.length > 0 ? (
-                    <ReviewProduct review={reviewProduct} />
+            <div className="w-full bg-white rounded-lg  mt-4">
+                {product && product.reviews.length > 0 ? (
+                    <ReviewProduct review={product.reviews} />
                 ) : (
                     <div className="p-4 text-gray-500 w-full h-full min-h-[300px] flex items-center justify-center">
                         <NotFound
@@ -145,7 +146,7 @@ function DetailProductPage({ id }: { id: string | number }) {
                         />
                     </div>
                 )}
-            </div> */}
+            </div>
         </ContainerLayout>
     );
 }

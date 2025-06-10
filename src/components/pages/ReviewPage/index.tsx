@@ -9,6 +9,7 @@ import Popup from '@/components/atoms/Popup';
 import GroupStart from '@/components/organisms/GroupStart';
 import { useError } from '@/contexts/error.context';
 import { useReviewProductMutation, useSaveImageReviewMutation } from '@/redux/slices/review.slice';
+import { OrderProductDetail } from '@/types';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -17,7 +18,7 @@ import { toast } from 'react-toastify';
 export type ReviewPageType = {
     isReview: boolean,
     setIsReview: Dispatch<SetStateAction<boolean>>,
-    productId: string
+    productReview: OrderProductDetail | null
 }
 const messageReview: Record<number, { text: string; color: string; icon: string }> = {
     1: { text: "Rất không hài lòng", color: "text-red-500", icon: "😡" },
@@ -28,7 +29,7 @@ const messageReview: Record<number, { text: string; color: string; icon: string 
 };
 
 
-function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
+function ReviewPage({ isReview, setIsReview, productReview }: ReviewPageType) {
     const { handleError } = useError()
     const [numberStar, setNumberStar] = useState<number>(0);
     const [startHover, setStarHover] = useState<number | null>(0)
@@ -92,7 +93,7 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
     }
 
     const handleSubmit = async () => {
-        console.log("chkkkkkk ", numberStar, content, productId)
+        if (!productReview) return
         if (!content && numberStar === 0) {
             toast.error("Vui lòng nhập nội dung đánh giá của bạn")
             return;
@@ -100,18 +101,15 @@ function ReviewPage({ isReview, setIsReview, productId }: ReviewPageType) {
         setUploading(true);
         setError(null);
         try {
-            console.log("check info :::: ", content, productId, numberStar)
-            const dataReview = await reviewProduct({ content: content, product_id: productId, rate: numberStar }).unwrap()
+            console.log("check info :::: ", content, numberStar)
+            const images = imageUrls.map((img) => (
+                {
+                    image: img
+                }
+            ))
+            const dataReview = await reviewProduct({ content: content, product_id: productReview.product.id, order_detail_id: productReview.id, rate: numberStar, image_reviews: images }).unwrap()
+
             toast.success("Cảm ơn bạn đã đánh giá sản phẩm")
-            if (imageUrls.length > 0 && dataReview && dataReview.id) {
-                const payload = imageUrls.map((img) => (
-                    {
-                        review_id: dataReview.id,
-                        image: img
-                    }
-                ))
-                await saveImageReview(payload).unwrap()
-            }
             closeReview()
         } catch (err) {
             console.log("check error::: ", err)

@@ -2,12 +2,13 @@ import { UserProfileType } from "./auth.type";
 
 export type ReviewPayload = {
   product_id: string;
+  order_detail_id: string;
   rate: number;
   content: string;
+  image_reviews: ReviewImagePayload[];
 };
 
 export type ReviewImagePayload = {
-  review_id: string;
   image: string;
 };
 

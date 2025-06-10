@@ -92,11 +92,6 @@ export const productApi = createApi({
     }),
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
-      // query: (id) => {
-      //   return {
-      //     url: "http://localhost:5001/1",
-      //   };
-      // },
       transformResponse: (response: Product) => {
         return response;
       },
