@@ -18,4 +18,4 @@ export const PAYMENT_API = "/payments";
 export const CART_API = "/carts";
 
 export const CREATE_PROMOTION_API = "/promotions/add-product";
-export const PROMOTION_API = "/promotions/add-product";
+export const PROMOTION_API = "/promotions";
