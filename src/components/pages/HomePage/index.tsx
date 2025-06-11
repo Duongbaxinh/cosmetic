@@ -145,15 +145,15 @@ const HomePage: React.FC = () => {
                                 <>
                                     {brands && brands.map(
                                         (brand) => {
-                                            if (brand.isActive) {
-                                                return (
-                                                    <SwiperSlide key={brand.id}>
-                                                        <Link href={`${CATEGORY_URL}/product_vendor/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
-                                                            <Image src={brand.logo} alt={brand.name} width={217} height={106} className='rounded-md' />
-                                                        </Link>
-                                                    </SwiperSlide>
-                                                )
-                                            }
+
+                                            return (
+                                                <SwiperSlide key={brand.id}>
+                                                    <Link href={`${CATEGORY_URL}/vendor/${brand.slug}`} className='relative w-full h-full hover:-top-1 transition-all duration-100'>
+                                                        <Image src={brand.logo} alt={brand.name} width={217} height={106} className='rounded-md' />
+                                                    </Link>
+                                                </SwiperSlide>
+                                            )
+
                                         }
                                     )}</>
                             ) : (
@@ -249,7 +249,7 @@ const HomePage: React.FC = () => {
                                 )
                             )
                         ) : (
-                            <ProductSkeleton length={4} />
+                            <LoadingPage className='w-full !h-[275px] sm:!h-[400px]' />
                         )}
                     </Carousel>
                 </div>

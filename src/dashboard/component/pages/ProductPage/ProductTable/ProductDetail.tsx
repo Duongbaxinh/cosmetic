@@ -1,6 +1,7 @@
 
 import IconButton from "@/components/atoms/IconButton";
 import { useData } from "@/contexts/data.context";
+import { useDataManage } from "@/contexts/data.manage.context";
 import { useDeleteProductMutation } from "@/redux/slices/manage/manageproduct.api";
 import { UPDATE_PRODUCT_URL } from "@/routers";
 import { Product } from "@/types";
@@ -34,7 +35,7 @@ function DetailItem({ product, setIsDetail, setDetailItem }: {
     setDetailItem: Dispatch<SetStateAction<string>>,
 }) {
     const [imageDisplay, setImageDisplay] = useState("")
-    const { refetch } = useData()
+    const { refetch } = useDataManage()
     const [deleteProduct, { isLoading: isDeleteProduct, error: errorDeleteProduct }] = useDeleteProductMutation()
     const handleImageDisplay = (image: string) => {
         setImageDisplay(image);

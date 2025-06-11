@@ -36,6 +36,7 @@ export const initFilterProduct: FilterProductType = {
   product_category: [],
   product_type: [],
   price: { key: "", value: [] },
+  vendor: { key: "", value: "" },
   rate: null,
   sortPrice: "",
   order: "asc",

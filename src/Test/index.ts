@@ -1,5 +1,5 @@
 // Import the JSON file (Node.js CommonJS style)
-const productDataArray = require("./formatted_product_data.json"); // Adjust the path if needed
+const productDataArray = require("./data_7.json"); // Adjust the path if needed
 
 type ProductFormData = {
   product_name: string;
@@ -50,38 +50,54 @@ const createProductWithImages = async (
   try {
     const products = Array.isArray(productData) ? productData : [productData];
 
-    const dataCreate: ProductFormData2[] = products.map((product) => {
+    for (let i = 0; i < products.length; i++) {
+      const product = products[i];
       const { product_images, ...productBody } = product;
+
       const images =
         product_images?.map((img) => ({
           image_url: img,
           is_primary: true,
         })) || [];
-      console.log("check ", images);
-      return {
+
+      const productToSend: ProductFormData2 = {
         ...productBody,
         product_images: images,
       } as ProductFormData2;
-    });
-    console.log("check ", dataCreate);
 
-    const response = await fetch("https://joyboy-be.up.railway.app/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ly91l2hDT6fabtsL9VrG60BYueofnU`,
-      },
-      body: JSON.stringify(dataCreate),
-    });
+      try {
+        const response = await fetch(
+          "https://joyboy-be.up.railway.app/products",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer TJgGN7UHi6CFAj8ZklDZp1M608qFLZ`,
+            },
+            body: JSON.stringify(productToSend),
+          }
+        );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`❌ Product ${i + 1} failed:`, product.product_name);
+          console.error(
+            `   ➤ Status: ${response.status}, Message: ${errorText}`
+          );
+        } else {
+          const result = await response.json();
+          console.log(`✅ Product ${i + 1} created:`, result);
+        }
+      } catch (innerError) {
+        console.error(
+          `❌ Product ${i + 1} threw an exception:`,
+          product.product_name
+        );
+        console.error("   ➤ Error:", innerError);
+      }
     }
-
-    const result = await response.json();
-    console.log("✅ Product creation result:", result);
   } catch (error) {
-    console.error("❌ Error creating product or images:", error);
+    console.error("❌ Unexpected error in createProductWithImages:", error);
     throw error;
   }
 };

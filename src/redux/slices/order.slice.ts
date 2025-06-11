@@ -86,11 +86,14 @@ export const orderProductApi = createApi({
       OrderResponse,
       OrderDetailType | OrderDetailType[]
     >({
-      query: (orderDetail: OrderDetailType | OrderDetailType[]) => ({
-        url: ORDER_DETAIL_API,
-        method: "POST",
-        body: orderDetail,
-      }),
+      query: (orderDetail: OrderDetailType | OrderDetailType[]) => {
+        console.log("check order detaill ", orderDetail);
+        return {
+          url: ORDER_DETAIL_API,
+          method: "POST",
+          body: orderDetail,
+        };
+      },
       invalidatesTags: ["order"],
       transformResponse: (response: OrderResponse) => {
         return response;

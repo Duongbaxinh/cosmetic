@@ -19,9 +19,10 @@ function ReviewProduct({ review }: { review: ReviewType[] }) {
         );
     };
     const ratingDistribution = calculateRating(review || []);
+    const reviewBalance = review.flatMap(review => review.rate).reduce((sum, review) => sum + review, 0) / review.length
     const reviewFile = review.flatMap((review) => [...review.image_reviews])
     return (
-        <div className="w-full grid grid-cols-3 gap-3 h-fit mx-auto py-6 px-4 bg-white mt-6 border-t border-color">
+        <div className="w-full grid grid-cols-3 gap-16 h-fit mx-auto py-6 px-4 bg-white mt-6 border-t border-color">
             <div className="col-span-1">
                 {/* Tiêu đề */}
                 <h1 className="text-lg font-semibold text-gray-800 mb-4">Khách hàng đánh giá</h1>
@@ -30,8 +31,8 @@ function ReviewProduct({ review }: { review: ReviewType[] }) {
                 <div className=" flex flex-col  items-start mb-6 gap-5 ">
                     <div className="w-full flex gap-2 ">
                         <div className=" w-1/3 mr-4">
-                            <p className="text-3xl font-bold text-yellow-500">{review.length || 0}</p>
-                            <div className="flex">{renderStars(review.length)}</div>
+                            <p className="text-3xl font-bold text-yellow-500">{reviewBalance || 0}</p>
+                            <div className="flex">{renderStars(reviewBalance)}</div>
                             <p className="text-sm text-gray-600">({review.length} đánh giá)</p>
                         </div>
 

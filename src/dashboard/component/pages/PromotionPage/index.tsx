@@ -124,18 +124,6 @@ export default function PromotionPage() {
                                                     </button>
 
                                                 )}
-                                                <Link
-                                                    href={`${PROMOTION_MANAGE_URL}?promotionId=${program.slug}`}
-                                                    className="bg-purple-600 text-white py-1 px-2 rounded hover:bg-purple-700 text-sm"
-                                                >
-                                                    Chỉnh sửa
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleViewProgram(program.id)}
-                                                    className="bg-purple-600 text-white py-1 px-2 rounded hover:bg-purple-700 text-sm"
-                                                >
-                                                    Delete
-                                                </button>
                                             </td>
                                         </tr>
                                         {currentProgram && selectedProgram === program.id && (

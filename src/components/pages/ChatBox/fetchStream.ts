@@ -23,7 +23,7 @@ export const fetchStream = async (
     if (!response.body) throw new Error("ReadableStream not available");
 
     const reader = response.body.getReader();
-    const decoder = new TextDecoder();
+    const decoder = new TextDecoder("utf-8");
     let buffer = "";
 
     try {
@@ -31,20 +31,25 @@ export const fetchStream = async (
         const { value, done } = await reader.read();
         if (done) break;
 
+        // Thêm phần mới vào buffer và giải mã
         buffer += decoder.decode(value, { stream: true });
 
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
+        // Xử lý các dòng hoàn chỉnh
+        let lineEndIndex;
+        while ((lineEndIndex = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.substring(0, lineEndIndex).trim();
+          buffer = buffer.substring(lineEndIndex + 1);
 
-        for (const line of lines) {
-          const cleanLine = line.replace(/^data:\s*/, "").trim();
-          if (cleanLine) {
-            console.log("check lllll ", cleanLine);
-            onData(cleanLine);
+          if (line) {
+            const cleanLine = line.replace(/^data:\s*/, "").trim();
+            if (cleanLine) {
+              onData(cleanLine);
+            }
           }
         }
       }
 
+      // Xử lý phần còn lại trong buffer khi stream kết thúc
       if (buffer.trim()) {
         const cleanLine = buffer.replace(/^data:\s*/, "").trim();
         if (cleanLine) {

@@ -18,7 +18,8 @@ import { toast } from 'react-toastify';
 export type ReviewPageType = {
     isReview: boolean,
     setIsReview: Dispatch<SetStateAction<boolean>>,
-    productReview: OrderProductDetail | null
+    productReview: OrderProductDetail | null,
+    refetchOrder: any
 }
 const messageReview: Record<number, { text: string; color: string; icon: string }> = {
     1: { text: "Rất không hài lòng", color: "text-red-500", icon: "😡" },
@@ -29,7 +30,7 @@ const messageReview: Record<number, { text: string; color: string; icon: string 
 };
 
 
-function ReviewPage({ isReview, setIsReview, productReview }: ReviewPageType) {
+function ReviewPage({ isReview, setIsReview, productReview, refetchOrder }: ReviewPageType) {
     const { handleError } = useError()
     const [numberStar, setNumberStar] = useState<number>(0);
     const [startHover, setStarHover] = useState<number | null>(0)
@@ -101,14 +102,13 @@ function ReviewPage({ isReview, setIsReview, productReview }: ReviewPageType) {
         setUploading(true);
         setError(null);
         try {
-            console.log("check info :::: ", content, numberStar)
             const images = imageUrls.map((img) => (
                 {
                     image: img
                 }
             ))
-            const dataReview = await reviewProduct({ content: content, product_id: productReview.product.id, order_detail_id: productReview.id, rate: numberStar, image_reviews: images }).unwrap()
-
+            await reviewProduct({ content: content, product_id: productReview.product.id, order_detail_id: productReview.id, rate: numberStar, image_reviews: images }).unwrap()
+            await refetchOrder()
             toast.success("Cảm ơn bạn đã đánh giá sản phẩm")
             closeReview()
         } catch (err) {

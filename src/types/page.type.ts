@@ -8,11 +8,13 @@ export type FilterProductType = {
   product_category?: { title: string; value: string }[];
   product_type?: { title: string; value: string }[];
   product_brand?: { title: string; value: string }[];
+  product_vendor?: { title: string; value: string }[];
   rate?: number | null;
   price?: {
     key: string | null;
     value: (number | string)[];
   };
+  vendor?: { key: string; value: string };
   sortBy?: string | null;
   sortPrice?: "" | "asc" | "desc";
   order?: "asc" | "desc";

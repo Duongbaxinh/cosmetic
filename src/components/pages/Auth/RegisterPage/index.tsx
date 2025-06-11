@@ -94,7 +94,8 @@ const RegisterPage = () => {
                 toast.error('Gửi OTP thất bại');
             }
         } catch (error) {
-            toast.error(MESS_SYSTEM.UNKNOWN_ERROR);
+            handleError(error)
+
         }
     };
 

@@ -64,7 +64,7 @@ const CardProductFull: React.FC<CardProductFullProps> = ({
                             src={
                                 product_thumbnail && product_thumbnail.startsWith("http")
                                     ? product_thumbnail
-                                    : "/default-image.jpg"
+                                    : "/images/imageDefautl.jpg"
                             }
                             alt={product_name}
                             width={270}

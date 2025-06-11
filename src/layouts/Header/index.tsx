@@ -65,9 +65,9 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
                 {<Image
                     src="/images/Logo.png"
                     alt="Logo"
-                    width={190}
-                    height={39}
-                    className="min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]"
+                    width={100}
+                    height={100}
+                    className="w-full h-full object-cover"
                 />}
                 className="!w-[300px] font-sans  block sm:!hidden"
                 isOpen={isOpen.openPhone}
@@ -103,18 +103,18 @@ const Header: React.FC<HeaderProps> = ({ classHeader, isCategory = true }: Heade
             <div className="w-full bg-white py-2 px-2 min-h-[150px] sm:min-h-[110px]  rounded-b-lg">
                 <div className="flex items-center sm:items-start md:items-center justify-between gap-[10px] sm:gap-[20px] lg:gap-[48px] h-[35px]">
                     {/* Logo */}
-                    {isLogin ? (<div onClick={() => setIsOpen(prev => ({ openPhone: true, openComputer: false }))} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
+                    {/* {isLogin ? (<div onClick={() => setIsOpen(prev => ({ openPhone: true, openComputer: false }))} > <MenuIcon className=' block sm:hidden w-[40px] ' /></div>
                     ) : (
                         <div onClick={() => { !isLogin ? openLogin() : () => { } }}> <LoginIcon className=' block sm:hidden w-[35px] ' /></div>
-                    )}
+                    )} */}
 
                     <Link href="/">
                         <Image
                             src="/images/Logo.png"
                             alt="Logo"
-                            width={190}
-                            height={39}
-                            className="min-w-[150px] sm:min-w-[190px] min-h-[39px] max-w-[190px] max-h-[39px]"
+                            width={100}
+                            height={100}
+                            className="min-w-[100px] w-full h-full object-cover"
                         />
 
                     </Link>

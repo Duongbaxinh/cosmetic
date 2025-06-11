@@ -29,7 +29,7 @@ export const DataManageProvider: React.FC<{ children: ReactNode }> = ({
   const [filters, setFilters] = useState<FilterProductType>(initFilter);
   const { userProfile } = useAuth()
 
-  const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes, } = useGetTypeQuery({ ...params.type, vendor: "shopvtk" });
+  const { data: productTypes, isLoading: isLoadingTypes, error: errorTypes, } = useGetTypeQuery({ ...params.type, vendor: ["shopvtk"] });
   const { data: brands, isLoading: loadingBrand, error: errorBrand, } = useGetBrandsQuery({ ...params.brand, vendor: "shopvtk" });
 
   const { data: allBrand } = useGetAllBrandQuery();

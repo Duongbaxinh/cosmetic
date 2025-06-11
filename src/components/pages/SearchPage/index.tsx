@@ -45,10 +45,12 @@ function SearchPage({ text_search }: { text_search: string }) {
         }
     }, [brands, productTypes])
 
+    // Tạo ra một mảng những thuộc tính được chọn để lọc sản phẩm
     const isFiltered = [
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
         filters.price?.value && filters.price.value.length > 0 ? "price-" + filters.price?.key || null : null,
         filters.rate !== null ? "rate-" + filters.rate || null : null,
+        filters.vendor?.key !== "" ? "vendor-" + filters.vendor?.key || null : null,
         ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
         ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
     ].filter(Boolean);

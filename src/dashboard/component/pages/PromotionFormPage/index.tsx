@@ -105,7 +105,7 @@ export default function PromotionFormPage({ promotionId }: { promotionId?: strin
         try {
             setIsLoading(true);
             console.log("check data promotion form ::: ", data);
-            await createPromotion({ ...data, thumbnail: preview }).unwrap();
+            await createPromotion({ ...data, thumbnail: preview, is_active: false }).unwrap();
             toast.success(promotionId ? "Cập nhật thành công!" : "Thêm thành công!");
             sessionStorage.removeItem("productSelected"); // Clean up sessionStorage
             router.push("/programs");

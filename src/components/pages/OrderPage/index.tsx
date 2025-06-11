@@ -24,7 +24,7 @@ function OrderPage() {
     const { proceedToCheckout } = useOrder()
     const [status, setStatus] = useState<string>("");
     const [textSearch, setTextSearch] = useState<string>("");
-    const { data, isLoading: loading, error } = useGetAllOrderQuery({ status: status });
+    const { data, isLoading: loading, refetch } = useGetAllOrderQuery({ status: status });
     const [isReview, setIsReview] = useState(false)
     const [productReview, setProductReview] = useState<OrderProductDetail | null>(null)
     const [cancelOrder] = useCancelOrderMutation();
@@ -64,7 +64,7 @@ function OrderPage() {
     }
     return (
         <ContainerLayout isPrivate={true} classHeader="sticky top-0 left-0 z-40 bg-pink-50">
-            <ReviewPage isReview={isReview} setIsReview={setIsReview} productReview={productReview} />
+            <ReviewPage isReview={isReview} setIsReview={setIsReview} productReview={productReview} refetchOrder={refetch} />
             <ContainerAuth>
                 <SideBarDetail />
                 <div className="flex flex-col gap-5 w-full overflow-hidden">
@@ -132,8 +132,7 @@ function OrderPage() {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <p>{(orderDetail?.review_order_detail ?? false).toString()}</p>
-                                                                        {order.status !== "delivered" && !orderDetail.review_order_detail && (
+                                                                        {order.status === "delivered" && !orderDetail.review_order_detail && (
                                                                             <button onClick={() => handleReviewProduct(true, orderDetail ?? "")} >Đánh giá sản phẩm</button>
                                                                         )}
                                                                     </div>

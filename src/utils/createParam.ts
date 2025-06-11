@@ -10,15 +10,23 @@ export const createParams = (customParams: any) => ({
 export function toQueryString(params: any) {
   return Object.entries(params)
     .filter(([_, v]) => v !== "" && !(Array.isArray(v) && v.length === 0))
-    .map(([key, val]) =>
-      Array.isArray(val)
-        ? `${key}=${val.join(",")}`
-        : typeof val === "string" ||
-          typeof val === "number" ||
-          typeof val === "boolean"
-        ? `${key}=${encodeURIComponent(val)}`
-        : `${key}=`
-    )
+    .map(([key, val]) => {
+      if (Array.isArray(val)) {
+        return `${key}=${val.join(",")}`;
+      } else if (key === "product_promotion") {
+        // Đặc biệt: KHÔNG encode cho `product_promotion`
+        return `${key}=${val}`; // Giữ nguyên giá trị gốc
+      } else if (
+        typeof val === "string" ||
+        typeof val === "number" ||
+        typeof val === "boolean"
+      ) {
+        // Các trường hợp khác vẫn encode bình thường
+        return `${key}=${encodeURIComponent(val)}`;
+      } else {
+        return `${key}=`;
+      }
+    })
     .join("&");
 }
 
@@ -36,7 +44,10 @@ export const query = toQueryString({
 export const cleanFilter = (filter: any) => {
   const newFilter: { [key: string]: any } = {};
   for (const filed in filter) {
-    if (filed === "price") {
+    if (filed === "vendor") {
+      console.log("check vendor :::: ", filter["vendor"].value);
+      newFilter["vendor"] = filter["vendor"]?.value;
+    } else if (filed === "price") {
       newFilter["price"] = filter["price"]?.value;
     } else if (isArray(filter[filed as keyof FilterProductType])) {
       newFilter[filed] = filter[filed].map((item: any) => item.value);

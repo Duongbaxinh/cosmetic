@@ -105,10 +105,10 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                                 <span className="text-gray-600">Tổng tiền hàng</span>
                                 <Price product_price={orderDetail?.total_price ?? 0} className='text-black !font-light' />
                             </div>
-                            <div className="flex justify-between">
+                            {/* <div className="flex justify-between">
                                 <span className="text-gray-600">Phí vận chuyển</span>
                                 <Price product_price={15000} className='text-black !font-light' />
-                            </div>
+                            </div> */}
                             {discount_direct > 0 && (
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Giảm giá trực tiếp</span>

@@ -49,7 +49,7 @@ export const productApi = createApi({
         const queryString = toQueryString(params);
 
         const url = `/products?${queryString}`;
-
+        console.log("check urls promotion :::: ", url);
         return {
           url: url,
           timeout: 10000,

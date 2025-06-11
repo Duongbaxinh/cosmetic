@@ -27,7 +27,6 @@ import ReactPaginate from 'react-paginate';
 import { SwiperSlide } from 'swiper/react';
 
 
-
 function CategoryPage({ category_key, value }: { category_key: string, value: string }) {
     const initFilter: FilterProductType = {
         limitnumber: 10,
@@ -36,6 +35,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         product_category: [],
         product_type: [],
         price: { key: "", value: [] },
+        vendor: { key: "", value: "" },
         rate: null,
         sortPrice: "",
         order: 'asc',
@@ -83,6 +83,9 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
                 setFilter(prev => ({ ...prev, price: { key: priceValue.label, value: [priceValue.min, priceValue.max] } }))
             }
             return
+        }
+        if (filed === "vendor") {
+            setFilter(prev => ({ ...prev, vendor: { key: value.key, value: value.value } }))
         }
         // Nếu thuộc tính lọc là một mảng thì sẽ gọi hàm newArr để kiểm tra thuộc tính đã có trong mảng hay chưa
         const newData = isArray(filters[filed]) ? newArr(filters[filed], value) : value
@@ -148,6 +151,7 @@ function CategoryPage({ category_key, value }: { category_key: string, value: st
         ...(filters.product_type?.map(item => `product_type-${item.title}`) || []),
         filters.price?.value && filters.price.value.length > 0 ? "price-" + filters.price?.key || null : null,
         filters.rate !== null ? "rate-" + filters.rate || null : null,
+        filters.vendor?.key !== "" ? "vendor-" + filters.vendor?.key || null : null,
         ...(filters.product_category?.map(item => `product_category-${item.title}`) || []),
         ...(filters.product_brand?.map(item => `product_brand-${item.title}`) || [])
     ].filter(Boolean);

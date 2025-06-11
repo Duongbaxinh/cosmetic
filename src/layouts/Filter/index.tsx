@@ -58,7 +58,7 @@ function Filter({ categories, brands, isFiltered, onFilter, className, productTy
                     </div>
                 </FilterOption>
             </div>
-            <div className="py-3 ">
+            {/* <div className="py-3 ">
                 <FilterOption title='Thương hiệu' customTextSelected=' pb-2 text-black !text-[14px] !leading-[21px] !font-[600]' customIcon='px-2'>
                     <div className="max-h-[250px] overflow-auto scrollbar pl-1 ">
                         {brands && brands.map((brand) => (
@@ -72,8 +72,18 @@ function Filter({ categories, brands, isFiltered, onFilter, className, productTy
                     </div>
 
                 </FilterOption>
-            </div>
+            </div> */}
 
+            <div className="py-3 ">
+                <div className="pb-2 text-[14px]  leading-[21px] font-[600]  ">Thương hiệu</div>
+                {brands && brands.map((vendor) => (
+                    <div key={vendor.slug} className={`w-full flex gap-2 items-center group pl-1`}>
+                        <input id={vendor.slug} checked={isFiltered.includes(`vendor-${vendor.name}`)} type='radio' name="vendor" onChange={() => onFilter("vendor", { key: vendor.name, value: vendor.slug })}
+                            className='min-w-[20px] min-h-[20px] group-hover:scale-[1.1]' />
+                        <label htmlFor={vendor.slug} className=" py-2 text-[12px] font-[500] leading-[18px] cursor-pointer uppercase ">{vendor.name}</label>
+                    </div>
+                ))}
+            </div>
 
 
             <div className="py-3 ">

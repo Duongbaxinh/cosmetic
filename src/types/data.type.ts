@@ -144,4 +144,5 @@ export interface PromotionFormType {
   start_date: string;
   end_date: string;
   product_ids: string[];
+  is_active?: boolean;
 }

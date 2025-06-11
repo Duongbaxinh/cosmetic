@@ -27,7 +27,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         })()
         : null;
 
-    const { data: cartData } = useGetCartQuery(undefined, {
+    const { data: cartData, refetch } = useGetCartQuery(undefined, {
         skip: !accessToken,
     });
 
@@ -51,6 +51,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const addToCart = async (cart_id: string, product_id: string, quantity: number) => {
         try {
             const res = await addToCartMutation({ cart_id, product_id, quantity });
+            await refetch()
             if ("error" in res) {
                 handleError(res.error);
             }
@@ -96,7 +97,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         try {
             const res = await clearCartMutation();
             if ("error" in res) {
-                handleError(res.error);
+                return handleError(res.error);
             }
         } catch (err) {
             handleError(err);

@@ -178,7 +178,7 @@ function CheckoutPage() {
             if (!orderCheckout) return;
             // Tạo đơn hàng
             const dataOrder = await createOrder(orderCheckout.order_shippingAddress.id)
-
+            console.log("check order ::: ", dataOrder)
             // Map dữ liệu sang dạng đơn hàng payload
             const orderDetailProduct = mapOrderProductsToOrderDetails(
                 orderCheckout.order_products,
@@ -193,9 +193,10 @@ function CheckoutPage() {
             }
 
             const cartDetailIds = JSON.parse(sessionStorage.getItem("cartDetailIds") || "[]")
-            // Xóa các sản phẩm trong giỏ hàng nếu có
+            // Xóa các sản phẩm trong giỏ hàng nếu có   
             if (cartDetailIds.length > 0) {
-                await removeMultiProductInCart(cartDetailIds)
+                const removeCartIs = await removeMultiProductInCart(cartDetailIds)
+                console.log("check removeCartIs", removeCartIs)
                 sessionStorage.setItem("cartDetailIds", JSON.stringify([]))
             }
             // Xóa temporary order
