@@ -37,24 +37,19 @@ export const fetchStream = async (
         // Xử lý các dòng hoàn chỉnh
         let lineEndIndex;
         while ((lineEndIndex = buffer.indexOf("\n")) >= 0) {
-          const line = buffer.substring(0, lineEndIndex).trim();
+          const line = buffer.substring(0, lineEndIndex).trimEnd();
           buffer = buffer.substring(lineEndIndex + 1);
 
-          if (line) {
-            const cleanLine = line.replace(/^data:\s*/, "").trim();
-            if (cleanLine) {
-              onData(cleanLine);
-            }
-          }
+          // Xử lý tất cả các dòng, kể cả dòng chỉ chứa khoảng trắng
+          const cleanLine = line.replace(/^data:\s*/, "");
+          onData(cleanLine);
         }
       }
 
       // Xử lý phần còn lại trong buffer khi stream kết thúc
-      if (buffer.trim()) {
-        const cleanLine = buffer.replace(/^data:\s*/, "").trim();
-        if (cleanLine) {
-          onData(cleanLine);
-        }
+      if (buffer) {
+        const cleanLine = buffer.replace(/^data:\s*/, "");
+        onData(cleanLine);
       }
     } finally {
       reader.releaseLock();

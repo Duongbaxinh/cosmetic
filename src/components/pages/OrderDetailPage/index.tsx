@@ -5,6 +5,8 @@ import { processFlowData } from '@/consts/data';
 import { useAuth } from '@/contexts/auth.context';
 import ContainerLayout from '@/layouts/ContainerLayout';
 import { useGetOrderDetailQuery } from '@/redux/slices/order.slice';
+import { ProductCartDetail } from '@/types';
+import { priceDiscountProductCart } from '@/utils';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
@@ -23,8 +25,8 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
             <div className="px-0 md:px-8 lg:px-0 pb-0 md:pb-8 mr-0 md:mr-8">
                 <h1 className=' py-5  text-[20px] leading-6 font-light'>Địa chỉ nhận hàng</h1>
                 <div className='flex flex-col bg-white sm:flex-row rounded-md'>
-                    <div className=" p-3 w-full flex flex-col gap-2  text-[12px]  text-gray-300  ">
-                        <p className='text-[14px] leading-[22px] text-gray-400'><b>Người nhận: </b>{userProfile?.username} </p>
+                    <div className=" p-3 w-full flex flex-col gap-2  text-[14px]  text-gray-900  ">
+                        <p className='text-[14px] leading-[22px] '><b>Người nhận: </b>{userProfile?.username} </p>
                         <p><b>Số điện thoại: </b> {userProfile?.phone}</p>
                         <p><b>Địa chỉ giao hàng: </b>{is_order && orderDetail?.shipping_address ? orderDetail.shipping_address.address : ''}</p>
                     </div>
@@ -74,25 +76,36 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
                 {/* PRODUCT */}
                 {is_order && (
                     <div className=" bg-white p-4 space-y-[20px] mt-[30px] rounded-md">
-                        {orderDetail?.order_details.map((productDetail, index) => (
-                            <div key={productDetail.id} className={`flex gap-3 pt-4 ${index !== 0 && "border-t border-gray-300"}`}>
-                                <Image
-                                    src={productDetail.product.product_thumbnail}
-                                    alt={productDetail.product.product_name}
-                                    width={100}
-                                    height={100}
-                                    className="object-cover w-[100px] h-[100px] rounded-md shadow"
-                                />
-                                <div className="flex-1">
-                                    <div className="text-sm text-gray-800 line-clamp-2">{productDetail.product.product_name}</div>
-                                    <div className="text-xs text-gray-500">SL: x{productDetail.quantity}</div>
-                                    <div className="text-xs mt-1">
-                                        {/* <Price product_price={product.product_price_cost} className='!font-light  text-gray-400 line-through' /> */}
-                                        <Price product_price={productDetail.product.product_price} className='!font-light text-red-400' />
+                        {orderDetail?.order_details.map((productDetail, index) => {
+                            const { finalPrice, priceDiscount } = priceDiscountProductCart(productDetail.product as unknown as ProductCartDetail)
+                            return (
+                                <div key={productDetail.id} className={`flex gap-3 pt-4 ${index !== 0 && "border-t border-gray-300"}`}>
+                                    <Image
+                                        src={productDetail.product.product_thumbnail}
+                                        alt={productDetail.product.product_name}
+                                        width={100}
+                                        height={100}
+                                        className="object-cover w-[100px] h-[100px] rounded-md shadow"
+                                    />
+                                    <div className="flex-1">
+                                        <div className="text-sm text-gray-800 line-clamp-2">{productDetail.product.product_name}</div>
+                                        <div className="text-xs text-gray-500">SL: x{productDetail.quantity}</div>
+                                        <div className="text-xs mt-1">
+                                            {/* <Price product_price={product.product_price_cost} className='!font-light  text-gray-400 line-through' /> */}
+                                            <Price product_price={finalPrice} className='!font-light text-red-400' />
+                                            {priceDiscount > 0 && (
+                                                <Price
+                                                    className="text-gray-400 font-medium  line-through"
+                                                    product_price={productDetail.product.product_price}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        }
+                        )
+                        }
                         <div className="space-y-2 text-[14px] leading-[21px] text-gray-400 border-t pt-[20px]">
                             <div className="flex justify-between ">
                                 <span className="text-gray-600">Phương thức thanh toán</span>

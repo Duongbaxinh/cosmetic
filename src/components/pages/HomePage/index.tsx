@@ -39,14 +39,17 @@ const HomePage: React.FC = () => {
     const { data: productsInternal, isLoading: loadingInternal } = useGetAllProductsInternalQuery(internationalParams)
     const { data: brands, isLoading: loadingBrand, error: errorBrand } = useGetAllBrandQuery() as { data: BrandType[] | undefined, isLoading: boolean, error: any };
     const { data: promotions, isLoading: isLoadingPromotion } = useGetAllPromotionQuery()
-
+    const [loadmore, setLoadmore] = useState<boolean>(false)
     const check_load = products ? (products.count - products.results.length) > 0 : false
 
     const handleLoadMore = async () => {
         try {
             if (!check_load) return
+            setLoadmore(true)
             setFilter((prev) => ({ ...prev, limitnumber: prev.limitnumber + 10 }))
+            setLoadmore(false)
         } catch (error) {
+            setLoadmore(false)
             handleError(error)
         }
     }
@@ -169,7 +172,10 @@ const HomePage: React.FC = () => {
                 {flashSale && promotions && (
                     <div className="w-full max-w-[1440px] mx-auto p-2 smd:p-[25px] rounded-2xl bg-yellow-300 space-y-5">
                         <div className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end">
-                            <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} />
+                            {/* <Image src={"/images/flash_sale.webp"} alt='flash_sale ' width={267} height={51} /> */}
+                            <div className="perspective-500">
+
+                            </div>
                             <div >
                                 <p className=' font-[700] text-center lg:text-start'>Thời gian còn lại</p>
                                 {flashSale.end_date && (<CountdownTimer targetTime={flashSale?.end_date} />)}
@@ -384,7 +390,7 @@ const HomePage: React.FC = () => {
                         <div className="w-full flex items-center justify-center ">
                             <button className='flex items-center py-2 px-4 rounded-full text-sm text-pink-400 cursor-pointer  border-[1px] font-bold w-fit'
                                 onClick={handleLoadMore} >
-                                {loading && (
+                                {loadmore && (
                                     <svg className="animate-spin h-5 w-5 text-pink-400" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                         <path
@@ -394,7 +400,7 @@ const HomePage: React.FC = () => {
                                         />
                                     </svg>
                                 )}
-                                Xem Thêm</button>
+                                {loadmore ? "Loading..." : "Xem Thêm"}</button>
                         </div>
                     )
                 }

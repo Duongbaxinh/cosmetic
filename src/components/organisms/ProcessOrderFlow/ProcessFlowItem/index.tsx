@@ -11,15 +11,15 @@ function ProcessFlowItem({
                 className={`flex justify-start items-center`}>
                 <div className="flex flex-col items-center">
                     <div className="relative ">
-                        <div className="    border-1 
-                                border-pink-300 min-w-[50px] min-h-[50px] rounded-full flex items-center justify-center">
+                        <div className={` border-1 
+                                ${active ? " border-pink-600" : "border-gray-300"} min-w-[50px] min-h-[50px] rounded-full flex items-center justify-center`}>
                             <IconComponent
-                                className={` min-w-[25px] min-h-[25px]   ${active ? "text-pink-600" : "text-pink-400 "}`}
+                                className={` min-w-[25px] min-h-[25px]   ${active ? "text-pink-600" : "text-gray-400 "}`}
                             />
                         </div>
                         {
                             line && (
-                                <div className="h-[2px] w-[60px] bg-pink-500 rounded-sm overflow-hidden absolute left-[56px] top-[50%] translate-y-[-50%]  ">
+                                <div className={`h-[2px] w-[60px] ${active ? " bg-pink-600" : "bg-gray-200"} rounded-sm overflow-hidden absolute left-[56px] top-[50%] translate-y-[-50%]  `}>
                                     <div
                                         className={` rounded-sm  h-full`}></div>
                                 </div>
