@@ -17,9 +17,7 @@ function OrderDetailPage({ order_id }: { order_id: string }) {
     // const discount_shipping = orderDetail?.order_discount_shipping ?? 0
     const discount_shipping = 0
 
-    useEffect(() => {
-        alert("run at here")
-    }, [])
+
     return (
         <ContainerLayout isSidebar={false} isSidebarDetail={true}>
             <div className="px-0 md:px-8 lg:px-0 pb-0 md:pb-8 mr-0 md:mr-8">

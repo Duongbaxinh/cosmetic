@@ -85,11 +85,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const removeMultiProductInCart = async (cartDetailIds: string[]) => {
         try {
             const res = await removeMultiProductInCartMutation(cartDetailIds);
-            if ("error" in res) {
-                return handleError(res.error);
-            }
+            // if ("error" in res) {
+            //     return handleError(res.error);
+            // }
         } catch (err) {
-            handleError(err);
+            // handleError(err);
         }
     };
 

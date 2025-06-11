@@ -1,5 +1,5 @@
 // Import the JSON file (Node.js CommonJS style)
-const productDataArray = require("./data_7.json"); // Adjust the path if needed
+const productDataArray = require("./data_3.json"); // Adjust the path if needed
 
 type ProductFormData = {
   product_name: string;
@@ -72,7 +72,7 @@ const createProductWithImages = async (
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer TJgGN7UHi6CFAj8ZklDZp1M608qFLZ`,
+              Authorization: `Bearer gNruxEqgAiGsDby52kVSWAjRFWA6xS`,
             },
             body: JSON.stringify(productToSend),
           }

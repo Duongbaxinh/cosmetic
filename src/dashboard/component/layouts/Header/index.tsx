@@ -13,7 +13,7 @@ const Header = () => {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                         <img
                             src="https://via.placeholder.com/30"
                             alt="User"
@@ -24,7 +24,7 @@ const Header = () => {
                             <div className="text-gray-500 text-[12px]">Web Designer</div>
                         </div>
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="text-gray-600 flex justify-between border-t border-gray-200 px-4 py-2">

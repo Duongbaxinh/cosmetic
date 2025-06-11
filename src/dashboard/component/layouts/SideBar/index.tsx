@@ -21,7 +21,7 @@ const Sidebar = () => {
     }, [isCollapsed]);
 
     return (
-        <div className={`sticky top-0 left-0 h-screen bg-gray-800 text-white flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-[350px]'}`}>
+        <div style={{ backgroundColor: 'black !important' }} className={`sticky top-0 left-0 h-screen !bg-gray-950 text-white flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-[350px]'}`}>
             <div className="p-4 flex justify-between items-center border-b border-gray-700">
                 <Link href="/"
                     className={`text-xl font-bold overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}

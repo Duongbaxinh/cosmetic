@@ -103,15 +103,15 @@ function OrderPage() {
                                             key={order.id}
                                             className="bg-white text-[12px] sm:text-auto p-[5px] sm:p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-200 "
                                         >
-                                            <div className="flex justify-between items-start">
-                                                <div className="">
+                                            <div className="flex justify-between items-start w-full">
+                                                <div className="w-full">
                                                     {order?.order_details.map((orderDetail) => {
                                                         if (orderDetail && orderDetail.product) {
                                                             const product = orderDetail.product;
                                                             return (
                                                                 <div key={orderDetail.id} className="flex items-start justify-between py-1 sm:py-2">
                                                                     <div className="w-full flex gap-3 justify-between items-start">
-                                                                        <div className="flex gap-3">
+                                                                        <div className="flex gap-3 w-full">
                                                                             <Image
                                                                                 src={product.product_thumbnail ?? '/default-image.jpg'}
                                                                                 alt={product.product_name ?? ""}
@@ -133,7 +133,7 @@ function OrderPage() {
                                                                             </div>
                                                                         </div>
                                                                         {order.status === "delivered" && !orderDetail.review_order_detail && (
-                                                                            <button onClick={() => handleReviewProduct(true, orderDetail ?? "")} >Đánh giá sản phẩm</button>
+                                                                            <button className='w-full flex items-center justify-end text-pink-500' onClick={() => handleReviewProduct(true, orderDetail ?? "")} >Đánh giá sản phẩm</button>
                                                                         )}
                                                                     </div>
 
@@ -153,7 +153,7 @@ function OrderPage() {
                                             </div>
                                             <div className="flex gap-2 w-full py-0 sm:py-2 items-center justify-between">
                                                 <div className="flex gap-2 items-center">
-                                                    <span className="text-gray-900">Thành tiền:</span>
+                                                    <p className="text-gray-900 text-[14px] font-medium">Thành tiền:</p>
                                                     <Price
                                                         product_price={order.total_price}
                                                         className=" text-pink-600 text-[12px] sm:text-[20px]"
